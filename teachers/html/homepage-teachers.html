@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird - Homepage</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style/homepage-teachers.css">
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="navbar">
+        <div class="logo">
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            class="logo-img"
+            alt="AcadBird Logo"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
+        </div>
+        <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
+        <div class="nav-icons">
+          <a href="notification_teacher.html" target="_blank">
+            <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
+          </a>
+          <a href="help_teacher.html" target="_blank">
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          </a>
+          <a href="settings_teacher.html" target="_blank">
+            <div class="account-menu">
+              <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <div class="secondary-header">
+        <div class="secondary-header-content">
+          <div class="teacher-name-header" id="teacher-name-header">Loading Classes...</div>
+        </div>
+      </div>
+
+      <div id="loading-spinner" style="text-align: center; padding: 50px; margin-top: 50px;">
+          <div class="spinner"></div>
+          <p style="color: #000; font-weight: 600;">Loading Application Data...</p>
+      </div>
+      
+      <div id="main-content-wrapper" style="display: none;">
+        <main>
+          <div class="sidebar">
+            <h2 class="section-title" style="border-bottom: none; margin-bottom: 5px;">Teacher Profile</h2>
+            <div class="teacher-card">
+              <img src="../../main/img/teacher.png" alt="Teacher Avatar" class="teacher-avatar" id="teacher-avatar" />
+              <div class="teacher-name" id="teacher-name"></div>
+              <div class="teacher-role" id="teacher-role"></div>
+              <div class="school-name" id="school-name"></div>
+            </div>
+          </div>
+          <div class="main-content">
+            <h1 class="section-title">My Classes</h1>
+            <div class="class-grid" id="class-grid">
+              <div class="new-class-card green" id="new-class-link">
+                <i class="fas fa-plus-circle"></i>
+                New Class
+              </div>
+            </div>
+            <a href="homepage_archive-teacher.html" class="archived-link"
+              >Your Archived Classes ></a
+            >
+          </div>
+        </main>
+      </div>
+    </div>
+    
+    <div id="new-class-modal" class="modal-overlay">
+      <div class="modal-box new-class-modal-box">
+        <a href="#" class="close-btn" onclick="hideModal('new-class-modal')"
+          ><i class="fas fa-times"></i
+        ></a>
+        <p class="modal-title">Add New Class:</p>
+        <div class="modal-input-group">
+          <label for="new-class-name">Name:</label>
+          <input
+            type="text"
+            id="new-class-name"
+            class="modal-input"
+            placeholder="e.g., Kinder Violet"
+          />
+        </div>
+        <div class="modal-buttons">
+          <a href="#" class="btn btn-yes" id="add-class-btn">Add</a>
+          <a href="#" class="btn btn-no" onclick="hideModal('new-class-modal')"
+            >Cancel</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div id="edit-modal" class="modal-overlay">
+      <div class="modal-box edit-modal-box">
+        <a href="#" class="close-btn" onclick="hideModal('edit-modal')"
+          ><i class="fas fa-times"></i
+        ></a>
+        <p class="modal-title">Edit Class:</p>
+        <div class="modal-input-group">
+          <label for="edit-class-name">Name:</label>
+          <input type="text" id="edit-class-name" class="modal-input" />
+        </div>
+        <div class="modal-buttons">
+          <a href="#" class="btn btn-yes" id="save-edit-btn">Save</a>
+          <a href="#" class="btn btn-no" onclick="hideModal('edit-modal')"
+            >Cancel</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div id="confirm-modal" class="modal-overlay">
+      <div class="modal-box">
+        <div class="modal-content">
+          <p id="confirm-modal-text"></p>
+        </div>
+        <div class="modal-buttons">
+          <a href="#" class="btn btn-yes" id="confirm-yes-btn">Yes</a>
+          <a href="#" class="btn btn-no" id="confirm-no-btn">No</a>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        // 1. YOUR FIREBASE CONFIGURATION
+        // **IMPORTANT: Replace the placeholder values with your actual Firebase project configuration.**
+        const firebaseConfig = {
+              apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+    authDomain: "acadbird-379e3.firebaseapp.com",
+    projectId: "acadbird-379e3",
+    storageBucket: "acadbird-379e3.firebasestorage.app",
+    messagingSenderId: "575491576951",
+    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+    measurementId: "G-N6Z672SXWJ"
+        };
+
+        // 2. Initialize Firebase App and Services
+        firebase.initializeApp(firebaseConfig);
+
+        window.auth = firebase.auth();
+        window.db = firebase.firestore();
+
+        console.log("Firebase initialized and global variables (auth, db) set!");
+        
+        // Helper function for modals used in the global onclick attributes
+        window.hideModal = function(modalId) {
+            const modalElement = document.getElementById(modalId);
+            if (modalElement) {
+                modalElement.classList.remove('show');
+            }
+        };
+
+    </script>
+
+    <script type="module" src="../js/homepage-teachers.js"></script>
+
+  </body>
+</html>

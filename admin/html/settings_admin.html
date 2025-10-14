@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Admin - Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        /* =======================
+            Base Styles
+        ======================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            height: 100%; 
+            width: 100%; 
+            font-family: "Poppins", Arial, sans-serif; 
+            background-color: #dbe7f7; 
+            font-size: 16px; 
+            color: #000;
+        }
+        
+        /* =======================
+            Navbar
+        ======================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            background-color: #0a3b82;
+            color: white;
+            border-bottom: 1px solid #000;
+        }
+        
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 24px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 70px;
+            height: 40px;
+            border-radius: 4px;
+        }
+
+        .logo-text-img {
+            height: 28px;
+            border-radius: 4px;
+        }
+        
+        .middle-logo {
+            width: 90px;
+            height: 40px;
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+        
+        .back-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-icons .icon {
+            width: 30px; 
+            height: 25px; 
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .account-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .account-menu .dropdown-icon {
+            width: 12px;
+            height: 14px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: white;
+        }
+
+        /* =======================
+            Secondary Header (Navigation)
+        ======================= */
+        .secondary-header {
+            background-color: #e7efff;
+            display: flex;
+            justify-content: center;
+            padding: 12px 0;
+            position: static;
+            top: 44px;
+            z-index: 999;
+            border-bottom: 1px solid #000;
+        }
+
+        .secondary-header-container {
+            width: 100%; 
+            padding: 0 24px;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            font-size: 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-item {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item.active {
+            font-weight: 700;
+            color: #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .nav-item:hover {
+            background-color: #c9d7f8;
+        }
+
+        /* =======================
+            Separator Line
+        ======================= */
+        .separator {
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            margin: 0;
+            color:#000;
+            display: block;
+        }
+        
+        /* =======================
+            Main Content
+        ======================= */
+        .main-content {
+            padding: 35px 45px;
+            background-color: transparent;
+            position: relative;
+            z-index: 0;
+            overflow: auto;
+            min-height: calc(100vh - 100px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+                padding: 20px;
+            }
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 100%;
+            max-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .admin-card {
+            background-color: #0a3b82;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            color: white;
+            border: 1px solid #000;
+        }
+        
+        .admin-card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 8px;
+        }
+        
+        .admin-card span {
+            font-weight: 500;
+            font-size: 1.125rem;
+            padding: 8px 12px;
+            display: block;
+        }
+
+        /* Main Content Area */
+        .content-area {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .settings-card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .settings-card h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0a3b82;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        /* Settings Section Styles */
+        .settings-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+        }
+
+        .settings-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0a3b82;
+            margin-bottom: 16px;
+        }
+
+        .settings-group {
+            margin-bottom: 20px;
+        }
+
+        .settings-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .settings-group input, .settings-group select, .settings-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+        .settings-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .checkbox-group label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #0a3b82;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #082a5f;
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+
+        /* Notification Styles */
+        .notification-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 16px;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            margin-bottom: 12px;
+            transition: background-color 0.2s;
+        }
+
+        .notification-item:hover {
+            background-color: #f3f4f6;
+        }
+
+        .notification-item.unread {
+            background-color: #e7efff;
+            border-left: 4px solid #0a3b82;
+        }
+
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.125rem;
+        }
+
+        .notification-icon.info {
+            background-color: #60a5fa;
+        }
+
+        .notification-icon.warning {
+            background-color: #fbbf24;
+        }
+
+        .notification-icon.alert {
+            background-color: #ef4444;
+        }
+
+        .notification-icon.success {
+            background-color: #34d399;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #111827;
+        }
+
+        .notification-message {
+            color: #6b7280;
+            font-size: 0.875rem;
+            margin-bottom: 6px;
+        }
+
+        .notification-time {
+            color: #9ca3af;
+            font-size: 0.75rem;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .notification-action {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .notification-action:hover {
+            color: #374151;
+        }
+
+        /* Help Styles */
+        .help-section {
+            margin-bottom: 30px;
+        }
+
+        .help-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0a3b82;
+            margin-bottom: 16px;
+        }
+
+        .faq-item {
+            margin-bottom: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 16px;
+            background-color: #f9fafb;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:hover {
+            background-color: #f3f4f6;
+        }
+
+        .faq-answer {
+            padding: 16px;
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        .contact-card {
+            background-color: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .contact-card h4 {
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #0a3b82;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .contact-item i {
+            color: #0a3b82;
+            width: 20px;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #0a3b82;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="navbar-container">
+                <div class="logo">
+                    <img src="AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+                    <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+                </div>
+                <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+                <div class="nav-icons">
+                    <a href="notification_admin.html" title="Notifications">
+                        <i class="fas fa-bell icon"></i>
+                    </a>
+                    <a href="help_admin.html" title="Help">
+                        <i class="fas fa-question-circle icon"></i>
+                    </a>
+                    <a href="settings_admin.html" title="Settings">
+                        <div class="account-menu">
+                            <i class="fas fa-user-circle icon"></i>                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Secondary Header -->
+        <div class="secondary-header">
+           <div class="secondary-header-container">
+               <nav class="nav-menu">
+                    <a href="dashboard_admin.html" class="nav-item">Dashboard</a>
+                    <a href="classes-management.html" class="nav-item">Class Management</a> 
+                    <a href="teacher-management.html" class="nav-item">Teacher Management</a>
+                    <a href="calendar.html" class="nav-item">Calendar</a>
+                    <a href="settings_admin.html" class="nav-item active">Settings</a>
+               </nav>
+           </div>
+        </div>
+        
+        <div class="separator"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="admin-card">
+                    <h2>Admin 1</h2>
+                    <div>
+                        <span>Sunhill Academy</span>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h2>Quick Links</h2>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <a href="notification_admin.html" style="color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                            <i class="fas fa-bell"></i> Notifications
+                        </a>
+                        <a href="help_admin.html" style="color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                            <i class="fas fa-question-circle"></i> Help & Support
+                        </a>
+                        <a href="settings_admin.html" style="color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                            <i class="fas fa-cog"></i> System Settings
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <div class="settings-card">
+                    <h2><i class="fas fa-cog"></i> System Settings</h2>
+                    
+                    <div class="settings-section">
+                        <h3>Account Settings</h3>
+                        
+                        <div class="settings-group">
+                            <label for="admin-name">Admin Name</label>
+                            <input type="text" id="admin-name" value="Admin 1">
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label for="admin-email">Email Address</label>
+                            <input type="email" id="admin-email" value="admin@sunhill.edu">
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label for="school-name">School Name</label>
+                            <input type="text" id="school-name" value="Sunhill Academy">
+                        </div>
+                        
+                        <button class="btn btn-primary">Save Changes</button>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Notification Preferences</h3>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="email-notifications" checked>
+                            <label for="email-notifications">Email notifications for new teacher registrations</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="class-updates" checked>
+                            <label for="class-updates">Notifications for class schedule changes</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="system-alerts">
+                            <label for="system-alerts">System maintenance alerts</label>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="parent-messages" checked>
+                            <label for="parent-messages">Parent message notifications</label>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Security Settings</h3>
+                        
+                        <div class="settings-group">
+                            <label for="password">Change Password</label>
+                            <input type="password" id="password" placeholder="Enter new password">
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label for="confirm-password">Confirm Password</label>
+                            <input type="password" id="confirm-password" placeholder="Confirm new password">
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="two-factor" checked>
+                            <label for="two-factor">Enable two-factor authentication</label>
+                        </div>
+                        
+                        <button class="btn btn-primary">Update Security Settings</button>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>System Preferences</h3>
+                        
+                        <div class="settings-group">
+                            <label for="timezone">Timezone</label>
+                            <select id="timezone">
+                                <option>Eastern Time (ET)</option>
+                                <option selected>Central Time (CT)</option>
+                                <option>Mountain Time (MT)</option>
+                                <option>Pacific Time (PT)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label for="date-format">Date Format</label>
+                            <select id="date-format">
+                                <option>MM/DD/YYYY</option>
+                                <option selected>DD/MM/YYYY</option>
+                                <option>YYYY-MM-DD</option>
+                            </select>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label for="language">Language</label>
+                            <select id="language">
+                                <option selected>English</option>
+                                <option>Spanish</option>
+                                <option>French</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-section">
+                        <h3>Data Management</h3>
+                        
+                        <div class="settings-group">
+                            <label>Automatic Backups</label>
+                            <div class="checkbox-group">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <label>Enable automatic daily backups</label>
+                            </div>
+                        </div>
+                        
+                        <div class="settings-group">
+                            <label for="backup-time">Backup Time</label>
+                            <input type="time" id="backup-time" value="02:00">
+                        </div>
+                        
+                        <div class="settings-group">
+                            <button class="btn btn-secondary">Download Data Export</button>
+                            <button class="btn btn-secondary" style="margin-left: 10px;">Restore from Backup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle FAQ items
+        document.addEventListener('DOMContentLoaded', function() {
+            // This would be for the help page functionality
+            // For settings page, we don't need the FAQ toggling
+        });
+    </script>
+</body>
+</html>

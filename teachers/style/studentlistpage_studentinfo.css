@@ -1,0 +1,372 @@
+/* =======================
+   Base Styles
+======================= */
+html {
+height: 100%;
+}
+body {
+height: 100%;
+width: 100%;
+font-family: "Poppins", Arial, sans-serif;
+background-color: #dbe7f7;
+margin: 0;
+font-size: 16px;
+color: #000;
+}
+
+/* =======================
+   Navbar
+======================= */
+.navbar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 12px 24px;
+background-color: #0a3b82;
+color: white;
+}
+.logo {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.back-icon {
+width: 30px;
+height: 30px;
+cursor: pointer;
+}
+.logo-img {
+width: 70px;
+height: 40px;
+}
+.logo-text-img {
+height: 28px;
+}
+.middle-logo {
+        width: 90px;
+        height: 40px;
+        margin: 0 auto;
+      }
+.nav-icons {
+display: flex;
+align-items: center;
+gap: 18px;
+}
+.nav-icons .icon {
+width: 30px;
+height: 25px;
+cursor: pointer;
+}
+.account-menu {
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.account-menu .dropdown-icon {
+width: 12px;
+height: 14px;
+cursor: pointer;
+color: #fff;
+}
+
+/* =======================
+   Secondary Header
+======================= */
+.secondary-header {
+background-color: #e7efff;
+display: flex;
+justify-content: center;
+padding: 12px 30px;
+border-bottom: 1px solid #c9d7f8;
+}
+.nav-menu {
+display: flex;
+gap: 22px;
+align-items: center;
+font-size: 16px;
+}
+.nav-item {
+color: #000;
+text-decoration: none;
+font-weight: 500;
+padding: 5px 10px;
+border-radius: 3px;
+transition: background-color 0.3s;
+}
+.nav-item.active {
+font-weight: 700;
+color: #000;
+border-bottom: 2px solid #000;
+}
+
+/* =======================
+   Main Content
+======================= */
+.main-content {
+padding: 35px 45px;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+overflow: auto;
+}
+
+/* =======================
+   Student Info Container
+======================= */
+.student-info-container {
+background-color: #fff;
+padding: 30px;
+border-radius: 15px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+width: 100%;
+max-width: 900px;
+display: flex;
+flex-direction: column;
+gap: 20px;
+position: relative; /* This is key for positioning children absolutely */
+}
+
+.student-header {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+}
+
+.student-details h1 {
+font-size: 36px;
+font-weight: 600;
+margin: 0;
+}
+.student-class {
+font-size: 18px;
+color: #555;
+margin: 0;
+}
+
+.parent-code-card {
+background-color: #e6fffb;
+border: 1px solid #c8f5f0;
+padding: 15px 20px;
+border-radius: 10px;
+width: 300px;
+font-size: 16px;
+}
+.parent-code-card p {
+margin: 0;
+}
+.parent-code-card .connected {
+color: green;
+font-weight: 600;
+text-align: right;
+}
+
+/* New container for the buttons and note */
+.parent-actions-container {
+position: absolute;
+top: 150px; /* Adjust this value to position it below the parent-code-card */
+right: 30px;
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+gap: 10px;
+}
+
+.week-buttons {
+display: flex;
+gap: 10px;
+}
+
+#generate-code-btn, #share-code-btn {
+padding: 10px 15px;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-weight: 600;
+color: #000;
+background-color: #ffc400;
+transition: background-color 0.3s;
+}
+#generate-code-btn:hover, #share-code-btn:hover {
+background-color: #f7b731;
+}
+
+.note-info {
+font-size: 12px;
+color: #ff0000;
+margin: 0;
+font-style: italic;
+text-align: right;
+}
+
+/* =======================
+   Week Dropdown
+======================= */
+.week-actions {
+display: flex;
+align-items: center;
+gap: 15px;
+margin-bottom: 10px;
+flex-wrap: wrap;
+}
+.week-actions select {
+padding: 8px 12px;
+border-radius: 5px;
+border: 1px solid #ccc;
+font-size: 14px;
+cursor: pointer;
+background-color: #fff;
+font-family: "Poppins", Arial, sans-serif;
+}
+
+/* =======================
+   Week Details
+======================= */
+.week-details p {
+margin: 0;
+font-size: 14px;
+color: #555;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+/* =======================
+   Activity Table
+======================= */
+.activity-table-container {
+overflow-x: auto;
+}
+.activity-table {
+width: 100%;
+border-collapse: collapse;
+}
+.activity-table th, .activity-table td {
+padding: 12px 15px;
+text-align: left;
+border: 1px solid #ddd;
+font-size: 14px;
+}
+.activity-table thead th {
+background-color: #e7efff;
+font-weight: 600;
+text-transform: uppercase;
+}
+.activity-table td:nth-child(2),
+.activity-table td:nth-child(3),
+.activity-table td:nth-child(4),
+.activity-table td:nth-child(5) {
+text-align: center;
+}
+/* Custom Checkboxes */
+.checkbox-full, .checkbox-partial, .checkbox-none {
+width: 20px;
+height: 20px;
+border-radius: 50%;
+display: inline-block;
+cursor: pointer;
+}
+.checkbox-full { background-color: #dbe7f7; border: 2px solid #000; }
+.checkbox-partial { background-color: #dbe7f7; border: 2px solid #000; }
+.checkbox-none { background-color: #dbe7f7; border: 2px solid #000; }
+.checkbox-full.checked { background-color: #000; }
+.checkbox-partial.checked { background-color: #f0ad4e; }
+.checkbox-none.checked { background-color: #d9534f; }
+
+/* Note icon */
+.note-cell .add-note-icon { cursor: pointer; }
+.note-cell .fa-sticky-note { color: #ffc400; }
+
+/* =======================
+   Modals
+======================= */
+.modal-overlay {
+display: none;
+position: fixed;
+z-index: 1000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+overflow: auto;
+background-color: rgba(0, 0, 0, 0.5);
+justify-content: center;
+align-items: center;
+}
+.modal-box {
+background-color: #fff;
+padding: 30px;
+border-radius: 15px;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+position: relative;
+width: 90%;
+max-width: 400px;
+text-align: center;
+}
+.modal-title { font-size: 24px; font-weight: 600; margin-top: 0; }
+.close-btn {
+position: absolute;
+top: 15px;
+right: 15px;
+font-size: 20px;
+color: #000;
+text-decoration: none;
+}
+.close-btn i { cursor: pointer; }
+.modal-input {
+width: 100%;
+padding: 10px;
+border-radius: 5px;
+border: 1px solid #ccc;
+margin: 10px 0;
+}
+.modal-buttons {
+display: flex;
+justify-content: center;
+gap: 10px;
+margin-top: 20px;
+}
+.btn {
+padding: 10px 20px;
+border: none;
+border-radius: 10px;
+font-weight: 600;
+cursor: pointer;
+}
+.btn-cancel { background-color: #e0e0e0; color: #000; }
+.btn-save { background-color: #0a3b82; color: #fff; }
+
+/* Note Modal Specifics */
+.note-modal-box textarea {
+width: calc(100% - 20px);
+height: 100px;
+padding: 10px;
+border-radius: 10px;
+border: 1px solid #ccc;
+resize: none;
+font-family: "Poppins", Arial, sans-serif;
+}
+
+/* Code Modal Specifics */
+.code-modal-box { text-align: left; }
+.code-modal-box .modal-title {
+border-bottom: 2px solid #000;
+padding-bottom: 5px;
+margin-bottom: 20px;
+}
+.code-display {
+background-color: #e0e0e0;
+padding: 15px;
+border-radius: 10px;
+font-size: 18px;
+font-weight: 600;
+text-align: center;
+margin-top: 10px;
+}
+.btn-ok {
+background-color: #ffc400;
+border: 1px solid #000;
+padding: 10px 30px;
+display: block;
+width: fit-content;
+margin: 20px auto 0;
+}

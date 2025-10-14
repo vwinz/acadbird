@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AcadBird - Notifications</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        /* =======================
+           Base Styles
+        ======================= */
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #dbe7f7; /* light blue background */
+            margin: 0;
+            font-size: 16px;
+            color: #000;
+        }
+
+        /* =======================
+           Main Content
+        ======================= */
+        .main-content {
+            padding: 35px 45px;
+            background-color: transparent;
+            position: relative;
+            z-index: 0;
+            overflow: auto;
+            height: calc(100vh - 100px); /* This calculation should be correct if the fixed headers are 90px total */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* =======================
+           Navbar
+        ======================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: #0a3b82; /* sample dark blue */
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 70px;
+            height: 40px;
+        }
+
+        .logo-text-img {
+            height: 28px; /* adjust to match your design */
+        }
+        .middle-logo {
+        width: 90px;
+        height: 40px;
+        margin: 0 auto;
+      }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-icons .icon {
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .account-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .account-menu .dropdown-icon {
+            width: 12px;
+            height: 14px;
+            cursor: pointer;
+        }
+
+        /* =======================
+           Secondary Header (Navigation)
+        ======================= */
+        .secondary-header {
+            background-color: #e7efff;
+            display: flex;
+            justify-content: center;
+            padding: 12px 30px;
+            position: static;
+            top: 44px;
+            z-index: 999;
+            border-bottom: 1px solid #c9d7f8;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .nav-item {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item.active {
+            font-weight: 700;
+            color: #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .nav-item:hover {
+            background-color: #c9d7f8;
+        }
+
+        /* =======================
+           Separator Line
+        ======================= */
+        .separator {
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            margin: 0;
+            color: #000;
+        }
+
+        /* =======================
+           Notification Styles
+        ======================= */
+        .notifications-container {
+            width: 60%;
+            max-width: 800px;
+            background-color: #f0f4ff;
+            border: 1px solid #c9d7f8;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 20px 0;
+            margin-top: 20px;
+        }
+
+        .notifications-header {
+            text-align: center;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #c9d7f8;
+        }
+
+        .notifications-header h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #c9d7f8;
+            transition: background-color 0.3s ease;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+
+        .notification-icon {
+            font-size: 30px;
+            color: #4da6ff;
+            margin-right: 15px;
+        }
+
+        .notification-text {
+            flex-grow: 1;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .mark-as-read-btn {
+            font-size: 14px;
+            color: #0a3b82;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .mark-as-read-btn:hover {
+            color: #00224d;
+            text-decoration: underline;
+        }
+
+        /* Styles for "read" notifications */
+        .notification-item.read {
+            background-color: #f7f9fc;
+            color: #888;
+        }
+
+        .notification-item.read .mark-as-read-btn {
+            color: #888;
+            cursor: default;
+            text-decoration: none;
+            pointer-events: none; /* Disables clicking */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+                <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+            </div>
+            <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+            <div class="nav-icons">
+                <a href="notification_teacher.html" target="_blank">
+                    <img src="Notification.png" alt="Notifications" class="icon">
+                </a>
+                <a href="help_teacher.html" target="_blank">
+                    <img src="Help.png" alt="Help" class="icon">
+                </a>
+                <a href="settings_teacher.html" target="_blank">
+                    <div class="account-menu">
+                        <img src="account icon.png" alt="User Account" class="icon">
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="secondary-header">
+            <nav class="nav-menu">
+                <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
+                <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
+                <a href="resources_teacher.html" class="nav-item">Resources</a>
+                <a href="messages_teacher.html" class="nav-item">Messages</a>
+                <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
+            </nav>
+        </div>
+        <div class="separator"></div>
+
+        <div class="main-content">
+            <div class="notifications-container">
+                <div class="notifications-header">
+                    <h2>Notifications</h2>
+                </div>
+                <div class="notifications-list">
+                    <div class="notification-item unread">
+                        <a href="#" class="notification-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <div class="notification-text">Notification Text</div>
+                        <a href="#" class="mark-as-read-btn">Mark As Read</a>
+                    </div>
+                    <div class="notification-item unread">
+                        <a href="#" class="notification-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <div class="notification-text">Notification Text</div>
+                        <a href="#" class="mark-as-read-btn">Mark As Read</a>
+                    </div>
+                    <div class="notification-item unread">
+                        <a href="#" class="notification-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <div class="notification-text">Notification Text</div>
+                        <a href="#" class="mark-as-read-btn">Mark As Read</a>
+                    </div>
+                    <div class="notification-item unread">
+                        <a href="#" class="notification-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <div class="notification-text">Notification Text</div>
+                        <a href="#" class="mark-as-read-btn">Mark As Read</a>
+                    </div>
+                    <div class="notification-item unread">
+                        <a href="#" class="notification-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <div class="notification-text">Notification Text</div>
+                        <a href="#" class="mark-as-read-btn">Mark As Read</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select all "Mark As Read" links
+            const markAsReadLinks = document.querySelectorAll('.mark-as-read-btn');
+
+            // Add a click event listener to each link
+            markAsReadLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    // Prevent the default link behavior (e.g., navigating to #)
+                    event.preventDefault();
+
+                    // Find the parent notification item
+                    const notificationItem = link.closest('.notification-item');
+
+                    // Add the 'read' class to the parent item
+                    if (notificationItem) {
+                        notificationItem.classList.add('read');
+                        notificationItem.classList.remove('unread');
+                        // You could also change the text of the link here if desired
+                        // link.textContent = 'Read';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

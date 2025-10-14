@@ -1,0 +1,373 @@
+
+      /* =======================
+			Base Styles
+			======================= */
+      html {
+        height: 100%;
+      }
+
+      body {
+        height: 100%;
+        width: 100%;
+        font-family: "Poppins", Arial, sans-serif;
+        background-color: #dbe7f7; /* light blue background */
+        margin: 0;
+        font-size: 16px;
+        color: #000;
+        display: flex;
+        flex-direction: column;
+      }
+.join-class-container {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.btn-join-class {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-join-class:hover {
+  background-color: #45a049;
+}
+
+      /* =======================
+			Navbar
+			======================= */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 24px;
+        background-color: #0a3b82; /* sample dark blue */
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-img {
+        width: 70px;
+        height: 40px;
+      }
+
+      .logo-text-img {
+        height: 28px;
+      }
+
+      .middle-logo {
+        width: 90px;
+        height: 40px;
+        margin: 0 auto;
+      }
+
+      .back-icon {
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+      }
+
+      .nav-icons {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-shrink: 0;
+      }
+
+      .nav-icons .icon {
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+      }
+
+      .nav-icons a {
+        text-decoration: none;
+      }
+
+      .account-menu {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .account-menu .dropdown-icon {
+        width: 12px;
+        height: 14px;
+        cursor: pointer;
+        color: white;
+      }
+
+      /* =======================
+			Secondary Header (Navigation)
+			======================= */
+      .secondary-header {
+        background-color: #e7efff;
+        display: flex;
+        justify-content: center;
+        padding: 12px 30px;
+        position: sticky;
+        top: 64px;
+        z-index: 999;
+        border-bottom: 1px solid #c9d7f8;
+      }
+
+      .secondary-header-content {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        max-width: 1200px;
+      }
+
+      .parent-name {
+        font-weight: 600;
+        color: #000;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+      
+      /* =======================
+			Separator Line
+			======================= */
+      .separator {
+        width: 100%;
+        height: 1px;
+        background-color: #000;
+        margin: 0;
+        color: #000;
+      }
+
+      /* =======================
+			Main Content & Cards
+			======================= */
+      .main-content {
+        display: flex;
+        flex: 1;
+        padding: 24px;
+        gap: 24px;
+      }
+      
+      .left-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+        box-shadow: none;
+        background-color: transparent;
+      }
+
+      .classes-box {
+        background-color: white;
+        border: 2px solid #000;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      
+      .section-title {
+        font-weight: 700;
+        font-size: 20px;
+        margin-bottom: 15px;
+        color: #000;
+        padding: 0;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+      }
+      
+      .class-list-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+      }
+
+      .right-panel {
+        flex: 0 0 320px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        background-color: white; 
+        border: 2px solid #000;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      /* Styling for individual class cards */
+      .class-card {
+        background-color: white; 
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        border: 2px solid black;
+        transition: box-shadow 0.2s, background-color 0.2s;
+        width: 100%; 
+        box-sizing: border-box;
+      }
+      .class-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      /* SOLID BOX: Active class card style */
+      .class-card.active-class {
+        background-color: #9cdea3; /* Light green solid color */
+        border: 2px solid #000; 
+      }
+      
+      /* Style for the student name inside the class card (now optional, but retained for context) */
+      .class-card .child-name {
+          font-weight: 600;
+          font-size: 14px;
+          color: #0A3B82;
+          margin-bottom: 5px;
+          padding-bottom: 3px;
+          border-bottom: 1px dashed #c0c0c0;
+          display: block;
+      }
+
+
+      .class-card h3 {
+        margin: 0 0 5px 0;
+        font-size: 18px;
+      }
+      .class-card p {
+        margin: 2px 0;
+        font-size: 14px;
+      }
+      
+      /* Student card styles remain unchanged */
+      .student-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background-color: #fff;
+        border: 2px solid #000;
+        border-radius: 10px;
+        padding: 16px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background-color 0.2s, box-shadow 0.2s;
+      }
+      .student-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+      .student-card.active {
+        background-color: #fbbc05;
+      }
+      .student-card i {
+        font-size: 40px;
+        color: #555;
+      }
+      .student-card h4 {
+        margin: 0;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      .add-card {
+        border: 2px dashed #bbb;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 500;
+        text-align: center;
+      }
+      .add-card-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        cursor: pointer;
+      }
+      .add-card-content i {
+        font-size: 24px;
+        color: #777;
+      }
+      .add-card-content p {
+        margin: 5px 0 0;
+        font-weight: 600;
+      }
+
+      /* =======================
+			Modal
+			======================= */
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+      }
+      .modal-content {
+        background: white;
+        padding: 20px;
+        border: 2px solid #000;
+        border-radius: 8px;
+        width: 300px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      .modal-header h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .modal-header .close-btn {
+        font-size: 24px;
+        cursor: pointer;
+      }
+      .modal-content label {
+        display: block;
+        text-align: left;
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+      .modal-content input {
+        width: 90%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+      .modal-buttons button {
+        padding: 8px 16px;
+        border: 2px solid #000;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 600;
+        color: #000;
+      }
+      .btn-add {
+        background-color: #fbbc05;
+      }
+      .btn-cancel {
+        background-color: #cfe2ff;
+      }

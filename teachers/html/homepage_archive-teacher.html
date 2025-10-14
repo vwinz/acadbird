@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcadBird - Archived Classes</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    
+    <style>
+        /* =======================
+            Base Styles - Aligned with Homepage
+        ======================= */
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #dbe7f7; /* Matching homepage background */
+            font-size: 16px;
+            color: #000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* =======================
+            Navbar - Aligned with Homepage
+        ======================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: #0a3b82;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 70px;
+            height: 40px;
+        }
+
+        .logo-text-img {
+            height: 28px;
+        }
+        .middle-logo {
+        width: 90px;
+        height: 40px;
+        margin: 0 auto;
+      }
+
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            flex-shrink: 0;
+        }
+
+        .nav-icons .icon {
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .account-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .account-menu .dropdown-icon {
+            width: 12px;
+            height: 14px;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        /* Secondary Header - ALIGNED */
+        .secondary-header {
+            background-color: #e7efff;
+            display: flex;
+            justify-content: center;
+            padding: 12px 30px;
+            position: sticky;
+            top: 64px; /* Below the navbar height */
+            z-index: 999;
+            border-bottom: 1px solid #c9d7f8;
+        }
+
+        .secondary-header-content {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+      
+        .teacher-name-title { /* Renamed from .teacher-name to avoid conflict */
+            font-weight: 600;
+            color: #000;
+            font-size: 18px;
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        /* =======================
+            Layout (Main Content) - Simplified for Archive Page
+        ======================= */
+        main {
+            display: flex;
+            flex: 1;
+            padding: 24px;
+            justify-content: center; /* Center the main content box */
+        }
+
+        .main-content {
+            flex: 0 0 900px; /* Fixed width for the content area */
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: white; 
+            border: 2px solid #000;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            min-height: 400px;
+        }
+
+        /* =======================
+            Main Content Elements
+        ======================= */
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000000;
+            margin: 0 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .class-grid {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* =======================
+            Class Cards - Aligned with Homepage
+        ======================= */
+        .class-card {
+            width: 200px;
+            height: 160px;
+            border-radius: 15px;
+            padding: 12px;
+            box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: default; /* Changed cursor since the whole card isn't redirecting */
+            font-size: 18px;
+            text-align: center;
+            position: relative;
+            border: 2.5px solid #000;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .class-card.yellow {
+            background-color: #fbbc05;
+        }
+
+        .class-name {
+            font-weight: 600;
+            font-size: 24px;
+            color: #000;
+            margin-bottom: 5px;
+            cursor: default;
+            text-decoration: none;
+        }
+
+        .student-count {
+            font-size: 16px;
+            font-weight: normal;
+            color: #000;
+        }
+
+        /* =======================
+            Unarchive Button - Aligned with Homepage Icons
+        ======================= */
+        .unarchive-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #000000;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.85); 
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .unarchive-button i {
+            font-size: 18px;
+            color: #000;
+        }
+
+        .unarchive-button:hover {
+             background-color: #ffffff; 
+        }
+
+        /* =======================
+            Links
+        ======================= */
+        .back-link {
+            display: inline-flex; 
+            align-items: center;
+            gap: 5px;
+            color: #0a3b82;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 15px; 
+            transition: color 0.2s;
+        }
+        
+        .back-link:hover {
+            color: #072a5c;
+            text-decoration: underline;
+        }
+
+        /* =======================
+            Modal Pop-ups - ALIGNED (using btn-yes/btn-no colors)
+        ======================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.3s, opacity 0.3s;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-box {
+            background-color: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 350px;
+            position: relative;
+            text-align: center;
+        }
+
+        .modal-content p {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 0;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: 2px solid #000;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+            color: #000;
+            width: 120px;
+        }
+
+        .btn-yes {
+            background-color: #fbbc05; /* Homepage color */
+            background-image: none;
+        }
+
+        .btn-no {
+            background-color: #cfe2ff; /* Homepage color */
+            background-image: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo">
+                <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+            </div><img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+
+            <div class="nav-icons">
+                <a href="notification_teacher.html" target="_blank">
+                    <img src="Notification.png" alt="Notifications" class="icon">
+                </a>
+                <a href="help_teacher.html" target="_blank">
+                    <img src="Help.png" alt="Help" class="icon">
+                </a>
+                <a href="settings_teacher.html" target="_blank">
+                    <div class="account-menu">
+                        <img src="account icon.png" alt="User Account" class="icon">
+                        <i class="fas fa-caret-down dropdown-icon"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="secondary-header">
+            <div class="secondary-header-content">
+                <div class="teacher-name-title">Teacher Jane Doe's Classes</div>
+            </div>
+        </div>
+
+        <main>
+            <div class="main-content">
+                <a href="homepage-teachers.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i> Back to My Classes
+                </a>
+                <h1 class="section-title">Archived Classes</h1>
+                <div class="class-grid" id="archived-class-grid">
+                    </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="unarchive-confirm-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-content">
+                <p id="unarchive-modal-text">Are you sure you want to unarchive this class?</p>
+            </div>
+            <div class="modal-buttons">
+                <a href="#" class="btn btn-yes" id="unarchive-yes-btn">Yes</a>
+                <a href="#" class="btn btn-no" id="unarchive-no-btn">No</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const archivedClassGrid = document.getElementById('archived-class-grid');
+            const unarchiveConfirmModal = document.getElementById('unarchive-confirm-modal');
+            const unarchiveModalText = document.getElementById('unarchive-modal-text');
+            const unarchiveYesBtn = document.getElementById('unarchive-yes-btn');
+            const unarchiveNoBtn = document.getElementById('unarchive-no-btn');
+
+            let classToUnarchive = null;
+
+            function displayArchivedClasses() {
+                archivedClassGrid.innerHTML = '';
+                const archivedClasses = JSON.parse(localStorage.getItem('archivedClasses')) || [];
+                
+                if (archivedClasses.length === 0) {
+                    // Added a wrapper div for better spacing consistency
+                    archivedClassGrid.innerHTML = '<div style="font-size: 16px; color: #555; margin-top: 20px;">No classes have been archived yet.</div>';
+                } else {
+                    archivedClasses.forEach(classData => {
+                        const card = document.createElement('div');
+                        // Use classData.color for consistent card colors
+                        const cardColorClass = classData.color || 'yellow'; 
+                        card.classList.add('class-card', cardColorClass); 
+                        card.setAttribute('data-class-name', classData.name);
+                        
+                        const studentCount = classData.students ? classData.students.length : 0;
+                        
+                        card.innerHTML = `
+                            <div class="class-name">${classData.name}</div>
+                            <div class="student-count">${studentCount} students</div>
+                            <button class="unarchive-button" title="Unarchive Class"><i class="fas fa-undo"></i></button>
+                        `;
+                        archivedClassGrid.appendChild(card);
+
+                        card.querySelector('.unarchive-button').addEventListener('click', (e) => {
+                            e.stopPropagation(); // Prevents accidental unarchive on card click (if card were clickable)
+                            classToUnarchive = classData;
+                            unarchiveModalText.textContent = `Are you sure you want to unarchive "${classData.name}"?`;
+                            unarchiveConfirmModal.classList.add('show');
+                        });
+                    });
+                }
+            }
+
+            function unarchiveClass(classData) {
+                // Remove from archivedClasses list in local storage
+                let archivedClasses = JSON.parse(localStorage.getItem('archivedClasses')) || [];
+                archivedClasses = archivedClasses.filter(c => c.name !== classData.name);
+                localStorage.setItem('archivedClasses', JSON.stringify(archivedClasses));
+
+                // Add back to regular classes list in local storage
+                const classes = JSON.parse(localStorage.getItem('classes')) || [];
+                classes.push(classData);
+                localStorage.setItem('classes', JSON.stringify(classes));
+
+                // Hide modal and refresh the list
+                unarchiveConfirmModal.classList.remove('show');
+                classToUnarchive = null;
+                displayArchivedClasses();
+            }
+
+            unarchiveYesBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (classToUnarchive) {
+                    unarchiveClass(classToUnarchive);
+                }
+            });
+
+            unarchiveNoBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                unarchiveConfirmModal.classList.remove('show');
+                classToUnarchive = null;
+            });
+            
+            // Function to close modal when clicking outside
+            unarchiveConfirmModal.addEventListener('click', (e) => {
+                if (e.target === unarchiveConfirmModal) {
+                    unarchiveConfirmModal.classList.remove('show');
+                    classToUnarchive = null;
+                }
+            });
+
+            // Initial display of archived classes
+            displayArchivedClasses();
+        });
+    </script>
+</body>
+</html>

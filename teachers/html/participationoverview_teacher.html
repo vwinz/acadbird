@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Activity Participation Overview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="../style/participationoverview_teacher.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+                <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
+            </div>
+            <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
+            <div class="nav-icons">
+                <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
+                <img src="../../main/img/Help.png" alt="Help" class="icon" />
+                <div class="account-menu">
+                    <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
+                </div>
+            </div>
+        </div>
+        <div class="secondary-header">
+            <nav class="nav-menu">
+                <a href="homepage-teachers.html" class="nav-item">Home</a>
+                <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
+                <a href="activitylog_teacher.html" class="nav-item active">Activity Logs</a>
+                <a href="resources_teacher.html" class="nav-item">Resources</a>
+                <a href="messages_teacher.html" class="nav-item">Messages</a>
+                <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
+            </nav>
+        </div>
+        <div class="separator"></div>
+
+        <main class="main-content">
+            <div class="overview-container">
+                <header class="overview-header">
+                    <h1>Activity Participation Overview</h1>
+                    <div class="header-actions">
+                        <button class="action-btn add-activity-btn" id="addActivityBtn">Add Activity</button>
+                        <button class="action-btn quick-log-btn" id="quickLogBtn">Quick Activity Participation Log</button>
+                    </div>
+                </header>
+
+                <section class="student-participation-level">
+                <h2 id="participation-class-title">Student Participation Level (Loading Class Name)</h2>
+
+                    <div class="participation-chart">
+                        <div class="chart-legend">
+                            <span class="legend-item"><span class="legend-color full"></span>Full</span>
+                            <span class="legend-item"><span class="legend-color partial"></span>Partial</span>
+                            <span class="legend-item"><span class="legend-color none"></span>None</span>
+                        </div>
+                        <div class="chart-container" id="participationChart">
+                        </div>
+                        <p class="chart-label">Total Participation Score</p>
+                    </div>
+                </section>
+
+                <div class="week-selector-container">
+                    <div class="week-selector">
+                        <div class="dropdown">
+                            <button class="dropdown-toggle">
+                                Week of April 1 - 5
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="week-info">
+                        <span class="week-icon">📚</span>
+                        <p><strong>Week 3:</strong> Filipino Identity – National Symbols</p>
+                        <span class="date-icon">🗓️</span>
+                        <p>April 1–5, 2025</p>
+                    </div>
+                </div>
+
+                <section class="activity-participation-section" id="activityCardsContainer">
+                </section>
+            </div>
+        </main>
+    </div>
+
+      <div id="loading-overlay">
+
+<div class="loader-3">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+</div>
+
+</div>
+    <div class="modal-overlay hidden" id="addActivityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Activity</h2>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="addActivityForm">
+                    <div class="form-group">
+                        <label for="add-activity-title">Activity Title:</label>
+                        <input type="text" id="add-activity-title" placeholder="e.g., Identifying the colors of the flag" />
+                    </div>
+                    <p class="participation-label">Participation:</p>
+                    <table class="participation-table" id="addActivityTable">
+                        <thead>
+    <tr>
+        <th>Name</th>
+        <th>Full</th>
+        <th>Partial</th>
+        <th>None</th>
+        <th>Note</th>
+    </tr>
+    <tr>
+        <th><label><input type="checkbox" id="addSelectAllCheckbox"> Select All</label></th>
+        <td><input type="radio" name="add-select-all" value="full"></td>
+        <td><input type="radio" name="add-select-all" value="partial"></td>
+        <td><input type="radio" name="add-select-all" value="none"></td>
+        <td></td>
+    </tr>
+</thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <div class="modal-actions">
+                        <button class="action-btn log-participation-btn" id="addLogBtn">Log Participation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="quickLogModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Quick Activity Participation Log</h2>
+                <button class="close-modal-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="quick-activity-select">Activity:</label>
+                    <select id="quick-activity-select" name="quick-activity">
+                    </select>
+                </div>
+                <p class="participation-label">Participation:</p>
+                <table class="participation-table" id="quickLogTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Full</th>
+                            <th>Partial</th>
+                            <th>None</th>
+                        </tr>
+                        <tr>
+                            <th><label><input type="checkbox" id="quickSelectAllCheckbox"> Select All</label></th>
+                            <td><input type="radio" name="quick-select-all" value="full"></td>
+                            <td><input type="radio" name="quick-select-all" value="partial"></td>
+                            <td><input type="radio" name="quick-select-all" value="none"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="quick-log-actions">
+                    <button class="copy-previous-btn" id="copyPreviousBtn">Copy Participation from Previous Activity</button>
+                    <button class="log-participation-btn" id="quickLogBtnSubmit">Log Participation</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+    authDomain: "acadbird-379e3.firebaseapp.com",
+    projectId: "acadbird-379e3",
+    storageBucket: "acadbird-379e3.firebasestorage.app",
+    messagingSenderId: "575491576951",
+    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+    measurementId: "G-N6Z672SXWJ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth();
+
+let teacherID = null;
+let STUDENTS = [];
+let activitiesData = [];
+let studentParticipationScores = [];
+const loadingOverlay = document.getElementById("loading-overlay");
+const PARTICIPATION_POINTS = { full: 15, partial: 5, none: 0 };
+const COLOR_MAP = { high: '#79de87', medium: '#ffc107', low: '#ff5757' };
+
+onAuthStateChanged(auth, async (user) => {
+    if (!user) return console.log("No user signed in.");
+    teacherID = user.uid;
+
+    // Show loading overlay before fetching
+    showLoading();
+
+    try {
+        await fetchStudentsFromFirestore();
+        await fetchActivitiesFromFirestore();
+    } catch (err) {
+        console.error("Error loading data:", err);
+    } finally {
+        // Hide loading overlay after everything is done
+        hideLoading();
+    }
+});
+
+
+async function fetchStudentsFromFirestore() {
+    try {
+        const snapshot = await getDocs(collection(db, "students"));
+        STUDENTS = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return { id: doc.id, fullName: `${data.firstName} ${data.lastName}` };
+        });
+        STUDENTS.sort((a,b) => a.fullName.localeCompare(b.fullName));
+    } catch (err) {
+        console.error("Error fetching students:", err);
+    }
+}
+
+async function fetchActivitiesFromFirestore() {
+    try {
+        const classroomID = localStorage.getItem('selectedClassId');
+        if (!classroomID) return;
+
+        const q = query(collection(db, "activity"), where("classroomID", "==", classroomID));
+        const snapshot = await getDocs(q);
+
+        const rawActivities = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                activityNumber: data.activityNo,
+                description: data.activityName,
+                participants: { [data.studentID]: data.activityScore }
+            };
+        });
+
+        const merged = {};
+        rawActivities.forEach(a => {
+            if (!merged[a.activityNumber]) merged[a.activityNumber] = { ...a, participants: {} };
+            Object.assign(merged[a.activityNumber].participants, a.participants);
+        });
+
+        activitiesData = Object.values(merged);
+        recalculateAllScores();
+        renderAll();
+        populateQuickLogActivitySelect();
+    } catch (err) {
+        console.error("Error fetching activities:", err);
+    }
+}
+  function showLoading() {
+  loadingOverlay.style.display = "flex";
+}
+
+// Hide overlay
+function hideLoading() {
+  loadingOverlay.style.display = "none";
+}
+
+function recalculateAllScores() {
+    studentParticipationScores = STUDENTS.map(s => ({ name: s.fullName, score: 0 }));
+    activitiesData.forEach(act => {
+        for (const studentID in act.participants) {
+            const student = STUDENTS.find(s => s.id === studentID);
+            if (!student) continue;
+            const scoreObj = studentParticipationScores.find(s => s.name === student.fullName);
+            scoreObj.score = Math.min(100, scoreObj.score + PARTICIPATION_POINTS[act.participants[studentID]]);
+        }
+    });
+}
+
+ const getBarColor = score => score >= 70 ? COLOR_MAP.high : score >= 30 ? COLOR_MAP.medium : COLOR_MAP.low;
+
+   const renderParticipationChart = () => {
+    if (!participationChart) return;
+    participationChart.innerHTML = '';
+
+    studentParticipationScores
+        .slice()
+        .sort((a, b) => b.score - a.score)
+        .forEach(student => {
+            const bar = document.createElement('div');
+            bar.className = 'chart-bar';
+
+            const label = document.createElement('div');
+            label.className = 'chart-bar-label';
+            label.textContent = student.name;
+
+            const barBg = document.createElement('div');
+            barBg.className = 'bar-bg';
+
+            const barFill = document.createElement('div');
+            barFill.className = 'bar-fill';
+            barFill.style.width = `${student.score}%`;
+            barFill.style.backgroundColor = getBarColor(student.score);
+
+            const scoreDisplay = document.createElement('span');
+            scoreDisplay.textContent = student.score;
+            scoreDisplay.style.position = 'absolute';
+            scoreDisplay.style.right = '5px';
+
+            barBg.appendChild(barFill);
+            bar.appendChild(label);
+            bar.appendChild(barBg);
+            bar.appendChild(scoreDisplay);
+
+            participationChart.appendChild(bar);
+        });
+};
+
+
+    const renderActivityCards = () => {
+        if (!activityCardsContainer) return;
+        activityCardsContainer.innerHTML = '';
+        activitiesData.slice().reverse().forEach(act=>{
+            const card=document.createElement('div'); card.className='activity-card';
+            const rowsHtml=Object.keys(act.participants).map(id=>{
+                const student=STUDENTS.find(s=>s.id===id);
+                if(!student) return '';
+                const level=act.participants[id];
+                return `<tr><td>${student.fullName}</td><td style="text-align:center;"><div class="participation-dot dot-${level}"></div></td><td><i class="fas fa-eye" title="View Note"></i></td></tr>`;
+            }).join('');
+            card.innerHTML=`<div class="activity-card-header"><p>Activity ${act.activityNumber}</p><p>${act.description}</p></div><table class="activity-table"><thead><tr><th>Name</th><th>Participation Level</th><th>Note</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
+            activityCardsContainer.appendChild(card);
+        });
+    };
+
+    const renderAll = () => { recalculateAllScores(); renderParticipationChart(); renderActivityCards(); };
+
+const populateStudentTables = (tableBody, initialParticipants = {}) => {
+    tableBody.innerHTML = '';
+    STUDENTS.forEach(student => {
+        const level = initialParticipants[student.id] || 'none';
+        const note = initialParticipants[student.id + '_note'] || ''; // optional note
+        const nameSlug = student.fullName.replace(/\s/g,'-').replace(/[^\w-]/g,'');
+
+        const row = document.createElement('tr');
+        row.dataset.studentId = student.id;
+
+        row.innerHTML = `
+            <td>${student.fullName}</td>
+            <td><input type="radio" name="student-${nameSlug}" value="full" ${level === 'full' ? 'checked' : ''}></td>
+            <td><input type="radio" name="student-${nameSlug}" value="partial" ${level === 'partial' ? 'checked' : ''}></td>
+            <td><input type="radio" name="student-${nameSlug}" value="none" ${level === 'none' ? 'checked' : ''}></td>
+            <td><input type="text" class="note-input" placeholder="Add note" value="${note}"></td>
+        `;
+
+        tableBody.appendChild(row);
+    });
+};
+
+
+    const populateQuickLogActivitySelect=()=>{
+        quickActivitySelect.innerHTML=activitiesData.map(a=>`<option value="${a.activityNumber}">${a.description}</option>`).join('');
+        if(activitiesData.length>0) quickActivitySelect.value=activitiesData[activitiesData.length-1].activityNumber;
+    };
+
+        const quickActivitySelect = document.getElementById("quick-activity-select");
+document.addEventListener("DOMContentLoaded", () => {
+    // DOM elements
+    const participationChart = document.getElementById("participationChart");
+    const activityCardsContainer = document.getElementById("activityCardsContainer");
+    const participationClassTitle = document.getElementById("participation-class-title");
+    participationClassTitle.textContent = `Student Participation Level (${localStorage.getItem('selectedClassName') || "No class selected"})`;
+
+    const addActivityModal = document.getElementById("addActivityModal");
+    const quickLogModal = document.getElementById("quickLogModal");
+    const addActivityBtn = document.getElementById("addActivityBtn");
+    const quickLogBtn = document.getElementById("quickLogBtn");
+    const closeButtons = document.querySelectorAll(".close-modal-btn");
+
+    const addActivityTitleInput = document.getElementById("add-activity-title");
+    const addActivityTableBody = document.querySelector("#addActivityTable tbody");
+    const addSelectAllCheckbox = document.getElementById("addSelectAllCheckbox");
+    const addSelectAllRadios = document.querySelectorAll('input[name="add-select-all"]');
+    const addLogBtnSubmit = document.getElementById("addLogBtn");
+
+    const quickLogTableBody = document.querySelector("#quickLogTable tbody");
+
+    const quickSelectAllCheckbox = document.getElementById("quickSelectAllCheckbox");
+    const quickSelectAllRadios = document.querySelectorAll('input[name="quick-select-all"]');
+    const copyPreviousBtn = document.getElementById("copyPreviousBtn");
+    const quickLogBtnSubmit = document.getElementById("quickLogBtnSubmit");
+
+    // Modal helpers
+    const openModal = modal => modal.classList.remove("hidden");
+    const closeModal = modal => modal.classList.add("hidden");
+
+  
+   
+    const setupSelectAllLogic = (checkbox, radios, tableBody) => {
+        checkbox.addEventListener('change', ()=>{if(checkbox.checked){applySelectAll(radios[0].value,tableBody);}else{applySelectAll('none',tableBody);}});
+        radios.forEach(r=>r.addEventListener('change',()=>{if(checkbox.checked){applySelectAll(r.value,tableBody);}}));
+    };
+
+    const applySelectAll=(level,tableBody)=>{tableBody.querySelectorAll('tr').forEach(row=>{const studentName=row.querySelector('td:first-child').textContent;const nameSlug=studentName.replace(/\s/g,'-').replace(/[^\w-]/g,'');row.querySelectorAll(`input[name="student-${nameSlug}"]`).forEach(r=>r.checked=r.value===level);});};
+
+    setupSelectAllLogic(addSelectAllCheckbox, addSelectAllRadios, addActivityTableBody);
+    setupSelectAllLogic(quickSelectAllCheckbox, quickSelectAllRadios, quickLogTableBody);
+
+    // Add Activity
+    addActivityBtn.addEventListener('click', async ()=>{
+        await fetchStudentsFromFirestore();
+        populateStudentTables(addActivityTableBody);
+        addSelectAllCheckbox.checked=false; addActivityTitleInput.value='';
+        openModal(addActivityModal);
+    });
+
+    addLogBtnSubmit.addEventListener('click', async ()=> {
+    const title = addActivityTitleInput.value.trim();
+    if (!title) { alert("Enter activity title"); return; }
+    const classroomID = localStorage.getItem('selectedClassId');
+    if (!classroomID) { alert("No classroom selected"); return; }
+
+    const participants = {};
+    addActivityTableBody.querySelectorAll('tr').forEach(row => {
+        const id = row.dataset.studentId;
+        const name = row.querySelector('td:first-child').textContent;
+        const checked = row.querySelector(`input[name="student-${name.replace(/\s/g,'-').replace(/[^\w-]/g,'')}"]:checked`);
+        const note = row.querySelector('.note-input')?.value || '';
+
+        participants[id] = {
+            level: checked ? checked.value : 'none',
+            note: note
+        };
+    });
+
+    const newAct = { activityNumber: activitiesData.length + 1, description: title, participants };
+    activitiesData.push(newAct);
+
+    for (const id in newAct.participants) {
+        const p = newAct.participants[id];
+        await addDoc(collection(db, 'activity'), {
+            activityName: newAct.description,
+            activityNo: newAct.activityNumber,
+            activityScore: p.level,
+            note: p.note,            // <-- store note here
+            classroomID,
+            created_at: new Date(),
+            studentID: id,
+            teacherID
+        });
+    }
+
+    renderAll();
+    closeModal(addActivityModal);
+});
+
+    // Quick Log
+    
+
+    quickLogBtn.addEventListener('click', ()=>{
+        populateQuickLogActivitySelect();
+        const sel=activitiesData.find(a=>a.activityNumber==quickActivitySelect.value) || {participants:{}};
+        populateStudentTables(quickLogTableBody, sel.participants);
+        quickSelectAllCheckbox.checked=false;
+        openModal(quickLogModal);
+    });
+
+    quickActivitySelect.addEventListener('change', ()=>{
+        const sel=activitiesData.find(a=>a.activityNumber==quickActivitySelect.value) || {participants:{}};
+        populateStudentTables(quickLogTableBody, sel.participants);
+    });
+
+    copyPreviousBtn.addEventListener('click', ()=>{
+        const idx=activitiesData.findIndex(a=>a.activityNumber==quickActivitySelect.value);
+        if(idx>0) populateStudentTables(quickLogTableBody, activitiesData[idx-1].participants);
+        else alert("No previous activity to copy from.");
+    });
+
+    quickLogBtnSubmit.addEventListener('click', async ()=>{
+        const idx=activitiesData.findIndex(a=>a.activityNumber==quickActivitySelect.value);
+        if(idx===-1) return;
+        const participants={};
+        quickLogTableBody.querySelectorAll('tr').forEach(row=>{
+            const id=row.dataset.studentId;
+            const name=row.querySelector('td:first-child').textContent;
+            const checked=row.querySelector(`input[name="student-${name.replace(/\s/g,'-').replace(/[^\w-]/g,'')}"]:checked`);
+            participants[id]=checked? checked.value:'none';
+        });
+        activitiesData[idx].participants=participants;
+        recalculateAllScores();
+        renderAll();
+        closeModal(quickLogModal);
+    });
+
+    renderAll();
+});
+</script>
+
+</body>
+</html>

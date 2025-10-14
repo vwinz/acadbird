@@ -1,0 +1,307 @@
+  /* =======================
+      Base Styles
+      ======================= */
+      html, body {
+        height: 100%;
+        margin: 0;
+        font-family: "Poppins", Arial, sans-serif;
+        background-color: #dbe7f7;
+        color: #000;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      /* =======================
+      Navbar (from user's code)
+      ======================= */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 24px;
+        background-color: #0a3b82; /* sample dark blue */
+        color: white;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .logo-img {
+        width: 70px;
+        height: 40px;
+        
+      }
+      .logo-text-img {
+        height: 28px;
+       
+      }
+
+      .middle-logo {
+        width: 90px;
+        height: 40px;
+        margin: 0 auto;
+      }
+
+      .back-icon {
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+        
+      }
+      .nav-icons {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      .nav-icons .icon {
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+       
+      }
+      .account-menu {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .account-menu .dropdown-icon {
+        width: 12px;
+        height: 14px;
+        cursor: pointer;
+        color: white;
+      }
+      .nav-icons a {
+        text-decoration: none;
+      }
+
+      /* =======================
+      Secondary Header (from user's code)
+      ======================= */
+      .secondary-header {
+        background-color: #e7efff;
+        display: flex;
+        justify-content: center;
+        padding: 12px 30px;
+        position: static;
+        top: 44px;
+        z-index: 999;
+        border-bottom: 1px solid #c9d7f8;
+      }
+      .nav-menu {
+        display: flex;
+        gap: 22px;
+        align-items: center;
+        font-size: 16px;
+      }
+      .nav-item {
+        color: #000;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 3px;
+        transition: background-color 0.3s;
+      }
+      .nav-item.active {
+        font-weight: 700;
+        color: #0a3b82;
+        border-bottom: 2px solid #0a3b82;
+      }
+      .nav-item:hover {
+        background-color: #c9d7f8;
+      }
+      .separator {
+        width: 100%;
+        height: 1px;
+        background-color: #000;
+        margin: 0;
+        color: #000;
+      }
+
+      /* =======================
+      Main Content (Dashboard)
+      ======================= */
+      .main-content {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .student-info {
+        text-align: left;
+      }
+      .student-info h1 {
+        font-size: 2.25rem;
+        font-weight: bold;
+        color: #000;
+        margin: 0;
+      }
+      .student-info p {
+        font-size: 1rem;
+        color: #555;
+        margin: 0;
+      }
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+      }
+      @media (max-width: 768px) {
+        .dashboard-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .main-section,
+      .side-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .card {
+        background-color: white;
+        border: 2px solid #000;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+      }
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+      .activity-card {
+        display: flex;
+        flex-direction: column;
+      }
+      .activity-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      .activity-header .title {
+        font-size: 1.25rem;
+        font-weight: bold;
+      }
+      .yellow-btn {
+        background-color: #fbbc05;
+        border: 2px solid #000;
+        border-radius: 20px;
+        padding: 8px 16px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .week-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #555;
+      }
+      .week-info i {
+        color: #777;
+      }
+      .activity-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+      .activity-table th,
+      .activity-table td {
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+      }
+      .activity-table th {
+        font-weight: bold;
+        color: #555;
+      }
+      .activity-table tr:last-child td {
+        border-bottom: none;
+      }
+      .status-dot {
+        height: 12px;
+        width: 12px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+      }
+      .status-dot.green {
+        background-color: #4caf50;
+      }
+      .status-dot.yellow {
+        background-color: #fbbc05;
+      }
+      .status-dot.red {
+        background-color: #f44336;
+      }
+      .legend-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+      }
+      .note-highlight {
+        background-color: #e7efff;
+        border-left: 5px solid #0a3b82;
+        border-radius: 0 12px 12px 0;
+        padding: 1rem 1.5rem;
+        margin-top: 1rem;
+      }
+      .note-highlight .note-title {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+        color: #0a3b82;
+      }
+      .note-highlight p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+    .chart-container {
+  background-color: #ffffff;       /* White card background */
+  border-radius: 0.2rem;            /* Rounded corners like other cards */
+  padding: 0.01rem;                  /* Padding inside the card */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Soft shadow */
+  height: 250px;                  /* Fixed height for consistency */
+}
+
+      .completion-rate-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        text-align: center;
+        background-color: #c7f0c4;
+        padding: 2rem;
+      }
+      .completion-rate-card .card-title {
+        color: #000;
+        font-size: 1rem;
+        margin: 0;
+      }
+      .completion-rate {
+        font-size: 2.5rem;
+        font-weight: bold;
+      }
+      .completion-label {
+        font-size: 1rem;
+        color: #555;
+      }
+      .teacher-feedback-card {
+        min-height: 100px;
+      }

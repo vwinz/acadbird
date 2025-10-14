@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        /* =======================
+            Base Styles
+        ======================= */
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #dbe7f7; /* light blue background */
+            margin: 0;
+            font-size: 16px;
+            color: #000;
+        }
+
+        /* =======================
+            Navbar
+        ======================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            background-color: #0a3b82; /* sample dark blue */
+            color: white;
+            border-bottom: 1px solid #000;
+        }
+        
+        /* Utility styles needed for structure since Tailwind was removed */
+        .navbar > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 24px; /* Simulating px-6 */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Enforce user's explicit image dimensions for placeholders */
+        .logo-img {
+            width: 70px;
+            height: 40px;
+        }
+
+        .logo-text-img {
+            height: 28px;
+        }
+        .middle-logo {
+            width: 90px;
+            height: 40px;
+            margin: 0 auto;
+        }
+        .back-icon {
+            font-size: 1.5rem; /* Make the FA icon visible */
+            color: white; /* Simulating text-white */
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        /* Styles for the Font Awesome icons used in the nav-icons */
+        .nav-icons .icon {
+            width: 30px; 
+            height: 25px; 
+            font-size: 1.5rem; /* Make FA icons look right */
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white; /* Icons in navbar should be white */
+        }
+
+        .account-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .account-menu .dropdown-icon {
+            width: 12px;
+            height: 14px;
+            cursor: pointer;
+            color: white;
+            font-size: 0.75rem; /* Smaller size for the caret */
+        }
+
+        /* =======================
+            Secondary Header (Navigation)
+        ======================= */
+        .secondary-header {
+            background-color: #e7efff;
+            display: flex;
+            justify-content: center;
+            padding: 12px 0;
+            position: static;
+            top: 44px;
+            z-index: 999;
+            border-bottom: 1px solid #000;
+        }
+
+        /* Utility styles needed for structure since Tailwind was removed */
+        .secondary-header > div {
+            width: 100%; 
+            padding: 0 24px; /* Simulating px-6 */
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            font-size: 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-item {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item.active {
+            font-weight: 700;
+            color: #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .nav-item:hover {
+            background-color: #c9d7f8;
+        }
+
+        /* =======================
+            Separator Line
+        ======================= */
+        .separator {
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            margin: 0;
+            color:#000;
+            display: block;
+        }
+        
+        /* =======================
+            Main Content
+        ======================= */
+        .main-content {
+            padding: 35px 45px;
+            background-color: transparent;
+            position: relative;
+            z-index: 0;
+            overflow: auto;
+            min-height: calc(100vh - 100px); 
+            /* Updated to a single-column layout for small/medium, and use grid for large */
+            display: grid; 
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        
+        /* New layout structure for large screens (lg: 1024px+) */
+        @media (min-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr 3fr; /* 1/4 (sidebar) and 3/4 (dashboard area) */
+                align-items: flex-start;
+            }
+        }
+        
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px; /* Simulating gap-6 */
+        }
+        
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 24px; /* Simulating gap-6 */
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                padding: 20px;
+            }
+        }
+
+        /* New Grid for Dashboard Visualizations (Top Row) */
+        .visualizations-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        
+        @media (min-width: 768px) {
+            .visualizations-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two columns on medium screens and up */
+            }
+        }
+
+        /* New Grid for Bottom Row */
+        .bottom-row-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        
+        @media (min-width: 768px) {
+            .bottom-row-grid {
+                grid-template-columns: 2fr 1fr; /* Two-thirds / One-third layout for active classes and resources */
+            }
+        }
+
+
+        /* Card Styles */
+        .card {
+            padding: 24px; /* p-6 */
+            border-radius: 12px; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-lg */
+            border: 1px solid #000;
+            height: fit-content; /* Ensure height fits content */
+        }
+        
+        .admin-card {
+            background-color: #0a3b82; /* acad-navy */
+            color: white; /* text-white */
+        }
+        
+        .admin-card h2 {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 600; /* font-semibold */
+            margin-bottom: 16px; /* mb-4 */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* border-b border-white/20 */
+            padding-bottom: 8px; /* pb-2 */
+        }
+        
+        .admin-card span {
+            font-weight: 500; /* font-medium */
+            font-size: 1.125rem; /* text-lg */
+            padding: 8px 12px; /* py-2 px-3 */
+            display: block;
+        }
+        
+        /* Metric Styles */
+        .metric-title {
+            font-size: 1.125rem; /* text-lg */
+            font-weight: 600; /* font-semibold */
+            color: #4b5563; /* text-gray-700 */
+        }
+
+        .metric-card {
+            padding: 16px; /* p-4 */
+            border-radius: 12px; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); /* shadow-lg */
+            text-align: center;
+            color: white;
+            font-weight: 700; /* font-bold */
+            border: 1px solid #000;
+            transition: background-color 0.15s;
+        }
+
+        .metric-card-green {
+            background-color: #34d399; /* metric-green */
+        }
+        .metric-card-green:hover {
+            background-color: #34d399e5; /* metric-green/90 */
+        }
+
+        .metric-card-blue {
+            background-color: #60a5fa; /* metric-blue */
+        }
+        .metric-card-blue:hover {
+            background-color: #60a5fae5; /* metric-blue/90 */
+        }
+
+        .metric-card-orange {
+            background-color: #fbbf24; /* metric-orange */
+        }
+        .metric-card-orange:hover {
+            background-color: #fbbf24e5; /* metric-orange/90 */
+        }
+        
+        .metric-card p:first-child {
+            font-size: 2.25rem; /* text-4xl */
+        }
+        
+        .metric-card p:last-child {
+            font-size: 0.875rem; /* text-sm */
+            text-transform: uppercase;
+            letter-spacing: 0.05em; /* tracking-wider */
+        }
+
+        .login-trend-card {
+            background-color: #fbd38da6; /* yellow-500/90 approximation */
+            color: #0a3b82; /* acad-navy */
+            padding: 16px; /* p-4 */
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-weight: 700;
+            border: 1px solid #000;
+        }
+
+        /* Removed Class Directory Styles as per request */
+
+        /* Calendar Widget */
+        .calendar-widget {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+            position: relative;
+            display: block; /* block */
+            text-decoration: none;
+            color: #000;
+            transition: box-shadow 0.15s;
+            cursor: pointer;
+        }
+
+        .calendar-widget:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-widget > span {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .calendar-header > div:first-child {
+            display: flex;
+            align-items: center;
+            gap: 16px; /* gap-4 */
+        }
+        
+        .calendar-header span {
+            font-size: 1.25rem; /* text-xl */
+            font-weight: 700; /* font-bold */
+        }
+
+        .calendar-header i {
+            color: #9ca3af; /* text-gray-500 */
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 0.875rem; /* text-sm */
+            position: relative;
+            z-index: 20;
+        }
+        
+        .calendar-grid > div:nth-child(-n+7) {
+            font-weight: 500; /* font-medium */
+            color: #9ca3af; /* text-gray-500 */
+            padding: 4px; /* p-1 */
+        }
+        
+        .calendar-grid > div:nth-child(n+8) {
+            padding: 4px; /* p-1 */
+        }
+
+        /* Styling for the calendar dates */
+        .calendar-grid .prev-next-month {
+            color: #9ca3af; /* text-gray-400 */
+        }
+        
+        .calendar-grid .today {
+            border: 1px solid #ef4444; /* border border-red-500 */
+            border-radius: 9999px; /* rounded-full */
+        }
+
+        .calendar-grid .event-day {
+            background-color: #fef08a; /* bg-yellow-200 */
+            border-radius: 9999px;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .calendar-grid .active-day {
+            color: white; /* text-white */
+            background-color: #0a3b82; /* bg-acad-navy */
+            border-radius: 9999px;
+            font-weight: 700;
+            position: relative;
+            cursor: default;
+        }
+        
+        /* Tooltip Styles (for the active day) */
+        .active-day-group {
+            position: relative;
+        }
+        
+        .active-day-group .tooltip {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 8px; /* mt-2 */
+            width: 256px; /* w-64 */
+            background-color: white;
+            padding: 12px; /* p-3 */
+            border-radius: 8px; /* rounded-lg */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); /* shadow-xl */
+            text-align: left;
+            color: black;
+            font-size: 0.75rem; /* text-xs */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .active-day-group:hover .tooltip {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .tooltip p {
+            font-weight: 700; /* font-bold */
+            margin-bottom: 4px; /* mb-1 */
+        }
+        
+        .tooltip-event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px; /* space-y-1 */
+        }
+
+        .tooltip-event {
+            display: flex;
+            align-items: center;
+            gap: 4px; /* gap-1 */
+        }
+        
+        .tooltip-dot {
+            width: 8px; /* w-2 */
+            height: 8px; /* h-2 */
+            border-radius: 9999px; /* rounded-full */
+        }
+
+        .tooltip-dot-yellow { background-color: #f59e0b; } /* bg-yellow-500 */
+        .tooltip-dot-red { background-color: #ef4444; } /* bg-red-500 */
+        .tooltip-dot-green { background-color: #10b981; } /* bg-green-500 */
+        
+        .tooltip-event span:nth-child(2) {
+            font-weight: 500; /* font-medium */
+        }
+        
+        .tooltip-event span:last-child {
+            color: #4b5563; /* text-gray-600 */
+        }
+
+        /* NEW: Event tooltip for event days */
+        .event-day-group {
+            position: relative;
+        }
+        
+        .event-day-group .tooltip {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 8px; /* mt-2 */
+            width: 256px; /* w-64 */
+            background-color: white;
+            padding: 12px; /* p-3 */
+            border-radius: 8px; /* rounded-lg */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1); /* shadow-xl */
+            text-align: left;
+            color: black;
+            font-size: 0.75rem; /* text-xs */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .event-day-group:hover .tooltip {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Dashboard Grid and Charts */
+        /* Removed .dashboard-grid, using .visualizations-grid and .bottom-row-grid now */
+        
+        @media (min-width: 768px) {
+            .secondary-grid {
+                grid-template-columns: repeat(2, 1fr); /* md:grid-cols-2 */
+            }
+        }
+
+        .user-pie-chart-card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #000;
+        }
+        
+        .user-pie-chart-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            width: 100%;
+        }
+
+        .pie-chart-container {
+            position: relative;
+            width: 160px; /* w-40 */
+            height: 160px; /* h-40 */
+        }
+        
+        .pie-chart-container .background {
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            background-color: #e5e7eb; /* bg-gray-200 */
+        }
+
+        .pie-chart-container .chart-slice {
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            /* Conic gradient for simulating the pie chart */
+            background: conic-gradient(#fbbd23 0% 20%, #2f847c 20% 100%); 
+        }
+
+        .pie-chart-container .center-hole {
+            position: absolute;
+            inset: 16px; /* inset-4 */
+            border-radius: 9999px;
+            background-color: white;
+        }
+
+        .pie-chart-legend {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .pie-chart-legend > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px; /* gap-4 */
+            font-size: 0.875rem; /* text-sm */
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px; /* gap-1 */
+        }
+        
+        .legend-dot {
+            width: 12px; /* w-3 */
+            height: 12px; /* h-3 */
+            border-radius: 9999px;
+        }
+        
+        .legend-dot-yellow { background-color: #facc15; } /* bg-yellow-400 */
+        .legend-dot-teal { background-color: #115e59; } /* bg-teal-700 */
+
+        /* Logs Posted Bar Chart */
+        .logs-bar-chart-card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+        }
+
+        .logs-bar-chart-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .logs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* space-y-3 */
+            font-size: 0.875rem; /* text-sm */
+        }
+
+        .log-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .log-item > span:first-child {
+            width: 25%; /* w-1/4 */
+            font-weight: 500; /* font-medium */
+        }
+
+        .log-bar-container {
+            width: 75%; /* w-3/4 */
+            display: flex;
+            align-items: center;
+        }
+
+        .log-bar {
+            height: 24px; /* h-6 */
+            background-color: #0a3b82; /* bg-acad-navy */
+            border-top-right-radius: 4px; /* rounded-r */
+            border-bottom-right-radius: 4px;
+        }
+
+        .log-count {
+            margin-left: 8px; /* ml-2 */
+            font-weight: 700; /* font-bold */
+            color: #0a3b82; /* text-acad-navy */
+        }
+
+        /* Active Classes Chart */
+        .active-classes-card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+        }
+
+        .active-classes-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .class-activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* space-y-3 */
+        }
+
+        .class-activity-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .class-name-group {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* gap-2 */
+        }
+
+        .class-name-group i {
+            font-size: 1.125rem;
+            color: #0a3b82; /* text-acad-navy */
+        }
+
+        .class-name-group span {
+            font-weight: 500; /* font-medium */
+        }
+
+        .class-bar-group {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* gap-2 */
+        }
+
+        .class-bar {
+            width: 80px; /* w-20 */
+            height: 8px; /* h-2 */
+            background-color: #34d399; /* bg-metric-green */
+            border-radius: 9999px; /* rounded-full */
+        }
+
+        .class-count {
+            font-weight: 700;
+            font-size: 0.875rem; /* text-sm */
+        }
+
+        /* Resources Card */
+        .resources-card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .resources-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .resources-card p:first-child {
+            font-size: 3rem; /* text-5xl */
+            font-weight: 800; /* font-extrabold */
+            color: #0a3b82; /* text-acad-navy */
+        }
+        
+        .resources-card p:last-child {
+            font-size: 0.875rem; /* text-sm */
+            color: #4b5563; /* text-gray-600 */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="navbar">
+            <div>
+                <div class="logo">
+                    <img src="AcadBird - White no text.png" alt="AcadBird Logo" class="logo-img" />
+                    <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+                </div>
+                <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+                <div class="nav-icons">
+                    <a href="notification_admin.html" target="_blank" title="Notifications">
+                        <i class="fas fa-bell icon"></i>
+                    </a>
+                    <a href="help_admin.html" target="_blank" title="Help">
+                        <i class="fas fa-question-circle icon"></i>
+                    </a>
+                    <a href="settings_admin.html" target="_blank" title="Settings">
+                        <div class="account-menu">
+                            <i class="fas fa-user-circle icon"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="secondary-header">
+           <div>
+               <nav class="nav-menu">
+                    <a href="dashboard_admin.html" class="nav-item active">Dashboard</a>
+                    <a href="classes-management.html" class="nav-item">Class Management</a>
+                    <a href="teacher-management.html" class="nav-item">Teacher Management</a>
+                    <a href="calendar.html" class="nav-item">Calendar</a>
+                    <a href="settings_admin.html" class="nav-item">Settings</a>
+
+               </nav>
+           </div>
+        </div>
+        
+        <div class="separator"></div>
+
+        <div class="main-content">
+            
+            <div class="left-panel">
+
+                <div class="card admin-card">
+                    <h2>Admin 1</h2>
+                    <div>
+                        <div>
+                            <span>Sunhill</span>
+                        </div>
+                    </div>
+                </div>
+
+                    <h3 class="metric-title">Data Dashboard</h3>
+                    
+                    <div class="metric-card metric-card-green">
+                        <p>3</p>
+                        <p>Classes</p>
+                    </div>
+                    <div class="metric-card metric-card-blue">
+                        <p>15</p>
+                        <p>Parents</p>
+                    </div>
+                    <div class="metric-card metric-card-orange">
+                        <p>3</p>
+                        <p>Teachers</p>
+                    </div>
+                </a>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <h3 class="metric-title">Login Trend Today</h3>
+                    <div class="login-trend-card">
+                        <p>40</p>
+                        <p>Logins so far</p>
+                    </div>
+                </div>
+                
+                </div>
+
+            <div class="right-panel">
+
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+
+                    <a href="/full-calendar-view" class="calendar-widget" onclick="handleCalendarClick(event)">
+                        <span style="z-index: 10;"></span>
+
+                        <div class="calendar-header">
+                            <div>
+                                <span>2025</span>
+                                <div>
+                                    <i class="fas fa-arrow-circle-left"></i>
+                                    <span>March</span>
+                                    <i class="fas fa-arrow-circle-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="calendar-grid">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+
+                            <div class="prev-next-month">23</div>
+                            <div class="prev-next-month">24</div>
+                            <div class="prev-next-month">25</div>
+                            <div class="prev-next-month">26</div>
+                            <div class="prev-next-month">27</div>
+                            <div class="prev-next-month">28</div>
+                            <div class="prev-next-month today">1</div> <div>2</div>
+                            <div>3</div>
+                            <div>4</div>
+                            <div>5</div>
+                            <div>6</div>
+                            <div>7</div>
+                            <div>8</div>
+
+                            <div>9</div>
+                            <div>10</div>
+                            <div>11</div>
+                            <div class="event-day-group">
+                                <div class="event-day">12</div>
+                                <div class="tooltip">
+                                    <p>Events on March 12</p>
+                                    <div class="tooltip-event-list">
+                                        <div class="tooltip-event">
+                                            <span class="tooltip-dot tooltip-dot-green"></span>
+                                            <span>Parent-Teacher Meeting</span>
+                                            <span>(2:00 PM)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>13</div>
+                            <div>14</div>
+                            <div>15</div>
+                            
+                            <div>16</div>
+                            <div>17</div>
+                            <div>18</div>
+                            <div class="active-day-group">
+                                <div class="active-day">19</div>
+                                <div class="tooltip">
+                                    <p>Events on March 19</p>
+                                    <div class="tooltip-event-list">
+                                        <div class="tooltip-event">
+                                            <span class="tooltip-dot tooltip-dot-yellow"></span>
+                                            <span>Staff Meeting</span>
+                                            <span>(9:00 AM)</span>
+                                        </div>
+                                        <div class="tooltip-event">
+                                            <span class="tooltip-dot tooltip-dot-red"></span>
+                                            <span>Deadline 1</span>
+                                            <span>(5:00 PM)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>20</div>
+                            <div>21</div>
+                            <div>22</div>
+                            
+                            <div>23</div>
+                            <div>24</div>
+                            <div>25</div>
+                            <div class="event-day-group">
+                                <div class="event-day">26</div>
+                                <div class="tooltip">
+                                    <p>Events on March 26</p>
+                                    <div class="tooltip-event-list">
+                                        <div class="tooltip-event">
+                                            <span class="tooltip-dot tooltip-dot-red"></span>
+                                            <span>Project Submission</span>
+                                            <span>(11:59 PM)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>27</div>
+                            <div>28</div>
+                            <div>29</div>
+                            
+                            <div>30</div>
+                            <div>31</div>
+                            <div class="prev-next-month">1</div>
+                            <div class="prev-next-month">2</div>
+                            <div class="prev-next-month">3</div>
+                            <div class="prev-next-month">4</div>
+                            <div class="prev-next-month">5</div>
+                        </div>
+                    </a>
+
+                    <div class="visualizations-grid">
+                        
+                        <div class="user-pie-chart-card">
+                            <h3>User Roles Distribution</h3>
+                            <div class="pie-chart-container">
+                                <div class="background"></div>
+                                <div class="chart-slice" style="background: conic-gradient(#fbbd23 0% 20%, #115e59 20% 100%);"></div>
+                                <div class="center-hole"></div>
+                            </div>
+                            <div class="pie-chart-legend">
+                                <div>
+                                    <div class="legend-item">
+                                        <span class="legend-dot legend-dot-yellow"></span>
+                                        <span>Parents (20%)</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="legend-dot legend-dot-teal"></span>
+                                        <span>Teachers/Admin (80%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="logs-bar-chart-card">
+                            <h3>Logs Posted This Week</h3>
+                            <div class="logs-list">
+                                <div class="log-item">
+                                    <span>Mon</span>
+                                    <div class="log-bar-container">
+                                        <div class="log-bar" style="width: 80%;"></div>
+                                        <span class="log-count">45</span>
+                                    </div>
+                                </div>
+                                <div class="log-item">
+                                    <span>Tue</span>
+                                    <div class="log-bar-container">
+                                        <div class="log-bar" style="width: 50%;"></div>
+                                        <span class="log-count">30</span>
+                                    </div>
+                                </div>
+                                <div class="log-item">
+                                    <span>Wed</span>
+                                    <div class="log-bar-container">
+                                        <div class="log-bar" style="width: 95%;"></div>
+                                        <span class="log-count">55</span>
+                                    </div>
+                                </div>
+                                <div class="log-item">
+                                    <span>Thu</span>
+                                    <div class="log-bar-container">
+                                        <div class="log-bar" style="width: 60%;"></div>
+                                        <span class="log-count">35</span>
+                                    </div>
+                                </div>
+                                <div class="log-item">
+                                    <span>Fri</span>
+                                    <div class="log-bar-container">
+                                        <div class="log-bar" style="width: 40%;"></div>
+                                        <span class="log-count">25</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-row-grid">
+                    
+                    <div class="active-classes-card">
+                        <h3>Most Active Classes (Last 7 Days)</h3>
+                        <div class="class-activity-list">
+                            <div class="class-activity-item">
+                                <div class="class-name-group">
+                                    <i class="fas fa-book"></i>
+                                    <span>Grade 1 - Maple</span>
+                                </div>
+                                <div class="class-bar-group">
+                                    <div class="class-bar" style="width: 100px;"></div>
+                                    <span class="class-count">120</span>
+                                </div>
+                            </div>
+                            <div class="class-activity-item">
+                                <div class="class-name-group">
+                                    <i class="fas fa-book"></i>
+                                    <span>Kinder - Rose</span>
+                                </div>
+                                <div class="class-bar-group">
+                                    <div class="class-bar" style="width: 85px;"></div>
+                                    <span class="class-count">105</span>
+                                </div>
+                            </div>
+                            <div class="class-activity-item">
+                                <div class="class-name-group">
+                                    <i class="fas fa-book"></i>
+                                    <span>Grade 5 - Oak</span>
+                                </div>
+                                <div class="class-bar-group">
+                                    <div class="class-bar" style="width: 60px;"></div>
+                                    <span class="class-count">80</span>
+                                </div>
+                            </div>
+                            <div class="class-activity-item">
+                                <div class="class-name-group">
+                                    <i class="fas fa-book"></i>
+                                    <span>Grade 2 - Pine</span>
+                                </div>
+                                <div class="class-bar-group">
+                                    <div class="class-bar" style="width: 40px;"></div>
+                                    <span class="class-count">60</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="resources-card">
+                        <div>
+                            <h3>Resources Used</h3>
+                            <p>350</p>
+                            <p>Total uploaded files this month</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to handle calendar click
+        function handleCalendarClick(event) {
+            // You can customize this function to handle the click event
+            // For example, you could show a confirmation or perform other actions
+            // before redirecting to the calendar page
+            
+            // If you want to add any confirmation or additional logic:
+            // event.preventDefault(); // Uncomment this to prevent immediate redirect
+            // Then add your custom logic here
+            
+            // For now, it will just redirect to the calendar page
+            console.log("Redirecting to full calendar view...");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+/* =======================
+   Base Styles
+======================= */
+html {
+height: 100%;
+}
+
+body {
+height: 100%;
+width: 100%;
+font-family: "Poppins", Arial, sans-serif;
+background-color: #dbe7f7; /* light blue background */
+margin: 0;
+font-size: 16px;
+color: #000;
+}
+
+/* =======================
+   Main Content
+======================= */
+.main-content {
+padding: 35px 45px;
+background-color: transparent;
+position: relative;
+z-index: 0;
+overflow: auto;
+height: calc(100vh - 100px); /* This calculation should be correct if the fixed headers are 90px total */
+display: flex;
+ justify-content: center;
+align-items: flex-start;
+}
+
+/* =======================
+   Navbar
+======================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: #0a3b82; /* sample dark blue */
+    color: white;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+   
+    width: 70px;
+    height: 40px;
+
+}
+
+.logo-text-img {
+    height: 28px; /* adjust to match your design */
+}
+
+
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.nav-icons .icon {
+     width: 30px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.account-menu {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.account-menu .dropdown-icon {
+    width: 12px;
+    height: 14px;
+    cursor: pointer;
+}
+
+
+/* =======================
+   Secondary Header (Navigation)
+======================= */
+.secondary-header {
+    background-color: #e7efff;
+    display: flex;
+    justify-content: center;
+    padding: 12px 30px;
+    position: sticky;
+    top: 44px;
+    z-index: 999;
+    border-bottom: 1px solid #c9d7f8;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    font-size: 16px;
+}
+
+.nav-item {
+    color: #000;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+}
+
+.nav-item.active {
+    font-weight: 700;
+    color: #000;
+    border-bottom: 2px solid #000;
+}
+
+.nav-item:hover {
+    background-color: #c9d7f8;
+}
+
+/* =======================
+   Separator Line
+======================= */
+.separator {
+    width: 100%;
+    height: 1px;
+    background-color: #000;
+    margin: 0;
+    color:#000;
+}

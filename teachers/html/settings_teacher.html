@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AcadBird Settings</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    
+    <script>
+        // ⚠️ IMPORTANT: REPLACE THIS ENTIRE OBJECT with your actual Firebase project config ⚠️
+        const firebaseConfig = {
+                apiKey: "AIzaSyBoxf2jDO9yvk_zE0P55-Qx3ig9l_ECrxM",
+                authDomain: "acadbird-b6cdc.firebaseapp.com",
+                projectId: "acadbird-b6cdc",
+                storageBucket: "acadbird-b6cdc.appspot.com",
+                messagingSenderId: "28486669852",
+                appId: "1:28486669852:web:dffbdfedef1a41d6f1f1d9",
+                measurementId: "G-R7W5BBCSYG"
+        };
+        
+        // Initialize Firebase App and services
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="settings_teacher.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="back.png" alt="Back" class="back-icon" id="back-to-dashboard" />
+                <img src="AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+                <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+            </div>
+            <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+            <div class="nav-icons">
+                <img src="Notification.png" alt="Notifications" class="icon">
+                <img src="Help.png" alt="Help" class="icon">
+                <div class="account-menu">
+                    <img src="account icon.png" alt="User Account" class="icon">
+                    <i class="fas fa-caret-down dropdown-icon"></i>
+                    <div class="dropdown-content">
+                        <a href="settings_teacher.html" id="settings-link"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="secondary-header">
+            <nav class="nav-menu" id="main-nav-menu">
+                <a href="homepage-teachers.html" class="nav-item">Home</a>
+                <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
+                <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
+                <a href="resources_teacher.html" class="nav-item">Resources</a>
+                <a href="messages_teacher.html" class="nav-item">Messages</a>
+                <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
+            </nav>
+            <h2 class="main-title hidden" id="password-header-title">Change Password</h2>
+        </div>
+        <div class="separator"></div>
+
+        <div class="main-content">
+            <div class="settings-container" id="settings-view">
+                <h1 class="main-title">Settings</h1>
+                <div class="settings-layout">
+                    <div class="settings-column">
+                        <div class="card profile-card">
+                            <h2 class="card-title">Profile</h2>
+                            <div class="profile-details">
+                                <div class="profile-pic">
+                                    <div class="avatar-placeholder">O</div>
+                                    <button class="change-photo-btn">Change Photo</button>
+                                </div>
+                                <div class="profile-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="first-name">First Name</label>
+                                            <input type="text" id="first-name" value="Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last-name">Last Name</label>
+                                            <input type="text" id="last-name" value="Name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input type="text" id="username" value="Username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input type="email" id="email" value="sampleemail@school.edu.ph">
+                                    </div>
+                                    <button class="text-button" id="change-password-btn">Change Password</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="action-button logout-btn-main" id="logout-btn-main">Log out</button> 
+                    </div>
+                    <div class="settings-column">
+                        <div class="card notification-card">
+                            <h2 class="card-title">Notification Settings</h2>
+                            <div class="setting-item">
+                                <span>Toggle All Notifications</span>
+                                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Message Notifications</span>
+                                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Comments/likes on a post</span>
+                                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Parent joining a class</span>
+                                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Admin announcements</span>
+                                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                            </div>
+                        </div>
+                        <div class="card display-card">
+                            <h2 class="card-title">Display Settings</h2>
+                            <div class="setting-item">
+                                <span>Dark Mode</span>
+                                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="change-password-container hidden" id="password-view">
+                <div class="card password-card">
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <input type="password" id="current-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm New Password</label>
+                        <input type="password"id="confirm-password">
+                    </div>
+                    <button class="action-button">Change Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="settings_teacher.js"></script>
+</body>
+</html>

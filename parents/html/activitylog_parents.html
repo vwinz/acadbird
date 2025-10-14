@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Activity Log</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../style/activitylog_parents.css">
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+         
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            class="logo-img"
+            alt="AcadBird Logo"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
+          
+        </div>
+        <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
+        <div class="nav-icons">
+          <a href="notification_parent.html" target="_blank">
+            <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
+          </a>
+          <a href="help_parent.html" target="_blank">
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          </a>
+          <a href="account_parent.html" target="_blank">
+            <div class="account-menu">
+              <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
+            </div>
+          </a>
+        </div>
+      </nav>
+       <div class="secondary-header">
+            <nav class="nav-menu">
+                <a href="homepage_parents.html" class="nav-item">Home</a>
+                <a href="dashboard_parents.html" class="nav-item">Dashboard</a>
+                <a href="activitylog_parents.html" class="nav-item active">Activity Logs</a>
+                <a href="resources_parents.html" class="nav-item ">Resources</a>
+                <a href="messages_parents.html" class="nav-item">Messages</a>
+                <a href="account_parent.html" class="nav-item">Settings</a>
+
+            </nav>
+        </div>
+      <div class="separator"></div>
+      <div class="content-wrapper">
+        <div class="main-content">
+          <div class="left-section">
+            <div class="post-feed" id="post-feed">
+              <div class="card post-feed-card">
+                <div class="post-info">
+                  <div class="user-info">
+                    <i class="fas fa-user-circle post-avatar"></i>
+                    <div>
+                      <p class="user-name">Mrs. Juana C. Cruz</p>
+                      <p class="class-name">Kinder Lily</p>
+                    </div>
+                  </div>
+                  <span class="timestamp">3 hours ago</span>
+                </div>
+                <h3 class="post-title">Pizza Party Alert! 🎉</h3>
+                <p class="post-text">Hi families!</p>
+                <p class="post-text">
+                  We're excited to share that we'll be having a Pizza Party in
+                  our classroom this Friday to celebrate all the hard work and
+                  kindness our little learners have shown this month! ❤️🍕
+                </p>
+                <p class="post-text">Here are a few details:</p>
+                <ul class="post-details">
+                  <li>
+                    <i class="fas fa-calendar-day"></i> When: Friday at 11:00
+                    AM
+                  </li>
+                  <li>
+                    <i class="fas fa-map-marker-alt"></i> Where: in our
+                    classroom
+                  </li>
+                  <li>
+                    <i class="fas fa-pizza-slice"></i> What to expect: yummy
+                    pizza, fun music, and lots of smiles!
+                  </li>
+                  <li>
+                    <i class="fas fa-lightbulb"></i> Why: Because we've been
+                    learning, sharing, and growing — and that deserves a
+                    celebration!
+                  </li>
+                </ul>
+                <p class="post-text">
+                  If your child has any food allergies or dietary restrictions,
+                  please let me know by Wednesday so we can make sure everyone
+                  feels included.
+                </p>
+                <p class="post-text">
+                  We can't wait to celebrate together! 😊💖
+                </p>
+                <p class="post-text">
+                  With joy,<br />Ms. Juana C. Cruz
+                </p>
+                <img
+                  src="pizza-party-image.png"
+                  alt="Pizza Party"
+                  class="post-image"
+                />
+                <div class="post-footer">
+                  <div class="post-details">
+                    <p class="event-info">
+                      <i class="fas fa-calendar-alt"></i> Event
+                    </p>
+                    <p class="event-info">
+                      <i class="fas fa-clock"></i> 11:00 - 2:00
+                    </p>
+                  </div>
+                  <div class="post-interaction">
+                    <button class="like-btn">
+                      <i class="fas fa-heart"></i>
+                      <span class="like-count">1</span>
+                    </button>
+                    <button class="comment-btn">
+                      <i class="fas fa-comment-dots"></i>
+                      <span class="comment-count">2</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="comments-section">
+                  <div class="comment-input-container hidden">
+                    <input
+                      type="text"
+                      class="comment-input"
+                      placeholder="Write a comment..."
+                    />
+                    <button class="submit-comment-btn">Post</button>
+                  </div>
+                  <div class="comments-list">
+                    <div class="comment-item">
+                      <div class="comment-author">John Smith</div>
+                      <div class="comment-text">
+                        This sounds amazing! Thank you, Mrs. Cruz!
+                      </div>
+                      <div class="comment-timestamp">2 hours ago</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="right-section">
+            <div class="card event-card">
+              <h4 class="card-title">Upcoming Events</h4>
+              <ul id="event-list">
+                <li>
+                  <p class="event-item">
+                    Pizza Party<br />April 4, Friday<br />11:00 - 2:00
+                  </p>
+                </li>
+              </ul>
+            </div>
+            <div class="card reminders-card">
+              <h4 class="card-title">Reminders</h4>
+              <ul id="reminder-list">
+                <li>
+                  <p class="reminder-item">
+                    Bring coloring materials<br />When: April 2, 2025
+                  </p>
+                </li>
+              </ul>
+            </div>
+            <div class="card tasks-card">
+              <h4 class="card-title">Tasks</h4>
+              <ul id="task-list">
+                <li>
+                  <p class="task-item">No announced tasks</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { 
+  getFirestore, 
+  collection, 
+  query, 
+  orderBy, 
+  getDocs,
+  doc,
+  getDoc, where
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+
+// ✅ Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+  authDomain: "acadbird-379e3.firebaseapp.com",
+  projectId: "acadbird-379e3",
+  storageBucket: "acadbird-379e3.firebasestorage.app",
+  messagingSenderId: "575491576951",
+  appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+  measurementId: "G-N6Z672SXWJ"
+};
+
+// ✅ Init Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const currentClassroomID = localStorage.getItem("currentClassroomID");
+if (!currentClassroomID) {
+  console.error("No classroom ID found. Make sure to select a student first.");
+}
+
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const postFeed = document.getElementById("post-feed");
+  await loadPosts();
+  await loadEvents();
+  await loadReminders();
+  await loadTasks();
+
+
+  // Function to render a single post
+ // Function to render a single post
+function renderPost(postData) {
+  const postElement = document.createElement("div");
+  postElement.classList.add("card", "post-feed-card");
+
+  postElement.innerHTML = `
+    <div class="post-info">
+      <div class="user-info">
+        <i class="fas fa-user-circle post-avatar"></i>
+        <div>
+    <p class="user-name">${postData.teacherName || "Unknown Teacher"}</p>
+
+
+         <p class="class-name">${postData.classroomName || ""}</p>
+
+        </div>
+      </div>
+      <div class="post-meta">
+        <span class="timestamp">${postData.timestamp || ""}</span>
+        ${postData.date ? `<span class="post-date">${postData.date}</span>` : ""}
+      </div>
+    </div>
+    <h3 class="post-title">${postData.type || ""}</h3>
+    <p class="post-text">${postData.description || ""}</p>
+    ${
+      postData.imageUrl
+        ? `<img src="${postData.imageUrl}" alt="Post Image" class="post-image"/>`
+        : ""
+    }
+    <div class="post-footer">
+      <div class="post-details">
+        ${postData.date ? `<p class="event-info"><i class="fas fa-clock"></i> ${postData.date}</p>` : ""}
+      </div>
+      <div class="post-interaction">
+        <button class="like-btn">
+          <i class="fas fa-heart"></i>
+          <span class="like-count">${postData.likes || 0}</span>
+        </button>
+        <button class="comment-btn">
+          <i class="fas fa-comment-dots"></i>
+          <span class="comment-count">${postData.comments?.length || 0}</span>
+        </button>
+      </div>
+    </div>
+    <div class="comments-section">
+      <div class="comment-input-container hidden">
+        <input type="text" class="comment-input" placeholder="Write a comment..."/>
+        <button class="submit-comment-btn">Post</button>
+      </div>
+      <div class="comments-list">
+        ${
+          postData.comments?.map(
+            c => `
+            <div class="comment-item">
+              <div class="comment-author">${c.author}</div>
+              <div class="comment-text">${c.text}</div>
+              <div class="comment-timestamp">${c.timestamp}</div>
+            </div>`
+          ).join("") || ""
+        }
+      </div>
+    </div>
+  `;
+
+  // Add listeners
+  addPostInteractionListeners(postElement);
+
+  return postElement;
+}
+
+async function getClassroomName(classroomID) {
+  if (!classroomID) return "";
+  try {
+    const classroomRef = doc(db, "classrooms", classroomID);
+    const snap = await getDoc(classroomRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      return data.classroomName || ""; // adjust field name to match your DB
+    }
+  } catch (e) {
+    console.error("Error fetching classroom name:", e);
+  }
+  return "";
+}
+
+
+async function getTeacherName(teacherID) {
+  if (!teacherID) return "Unknown Teacher";
+  try {
+    const userRef = doc(db, "users", teacherID); // 🔹 assumes teacher accounts are in "users" collection
+    const snap = await getDoc(userRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      return `${data.firstName || ""} ${data.lastName || ""}`.trim() || "Unknown Teacher";
+    }
+  } catch (e) {
+    console.error("Error fetching teacher name:", e);
+  }
+  return "Unknown Teacher";
+}
+
+
+  // Function to add interaction listeners
+  function addPostInteractionListeners(postElement) {
+    const likeBtn = postElement.querySelector(".like-btn");
+    const likeCountSpan = postElement.querySelector(".like-count");
+    const commentBtn = postElement.querySelector(".comment-btn");
+    const commentsSection = postElement.querySelector(".comments-section");
+    const commentInputContainer = commentsSection.querySelector(".comment-input-container");
+    const commentsList = commentsSection.querySelector(".comments-list");
+    const commentInput = commentInputContainer.querySelector(".comment-input");
+    const submitCommentBtn = commentInputContainer.querySelector(".submit-comment-btn");
+
+    // Like button
+    likeBtn.addEventListener("click", () => {
+      let likes = parseInt(likeCountSpan.textContent);
+      if (likeBtn.classList.contains("liked")) {
+        likes--;
+        likeBtn.classList.remove("liked");
+      } else {
+        likes++;
+        likeBtn.classList.add("liked");
+      }
+      likeCountSpan.textContent = likes;
+    });
+
+    // Toggle comment box
+    commentBtn.addEventListener("click", () => {
+      commentInputContainer.classList.toggle("hidden");
+      if (!commentInputContainer.classList.contains("hidden")) {
+        commentInput.focus();
+      }
+    });
+
+    // Add comment
+    submitCommentBtn.addEventListener("click", () => {
+      const commentText = commentInput.value.trim();
+      if (commentText) {
+        const commentElement = document.createElement("div");
+        commentElement.classList.add("comment-item");
+        const now = new Date();
+        const timestamp = now.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric", hour12: true });
+
+        commentElement.innerHTML = `
+          <div class="comment-author">Parent</div>
+          <div class="comment-text">${commentText}</div>
+          <div class="comment-timestamp">${timestamp}</div>
+        `;
+        commentsList.appendChild(commentElement);
+        commentInput.value = "";
+
+        const commentCountSpan = postElement.querySelector(".comment-count");
+        let commentCount = parseInt(commentCountSpan.textContent);
+        commentCount++;
+        commentCountSpan.textContent = commentCount;
+      }
+    });
+  }
+
+  // ✅ Fetch posts from Firestore
+async function loadPosts() {
+  postFeed.innerHTML = ""; 
+
+  // ✅ Filter only posts for the current classroom
+  const q = query(
+    collection(db, "posts"), 
+    where("classroomID", "==", currentClassroomID), 
+    orderBy("created_at", "desc")
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  if (querySnapshot.empty) {
+    postFeed.innerHTML = `<div class="card post-feed-card"><p>No posts available for this class.</p></div>`;
+    return;
+  }
+
+  for (const docSnap of querySnapshot.docs) {
+    const postData = docSnap.data();
+
+    // fetch teacher + classroom names
+    postData.teacherName = await getTeacherName(postData.teacherID);
+    postData.classroomName = await getClassroomName(postData.classroomID);
+
+    const postElement = renderPost(postData);
+    postFeed.appendChild(postElement);
+  }
+}
+
+
+});
+
+// ✅ Load Upcoming Events
+async function loadEvents() {
+  const eventList = document.getElementById("event-list");
+  eventList.innerHTML = ""; // clear old list
+
+  if (!currentClassroomID) return;
+
+  const q = query(
+    collection(db, "posts"),
+    where("classroomID", "==", currentClassroomID),
+    orderBy("date", "desc")
+  );
+
+  const snapshot = await getDocs(q);
+
+  if (snapshot.empty) {
+    eventList.innerHTML = `<li><p class="event-item">No upcoming events</p></li>`;
+    return;
+  }
+
+  snapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <p class="event-item">
+        📅 ${data.date || ""}<br>
+        ${data.task || "No description"}
+      </p>
+    `;
+    eventList.appendChild(li);
+  });
+}
+
+// ✅ Load Reminders
+async function loadReminders() {
+  const reminderList = document.getElementById("reminder-list");
+  reminderList.innerHTML = ""; 
+
+  if (!currentClassroomID) return;
+
+  const q = query(
+    collection(db, "posts"),
+    where("classroomID", "==", currentClassroomID),
+    orderBy("date", "desc")
+  );
+
+  const snapshot = await getDocs(q);
+
+  if (snapshot.empty) {
+    reminderList.innerHTML = `<li><p class="reminder-item">No reminders</p></li>`;
+    return;
+  }
+
+  snapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <p class="reminder-item">
+        📝 ${data.task || "No description"}<br>
+        📅 ${data.date || ""}
+      </p>
+    `;
+    reminderList.appendChild(li);
+  });
+}
+
+// ✅ Load Tasks
+async function loadTasks() {
+  const taskList = document.getElementById("task-list");
+  taskList.innerHTML = "";
+
+  if (!currentClassroomID) return;
+
+  const q = query(
+    collection(db, "posts"),
+    where("classroomID", "==", currentClassroomID)
+  );
+
+  const snapshot = await getDocs(q);
+
+  if (snapshot.empty) {
+    taskList.innerHTML = `<li><p class="task-item">No announced tasks</p></li>`;
+    return;
+  }
+
+  snapshot.forEach(docSnap => {
+    const data = docSnap.data();
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <p class="task-item">
+        ✅ ${data.task || "Untitled Task"}<br>
+        ${data.date || ""}
+      </p>
+    `;
+    taskList.appendChild(li);
+  });
+}
+
+
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="../style/activitylog_teacher.css" />
+</head>
+<body>
+    <div class="container">
+         <nav class="navbar">
+        <div class="logo">
+            <img src="../../main/img/AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
+            <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
+        </div>
+        <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
+        <div class="nav-icons">
+    <a href="notification_teacher.html" target="_blank">
+        <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
+    </a>
+    <a href="help_teacher.html" target="_blank">
+        <img src="../../main/img/Help.png" alt="Help" class="icon">
+    </a>
+    <a href="settings_teacher.html" target="_blank">
+        <div class="account-menu">
+            <img src="../../main/img/account icon.png" alt="User Account" class="icon">
+        </div>
+    </a>
+</div>
+
+    </nav>
+        <div class="secondary-header">
+            <nav class="nav-menu">
+                <a href="homepage-teachers.html" class="nav-item">Home</a>
+                <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
+                <a href="account_profile_teacher.html" class="nav-item active">Activity Logs</a>
+                <a href="resources_teacher.html" class="nav-item">Resources</a>
+                <a href="messages_teacher.html" class="nav-item">Messages</a>
+                <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
+            </nav>
+        </div>
+        <div class="separator"></div>
+
+        <div class="main-content">
+            <div class="left-section">
+                <div class="card parents-status-card">
+                    <p class="status-text">2 parents still need to connect!</p>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill"></div>
+                        <div class="progress-percent">60%</div>
+                    </div>
+                    <button class="share-code-btn">Share Class Code</button>
+                </div>
+
+                <div class="card post-card" id="post-creation-card">
+                   <div class="post-header">
+    <p id="teacher-name">Loading Teacher Name...</p>
+    <i class="fas fa-user-circle post-avatar"></i>
+    <input type="text" id="initial-input" placeholder="What's taking place in your classroom?">
+</div>
+
+                    
+                    <div id="expanded-content" class="hidden">
+                        <div class="post-type-options">
+                            <button class="post-action-btn active" data-type="Note"><i class="fas fa-file-alt"></i> Note</button>
+                            <button class="post-action-btn" data-type="Reminder"><i class="fas fa-bell"></i> Reminder</button>
+                            <button class="post-action-btn" data-type="Event"><i class="fas fa-calendar-alt"></i> Event</button>
+                            <button class="post-action-btn" data-type="Task"><i class="fas fa-tasks"></i> Task</button>
+                            
+                            <input type="file" id="file-upload" multiple hidden />
+                        </div>
+                        
+                        <div id="dynamic-inputs">
+                            <textarea id="note-input" class="post-content-input" placeholder="What's taking place in your classroom?"></textarea>
+                            
+                            <div id="typed-post-inputs" class="hidden">
+                                <input type="text" id="post-title-input" class="text-input" placeholder="Enter Title..." />
+                                <div class="date-input-container">
+                                    <label for="post-date-input">Date:</label>
+                                    <input type="date" id="post-date-input" class="date-input" />
+                                </div>
+                                <textarea id="post-description-input" class="post-content-input" placeholder="Description: What's taking place in your classroom?"></textarea>
+                            </div>
+                        </div>
+
+                        <div id="file-preview-container"></div>
+
+                        <div class="post-footer-actions">
+                            <button id="post-button" class="post-btn">Post</button>
+                            <button id="cancel-button" class="post-btn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="post-feed" id="post-feed">
+                    
+                </div>
+            </div>
+
+            <div class="right-section">
+                <div class="card event-card">
+                    <h4 class="card-title">Upcoming Events</h4>
+                    <ul id="event-list">
+                         
+                    </ul>
+                </div>
+                <div class="card reminders-card">
+                    <h4 class="card-title">Reminders</h4>
+                    <ul id="reminder-list">
+                      
+                    </ul>
+                </div>
+                <div class="card tasks-card">
+                    <h4 class="card-title">Tasks</h4>
+                    <ul id="task-list">
+                    
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div id="loading-overlay">
+
+<div class="loader-3">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+</div>
+    <div id="shareCodeModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">
+                <i class="fas fa-share-alt"></i>
+                <h3>Share Class Code</h3>
+            </div>
+            <div class="modal-body">
+                <p>Share this unique code with parents to connect them to your classroom!</p>
+                <div class="class-code-display">
+                    <p id="classCode">ABC-123-XYZ</p>
+                    <button id="copyCodeBtn"><i class="fas fa-copy"></i></button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close-btn">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Delete Post?</h3>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this post? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="confirmDeleteBtn" class="confirm-btn">Delete</button>
+                <button class="modal-cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { collection, addDoc, serverTimestamp, query, orderBy, getDocs, where } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+
+// --------------------
+// 1. Firebase config
+// --------------------
+  const firebaseConfig = {
+    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+    authDomain: "acadbird-379e3.firebaseapp.com",
+    projectId: "acadbird-379e3",
+    storageBucket: "acadbird-379e3.firebasestorage.app",
+    messagingSenderId: "575491576951",
+    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+    measurementId: "G-N6Z672SXWJ"
+  };
+
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+  const postFeed = document.getElementById('post-feed');
+const loadingOverlay = document.getElementById("loading-overlay");
+
+   function showLoading() {
+  loadingOverlay.style.display = "flex";
+}
+
+// Hide overlay
+function hideLoading() {
+  loadingOverlay.style.display = "none";
+}
+
+
+function createPostElement(title, content, type, date, files, teacherName, createdAt) {
+    const postElement = document.createElement('div');
+    postElement.classList.add('card', 'post-feed-card');
+
+    // --- File handling ---
+    let fileHtml = '';
+    if (files.length > 0) {
+        const firstFile = files[0];
+        if (firstFile.type.startsWith('image/')) {
+            const imageUrl = URL.createObjectURL(firstFile);
+            fileHtml = `<img src="${imageUrl}" alt="Uploaded image" class="post-image">`;
+        } else {
+            fileHtml = `<p class="post-text">Attached File: ${firstFile.name}</p>`;
+        }
+    }
+
+    // --- Relative timestamp ---
+    function getRelativeTime(timestamp) {
+        if (!timestamp) return '';
+        const now = new Date();
+        const createdTime = timestamp.toDate ? timestamp.toDate() : new Date(timestamp); // Firestore Timestamp
+        const diffMs = now - createdTime;
+        const diffSeconds = Math.floor(diffMs / 1000);
+        const diffMinutes = Math.floor(diffSeconds / 60);
+        const diffHours = Math.floor(diffMinutes / 60);
+        const diffDays = Math.floor(diffHours / 24);
+
+        if (diffSeconds < 60) return 'Just now';
+        if (diffMinutes < 60) return `${diffMinutes} min${diffMinutes > 1 ? 's' : ''} ago`;
+        if (diffHours < 24) return `${diffHours} hr${diffHours > 1 ? 's' : ''} ago`;
+        return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    }
+
+    const relativeTimestamp = getRelativeTime(createdAt);
+
+    // --- Additional details ---
+    let additionalDetails = '';
+    if (date) {
+        const [year, month, day] = date.split('-');
+        const formattedDate = `${day}/${month}/${year.slice(2)}`;
+        additionalDetails += `<li><i class="fas fa-calendar-alt"></i> Date: ${formattedDate}</li>`;
+    }
+    if (type === 'Event') {
+        additionalDetails += `<li><i class="fas fa-clock"></i> Time: To be announced</li>`;
+    }
+
+    const postHtml = `
+<div class="post-info">
+    <div class="user-info">
+        <i class="fas fa-user-circle post-avatar"></i>
+        <div>
+            <p class="user-name">${teacherName}</p>
+            <p class="class-name">Kinder Lily</p>
+        </div>
+    </div>
+    <span class="timestamp">${relativeTimestamp}</span>
+</div>
+<h3 class="post-title">${title} ${type === 'Event' ? '🎉' : ''}</h3>
+<p class="post-text">${content.replace(/\n/g, '<br>')}</p>
+${additionalDetails ? `<ul class="post-details">${additionalDetails}</ul>` : ''}
+${fileHtml}
+<div class="post-actions">
+    <button class="like-btn">Like (<span class="like-count">0</span>)</button>
+    <button class="comment-btn">Comment (<span class="comment-count">0</span>)</button>
+    <button class="more-btn">...</button>
+    <div class="dropdown-menu hidden">
+        <button class="delete-btn">Delete</button>
+    </div>
+</div>
+<div class="comments-section hidden">
+    <div class="comments-list"></div>
+    <div class="comment-input-container hidden">
+        <input type="text" class="comment-input" placeholder="Write a comment..." />
+        <button class="submit-comment-btn">Post</button>
+    </div>
+</div>
+`;
+
+
+    postElement.innerHTML = postHtml;
+    return postElement;
+}
+
+
+const eventList = document.getElementById('event-list');
+const reminderList = document.getElementById('reminder-list');
+const taskList = document.getElementById('task-list');
+
+function createRightSectionItem(title, date, type) {
+        const listItem = document.createElement('li');
+        let formattedDate = '';
+        if (date) {
+            const [year, month, day] = date.split('-');
+            formattedDate = `${month}/${day}/${year}`;
+        }
+        const displayTitle = title.length > 25 ? title.substring(0, 22) + '...' : title;
+
+        switch (type) {
+            case 'Event':
+                listItem.innerHTML = `<p class="event-item">${displayTitle}<br>${formattedDate || 'Date N/A'}<br>Time N/A</p>`;
+                eventList.prepend(listItem);
+                break;
+            case 'Reminder':
+                listItem.innerHTML = `<p class="reminder-item">${displayTitle}<br>When: ${formattedDate || 'Date N/A'}</p>`;
+                reminderList.prepend(listItem);
+                break;
+            case 'Task':
+                listItem.innerHTML = `<p class="task-item">${displayTitle}<br>When: ${formattedDate || 'Date N/A'}</p>`;
+                taskList.prepend(listItem);
+                break;
+        }
+    }
+
+
+async function loadPosts() {
+    try {
+        // get classroomId from URL or localStorage
+        let classroomId = new URLSearchParams(window.location.search).get('classroomId');
+        if (!classroomId) {
+            classroomId = localStorage.getItem('selectedClassId');
+        }
+        if (!classroomId) {
+            alert("No classroom selected! Please go back to the homepage.");
+            window.location.href = "homepage-teachers.html";
+            return;
+        }
+
+        // Firestore query only for this classroom
+        const postsRef = collection(db, "posts");
+        const q = query(
+            postsRef,
+            where("classroomID", "==", classroomId),
+            orderBy("created_at", "desc")
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        postFeed.innerHTML = ""; // clear feed first
+
+        querySnapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            const { task: title, description: content, type, date, created_at } = data;
+
+            const files = [];
+            const postElement = createPostElement(
+                title || type,
+                content || '',
+                type,
+                date || '',
+                files,
+                loggedInTeacherName,
+                created_at
+            );
+
+            postFeed.prepend(postElement);
+            addPostInteractionListeners(postElement);
+
+            if (type === 'Event' || type === 'Reminder' || type === 'Task') {
+                createRightSectionItem(title || type, date || '', type);
+            }
+        });
+
+    } catch (error) {
+        console.error("Error loading posts:", error);
+    }
+}
+
+// --------------------
+// 2. Load teacher name
+// --------------------
+
+let loggedInTeacherName = "Unknown Teacher";
+
+onAuthStateChanged(auth, async (user) => {
+    const teacherNameElement = document.getElementById("teacher-name");
+
+    showLoading(); // 👈 start loading immediately
+
+    try {
+        if (user) {
+            const uid = user.uid;
+            const userDocRef = doc(db, "users", uid);
+
+            try {
+                const docSnap = await getDoc(userDocRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    loggedInTeacherName = `${data.firstName} ${data.lastName}`;
+                    teacherNameElement.textContent = loggedInTeacherName;
+                } else {
+                    teacherNameElement.textContent = "Unknown Teacher";
+                }
+            } catch (error) {
+                console.error("Error fetching teacher data:", error);
+                teacherNameElement.textContent = "Error loading name";
+            }
+
+            // ✅ Load posts after setting teacher name
+            await loadPosts();
+
+        } else {
+            teacherNameElement.textContent = "Not signed in";
+        }
+    } catch (err) {
+        console.error("Auth state error:", err);
+    } finally {
+        hideLoading(); // 👈 always hide loading once done
+    }
+});
+
+
+
+ function addPostInteractionListeners(postElement) {
+        const likeBtn = postElement.querySelector('.like-btn');
+        const likeCountSpan = postElement.querySelector('.like-count');
+        const commentBtn = postElement.querySelector('.comment-btn');
+        const moreBtn = postElement.querySelector('.more-btn');
+        const deleteBtn = postElement.querySelector('.delete-btn');
+        const dropdownMenu = postElement.querySelector('.dropdown-menu');
+        const commentsSection = postElement.querySelector('.comments-section');
+        const commentInputContainer = commentsSection.querySelector('.comment-input-container');
+        const commentsList = commentsSection.querySelector('.comments-list');
+        const commentInput = commentInputContainer.querySelector('.comment-input');
+        const submitCommentBtn = commentInputContainer.querySelector('.submit-comment-btn');
+
+        // Toggle dropdown menu for delete button
+        moreBtn.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Hide dropdown if user clicks outside
+        document.addEventListener('click', (event) => {
+            if (!moreBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+
+        // Like button functionality
+        likeBtn.addEventListener('click', () => {
+            let likes = parseInt(likeCountSpan.textContent);
+            if (likeBtn.classList.contains('liked')) {
+                likes--;
+                likeBtn.classList.remove('liked');
+            } else {
+                likes++;
+                likeBtn.classList.add('liked');
+            }
+            likeCountSpan.textContent = likes;
+        });
+
+        // Comment button functionality
+        commentBtn.addEventListener('click', () => {
+            commentInputContainer.classList.toggle('hidden');
+            if (!commentInputContainer.classList.contains('hidden')) {
+                commentInput.focus();
+            }
+        });
+
+        // Submit comment
+        submitCommentBtn.addEventListener('click', () => {
+            const commentText = commentInput.value.trim();
+            if (commentText) {
+                const commentElement = document.createElement('div');
+                commentElement.classList.add('comment-item');
+                const now = new Date();
+                const timestamp = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+
+                commentElement.innerHTML = `
+                    <div class="comment-author">Mrs. Juana C. Cruz</div>
+                    <div class="comment-text">${commentText}</div>
+                    <div class="comment-timestamp">${timestamp}</div>
+                    <button class="delete-comment-btn"><i class="fas fa-times-circle"></i></button>
+                `;
+                commentsList.appendChild(commentElement);
+                commentInput.value = '';
+
+                const commentCountSpan = postElement.querySelector('.comment-count');
+                let commentCount = parseInt(commentCountSpan.textContent);
+                commentCount++;
+                commentCountSpan.textContent = commentCount;
+
+                // Add event listener for the new delete comment button
+                commentElement.querySelector('.delete-comment-btn').addEventListener('click', () => {
+                    commentElement.remove();
+                    let commentCount = parseInt(commentCountSpan.textContent);
+                    commentCount--;
+                    commentCountSpan.textContent = commentCount;
+                });
+            }
+        });
+
+        // Delete post functionality with modal
+        deleteBtn.addEventListener('click', () => {
+            postToDelete = postElement;
+            deleteModal.classList.remove('hidden');
+        });
+    }
+
+        document.addEventListener('DOMContentLoaded', () => {
+    // DOM elements
+    const postCreationCard = document.getElementById('post-creation-card');
+    const initialInput = document.getElementById('initial-input');
+    const expandedContent = document.getElementById('expanded-content');
+    const noteInput = document.getElementById('note-input');
+    const typedPostInputs = document.getElementById('typed-post-inputs');
+    const postTitleInput = document.getElementById('post-title-input');
+    const postDateInput = document.getElementById('post-date-input');
+    const postDescriptionInput = document.getElementById('post-description-input');
+    const postButton = document.getElementById('post-button');
+    const cancelButton = document.getElementById('cancel-button');
+  
+    const postActionBtns = document.querySelectorAll('.post-action-btn');
+    const fileInput = document.getElementById('file-upload');
+    const filePreviewContainer = document.getElementById('file-preview-container');
+    const eventList = document.getElementById('event-list');
+    const reminderList = document.getElementById('reminder-list');
+    const taskList = document.getElementById('task-list');
+
+    // Modal elements
+    const shareCodeBtn = document.querySelector('.share-code-btn');
+    const shareCodeModal = document.getElementById('shareCodeModal');
+    const deleteModal = document.getElementById('deleteModal');
+    const copyCodeBtn = document.getElementById('copyCodeBtn');
+    const classCodeText = document.getElementById('classCode');
+
+    let postType = 'Note';
+    let postToDelete = null;
+
+    // Event listener to expand the card when the initial input is clicked
+    initialInput.addEventListener('focus', () => {
+        postCreationCard.classList.add('expanded');
+        expandedContent.classList.remove('hidden');
+        initialInput.classList.add('hidden');
+        showInputFields('Note');
+    });
+
+    // Event listener for the Cancel button
+    cancelButton.addEventListener('click', () => {
+        resetPostCard();
+    });
+
+    // Handle post type selection
+    postActionBtns.forEach(button => {
+        button.addEventListener('click', (event) => {
+            postActionBtns.forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            postType = event.currentTarget.dataset.type;
+            showInputFields(postType);
+        });
+    });
+
+
+
+    // Function to show/hide input fields based on post type
+    function showInputFields(type) {
+        noteInput.classList.add('hidden');
+        typedPostInputs.classList.add('hidden');
+        noteInput.value = '';
+        postTitleInput.value = '';
+        postDateInput.value = '';
+        postDescriptionInput.value = '';
+        fileInput.value = '';
+        filePreviewContainer.innerHTML = '';
+
+        if (type === 'Note' || type === 'File') {
+            noteInput.classList.remove('hidden');
+            noteInput.placeholder = "What's taking place in your classroom?";
+            noteInput.focus();
+        } else {
+            typedPostInputs.classList.remove('hidden');
+            postTitleInput.placeholder = `Enter ${type} Title...`;
+            postDescriptionInput.placeholder = `Description: What's taking place in your classroom?`;
+            postTitleInput.focus();
+        }
+    }
+
+    // Handle file upload and preview
+    fileInput.addEventListener('change', (event) => {
+        filePreviewContainer.innerHTML = '';
+        const files = event.target.files;
+        if (files.length > 0) {
+            for (const file of files) {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        filePreviewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    const fileSpan = document.createElement('span');
+                    fileSpan.textContent = file.name;
+                    filePreviewContainer.appendChild(fileSpan);
+                }
+            }
+        }
+    });
+
+    // Handle post creation
+    postButton.addEventListener('click', async () => {
+    let content = '';
+    let title = '';
+    let date = '';
+
+
+    if (postType === 'Note' || postType === 'File') {
+        content = noteInput.value.trim();
+        title = postType;
+    } else {
+        title = postTitleInput.value.trim();
+        date = postDateInput.value; // can be empty string
+        content = postDescriptionInput.value.trim();
+    }
+        const teacherID = auth.currentUser ? auth.currentUser.uid : null;
+let classroomId = new URLSearchParams(window.location.search).get('classroomId');
+if (!classroomId) {
+  classroomId = localStorage.getItem('selectedClassId');
+}
+if (!classroomId) {
+  alert("No classroom selected! Please go back to the homepage.");
+  window.location.href = "homepage-teachers.html";
+}
+
+    const files = fileInput.files;
+
+    if (title || content || files.length > 0) {
+        try {
+            // Save post to Firestore
+            const postData = {
+    task: title || null,
+    description: content || '',
+    type: postType,
+    date: date || null,
+    teacherID: teacherID,
+    classroomID: classroomId,
+    created_at: serverTimestamp()
+};
+
+            const docRef = await addDoc(collection(db, "posts"), postData);
+            console.log("Post added with ID:", docRef.id);
+
+            // Create local DOM element
+            const newPost = createPostElement(title, content, postType, date, files);
+            postFeed.prepend(newPost);
+            addPostInteractionListeners(newPost);
+            if (postType === 'Event' || postType === 'Reminder' || postType === 'Task') {
+                createRightSectionItem(title, date, postType);
+            }
+
+            resetPostCard();
+        } catch (error) {
+            console.error("Error adding post to Firestore:", error);
+            alert("Failed to save post. Please try again.");
+        }
+    } else {
+        alert('Please add some content, a title, or a file to your post.');
+    }
+    });
+
+    
+    function resetPostCard() {
+        noteInput.value = '';
+        postTitleInput.value = '';
+        postDateInput.value = '';
+        postDescriptionInput.value = '';
+        fileInput.value = '';
+        filePreviewContainer.innerHTML = '';
+        
+        expandedContent.classList.add('hidden');
+        initialInput.classList.remove('hidden');
+        postCreationCard.classList.remove('expanded');
+        
+        postType = 'Note';
+        postActionBtns.forEach(btn => btn.classList.remove('active'));
+        document.querySelector('.post-action-btn[data-type="Note"]').classList.add('active');
+    }
+
+    // Custom Modal Functionality
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.querySelector('.close-btn').addEventListener('click', () => modal.classList.add('hidden'));
+        modal.querySelector('.modal-close-btn')?.addEventListener('click', () => modal.classList.add('hidden'));
+        modal.querySelector('.modal-cancel-btn')?.addEventListener('click', () => modal.classList.add('hidden'));
+    });
+
+    shareCodeBtn.addEventListener('click', () => {
+        shareCodeModal.classList.remove('hidden');
+    });
+
+    copyCodeBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(classCodeText.textContent);
+        alert('Class code copied!');
+    });
+
+    // Confirm Delete functionality
+    document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+        if (postToDelete) {
+            postToDelete.remove();
+            postToDelete = null;
+        }
+        deleteModal.classList.add('hidden');
+    });
+
+    // Initialize listeners for any pre-existing posts on page load (like the pizza party post)
+    document.querySelectorAll('.post-feed-card').forEach(post => {
+        addPostInteractionListeners(post);
+    });
+
+    // Add event listeners to delete existing comments on page load
+    document.querySelectorAll('.comment-item .delete-comment-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const commentItem = btn.closest('.comment-item');
+            const postCard = btn.closest('.post-feed-card');
+            if (commentItem && postCard) {
+                commentItem.remove();
+                const commentCountSpan = postCard.querySelector('.comment-count');
+                if (commentCountSpan) {
+                    let count = parseInt(commentCountSpan.textContent);
+                    commentCountSpan.textContent = count > 0 ? count - 1 : 0;
+                }
+            }
+        });
+    });
+});
+    </script>
+</body>
+</html>

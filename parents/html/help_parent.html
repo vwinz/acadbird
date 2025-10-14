@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Help & Support - AcadBird</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        /* =======================
+           Base Styles
+        ======================= */
+        html {
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #dbe7f7;
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* =======================
+           Navbar
+        ======================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: #0a3b82;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 70px;
+            height: 40px;
+        }
+
+        .logo-text-img {
+            height: 28px;
+        }
+        .middle-logo {
+        width: 90px;
+        height: 40px;
+        margin: 0 auto;
+      }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-icons .icon {
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .account-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .account-menu .dropdown-icon {
+            width: 12px;
+            height: 14px;
+        }
+
+        /* Dropdown Menu */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background-color: #ffffff;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+
+        /* =======================
+           Secondary Header
+        ======================= */
+        .secondary-header {
+            background-color: #e7efff;
+            display: flex;
+            justify-content: center;
+            padding: 12px 30px;
+            border-bottom: 1px solid #c9d7f8;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .nav-item {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item.active {
+            font-weight: 700;
+            color: #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .separator {
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            margin: 0;
+        }
+
+        /* =======================
+           Main Content & Help Page
+        ======================= */
+        .main-content {
+            padding: 35px 45px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow: auto;
+            height: calc(100vh - 115px);
+        }
+
+        .help-container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .main-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .help-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .help-category {
+            flex: 1;
+            min-width: 200px;
+            background-color: #f0f4f9;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: 1px solid #d0dff8;
+        }
+
+        .help-category:hover {
+            background-color: #e7efff;
+        }
+
+        .help-category i {
+            font-size: 32px;
+            color: #0a3b82;
+            margin-bottom: 10px;
+        }
+
+        .help-category h3 {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        .help-category p {
+            margin: 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .faq-section {
+            margin-top: 30px;
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+            border: 1px solid #d0dff8;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 15px;
+            background-color: #f8fbff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .faq-answer {
+            padding: 0 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background-color: white;
+        }
+
+        .faq-answer.show {
+            padding: 15px;
+            max-height: 500px;
+        }
+
+        .contact-support {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .contact-support p {
+            margin-bottom: 15px;
+        }
+
+        .action-button {
+            background: linear-gradient(to bottom, #ffc400, #ffa500);
+            border: 2px solid #000;
+            border-radius: 12px;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="dashboard_parents.html"><img src="back.png" alt="Back" class="back-icon" /></a>
+                <img src="AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+                <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+            </div>
+            <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+            <div class="nav-icons">
+                <a href="notification_parent.html">
+                    <img src="Notification.png" alt="Notifications" class="icon" />
+                </a>
+                <a href="help_parent.html" class="active">
+                    <img src="Help.png" alt="Help" class="icon" />
+                </a>
+                <a href="account_parent.html">
+                    <div class="account-menu">
+                        <img src="account icon.png" alt="User Account" class="icon" />
+                        <i class="fas fa-caret-down dropdown-icon"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="secondary-header">
+            <nav class="nav-menu">
+                <a href="homepage_parents.html" class="nav-item">Home</a>
+                <a href="dashboard_parents.html" class="nav-item">Dashboard</a>
+                <a href="activitylog_parents.html" class="nav-item">Activity Logs</a>
+                <a href="resources_parents.html" class="nav-item">Resources</a>
+                <a href="messages_parents.html" class="nav-item">Messages</a>
+                <a href="account_parent.html" class="nav-item">Settings</a>
+            </nav>
+        </div>
+
+        
+        <div class="separator"></div>
+
+        <div class="main-content">
+            <div class="help-container">
+                <h1 class="main-title">Help & Support</h1>
+                <div class="help-categories">
+                    <div class="help-category" data-category="getting-started">
+                        <i class="fas fa-play-circle"></i>
+                        <h3>Getting Started</h3>
+                        <p>Learn how to navigate the parent portal</p>
+                    </div>
+                    <div class="help-category" data-category="monitoring">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Monitoring Progress</h3>
+                        <p>Track your child's academic performance</p>
+                    </div>
+                    <div class="help-category" data-category="communication">
+                        <i class="fas fa-comments"></i>
+                        <h3>Communication</h3>
+                        <p>Connect with teachers and administrators</p>
+                    </div>
+                    <div class="help-category" data-category="troubleshooting">
+                        <i class="fas fa-tools"></i>
+                        <h3>Troubleshooting</h3>
+                        <p>Common issues and solutions</p>
+                    </div>
+                </div>
+
+                <div class="faq-section">
+                    <h2>Frequently Asked Questions</h2>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How do I view my child's grades?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            You can view your child's grades by navigating to the Dashboard section. There you'll find a summary of their current grades and performance in each subject. For detailed assignment scores, click on the specific subject.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How can I contact my child's teacher?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            To contact a teacher, go to the Messages section and select the teacher you wish to contact from your contacts list. You can send direct messages or schedule a meeting through the platform.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            What should I do if I forgot my password?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            If you've forgotten your password, click on the "Forgot Password" link on the login page. You'll receive an email with instructions to reset your password. If you don't receive the email, check your spam folder or contact the school administration.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How do I update my contact information?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            To update your contact information, go to Settings > Profile. There you can edit your email address, phone number, and other contact details. Please ensure this information is current so the school can reach you when needed.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            How can I set up notifications for my child's activities?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            You can customize your notification preferences in the Settings > Notification Settings section. You can choose to receive alerts for new messages, assignment postings, grades, attendance, and school announcements.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-support">
+                    <p>Still need help? Contact our support team</p>
+                    <button class="action-button">Contact Support</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Element Selections ---
+            const accountMenu = document.querySelector('.account-menu');
+            const dropdown = document.querySelector('.dropdown-content');
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            const contactSupportBtn = document.querySelector('.contact-support .action-button');
+
+            // --- Event Listeners ---
+
+            // 1. Toggle Dropdown Menu
+            accountMenu.addEventListener('click', function (event) {
+                event.stopPropagation();
+                dropdown.classList.toggle('show');
+            });
+
+            // 2. Close dropdown if clicked outside
+            window.addEventListener('click', function () {
+                if (dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                }
+            });
+
+            // 3. FAQ functionality
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    const isOpen = answer.classList.contains('show');
+                    
+                    // Close all answers
+                    document.querySelectorAll('.faq-answer').forEach(ans => {
+                        ans.classList.remove('show');
+                    });
+                    
+                    // Toggle current answer if it wasn't already open
+                    if (!isOpen) {
+                        answer.classList.add('show');
+                    }
+                });
+            });
+
+            // 4. Contact support button
+            if (contactSupportBtn) {
+                contactSupportBtn.addEventListener('click', function() {
+                    alert('Our support team will contact you shortly. Thank you for reaching out!');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+ /* =======================
+        Base Styles
+      ======================= */
+      html, body {
+        height: 100%;
+        box-sizing: border-box;
+        margin: 0;
+        font-family: "Poppins", Arial, sans-serif;
+        background-color: #dbe7f7;
+        color: #333;
+      }
+
+      *, *:before, *:after {
+        box-sizing: inherit;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      
+      .content-wrapper {
+        max-width: 1200px; /* Adjust this value as needed */
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      /* =======================
+        Navbar
+      ======================= */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 24px;
+        background-color: #0a3b82;
+        color: white;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .logo-img {
+        width: 70px;
+        height: 40px;
+      }
+      .logo-text-img {
+        height: 28px;
+      }
+
+      .middle-logo {
+        width: 90px;
+        height: 40px;
+        margin: 0 auto;
+      }
+
+      .back-icon {
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+      }
+      .nav-icons {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+      .nav-icons .icon {
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+      
+      }
+      .account-menu {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+      }
+      .account-menu .dropdown-icon {
+        width: 12px;
+        height: 14px;
+        color: white;
+      }
+      .nav-icons a {
+        text-decoration: none;
+      }
+
+      /* =======================
+        Secondary Header
+      ======================= */
+      .secondary-header {
+        background-color: #e7efff;
+        display: flex;
+        justify-content: center;
+        padding: 12px 30px;
+        border-bottom: 1px solid #c9d7f8;
+      }
+      .nav-menu {
+        display: flex;
+        gap: 22px;
+        align-items: center;
+        font-size: 16px;
+      }
+      .nav-item {
+        color: #000;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 3px;
+        transition: background-color 0.3s;
+      }
+      .nav-item.active {
+        font-weight: 700;
+        color: #0a3b82;
+        border-bottom: 2px solid #0a3b82;
+      }
+      .separator {
+        width: 100%;
+        height: 1px;
+        background-color: #000;
+        margin: 0;
+      }
+
+      /* =======================
+        Main Content & Layout
+      ======================= */
+      .main-content {
+        padding: 35px 45px;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        align-items: flex-start;
+      }
+      @media (max-width: 900px) {
+        .main-content {
+          grid-template-columns: 1fr;
+          padding: 20px;
+        }
+      }
+      .left-section, .right-section {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* Card Styles */
+      .card {
+        background-color: #fff;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        padding: 25px;
+        border: 2px solid #000;
+      }
+      .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
+
+      /* Post Feed */
+      .post-feed-card {
+        margin-bottom: 20px;
+      }
+      .post-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .post-avatar {
+        font-size: 40px;
+        color: #777;
+      }
+      .user-name {
+        font-weight: 600;
+        margin: 0;
+      }
+      .class-name {
+        font-size: 0.8rem;
+        color: #777;
+        margin: 0;
+      }
+      .timestamp {
+        font-size: 0.8rem;
+        color: #999;
+      }
+      .post-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0 0 10px 0;
+      }
+      .post-text {
+        margin: 0 0 10px 0;
+        line-height: 1.5;
+      }
+      .post-details {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 15px 0;
+      }
+      .post-details li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 5px;
+      }
+      .post-image {
+        max-width: 100%;
+        border-radius: 10px;
+        margin-top: 15px;
+      }
+      .post-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 15px;
+        border-top: 1px solid #eee;
+        margin-top: 15px;
+      }
+      .post-interaction {
+        display: flex;
+        gap: 15px;
+      }
+      .like-btn, .comment-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        color: #777;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px;
+        transition: color 0.2s, transform 0.2s;
+      }
+      .like-btn.liked {
+        color: #ff5a5f;
+        animation: pulse 0.3s ease-in-out;
+      }
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+      }
+      .comments-section {
+        margin-top: 15px;
+      }
+      .comment-input-container {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .comment-input {
+        flex-grow: 1;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        padding: 8px 15px;
+      }
+      .submit-comment-btn {
+        background-color: #0a3b82;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 20px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .comments-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .comment-item {
+        background-color: #f0f4f9;
+        padding: 10px 15px;
+        border-radius: 15px;
+        position: relative;
+      }
+      .comment-author {
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .comment-text {
+        font-size: 0.9rem;
+        margin-top: 2px;
+      }
+      .comment-timestamp {
+        font-size: 0.7rem;
+        color: #999;
+        margin-top: 5px;
+      }
+
+      /* Utility Class */
+      .hidden {
+        display: none !important;
+      }

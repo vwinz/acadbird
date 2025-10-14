@@ -1,0 +1,638 @@
+     /* =======================
+            Base Styles
+        ======================= */
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #dbe7f7;
+            margin: 0;
+            font-size: 16px;
+            color: #000;
+        }
+
+        /* =======================
+            Navbar
+        ======================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: #0a3b82;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 70px;
+            height: 40px;
+        }
+
+        .logo-text-img {
+            height: 28px;
+        }
+
+        .middle-logo {
+            width: 90px;
+            height: 40px;
+            margin: 0 auto;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-icons .icon {
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        .account-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .account-menu .dropdown-icon {
+            width: 12px;
+            height: 14px;
+            cursor: pointer;
+            color: #e0e0e0;
+        }
+
+        /* =======================
+            Secondary Header (Navigation)
+        ======================= */
+        .secondary-header {
+            background-color: #e7efff;
+            display: flex;
+            justify-content: center;
+            padding: 12px 30px;
+            position: static;
+            top: 44px;
+            z-index: 999;
+            border-bottom: 1px solid #c9d7f8;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .nav-item {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item.active {
+            font-weight: 700;
+            color: #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .nav-item:hover {
+            background-color: #c9d7f8;
+        }
+
+        /* =======================
+            Separator Line
+        ======================= */
+        .separator {
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            margin: 0;
+            color: #000;
+        }
+
+        /* =======================
+            Main Content
+        ======================= */
+        .main-content {
+            padding: 35px 45px;
+            background-color: transparent;
+            position: relative;
+            z-index: 0;
+            overflow: auto;
+            height: calc(100vh - 100px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .dashboard-content {
+            width: 100%;
+            max-width: 1400px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            color: #000;
+        }
+
+        /* Dashboard title */
+        .dashboard-title {
+            flex-basis: 100%;
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* ===== Calendar card ===== */
+        .calendar-card {
+            flex: 1 1 70%;
+            background-color: #ffffff;
+            border-radius: 50px;
+            border: 5px solid #000;
+            min-height: 130px;
+            position: relative;
+            padding: 25px 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background-color: #fbbc05;
+            color: #000;
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Calendar Header Styles */
+        .calendar-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .calendar-year,
+        .calendar-month {
+            font-weight: 700;
+        }
+
+        .nav-arrow {
+            font-size: 16px;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .nav-arrow i {
+            padding: 8px;
+            background-color: #e9ecef;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Calendar Grid Styles */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            text-align: center;
+            font-weight: 600;
+            flex-grow: 1;
+        }
+
+        .day-name {
+            font-weight: 700;
+            color: #0a3b82;
+            padding: 5px 0;
+        }
+
+        .day {
+            padding: 8px 0;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .day.current-day {
+            border: 2px solid #0a3b82;
+            font-weight: 700;
+        }
+
+        .day.disabled {
+            opacity: 0.5;
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+
+        /* Calendar Legends */
+        .calendar-legends {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            margin-right: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .exam-day {
+            background-color: #ffccbc;
+        }
+
+        .due-date {
+            background-color: #fff9c4;
+        }
+
+        .holiday {
+            background-color: #bbdefb;
+        }
+
+        /* ===== Data Dashboard ===== */
+        .data-dashboard {
+            flex: 1 1 30%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 250px;
+            min-width: 120px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        /* Responsive small box cards */
+        .data-card,
+        .data-card-green {
+            background-color: #87e7df;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: none;
+            border: 1px solid #000;
+            flex: 1;
+            min-height: 70px;
+            max-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .data-card-green {
+            background-color: #a6d9d3;
+        }
+
+        /* Numbers & labels adjust with box */
+        .data-number {
+            font-size: clamp(14px, 6vw, 20px);
+            font-weight: 700;
+            color: #000;
+        }
+
+        .data-label {
+            color: #000;
+            font-weight: 600;
+            font-size: clamp(10px, 1.5vw, 12px);
+            margin-top: 2px;
+        }
+
+        /* Button stays flexible */
+        .overview-btn {
+            margin-top: 6px;
+            background-color: #fbbc05;
+            color: #000;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 6px 8px;
+            border: 1.8px solid #000;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: none;
+            width: 180%;
+            max-width: 250px;
+        }
+
+        /* ===== Bottom Row cards ===== */
+        .bottom-row {
+            flex-basis: 100%;
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .card-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px 15px;
+            box-shadow: none;
+            border: 1px solid #000;
+            flex: 1 1 0;
+            
+        }
+
+        /* Card header */
+        .card-header {
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #fbbc05;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            color: #000;
+            animation: popup 0.5s ease-out;
+        }
+
+        /* Student list styles */
+        .student-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .student-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 400;
+            color: #000;
+        }
+
+        .student-name {
+            flex-grow: 1;
+            font-size: 15px;
+        }
+
+        /* Progress Bars */
+        .progress-bar {
+            flex-shrink: 0;
+            width: 90px;
+            height: 10px;
+            background-color: #e1e1e1;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #c1c1c1;
+            position: relative;
+        }
+
+        .progress-fill-green {
+            background-color: #0a3b82;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .progress-fill-red {
+            background-color: #f4978e;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .progress-value {
+            width: 20px;
+            text-align: right;
+            font-size: 11px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        /* ===== Modal Pop-up Styles ===== */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid #000;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-button {
+            color: #000;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #ff0000;
+        }
+
+        .modal-content h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #0a3b82;
+            padding-bottom: 10px;
+        }
+
+        .modal-details p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .modal-details strong {
+            color: #0a3b82;
+            font-weight: 700;
+        }
+
+
+        /*loading screen*/
+        #loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2); /* dim screen */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+.loader-3 {
+  width: 10em;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.circle {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+}
+
+.circle:nth-child(1) {
+  background-color: #90be6d;
+}
+
+.circle:nth-child(2) {
+  background-color: #f9c74f;
+}
+
+.circle:nth-child(3) {
+  background-color: #f8961e;
+}
+
+.circle:nth-child(4) {
+  background-color: #f3722c;
+}
+
+.circle:nth-child(5) {
+  background-color: #f94346;
+}
+
+.circle::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: animateLoader38 2s ease-out infinite;
+}
+
+.circle:nth-child(1)::before {
+  background-color: #90be6d;
+}
+
+.circle:nth-child(2)::before {
+  background-color: #f9c74f;
+  animation-delay: 0.2s;
+}
+
+.circle:nth-child(3)::before {
+  background-color: #f8961e;
+  animation-delay: 0.4s;
+}
+
+.circle:nth-child(4)::before {
+  background-color: #f3722c;
+  animation-delay: 0.6s;
+}
+
+.circle:nth-child(5)::before {
+  background-color: #f94346;
+  animation-delay: 0.8s;
+}
+
+@keyframes animateLoader38 {
+  0% {
+    transform: scale(1);
+  }
+
+  50%,
+  75% {
+    transform: scale(2.5);
+  }
+
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+
+
+@keyframes popup {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.popup-animate {
+  animation: popup 0.5s ease-out forwards;
+}
+
+.calendar-card,
+.data-card,
+.data-card-green,
+.card-section,
+.class-card,
+.new-class-card {
+  animation: popup 0.6s ease-out;
+  animation-fill-mode: both; /* stays in final position */
+}
+
+/* Stagger delays for smoother effect */
+.calendar-card { animation-delay: 0.1s; }
+.data-card { animation-delay: 0.2s; }
+.data-card-green { animation-delay: 0.3s; }
+.card-section { animation-delay: 0.4s; }
+.class-card { animation-delay: 0.2s; }
+.new-class-card { animation-delay: 0.3s; }

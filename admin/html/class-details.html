@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Admin - Class: Kinder Lily</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        // Customizing Tailwind to match the AcadBird color scheme and font
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'acad-navy': '#0a3b82', // Dark blue from navbar
+                        'acad-light-bg': '#dbe7f7', // Light blue body background
+                        'acad-header-bg': '#e7efff', // Secondary header background
+                        'class-card': '#ffc107', // Amber/Yellow for student cards
+                        'metric-green': '#34d399', // A bright green for buttons/active status
+                        'acad-black': '#000',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Styles */
+        html, body {
+            height: 100%; width: 100%; margin: 0; font-size: 16px;
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #dbe7f7;
+            color: #000;
+        }
+
+        /* Navbar & Header */
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 24px; background-color: #0a3b82; color: white; border-bottom: 1px solid #000; }
+        .secondary-header { background-color: #e7efff; display: flex; justify-content: center; padding: 12px 0; border-bottom: 1px solid #000; }
+        .nav-menu { display: flex; gap: 22px; align-items: center; font-size: 16px; overflow-x: auto; white-space: nowrap; }
+        .nav-item { color: #000; text-decoration: none; font-weight: 500; padding: 5px 10px; border-radius: 3px; transition: background-color 0.3s; }
+        .nav-item.active { font-weight: 700; border-bottom: 2px solid #000; }
+        .separator { width: 100%; height: 1px; background-color: #000; display: block; }
+
+        /* Main Content Specific Styles */
+        .main-content {
+            padding: 35px 45px;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Class Summary Box */
+        .summary-box {
+            background-color: #ffffff;
+            border: 1px solid #000;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Student Card Grid */
+        .student-grid {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .student-card {
+            background-color: #ffc107; /* class-card color */
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .student-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .student-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+
+        .parent-info {
+            font-size: 12px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        /* Modal Styles */
+        /* Updated modal to use .modal and .modal-content classes consistently for both modals */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 100; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 50px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 80%; 
+            max-width: 500px; /* Kept max-width consistent */
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: 2px solid #0a3b82;
+        }
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .main-content { padding: 20px; }
+            .summary-info { flex-direction: column; }
+            .student-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="navbar">
+            <div class="flex justify-between items-center w-full px-6">
+                <div class="flex items-center gap-4">
+                    <img src="AcadBird - White no text.png" alt="AcadBird Logo" class="w-[70px] h-[40px]" />
+                    <img src="AcadBird - White Text.png" class="h-[28px]" alt="AcadBird Text">
+                </div>
+                <img src="sunhill.png" alt="AcadBird" class="w-[90px] h-[40px]" />
+                <div class="flex items-center gap-4">
+                    <a href="notification_admin.html" title="Notifications"><i class="fas fa-bell text-xl"></i></a>
+                    <a href="help_admin.html" title="Help"><i class="fas fa-question-circle text-xl"></i></a>
+                    <a href="settings_admin.html" title="Settings">
+                        <div class="flex items-center gap-1">
+                            <i class="fas fa-user-circle text-xl"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="secondary-header">
+           <div class="w-full px-6 overflow-x-auto flex justify-center">
+               <nav class="nav-menu">
+                    <a href="dashboard_admin.html" class="nav-item">Dashboard</a>
+                    <a href="classes-management.html" class="nav-item active">Classes Management</a> 
+                    <a href="users-management.html" class="nav-item">Users Management</a>
+                    <a href="calendar.html" class="nav-item">Calendar</a>
+                    <a href="settings_admin.html" class="nav-item">Settings</a>
+                </nav>
+           </div>
+        </div>
+        
+        <div class="separator"></div>
+
+        <div class="main-content">
+            <div class="w-full max-w-6xl mx-auto flex flex-col gap-8">
+                
+                <h1 class="text-4xl font-extrabold text-acad-navy" id="classTitle"></h1>
+
+                <div class="summary-box">
+                    <h2 class="text-2xl font-bold mb-4 border-b pb-2 text-acad-navy">Class Overview</h2>
+                    <div class="flex summary-info justify-between gap-6 text-gray-700">
+                        <div class="flex-1 space-y-2">
+                            <p><span class="font-semibold text-xl">Class Name:</span> <span id="className"></span></p>
+                            <p><span class="font-semibold">Grade Level:</span> <span id="classGrade"></span></p>
+                            <p><span class="font-semibold">Students Enrolled:</span> <span id="studentCount"></span> / <span id="classCapacity"></span> Capacity</p>
+                            <p><span class="font-semibold">Status:</span> <span id="classStatus" class="font-bold"></span></p>
+                        </div>
+                        <div class="flex-1 bg-acad-header-bg p-4 rounded-lg border border-acad-navy/50">
+                            <h3 class="font-bold text-xl text-acad-navy mb-2">Homeroom Teacher</h3>
+                            <p class="text-lg"><i class="fas fa-user-tie mr-2"></i> <span class="font-extrabold" id="teacherName"></span></p>
+                            <p class="text-sm text-gray-600"><i class="fas fa-envelope mr-1"></i> <span id="teacherEmail"></span></p>
+                            <p class="text-sm text-gray-600"><i class="fas fa-phone mr-1"></i> <span id="teacherPhone"></span></p>
+                            <button id="viewTeacherProfileBtn" class="mt-3 py-1 px-4 text-sm bg-acad-navy text-white rounded-full hover:bg-acad-navy/90 transition">View Teacher Profile</button>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-gray-200">
+                           <button id="editClassBtn" class="py-2 px-5 bg-metric-green text-white font-bold rounded-lg shadow-md hover:bg-metric-green/80 transition mr-3">Edit Class </button>
+                           <button id="archiveClassBtn" class="py-2 px-5 bg-red-500 text-white font-bold rounded-lg shadow-md hover:bg-red-500/80 transition">Archive Class</button>
+                    </div>
+                </div>
+
+                <div class="summary-box">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-2 mb-4 gap-4">
+                        <h2 class="text-2xl font-bold text-acad-navy" id="rosterTitle">Student Roster (0 Students) 🧑‍🎓</h2>
+                        
+                        <div class="flex items-center space-x-3">
+                            <label for="sortFilter" class="text-sm font-semibold text-gray-700">Sort By:</label>
+                            <select id="sortFilter" class="p-2 border border-gray-300 rounded-md focus:ring-acad-navy focus:border-acad-navy text-sm">
+                                <option value="default">Default Order</option>
+                                <option value="surname-asc">Surname (A-Z)</option>
+                                <option value="surname-desc">Surname (Z-A)</option>
+                            </select>
+                            <button id="addStudentBtn" class="py-1 px-4 bg-acad-navy text-white rounded-full hover:bg-acad-navy/90 transition text-sm font-semibold">
+                                <i class="fas fa-plus-circle mr-1"></i> Add Student
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="student-grid" id="studentRosterGrid">
+                        </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <div id="editClassModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn edit-modal-close">&times;</span>
+        <h2 class="text-2xl font-bold text-acad-navy mb-4 border-b pb-2">Edit Class Details</h2>
+        
+        <form id="editClassForm" class="space-y-4">
+            <div>
+                <label for="editClassName" class="block text-sm font-medium text-gray-700">Class Name:</label>
+                <input type="text" id="editClassName" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required>
+            </div>
+            <div>
+                <label for="editClassCapacity" class="block text-sm font-medium text-gray-700">Class Capacity:</label>
+                <input type="number" id="editClassCapacity" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" min="1" required>
+            </div>
+            <div class="pt-4 flex justify-end">
+                <button type="button" id="cancelEditBtn" class="py-2 px-4 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition mr-3">Cancel</button>
+                <button type="submit" class="py-2 px-4 bg-metric-green text-white font-bold rounded-lg shadow-md hover:bg-metric-green/80 transition">Save Changes</button>
+            </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="addStudentModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn add-student-modal-close">&times;</span>
+        <h2 class="text-2xl font-bold text-acad-navy mb-4 border-b pb-2">Enroll New Student</h2>
+        
+        <form id="addStudentForm" class="space-y-4">
+            <div>
+                <label for="newStudentName" class="block text-sm font-medium text-gray-700">Student's Full Name:</label>
+                <input type="text" id="newStudentName" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required placeholder="e.g., Emily T. Johnson">
+            </div>
+            <div>
+                <label for="newParentName" class="block text-sm font-medium text-gray-700">Parent/Guardian Name:</label>
+                <input type="text" id="newParentName" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required placeholder="e.g., David Johnson">
+            </div>
+             <div>
+                <label for="newParentEmail" class="block text-sm font-medium text-gray-700">Parent's Email:</label>
+                <input type="email" id="newParentEmail" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required placeholder="e.g., david.j@mail.com">
+            </div>
+             <div>
+                <label for="newParentContact" class="block text-sm font-medium text-gray-700">Parent's Contact Number:</label>
+                <input type="tel" id="newParentContact" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required placeholder="(555) 000-0000">
+            </div>
+            <div class="pt-4 flex justify-end">
+                <button type="button" id="cancelAddStudentBtn" class="py-2 px-4 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition mr-3">Cancel</button>
+                <button type="submit" class="py-2 px-4 bg-acad-navy text-white font-bold rounded-lg shadow-md hover:bg-acad-navy/90 transition">Enroll Student</button>
+            </div>
+        </form>
+      </div>
+    </div>
+
+
+    <script>
+        // Feature 1: Sample Data Structure (Updated with parent emails)
+        let classData = { 
+            id: 'K001',
+            name: "Kinder Lily",
+            grade: "Kindergarten",
+            capacity: 25,
+            status: "Active",
+            teacher: {
+                name: "Ms. Rose",
+                email: "rose.teacher@acadbird.edu",
+                phone: "(555) 123-4567",
+                profileUrl: "teacher-profile-admin.html?id=T101"
+            },
+            students: [
+                { id: 1, name: "Mark Santiago", parent: "Ana Santiago", contact: "(555) 001-2023", email: "ana.santiago@mail.com" },
+                { id: 2, name: "Christine Rivera", parent: "Ben Rivera", contact: "(555) 002-2023", email: "ben.rivera@mail.com" },
+                { id: 3, name: "Princess Luna", parent: "King Luna", contact: "(555) 003-2023", email: "king.luna@mail.com" },
+                { id: 4, name: "Alpha Bautista", parent: "Sarah Bautista", contact: "(555) 004-2023", email: "sarah.bautista@mail.com" }, // Simplified name for sorting
+                { id: 5, name: "Lance Aquino", parent: "Clara Aquino", contact: "(555) 005-2023", email: "clara.aquino@mail.com" }, // Simplified name for sorting
+               ],
+            // Store the original list order (by ID) - This will be dynamic now
+        };
+        
+        // Helper function to extract the last word (surname) from a full name
+        function getSurname(fullName) {
+            const parts = fullName.trim().split(/\s+/);
+            if (parts.length > 1) {
+                return parts[parts.length - 1];
+            }
+            return parts[0]; // Fallback to the first name if no space is found
+        }
+        
+        // --- Core Functions ---
+
+        // Function to update all dynamic data in the HTML
+        function renderClassDetails(studentsList = classData.students) {
+            const currentStudentCount = classData.students.length;
+            const remainingCapacity = classData.capacity - currentStudentCount;
+
+            // --- Update Overview Details ---
+            document.getElementById('classTitle').textContent = `Class: ${classData.name} Details`;
+            document.getElementById('className').textContent = classData.name;
+            document.getElementById('classGrade').textContent = classData.grade;
+            document.getElementById('studentCount').textContent = currentStudentCount; 
+            document.getElementById('classCapacity').textContent = classData.capacity;
+            document.getElementById('classStatus').textContent = classData.status;
+
+            const statusElement = document.getElementById('classStatus');
+            statusElement.className = classData.status === 'Active' ? 'text-metric-green font-bold' : 'text-red-500 font-bold';
+
+            document.getElementById('teacherName').textContent = classData.teacher.name;
+            document.getElementById('teacherEmail').textContent = classData.teacher.email;
+            document.getElementById('teacherPhone').textContent = classData.teacher.phone;
+
+            document.getElementById('rosterTitle').textContent = `Student Roster (${currentStudentCount} Students) 🧑‍🎓`;
+            
+            // --- Render Student Roster ---
+            const rosterGrid = document.getElementById('studentRosterGrid');
+            rosterGrid.innerHTML = ''; // Clear existing cards
+
+            studentsList.forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.onclick = () => viewStudentProfile(student.id, student.name);
+                
+                // Card content (No Icon, Detailed Info)
+                card.innerHTML = `
+                    <h3 class="student-name">${student.name}</h3>
+                    <p class="parent-info">Parent: <span class="font-bold">${student.parent}</span></p>
+                    <p class="parent-info text-xs mt-1"><i class="fas fa-envelope mr-1"></i> ${student.email}</p>
+                    <p class="parent-info text-xs">Contact: ${student.contact}</p>
+                `;
+                rosterGrid.appendChild(card);
+            });
+
+            // Add the 'Available Seats' card
+            const capacityCard = document.createElement('div');
+            capacityCard.className = 'student-card bg-gray-200/50 border-dashed border-gray-400 border-2 flex items-center justify-center';
+            capacityCard.style.cursor = 'default';
+            capacityCard.innerHTML = `<p class="text-sm font-semibold text-gray-500">${Math.max(0, remainingCapacity)} Seats Available</p>`;
+            rosterGrid.appendChild(capacityCard);
+            
+            // Re-apply the current sort filter to the newly rendered list
+            const currentSort = document.getElementById('sortFilter').value;
+            // Prevent infinite loop by not calling handleSortChange if it was the one that provided the list
+            if (studentsList === classData.students) { 
+                handleSortChange({ target: { value: currentSort } });
+            }
+        }
+        
+        // --- Filter/Sort Logic ---
+        function handleSortChange(event) {
+            const sortType = event.target.value;
+            // Ensure we sort the primary data array before re-rendering
+            let listToSort = [...classData.students]; 
+
+            if (sortType === 'surname-asc') {
+                listToSort.sort((a, b) => {
+                    const surnameA = getSurname(a.name);
+                    const surnameB = getSurname(b.name);
+                    return surnameA.localeCompare(surnameB);
+                });
+            } else if (sortType === 'surname-desc') {
+                listToSort.sort((a, b) => {
+                    const surnameA = getSurname(a.name);
+                    const surnameB = getSurname(b.name);
+                    return surnameB.localeCompare(surnameA);
+                });
+            } else {
+                // 'default' option: sort by the original ID
+                listToSort.sort((a, b) => a.id - b.id);
+            }
+            // Pass the sorted list to the renderer
+            renderClassDetails(listToSort);
+        }
+
+        function viewStudentProfile(studentId, studentName) {
+            console.log(`Navigating to student profile for ${studentName} (ID: ${studentId})`);
+            alert(`Viewing profile for ${studentName}. (Simulated Navigation)`);
+        }
+        
+        // --- Modal Control Functions (Edit Class Details) ---
+        const editModal = document.getElementById('editClassModal');
+        const editBtn = document.getElementById('editClassBtn');
+        const editCloseBtn = document.querySelector('#editClassModal .close-btn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const editForm = document.getElementById('editClassForm');
+        
+        function openEditModal() {
+            document.getElementById('editClassName').value = classData.name;
+            document.getElementById('editClassCapacity').value = classData.capacity;
+            editModal.style.display = "block";
+        }
+        
+        function closeEditModal() {
+            editModal.style.display = "none";
+        }
+        
+        // --- Modal Control Functions (Add Student) ---
+        const addStudentModal = document.getElementById('addStudentModal');
+        const addStudentBtn = document.getElementById('addStudentBtn');
+        const addStudentCloseBtn = document.querySelector('#addStudentModal .close-btn');
+        const cancelAddStudentBtn = document.getElementById('cancelAddStudentBtn');
+        const addStudentForm = document.getElementById('addStudentForm');
+
+        function openAddStudentModal() {
+             if (classData.students.length >= classData.capacity) {
+                alert("Class is at full capacity. Please increase class capacity before adding more students.");
+                return;
+            }
+            // Reset the form on open
+            addStudentForm.reset();
+            addStudentModal.style.display = "block";
+        }
+        
+        function closeAddStudentModal() {
+            addStudentModal.style.display = "none";
+        }
+
+
+        // --- Event Listeners (Triggers) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderClassDetails(); // Initial rendering of all data
+
+            // --- FILTER/SORT LISTENER ---
+            document.getElementById('sortFilter').addEventListener('change', handleSortChange);
+            
+            // --- MODAL TRIGGERS ---
+            editBtn.onclick = openEditModal; 
+            editCloseBtn.onclick = closeEditModal;   
+            cancelEditBtn.onclick = closeEditModal; 
+            
+            addStudentBtn.onclick = openAddStudentModal;
+            addStudentCloseBtn.onclick = closeAddStudentModal;
+            cancelAddStudentBtn.onclick = closeAddStudentModal;
+
+
+            // Close modal if the user clicks anywhere outside of it
+            window.onclick = function(event) {
+                if (event.target == editModal) {
+                    closeEditModal();
+                }
+                if (event.target == addStudentModal) {
+                    closeAddStudentModal();
+                }
+            }
+
+            // --- FORM SUBMISSION HANDLERS ---
+            
+            // 1. Edit Class Form
+            editForm.addEventListener('submit', function(e) {
+                e.preventDefault(); 
+                
+                const newName = document.getElementById('editClassName').value.trim();
+                const newCapacity = parseInt(document.getElementById('editClassCapacity').value);
+                
+                if (newName === "") {
+                    alert("Class Name cannot be empty.");
+                    return;
+                }
+                if (newCapacity < classData.students.length) {
+                    alert(`Capacity cannot be less than the current number of students (${classData.students.length}).`);
+                    return;
+                }
+                
+                classData.name = newName;
+                classData.capacity = newCapacity;
+                
+                renderClassDetails();
+                
+                closeEditModal();
+                alert(`Class ${newName} details saved successfully!`);
+            });
+            
+            // 2. Add Student Form
+            addStudentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const studentName = document.getElementById('newStudentName').value.trim();
+                const parentName = document.getElementById('newParentName').value.trim();
+                const parentEmail = document.getElementById('newParentEmail').value.trim();
+                const parentContact = document.getElementById('newParentContact').value.trim();
+
+                if (classData.students.length >= classData.capacity) {
+                    alert("Cannot enroll student: class is full.");
+                    return;
+                }
+                
+                // Create a new student object
+                const newId = Math.max(...classData.students.map(s => s.id)) + 1;
+                const newStudent = {
+                    id: newId,
+                    name: studentName,
+                    parent: parentName,
+                    contact: parentContact,
+                    email: parentEmail
+                };
+                
+                // Add the new student to the class data
+                classData.students.push(newStudent);
+                
+                // Re-render the list to show the new student, respecting the current sort order
+                renderClassDetails(); 
+                
+                closeAddStudentModal();
+                alert(`${studentName} successfully enrolled in ${classData.name}!`);
+            });
+
+            // --- OTHER BUTTON ACTIONS ---
+            document.getElementById('viewTeacherProfileBtn').addEventListener('click', () => {
+                alert(`Viewing profile for ${classData.teacher.name}. (Simulated Navigation)`);
+            });
+
+            document.getElementById('archiveClassBtn').addEventListener('click', () => {
+                if (confirm(`Are you sure you want to archive the class ${classData.name}?`)) {
+                    alert(`Class ${classData.name} is now archived! (Simulated action)`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

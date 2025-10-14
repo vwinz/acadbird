@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AcadBird Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="../style/resources_teacher.css" />
+</head>
+<body>
+    <div class="container">
+         <nav class="navbar">
+        <div class="logo">
+            <img src="AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
+            <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
+        </div>
+        <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+        <div class="nav-icons">
+    <a href="notification_teacher.html" target="_blank">
+        <img src="Notification.png" alt="Notifications" class="icon">
+    </a>
+    <a href="help_teacher.html" target="_blank">
+        <img src="Help.png" alt="Help" class="icon">
+    </a>
+    <a href="settings_teacher.html" target="_blank">
+        <div class="account-menu">
+            <img src="account icon.png" alt="User Account" class="icon">
+        </div>
+    </a>
+</div>
+
+    </nav>
+        <div class="secondary-header">
+            <nav class="nav-menu">
+                <a href="homepage-teachers.html" class="nav-item">Home</a>
+                <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
+                <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
+                <a href="resources_teacher.html" class="nav-item active">Resources</a>
+                <a href="messages_teacher.html" class="nav-item">Messages</a>
+                <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
+            </nav>
+        </div>
+        <div class="separator"></div>
+        <div class="main-content">
+            <div class="resources-section">
+                <div class="week-card unlocked">
+                    <div class="week-header">
+                        <span class="week-title">Week 1</span>
+                        <span class="week-subtitle">Me and My Name</span>
+                        <i class="fas fa-pencil-alt edit-icon week-edit-icon"></i>
+                        <div class="lock-status">
+                            <i class="fas fa-lock-open unlock-icon"></i>
+                            <i class="fas fa-lock lock-icon"></i>
+                        </div>
+                        <i class="fas fa-trash-alt delete-week-icon"></i>
+                    </div>
+                    <div class="week-content">
+                        <div class="topic-card unlocked" data-topic-id="1">
+                            <div class="topic-header">
+                                <span class="topic-title">All About Me</span>
+                                <i class="fas fa-pencil-alt edit-icon topic-edit-icon"></i>
+                                <div class="lock-status">
+                                    <i class="fas fa-lock-open unlock-icon"></i>
+                                    <i class="fas fa-lock lock-icon"></i>
+                                </div>
+                                <i class="fas fa-trash-alt delete-topic-icon"></i>
+                            </div>
+                            <div class="topic-content active">
+                                <div class="topic-item content-item add-content-btn">
+                                    <i class="fas fa-plus"></i>
+                                    <span class="item-text">Add Topic Content</span>
+                                </div>
+                                <div class="topic-item content-item-editable">
+                                    <i class="fas fa-book-open"></i>
+                                    <span class="item-text">This is an existing content.</span>
+                                    <i class="fas fa-pencil-alt edit-item-icon"></i>
+                                    <i class="fas fa-trash-alt delete-item-icon"></i>
+                                </div>
+                                <div class="topic-item file-item">
+                                    <i class="fas fa-download"></i>
+                                    <a href="#" class="download-link">
+                                        <span class="item-text">Worksheet-Week1-Trace_Name.pdf</span>
+                                    </a>
+                                    <i class="fas fa-trash-alt delete-item-icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-topic-btn">
+                            <i class="fas fa-plus"></i> Add Topic
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-week-btn-container">
+                    <button class="add-week-btn">Add Week <i class="fas fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="content-popup" class="popup-overlay hidden">
+        <div class="popup-content">
+            <div class="popup-header">
+                <span class="popup-title">Topic Content</span>
+                <span class="popup-close">&times;</span>
+            </div>
+            <div class="popup-body">
+                <div id="popup-text" contenteditable="true" placeholder="What are we learning today?"></div>
+                <div class="popup-actions">
+                    <input type="file" id="popup-file-input" style="display:none;" />
+                    <button id="add-file-btn"><i class="fas fa-paperclip"></i> File</button>
+                    <button id="post-btn">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="resources_teacher.js"></script>
+</body>
+</html>

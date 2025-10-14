@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Admin - Teacher Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <style>
+        /* =======================
+            Base Styles
+        ======================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            height: 100%; 
+            width: 100%; 
+            font-family: "Poppins", Arial, sans-serif; 
+            background-color: #dbe7f7; 
+            font-size: 16px; 
+            color: #000;
+        }
+        
+        /* =======================
+            Navbar
+        ======================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            background-color: #0a3b82;
+            color: white;
+            border-bottom: 1px solid #000;
+        }
+        
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 24px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 70px;
+            height: 40px;
+            border-radius: 4px;
+        }
+
+        .logo-text-img {
+            height: 28px;
+            border-radius: 4px;
+        }
+        
+        .middle-logo {
+            width: 90px;
+            height: 40px;
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+        
+        .back-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-icons .icon {
+            width: 30px; 
+            height: 25px; 
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .account-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .account-menu .dropdown-icon {
+            width: 12px;
+            height: 14px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            color: white;
+        }
+
+        /* =======================
+            Secondary Header (Navigation)
+        ======================= */
+        .secondary-header {
+            background-color: #e7efff;
+            display: flex;
+            justify-content: center;
+            padding: 12px 0;
+            position: static;
+            top: 44px;
+            z-index: 999;
+            border-bottom: 1px solid #000;
+        }
+
+        .secondary-header-container {
+            width: 100%; 
+            padding: 0 24px;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            font-size: 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-item {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item.active {
+            font-weight: 700;
+            color: #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .nav-item:hover {
+            background-color: #c9d7f8;
+        }
+
+        /* =======================
+            Separator Line
+        ======================= */
+        .separator {
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            margin: 0;
+            color:#000;
+            display: block;
+        }
+        
+        /* =======================
+            Main Content
+        ======================= */
+        .main-content {
+            padding: 35px 45px;
+            background-color: transparent;
+            position: relative;
+            z-index: 0;
+            overflow: auto;
+            min-height: calc(100vh - 100px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+        }
+        
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+                padding: 20px;
+            }
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 100%;
+            max-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .admin-card {
+            background-color: #0a3b82;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            color: white;
+            border: 1px solid #000;
+        }
+        
+        .admin-card h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 8px;
+        }
+        
+        .admin-card span {
+            font-weight: 500;
+            font-size: 1.125rem;
+            padding: 8px 12px;
+            display: block;
+        }
+
+        /* Main Content Area */
+        .content-area {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .profile-card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .profile-card h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0a3b82;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #e7efff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #0a3b82;
+            border: 3px solid #0a3b82;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0a3b82;
+            margin-bottom: 8px;
+        }
+
+        .profile-email {
+            font-size: 1.125rem;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .profile-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .status-active {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-inactive {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-archived {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .detail-group {
+            margin-bottom: 16px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 6px;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            color: #111827;
+            padding: 8px 0;
+        }
+
+        .classes-card {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .classes-card h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0a3b82;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        .classes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+        }
+
+        .class-card {
+            background-color: #f9fafb;
+            border-radius: 8px;
+            padding: 16px;
+            border-left: 4px solid #0a3b82;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .class-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .class-name {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #0a3b82;
+            margin-bottom: 8px;
+        }
+
+        .class-info {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .no-classes {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+
+        .no-classes i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            color: #d1d5db;
+        }
+
+        .no-classes h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: #0a3b82;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #082a5f;
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+
+        .btn-warning {
+            background-color: #f59e0b;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background-color: #d97706;
+        }
+
+        /* =======================
+            Modal Pop-up Styles
+        ======================= */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            position: relative;
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-button {
+            color: #6b7280;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .close-button:hover {
+            color: #374151;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0a3b82;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #0a3b82;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        /* Multi-Select Styles */
+        .multi-select-container {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-color: white;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .select-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .select-option:hover {
+            background-color: #e7efff;
+        }
+
+        .select-option input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .form-note {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="navbar-container">
+                <div class="logo">
+                     <img src="AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+                    <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+                </div>
+            <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+                <div class="nav-icons">
+                    <a href="notification_admin.html" title="Notifications">
+                        <i class="fas fa-bell icon"></i>
+                    </a>
+                    <a href="help_admin.html" title="Help">
+                        <i class="fas fa-question-circle icon"></i>
+                    </a>
+                    <a href="settings_admin.html" title="Settings">
+                        <div class="account-menu">
+                            <i class="fas fa-user-circle icon"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Secondary Header -->
+        <div class="secondary-header">
+           <div class="secondary-header-container">
+               <nav class="nav-menu">
+                    <a href="dashboard_admin.html" class="nav-item">Dashboard</a>
+                    <a href="classes-management.html" class="nav-item">Class Management</a> 
+                    <a href="teacher-management.html" class="nav-item active">Teacher Management</a>
+                    <a href="calendar.html" class="nav-item">Calendar</a>
+                    <a href="settings_admin.html" class="nav-item">Notifications</a>
+               </nav>
+           </div>
+        </div>
+        
+        <div class="separator"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="admin-card">
+                    <h2>Admin 1</h2>
+                    <div>
+                        <span>Sunhill Academy</span>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h2>Teacher Stats</h2>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Classes Assigned</span>
+                            <span id="classes-count" style="font-weight: 700;">2</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Years at School</span>
+                            <span id="years-count" style="font-weight: 700;">3</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Status</span>
+                            <span id="status-display" style="font-weight: 700;">Active</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <div class="profile-card">
+                    <h2>
+                        Teacher Profile
+                        <button class="btn btn-primary" id="edit-profile-btn">
+                            <i class="fas fa-edit"></i> Edit Profile
+                        </button>
+                    </h2>
+                    
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-name" id="profile-name">Ms. Rose</div>
+                            <div class="profile-email" id="profile-email">rose@acadbird.edu</div>
+                            <span class="profile-status status-active" id="profile-status">Active</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-details">
+                        <div class="detail-group">
+                            <div class="detail-label">Teacher ID</div>
+                            <div class="detail-value" id="teacher-id">T001</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-label">Phone Number</div>
+                            <div class="detail-value" id="teacher-phone">(555) 123-4567</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-label">Date of Birth</div>
+                            <div class="detail-value" id="teacher-dob">March 15, 1985</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-label">Address</div>
+                            <div class="detail-value" id="teacher-address">123 Education Lane, Learning City, 12345</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-label">Date Joined</div>
+                            <div class="detail-value" id="teacher-joined">August 15, 2020</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-label">Specialization</div>
+                            <div class="detail-value" id="teacher-specialization">Elementary Education, Mathematics</div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-secondary" id="send-message-btn">
+                            <i class="fas fa-envelope"></i> Send Message
+                        </button>
+                        <button class="btn btn-warning" id="archive-teacher-btn">
+                            <i class="fas fa-archive"></i> Archive Teacher
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="classes-card">
+                    <h2>Assigned Classes</h2>
+                    
+                    <div id="classes-container">
+                        <!-- Classes will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Teacher Modal -->
+    <div id="edit-teacher-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" id="close-edit-modal">&times;</button>
+            <h2 class="modal-title">Edit Teacher Profile</h2>
+            
+            <form id="edit-teacher-form">
+                <input type="hidden" id="edit-teacher-id">
+                
+                <div class="form-group">
+                    <label for="edit-teacher-name">Full Name:</label>
+                    <input type="text" id="edit-teacher-name" name="name" placeholder="Enter full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-teacher-email">Email Address:</label>
+                    <input type="email" id="edit-teacher-email" name="email" placeholder="Enter email address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-teacher-phone">Phone Number:</label>
+                    <input type="tel" id="edit-teacher-phone" name="phone" placeholder="Enter phone number">
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-teacher-dob">Date of Birth:</label>
+                    <input type="text" id="edit-teacher-dob" name="dob" placeholder="Enter date of birth">
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-teacher-address">Address:</label>
+                    <textarea id="edit-teacher-address" name="address" placeholder="Enter address"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-teacher-specialization">Specialization:</label>
+                    <input type="text" id="edit-teacher-specialization" name="specialization" placeholder="Enter areas of specialization">
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-teacher-status">Status:</label>
+                    <select id="edit-teacher-status" name="status" required>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Archived">Archived</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Classes Taught (Select all that apply):</label>
+                    <div class="multi-select-container" id="edit-classes-taught-multiselect">
+                        <!-- Classes will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-edit">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="edit-teacher-submit-btn">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================================
+        // DATA STRUCTURES
+        // =========================================================================================
+        
+        // Sample Class Data
+        const allClasses = [
+            { id: 1, name: 'Kinder Lily', schedule: 'Mon, Wed, Fri - 9:00 AM', students: 22 },
+            { id: 2, name: 'Grade 1 Daisy', schedule: 'Mon-Fri - 8:30 AM', students: 25 },
+            { id: 3, name: 'Kinder Rose', schedule: 'Tue, Thu - 9:30 AM', students: 20 },
+            { id: 4, name: 'Grade 2 Maple', schedule: 'Mon-Fri - 10:00 AM', students: 28 },
+            { id: 5, name: 'Grade 3 Tulip', schedule: 'Mon-Fri - 11:00 AM', students: 26 },
+            { id: 6, name: 'Grade 4 Cedar', schedule: 'Mon-Fri - 1:00 PM', students: 24 },
+        ];
+
+        // Sample Teacher Data
+        const teacherData = {
+            id: 1,
+            teacherId: 'T001',
+            name: 'Ms. Rose',
+            email: 'rose@acadbird.edu',
+            phone: '(555) 123-4567',
+            dob: 'March 15, 1985',
+            address: '123 Education Lane, Learning City, 12345',
+            joined: 'August 15, 2020',
+            specialization: 'Elementary Education, Mathematics',
+            status: 'Active',
+            classes: ['Kinder Lily', 'Grade 2 Maple']
+        };
+
+        // =========================================================================================
+        // CORE FUNCTIONS
+        // =========================================================================================
+
+        // DOM Elements
+        const editTeacherModal = document.getElementById('edit-teacher-modal');
+        const editTeacherForm = document.getElementById('edit-teacher-form');
+        const editClassesTaughtMultiselect = document.getElementById('edit-classes-taught-multiselect');
+        const classesContainer = document.getElementById('classes-container');
+
+        // --- Modal Control Functions ---
+        function openModal(modalElement) {
+            modalElement.style.display = 'flex';
+        }
+
+        function closeModal(modalElement) {
+            modalElement.style.display = 'none';
+        }
+
+        function closeEditTeacherModal() {
+            closeModal(editTeacherModal);
+        }
+
+        // --- Rendering Functions ---
+        function renderTeacherProfile() {
+            // Update profile information
+            document.getElementById('profile-name').textContent = teacherData.name;
+            document.getElementById('profile-email').textContent = teacherData.email;
+            document.getElementById('teacher-id').textContent = teacherData.teacherId;
+            document.getElementById('teacher-phone').textContent = teacherData.phone;
+            document.getElementById('teacher-dob').textContent = teacherData.dob;
+            document.getElementById('teacher-address').textContent = teacherData.address;
+            document.getElementById('teacher-joined').textContent = teacherData.joined;
+            document.getElementById('teacher-specialization').textContent = teacherData.specialization;
+            
+            // Update status
+            const statusElement = document.getElementById('profile-status');
+            statusElement.textContent = teacherData.status;
+            statusElement.className = 'profile-status';
+            if (teacherData.status === 'Active') {
+                statusElement.classList.add('status-active');
+            } else if (teacherData.status === 'Inactive') {
+                statusElement.classList.add('status-inactive');
+            } else {
+                statusElement.classList.add('status-archived');
+            }
+            
+            // Update sidebar stats
+            document.getElementById('classes-count').textContent = teacherData.classes.length;
+            document.getElementById('status-display').textContent = teacherData.status;
+            
+            // Calculate years at school (simplified)
+            const joinYear = parseInt(teacherData.joined.split(' ')[2]);
+            const currentYear = new Date().getFullYear();
+            const yearsAtSchool = currentYear - joinYear;
+            document.getElementById('years-count').textContent = yearsAtSchool;
+            
+            // Render classes
+            renderClasses();
+        }
+
+        function renderClasses() {
+            classesContainer.innerHTML = '';
+            
+            if (teacherData.classes.length === 0) {
+                classesContainer.innerHTML = `
+                    <div class="no-classes">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <h3>No Classes Assigned</h3>
+                        <p>This teacher is not currently assigned to any classes.</p>
+                    </div>
+                `;
+            } else {
+                const classesGrid = document.createElement('div');
+                classesGrid.className = 'classes-grid';
+                
+                teacherData.classes.forEach(className => {
+                    const classInfo = allClasses.find(c => c.name === className);
+                    if (classInfo) {
+                        const classCard = document.createElement('div');
+                        classCard.className = 'class-card';
+                        classCard.innerHTML = `
+                            <div class="class-name">${classInfo.name}</div>
+                            <div class="class-info"><i class="fas fa-clock"></i> ${classInfo.schedule}</div>
+                            <div class="class-info"><i class="fas fa-users"></i> ${classInfo.students} students</div>
+                        `;
+                        classesGrid.appendChild(classCard);
+                    }
+                });
+                
+                classesContainer.appendChild(classesGrid);
+            }
+        }
+
+        function populateClassesMultiselect(container, assignedClasses = []) {
+            container.innerHTML = '';
+            allClasses.forEach(classItem => {
+                const isChecked = assignedClasses.includes(classItem.name);
+                const option = document.createElement('div');
+                option.classList.add('select-option');
+                option.innerHTML = `
+                    <input type="checkbox" id="edit-class-${classItem.id}" name="classes" value="${classItem.name}" ${isChecked ? 'checked' : ''}>
+                    <label for="edit-class-${classItem.id}">${classItem.name}</label>
+                `;
+                container.appendChild(option);
+            });
+        }
+
+        // --- Modal Functions ---
+        function openEditTeacherModal() {
+            // Populate form with current teacher data
+            document.getElementById('edit-teacher-id').value = teacherData.id;
+            document.getElementById('edit-teacher-name').value = teacherData.name;
+            document.getElementById('edit-teacher-email').value = teacherData.email;
+            document.getElementById('edit-teacher-phone').value = teacherData.phone;
+            document.getElementById('edit-teacher-dob').value = teacherData.dob;
+            document.getElementById('edit-teacher-address').value = teacherData.address;
+            document.getElementById('edit-teacher-specialization').value = teacherData.specialization;
+            document.getElementById('edit-teacher-status').value = teacherData.status;
+            
+            populateClassesMultiselect(editClassesTaughtMultiselect, teacherData.classes);
+            
+            openModal(editTeacherModal);
+        }
+
+        function handleEditTeacherFormSubmission(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('edit-teacher-name').value.trim();
+            const email = document.getElementById('edit-teacher-email').value.trim();
+            const phone = document.getElementById('edit-teacher-phone').value.trim();
+            const dob = document.getElementById('edit-teacher-dob').value.trim();
+            const address = document.getElementById('edit-teacher-address').value.trim();
+            const specialization = document.getElementById('edit-teacher-specialization').value.trim();
+            const status = document.getElementById('edit-teacher-status').value;
+            const classesTaught = Array.from(editClassesTaughtMultiselect.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+            
+            // Basic validation
+            if (!name || !email) {
+                alert("Please fill out all required fields.");
+                return;
+            }
+
+            // Update teacher data
+            teacherData.name = name;
+            teacherData.email = email;
+            teacherData.phone = phone;
+            teacherData.dob = dob;
+            teacherData.address = address;
+            teacherData.specialization = specialization;
+            teacherData.status = status;
+            teacherData.classes = classesTaught;
+            
+            alert(`SUCCESS: Teacher profile updated!`);
+            closeEditTeacherModal();
+            renderTeacherProfile();
+        }
+
+        function archiveTeacher() {
+            if (confirm(`Are you sure you want to archive ${teacherData.name}?`)) {
+                teacherData.status = 'Archived';
+                alert(`Teacher "${teacherData.name}" has been archived.`);
+                renderTeacherProfile();
+            }
+        }
+
+        function sendMessage() {
+            alert(`In a real application, this would open a message dialog to send a message to ${teacherData.name} at ${teacherData.email}`);
+        }
+
+        // --- Event Listeners ---
+        function init() {
+            // Form submission handlers
+            editTeacherForm.addEventListener('submit', handleEditTeacherFormSubmission);
+            
+            // Button listeners
+            document.getElementById('edit-profile-btn').addEventListener('click', openEditTeacherModal);
+            document.getElementById('archive-teacher-btn').addEventListener('click', archiveTeacher);
+            document.getElementById('send-message-btn').addEventListener('click', sendMessage);
+
+            // Modal close buttons
+            document.getElementById('close-edit-modal').addEventListener('click', closeEditTeacherModal);
+            document.getElementById('cancel-edit').addEventListener('click', closeEditTeacherModal);
+            
+            // Initial render
+            renderTeacherProfile();
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

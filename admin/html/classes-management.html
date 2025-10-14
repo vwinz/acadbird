@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Admin - Classes Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Customizing Tailwind to match the AcadBird color scheme and font
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'acad-navy': '#0a3b82',
+                        'acad-light-bg': '#dbe7f7',
+                        'acad-header-bg': '#e7efff',
+                        'admin-panel': '#072e5e',
+                        'class-card': '#ffc107',
+                        'metric-green': '#34d399',
+                        'metric-blue': '#60a5fa',
+                        'metric-orange': '#fbbf24',
+                        'report-pending': '#fbbf24',
+                        'report-resolve': '#4ade80',
+                        'status-active': '#34d399',
+                        'status-archived': '#ef4444',
+                        'status-pending': '#fbbf24',
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* =======================
+            Base Styles
+        ======================= */
+        html, body {
+            height: 100%; width: 100%; margin: 0; font-family: "Poppins", Arial, sans-serif; background-color: #dbe7f7; font-size: 16px; color: #000;
+        }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; background-color: #0a3b82; color: white; border-bottom: 1px solid #000; }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-img { width: 70px; height: 40px; }
+        .logo-text-img { height: 28px; }
+        .middle-logo { width: 90px; height: 40px; margin: 0 auto; }
+        .back-icon { font-size: 1.5rem; cursor: pointer; }
+        .nav-icons { display: flex; align-items: center; gap: 18px; }
+        .nav-icons .icon { width: 30px; height: 25px; font-size: 1.5rem; cursor: pointer; display: flex; justify-content: center; align-items: center; }
+        .secondary-header { background-color: #e7efff; display: flex; justify-content: center; padding: 12px 0; position: static; top: 44px; z-index: 999; border-bottom: 1px solid #000; }
+        .nav-menu { display: flex; gap: 22px; align-items: center; font-size: 16px; overflow-x: auto; white-space: nowrap; }
+        .nav-item { color: #000; text-decoration: none; font-weight: 500; padding: 5px 10px; border-radius: 3px; transition: background-color 0.3s; }
+        .nav-item.active { font-weight: 700; color: #000; border-bottom: 2px solid #000; }
+        .nav-item:hover { background-color: #c9d7f8; }
+        .separator { width: 100%; height: 1px; background-color: #000; margin: 0; color:#000; display: block; }
+        .main-content { padding: 35px 45px; background-color: transparent; position: relative; z-index: 0; overflow: auto; min-height: calc(100vh - 100px); display: flex; justify-content: center; align-items: flex-start; gap: 30px; }
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; padding: 20px; }
+        }
+        .classes-table th { text-align: left; padding: 12px; font-weight: 600; text-transform: uppercase; font-size: 0.875rem; border-bottom: 2px solid #e5e7eb; }
+        .classes-table td { padding: 12px; border-bottom: 1px solid #f3f4f6; font-size: 0.95rem; }
+
+        /* =======================
+            Modal Pop-up Styles
+        ======================= */
+        .modal {
+            display: none; 
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 1000;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border: 2px solid #0a3b82;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation-name: animatetop;
+            animation-duration: 0.4s
+        }
+        
+        .modal-content.large {
+            max-width: 600px;
+        }
+        
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover, .close-button:focus { color: #333; }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #0a3b82; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 8px; background-color: #fff;
+        }
+        .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
+        .btn { font-weight: 600; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background-color 0.3s; border: 1px solid transparent; }
+        .btn-primary { background-color: #0a3b82; color: white; }
+        .btn-primary:hover { background-color: #082d62; }
+        .btn-cancel { background-color: #ccc; color: #000; }
+        .btn-cancel:hover { background-color: #bbb; }
+        
+        /* Archived List Styles */
+        .archived-list-item {
+            display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; background-color: #f9f9f9; border-radius: 8px; margin-bottom: 8px;
+        }
+        .archived-list-item:hover { background-color: #fff3f3; }
+        .archived-name { font-weight: 600; color: #ef4444; }
+        .archived-actions button { margin-left: 8px; }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="navbar">
+            <div class="flex justify-between items-center w-full px-6">
+                <div class="logo">
+                    <img src="AcadBird - White no text.png" alt="AcadBird Logo" class="logo-img" />
+                    <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+                </div>
+                <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+                <div class="nav-icons">
+                    <a href="notification_admin.html" target="_blank" title="Notifications">
+                        <i class="fas fa-bell icon"></i>
+                    </a>
+                    <a href="help_admin.html" target="_blank" title="Help">
+                        <i class="fas fa-question-circle icon"></i>
+                    </a>
+                    <a href="settings_admin.html" target="_blank" title="Settings">
+                        <div class="account-menu">
+                            <i class="fas fa-user-circle icon"></i>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="secondary-header">
+           <div class="w-full px-6 overflow-x-auto flex justify-center">
+               <nav class="nav-menu">
+                    <a href="dashboard_admin.html" class="nav-item">Dashboard</a>
+                    <a href="classes-management.html" class="nav-item active">Class Management</a> 
+                    <a href="teacher-management.html" class="nav-item">Teacher Management</a>
+                    <a href="calendar.html" class="nav-item">Calendar</a>
+                    <a href="settings_admin.html" class="nav-item">Settings</a>
+
+               </nav>
+           </div>
+        </div>
+        
+        <div class="separator"></div>
+
+        <div class="main-content">
+            
+            <div class="w-full lg:w-1/4 flex flex-col gap-6">
+
+                <div class="bg-acad-navy p-6 rounded-xl shadow-lg text-white border border-black">
+                    <h2 class="text-xl font-semibold mb-4 border-b border-white/20 pb-2">Admin 1</h2>
+                    <div class="space-y-3">
+                        <div class="flex items-center py-2 px-3">
+                            <span class="font-medium text-lg">School Name</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-4">
+                    <h3 class="text-lg font-semibold text-gray-700">Class Metrics</h3>
+                    <div class="p-4 rounded-xl shadow-lg text-center bg-metric-green text-white font-bold border border-black">
+                        <p class="text-4xl" id="metric-active-classes">5</p>
+                        <p class="text-sm uppercase tracking-wider">Active Classes</p>
+                    </div>
+                    <div class="p-4 rounded-xl shadow-lg text-center bg-metric-blue text-white font-bold border border-black">
+                        <p class="text-4xl" id="metric-total-students">52</p>
+                        <p class="text-sm uppercase tracking-wider">Total Students</p>
+                    </div>
+                    <div class="p-4 rounded-xl shadow-lg text-center bg-metric-orange text-white font-bold border border-black">
+                        <p class="text-4xl" id="metric-teachers-assigned">2</p>
+                        <p class="text-sm uppercase tracking-wider">Teachers Assigned</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="w-full lg:w-3/4 flex flex-col gap-6">
+
+                <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col gap-4 border border-black">
+                    <h2 class="text-2xl font-bold text-acad-navy border-b pb-2">Classes List 🏫</h2>
+                    
+                    <div class="flex flex-wrap justify-between items-center gap-4">
+                        <div class="relative w-full sm:max-w-xs">
+                            <input type="text" id="search-input" placeholder="Search by Class Name or Teacher" class="w-full py-2 px-4 pr-10 border border-gray-300 rounded-lg focus:ring-acad-navy focus:border-acad-navy">
+                            <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <div class="flex gap-3 items-center">
+                            <select id="filter-teacher" class="py-2 px-3 border border-gray-300 rounded-lg focus:ring-acad-navy focus:border-acad-navy text-sm">
+                                <option value="">Filter by Teacher</option>
+                                <option value="Ms. Rose">Ms. Rose</option>
+                                <option value="Mr. David">Mr. David</option>
+                                <option value="Unassigned">(Unassigned)</option>
+                            </select>
+                            <select id="filter-status" class="py-2 px-3 border border-gray-300 rounded-lg focus:ring-acad-navy focus:border-acad-navy text-sm">
+                                <option value="">Filter by Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Pending Setup">Pending Setup</option>
+                                </select>
+                            
+                            <button id="view-archived-button" class="px-3 py-2 bg-yellow-600 text-white rounded-lg text-sm font-semibold hover:bg-yellow-700 transition flex items-center gap-1">
+                                <i class="fas fa-box-archive"></i> Archived (<span id="archived-count">1</span>)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full classes-table bg-white rounded-lg">
+                            <thead>
+                                <tr>
+                                    <th data-sort-key="name" class="sortable-header cursor-pointer hover:bg-acad-header-bg/50 transition">
+                                        Class Name <i class="fas fa-sort-up ml-1 text-gray-500 sort-icon"></i>
+                                    </th>
+                                    <th data-sort-key="teacher" class="sortable-header cursor-pointer hover:bg-acad-header-bg/50 transition">Teacher <i class="fas fa-sort ml-1 text-gray-500 sort-icon hidden"></i></th>
+                                    <th data-sort-key="students" class="sortable-header cursor-pointer hover:bg-acad-header-bg/50 transition">Students <i class="fas fa-sort ml-1 text-gray-500 sort-icon hidden"></i></th>
+                                    <th data-sort-key="status" class="sortable-header cursor-pointer hover:bg-acad-header-bg/50 transition">Status <i class="fas fa-sort ml-1 text-gray-500 sort-icon hidden"></i></th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="classes-table-body">
+                                <tr class="hover:bg-acad-light-bg/50 transition" data-id="1" data-class-name="Kinder Lily" data-teacher="Ms. Rose" data-status="Active" data-students-count="20" data-max-students="25">
+                                    <td class="class-name-cell"><a href="class-details.html?id=1" class="text-acad-navy font-semibold hover:underline">Kinder Lily</a></td>
+                                    <td class="teacher-cell">Ms. Rose</td>
+                                    <td>20 / 25</td>
+                                    <td class="status-cell"><span class="text-status-active font-medium">Active</span></td>
+                                    <td class="whitespace-nowrap">
+                                        <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="1"><i class="fas fa-edit"></i></button>
+                                        <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="1"><i class="fas fa-archive"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-acad-light-bg/50 transition" data-id="2" data-class-name="Grade 1 Daisy" data-teacher="Mr. David" data-status="Active" data-students-count="32" data-max-students="35">
+                                    <td class="class-name-cell"><a href="/class/grade1-daisy" class="text-acad-navy font-semibold hover:underline">Grade 1 Daisy</a></td>
+                                    <td class="teacher-cell">Mr. David</td>
+                                    <td>32 / 35</td>
+                                    <td class="status-cell"><span class="text-status-active font-medium">Active</span></td>
+                                    <td class="whitespace-nowrap">
+                                        <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="2"><i class="fas fa-edit"></i></button>
+                                        <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="2"><i class="fas fa-archive"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-acad-light-bg/50 transition bg-yellow-50/50" data-id="3" data-class-name="Kinder Rose" data-teacher="Unassigned" data-status="Pending Setup" data-students-count="0" data-max-students="25">
+                                    <td class="class-name-cell"><a href="/class/kinder-rose" class="text-acad-navy font-semibold hover:underline">Kinder Rose</a></td>
+                                    <td class="teacher-cell">(Unassigned)</td>
+                                    <td>0 / 25</td>
+                                    <td class="status-cell"><span class="text-status-pending font-medium">Pending Setup</span></td>
+                                    <td class="whitespace-nowrap">
+                                        <button title="Assign Teacher" class="text-acad-navy hover:text-acad-navy/80 mr-3 assign-btn" data-class-id="3"><i class="fas fa-user-plus"></i></button>
+                                        <button title="Delete Class" class="text-gray-500 hover:text-gray-900 delete-btn" data-class-id="3"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-acad-light-bg/50 transition opacity-70" data-id="4" data-class-name="Kinder Sunflower (Archived)" data-teacher="Ms. Rose" data-status="Archived" data-students-count="28" data-max-students="28" style="display: none;">
+                                    <td class="class-name-cell"><a href="/class/old-kinder-sunflower" class="text-acad-navy font-semibold hover:underline">Kinder Sunflower (Archived)</a></td>
+                                    <td class="teacher-cell">Ms. Rose</td>
+                                    <td>28 / 28</td>
+                                    <td class="status-cell"><span class="text-status-archived font-medium">Archived</span></td>
+                                    <td class="whitespace-nowrap">
+                                        <button title="Restore Class" class="text-metric-green hover:text-metric-green/80 mr-3 restore-btn" data-class-id="4"><i class="fas fa-redo-alt"></i></button>
+                                        <button title="Permanent Delete" class="text-gray-500 hover:text-gray-900 delete-btn" data-class-id="4"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="flex justify-between items-center mt-4">
+                        <p class="text-sm text-gray-600">Showing <span id="pagination-start">1</span> to <span id="pagination-end">4</span> of <span id="pagination-total">12</span> classes</p>
+                        <div class="flex gap-2">
+                            <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-acad-header-bg pagination-btn" data-page="prev">Previous</button>
+                            <button class="px-3 py-1 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-acad-header-bg pagination-btn" data-page="next">Next</button>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div id="add-class-button" class="flex flex-col gap-2 group cursor-pointer w-full">
+                    <h3 class="text-lg font-semibold text-gray-700">Quick Action</h3>
+                    <div class="p-4 rounded-xl shadow-lg text-center bg-acad-navy text-white font-bold border border-black group-hover:bg-acad-navy/90 transition duration-150 flex items-center justify-center gap-3">
+                        <i class="fas fa-plus-circle text-2xl"></i>
+                        <p class="text-lg uppercase tracking-wider">Add New Class</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="add-class-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAddClassModal()">&times;</span>
+            <h2 class="text-2xl font-bold text-acad-navy mb-5">Add New Class ➕</h2>
+            
+            <form id="add-class-form">
+                
+                <div class="form-group">
+                    <label for="new-class-name">Class Name (e.g., Grade 2 Maple):</label>
+                    <input type="text" id="new-class-name" name="class-name" placeholder="Enter class name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="new-max-students">Max Students:</label>
+                    <input type="number" id="new-max-students" name="max-students" min="1" max="50" value="25" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-teacher">Assign Teacher:</label>
+                    <select id="new-teacher" name="teacher" required>
+                        <option value="" disabled selected>Select a Teacher</option>
+                        <option value="Ms. Rose">Ms. Rose</option>
+                        <option value="Mr. David">Mr. David</option>
+                        <option value="Unassigned">Assign Later (Unassigned)</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeAddClassModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Class</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="edit-class-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeEditClassModal()">&times;</span>
+            <h2 class="text-2xl font-bold text-acad-navy mb-5">Edit Class: <span id="edit-class-title" class="text-metric-blue"></span></h2>
+            
+            <form id="edit-class-form">
+                <input type="hidden" id="edit-class-id">
+                
+                <div class="form-group">
+                    <label for="edit-class-name">Class Name:</label>
+                    <input type="text" id="edit-class-name" name="class-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-teacher">Change Teacher:</label>
+                    <select id="edit-teacher" name="teacher" required>
+                        <option value="Ms. Rose">Ms. Rose</option>
+                        <option value="Mr. David">Mr. David</option>
+                        <option value="Unassigned">Unassigned</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeEditClassModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="archived-classes-modal" class="modal">
+        <div class="modal-content large">
+            <span class="close-button" onclick="closeArchivedClassesModal()">&times;</span>
+            <h2 class="text-2xl font-bold text-status-archived mb-5 flex items-center gap-2">
+                <i class="fas fa-box-archive"></i> Archived Classes
+            </h2>
+            
+            <div id="archived-list-container" class="flex flex-col gap-3 max-h-96 overflow-y-auto pr-2">
+                <p id="no-archived-message" class="text-gray-500 text-center py-5 hidden">No classes currently in the archive.</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-cancel" onclick="closeArchivedClassesModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // DOM Elements
+        const tableBody = document.getElementById('classes-table-body');
+        const searchInput = document.getElementById('search-input');
+        const filterTeacher = document.getElementById('filter-teacher');
+        const filterStatus = document.getElementById('filter-status');
+        const sortableHeaders = document.querySelectorAll('.sortable-header');
+        const backButton = document.getElementById('back-button');
+
+        // Modals & Buttons
+        const addClassModal = document.getElementById('add-class-modal');
+        const addClassButton = document.getElementById('add-class-button');
+        const addClassForm = document.getElementById('add-class-form');
+        const editClassModal = document.getElementById('edit-class-modal');
+        const editClassForm = document.getElementById('edit-class-form');
+        const editClassIdInput = document.getElementById('edit-class-id');
+        const editClassNameInput = document.getElementById('edit-class-name');
+        const editTeacherSelect = document.getElementById('edit-teacher');
+        const editClassTitle = document.getElementById('edit-class-title');
+        
+        // Archived Modal
+        const archivedClassesModal = document.getElementById('archived-classes-modal');
+        const viewArchivedButton = document.getElementById('view-archived-button');
+        const archivedListContainer = document.getElementById('archived-list-container');
+        const archivedCountSpan = document.getElementById('archived-count');
+        
+        // --- Shared Modal Control ---
+        function closeModal(modalElement) {
+            modalElement.style.display = 'none';
+        }
+
+        // Close when clicking outside
+        window.onclick = function(event) {
+            if (event.target === addClassModal) {
+                closeModal(addClassModal);
+                addClassForm.reset();
+            }
+            if (event.target === editClassModal) {
+                closeModal(editClassModal);
+            }
+            if (event.target === archivedClassesModal) {
+                closeModal(archivedClassesModal);
+            }
+        }
+        
+        // --- 1. Navigation & Basic Actions ---
+        backButton.addEventListener('click', () => { history.back(); });
+
+        // --- 2. Add Class Modal ---
+        function openAddClassModal() {
+            addClassModal.style.display = 'flex';
+            addClassForm.reset();
+        }
+
+        function closeAddClassModal() {
+            closeModal(addClassModal);
+            addClassForm.reset();
+        }
+
+        addClassButton.addEventListener('click', openAddClassModal);
+
+        addClassForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const className = document.getElementById('new-class-name').value;
+            const maxStudents = document.getElementById('new-max-students').value;
+            const teacher = document.getElementById('new-teacher').value;
+            const status = (teacher === 'Unassigned') ? 'Pending Setup' : 'Active';
+
+            alert(`SUCCESS: Class "${className}" created! Teacher: ${teacher}`);
+
+            // SIMULATE TABLE UPDATE 
+            const newId = tableBody.children.length + 10; 
+            const newRow = tableBody.insertRow(0); 
+            
+            newRow.classList.add('hover:bg-acad-light-bg/50', 'transition');
+            if (status === 'Pending Setup') { newRow.classList.add('bg-yellow-50/50'); }
+            
+            newRow.setAttribute('data-id', newId);
+            newRow.setAttribute('data-class-name', className);
+            newRow.setAttribute('data-teacher', teacher);
+            newRow.setAttribute('data-status', status);
+            newRow.setAttribute('data-students-count', '0');
+            newRow.setAttribute('data-max-students', maxStudents);
+            
+            const statusClass = status === 'Active' ? 'text-status-active' : 'text-status-pending';
+
+            newRow.innerHTML = `
+                <td class="class-name-cell"><a href="/class/${className.toLowerCase().replace(/\s/g, '-')}" class="text-acad-navy font-semibold hover:underline">${className}</a></td>
+                <td class="teacher-cell">${teacher === 'Unassigned' ? '(Unassigned)' : teacher}</td>
+                <td>0 / ${maxStudents}</td>
+                <td class="status-cell"><span class="font-medium ${statusClass}">${status}</span></td>
+                <td class="whitespace-nowrap">
+                    <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="${newId}"><i class="fas fa-edit"></i></button>
+                    <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="${newId}"><i class="fas fa-archive"></i></button>
+                </td>
+            `;
+
+            // Update metrics and list display
+            if (status === 'Active') {
+                document.getElementById('metric-active-classes').textContent = parseInt(document.getElementById('metric-active-classes').textContent) + 1;
+            }
+            sortTable(currentSortKey, sortDirection);
+            applyFiltersAndSearch();
+
+            closeAddClassModal();
+        });
+
+
+        // --- 3. Edit Class Modal Logic ---
+        function openEditClassModal(rowElement) {
+            const classId = rowElement.getAttribute('data-id');
+            const className = rowElement.getAttribute('data-class-name');
+            const teacher = rowElement.getAttribute('data-teacher');
+            
+            // Populate the modal fields
+            editClassIdInput.value = classId;
+            editClassNameInput.value = className;
+            editTeacherSelect.value = (teacher === '(Unassigned)' ? 'Unassigned' : teacher);
+            editClassTitle.textContent = className;
+            
+            editClassModal.style.display = 'flex';
+        }
+
+        function closeEditClassModal() {
+            closeModal(editClassModal);
+        }
+
+        editClassForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const classId = editClassIdInput.value;
+            const newClassName = editClassNameInput.value;
+            const newTeacher = editTeacherSelect.value;
+            const row = document.querySelector(`tr[data-id="${classId}"]`);
+
+            if (!row) {
+                alert("Error: Could not find class row.");
+                closeEditClassModal();
+                return;
+            }
+
+            alert(`SUCCESS: Class ID ${classId} updated to Name: "${newClassName}", Teacher: ${newTeacher}`);
+
+            // 1. Update the Row's Data Attributes and Cells
+            const oldStatus = row.getAttribute('data-status');
+            
+            let newStatus = oldStatus;
+            if (newTeacher !== 'Unassigned' && oldStatus === 'Pending Setup') {
+                 newStatus = 'Active';
+            } else if (newTeacher === 'Unassigned' && oldStatus === 'Active') {
+                newStatus = 'Pending Setup';
+            }
+
+            row.setAttribute('data-class-name', newClassName);
+            row.querySelector('.class-name-cell a').textContent = newClassName;
+            row.setAttribute('data-teacher', newTeacher);
+            row.querySelector('.teacher-cell').textContent = (newTeacher === 'Unassigned' ? '(Unassigned)' : newTeacher);
+            
+            // Update Status if necessary
+            if (newStatus !== oldStatus) {
+                row.setAttribute('data-status', newStatus);
+                const statusSpan = row.querySelector('.status-cell span');
+                statusSpan.textContent = newStatus;
+                statusSpan.className = `font-medium text-status-${newStatus.toLowerCase().replace(/\s/g, '-')}`;
+            }
+
+            // 2. Re-run sorting and filtering to place the row correctly
+            sortTable(currentSortKey, sortDirection);
+            applyFiltersAndSearch();
+            
+            closeEditClassModal();
+        });
+
+        // --- 4. Archived Classes Modal Logic (NEW) ---
+        
+        function closeArchivedClassesModal() {
+            closeModal(archivedClassesModal);
+        }
+
+        viewArchivedButton.addEventListener('click', openArchivedClassesModal);
+        
+        function openArchivedClassesModal() {
+            archivedListContainer.innerHTML = '';
+            let archivedCount = 0;
+            const rows = tableBody.querySelectorAll('tr');
+            const noArchivedMessage = document.getElementById('no-archived-message');
+
+            rows.forEach(row => {
+                const status = row.getAttribute('data-status');
+                if (status === 'Archived') {
+                    archivedCount++;
+                    const classId = row.getAttribute('data-id');
+                    const className = row.getAttribute('data-class-name');
+                    const teacher = row.getAttribute('data-teacher');
+
+                    const item = document.createElement('div');
+                    item.className = 'archived-list-item';
+                    item.setAttribute('data-id', classId);
+                    
+                    item.innerHTML = `
+                        <div>
+                            <p class="archived-name">${className}</p>
+                            <p class="text-xs text-gray-500">Teacher: ${teacher}</p>
+                        </div>
+                        <div class="archived-actions">
+                            <button title="Restore Class" class="text-metric-green hover:text-metric-green/80 restore-btn" data-class-id="${classId}"><i class="fas fa-redo-alt"></i> Restore</button>
+                            <button title="Permanent Delete" class="text-status-archived hover:text-status-archived/80 delete-btn" data-class-id="${classId}"><i class="fas fa-trash"></i> Delete</button>
+                        </div>
+                    `;
+                    archivedListContainer.appendChild(item);
+                }
+            });
+
+            archivedCountSpan.textContent = archivedCount;
+            noArchivedMessage.classList.toggle('hidden', archivedCount > 0);
+
+            archivedClassesModal.style.display = 'flex';
+        }
+
+
+        // --- 5. Unified Action Handlers (Edit/Archive/Delete/Restore) ---
+
+        function updateRowActions(row, newStatus, classId) {
+            const actionsCell = row.querySelector('.whitespace-nowrap');
+            if (actionsCell) {
+                if (newStatus === 'Archived') {
+                    actionsCell.innerHTML = `
+                         <button title="Restore Class" class="text-metric-green hover:text-metric-green/80 mr-3 restore-btn" data-class-id="${classId}"><i class="fas fa-redo-alt"></i></button>
+                         <button title="Permanent Delete" class="text-gray-500 hover:text-gray-900 delete-btn" data-class-id="${classId}"><i class="fas fa-trash"></i></button>
+                    `;
+                } else if (newStatus === 'Active' || newStatus === 'Pending Setup') {
+                     actionsCell.innerHTML = `
+                         <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="${classId}"><i class="fas fa-edit"></i></button>
+                         <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="${classId}"><i class="fas fa-archive"></i></button>
+                    `;
+                }
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            const button = e.target.closest('.edit-btn, .archive-btn, .assign-btn, .restore-btn, .delete-btn');
+            if (!button) return;
+
+            const action = button.title;
+            const classId = button.getAttribute('data-class-id');
+            const row = document.querySelector(`tr[data-id="${classId}"]`);
+
+            if (action === 'Edit Class' || action === 'Assign Teacher') {
+                if(row) openEditClassModal(row);
+                return;
+            }
+
+            if (confirm(`Are you sure you want to perform "${action}" on class ID ${classId}?`)) {
+                let message = `Successfully performed "${action}" on Class ID ${classId}.`;
+                let oldStatus = row ? row.getAttribute('data-status') : null;
+                let newStatus = oldStatus;
+                
+                if (action === 'Archive Class') {
+                    newStatus = 'Archived';
+                    message = `Class ID ${classId} has been moved to the Archive.`;
+                } else if (action === 'Restore Class') {
+                    // Restoring a class makes it Active by default
+                    newStatus = 'Active'; 
+                    message = `Class ID ${classId} has been Restored and is now Active.`;
+                } else if (action === 'Delete Class' || action === 'Permanent Delete') {
+                    // Delete is final regardless of location (main table or archive modal)
+                    if (row) row.remove();
+                    // Also remove from the archived modal list if it was deleted there
+                    const archivedItem = archivedListContainer.querySelector(`div[data-id="${classId}"]`);
+                    if (archivedItem) archivedItem.remove();
+                    message = `Successfully permanently deleted Class ID ${classId}.`;
+                }
+                
+                // Update the main table row visualization and data attributes
+                if (row && newStatus !== oldStatus) {
+                    row.setAttribute('data-status', newStatus);
+                    const statusSpan = row.querySelector('.status-cell span');
+                    statusSpan.textContent = newStatus;
+                    statusSpan.className = `font-medium text-status-${newStatus.toLowerCase().replace(/\s/g, '-')}`;
+                    
+                    if (newStatus === 'Archived') {
+                        // Ensure the row is hidden when archived, as per the filter logic
+                        row.style.display = 'none';
+                        row.classList.add('opacity-70');
+                    } else {
+                        row.classList.remove('opacity-70');
+                    }
+
+                    updateRowActions(row, newStatus, classId);
+                }
+
+                alert(message);
+                
+                // If the action was taken from the archived modal, refresh its view
+                if (archivedClassesModal.style.display === 'flex') {
+                    openArchivedClassesModal(); // Re-populate list to reflect changes
+                }
+
+                // Re-sort and filter main table
+                sortTable(currentSortKey, sortDirection);
+                applyFiltersAndSearch();
+            }
+        });
+
+
+        // =======================
+        // Filtering & Sorting Functions
+        // =======================
+        function applyFiltersAndSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const teacherFilter = filterTeacher.value;
+            const statusFilter = filterStatus.value;
+            const rows = tableBody.querySelectorAll('tr');
+            let visibleCount = 0;
+            let archivedCount = 0;
+
+            rows.forEach(row => {
+                const className = row.getAttribute('data-class-name').toLowerCase();
+                const teacher = row.getAttribute('data-teacher');
+                const status = row.getAttribute('data-status');
+                
+                if (status === 'Archived') {
+                    archivedCount++;
+                }
+
+                const passesSearch = className.includes(searchTerm) || teacher.toLowerCase().includes(searchTerm);
+                const passesTeacherFilter = !teacherFilter || teacherFilter === '' || teacher === teacherFilter;
+                
+                // The main table MUST NOT show archived classes unless the status filter explicitly requests it.
+                // Since 'Archived' is now removed from the select, we simply check that status is NOT 'Archived'.
+                let passesStatusFilter = true;
+                
+                if (statusFilter && statusFilter !== '') {
+                    // User selected Active or Pending: show only that status
+                    passesStatusFilter = (status === statusFilter);
+                } else {
+                    // No filter selected: show Active and Pending, hide Archived
+                    passesStatusFilter = (status !== 'Archived');
+                }
+
+                if (passesSearch && passesTeacherFilter && passesStatusFilter) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            // Adjust pagination count based on visible rows
+            document.getElementById('pagination-end').textContent = visibleCount;
+            document.getElementById('pagination-total').textContent = tableBody.children.length; // Total rows in the tbody
+            archivedCountSpan.textContent = archivedCount; // Update the button count
+        }
+
+        searchInput.addEventListener('input', applyFiltersAndSearch);
+        filterTeacher.addEventListener('change', applyFiltersAndSearch);
+        filterStatus.addEventListener('change', applyFiltersAndSearch);
+
+        let currentSortKey = 'name';
+        let sortDirection = 'asc';
+
+        function sortTable(key, direction) {
+            const rowsArray = Array.from(tableBody.querySelectorAll('tr'));
+
+            rowsArray.sort((a, b) => {
+                let aVal, bVal;
+                
+                if (key === 'students') {
+                    aVal = parseInt(a.getAttribute('data-students-count'));
+                    bVal = parseInt(b.getAttribute('data-students-count'));
+                } else {
+                    aVal = (a.getAttribute(`data-${key}`) || '').toLowerCase();
+                    bVal = (b.getAttribute(`data-${key}`) || '').toLowerCase();
+                }
+
+                if (aVal < bVal) return direction === 'asc' ? -1 : 1;
+                if (aVal > bVal) return direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+
+            tableBody.innerHTML = '';
+            rowsArray.forEach(row => tableBody.appendChild(row));
+        }
+        
+        sortableHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const key = header.getAttribute('data-sort-key');
+                
+                if (key === currentSortKey) {
+                    sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSortKey = key;
+                    sortDirection = 'asc';
+                }
+                
+                sortableHeaders.forEach(h => {
+                    const icon = h.querySelector('.sort-icon');
+                    icon.classList.add('hidden', 'fa-sort');
+                    icon.classList.remove('fa-sort-up', 'fa-sort-down');
+                });
+
+                const currentIcon = header.querySelector('.sort-icon');
+                currentIcon.classList.remove('hidden', 'fa-sort');
+                currentIcon.classList.add(sortDirection === 'asc' ? 'fa-sort-up' : 'fa-sort-down');
+
+                sortTable(currentSortKey, sortDirection);
+            });
+        });
+
+        // Initial sort and filter application
+        sortTable(currentSortKey, sortDirection);
+        applyFiltersAndSearch();
+    </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="../img/AcadBird - White no text.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACADBIRD - Get Started as a Parent</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style/login_signup.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="card">
+      
+      <div class="left-panel">
+        <img src="../img/AcadBird - White no text.png" alt="ACADBIRD Logo" class="logo">
+        <h1 class="brand">ACADBIRD</h1>
+        <p class="tagline">Your Trusted Wings in Shared Learning Journeys</p>
+      </div>
+
+      <div class="right-panel">
+        <div class="welcome">
+          <h2>Get started as a parent</h2>
+        </div>
+        
+        <form id="signupForm" class="signup-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" required>
+          </div>
+          
+          <p class="terms">By signing up, you agree to Acadbird's <strong>Terms of Service</strong> and <strong>Privacy Policy</strong></p>
+          
+          <div class="buttons">
+            <button type="button" class="btn back-btn" onclick="window.history.back()">Back</button>
+            <button type="submit" class="btn next-btn">Next</button>
+          </div>
+          
+          <div class="signup-link">
+            <span>Already have an account?</span>
+            <a href="login.html">Log in here</a>
+          </div>
+
+          <p id="errorMessage" style="color:red; text-align:center; margin-top:10px;"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+      authDomain: "acadbird-379e3.firebaseapp.com",
+      projectId: "acadbird-379e3",
+      storageBucket: "acadbird-379e3.appspot.com",
+      messagingSenderId: "575491576951",
+      appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+      measurementId: "G-N6Z672SXWJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const signupForm = document.getElementById("signupForm");
+    const errorMessageDisplay = document.getElementById("errorMessage");
+
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const firstName = document.getElementById("firstName").value.trim();
+      const lastName = document.getElementById("lastName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+      if (password !== confirmPassword) {
+        errorMessageDisplay.textContent = "Passwords do not match.";
+        return;
+      }
+
+      try {
+        // ✅ Create account in Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // ✅ Save profile in Firestore under users/{uid}
+        await setDoc(doc(db, "users", user.uid), {
+          firstName,
+          lastName,
+          email,
+          role: "parent",
+          createdAt: new Date()
+        });
+
+        errorMessageDisplay.style.color = "green";
+        errorMessageDisplay.textContent = "Signup successful! Redirecting...";
+
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1500);
+
+      } catch (err) {
+        console.error("Error signing up: ", err);
+        errorMessageDisplay.textContent = err.message;
+      }
+    });
+  </script>
+
+</body>
+</html>

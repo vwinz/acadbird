@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../style/dashboard_parents.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="navbar">
+        <div class="logo">
+          <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+          <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
+        </div>
+        <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
+        <div class="nav-icons">
+          <a href="notification_parent.html">
+            <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
+          </a>
+          <a href="help_parent.html">
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          </a>
+          <a href="account_parent.html">
+            <div class="account-menu">
+              <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="secondary-header">
+        <nav class="nav-menu">
+          <a href="homepage_parents.html" class="nav-item">Home</a>
+          <a href="dashboard_parents.html" class="nav-item active">Dashboard</a>
+          <a href="activitylog_parents.html" class="nav-item">Activity Logs</a>
+          <a href="resources_parents.html" class="nav-item">Resources</a>
+          <a href="messages_parents.html" class="nav-item">Messages</a>
+          <a href="account_parent.html" class="nav-item">Settings</a>
+        </nav>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="main-content">
+        <div class="student-info">
+          <h1 id="student-name"></h1>
+          <p id="student-class"></p>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="main-section">
+            <div class="card activity-card">
+              <div class="activity-header">
+  <span class="title">Activity Participation</span>
+  <select id="week-select" class="yellow-btn">
+    <option value="all">All Weeks</option>
+  </select>
+</div>
+
+              <div class="week-info">
+                <i class="far fa-calendar-alt"></i>
+                <p></p>
+                <p></p>
+              </div>
+              <table class="activity-table">
+                <thead>
+                  <tr>
+                    <th>Activity</th>
+                    <th>Days Participated</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+
+              <div class="legend-container">
+                <div class="legend-item">
+                  <span class="status-dot green"></span>
+                  <span>Full Participation = Engaged</span>
+                </div>
+                <div class="legend-item">
+                  <span class="status-dot yellow"></span>
+                  <span>Partial Participation = Somewhat engaged</span>
+                </div>
+                <div class="legend-item">
+                  <span class="status-dot red"></span>
+                  <span>No Participation = Did not engage</span>
+                </div>
+              </div>
+            </div>
+
+            
+          </div>
+
+          <div class="side-section">
+            <div class="card completion-rate-card">
+              <div class="card-title">Activity Completion Rate</div>
+              <div class="completion-rate"></div>
+            </div>
+
+            <div class="card performance-trend-card">
+  <div class="card-title">Performance Trend</div>
+  <div class="chart-container" style="height: 250px;">
+    <canvas id="performanceChart"></canvas>
+  </div>
+</div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.appspot.com",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const studentNameEl = document.getElementById("student-name");
+      const studentClassEl = document.getElementById("student-class");
+      const activityTableBody = document.querySelector(".activity-table tbody");
+
+     const weekSelect = document.getElementById("week-select");
+
+(async () => {
+  const selectedStudentId = localStorage.getItem("selectedStudentId");
+  if (!selectedStudentId) return;
+
+  const studentRef = doc(db, "students", selectedStudentId);
+  const studentSnap = await getDoc(studentRef);
+  if (!studentSnap.exists()) return;
+
+  const studentData = studentSnap.data();
+  studentNameEl.textContent = `${studentData.firstName || ""} ${studentData.lastName || ""}`.trim() || "Unnamed Student";
+
+  const classroomId = studentData.classroomId;
+  if (!classroomId) return;
+  const classRef = doc(db, "classrooms", classroomId);
+  const classSnap = await getDoc(classRef);
+  studentClassEl.textContent = classSnap.exists() ? classSnap.data().classroomName || "Unnamed Class" : "Class not found";
+if (classroomId) {
+  localStorage.setItem("currentClassroomID", classroomId);
+}
+
+  const activitiesQuery = query(
+    collection(db, "activity"),
+    where("classroomID", "==", classroomId),
+    where("studentID", "==", selectedStudentId)
+  );
+  const activitiesSnap = await getDocs(activitiesQuery);
+
+  // Convert to array with Date
+  let activitiesArray = activitiesSnap.docs.map(docSnap => {
+    const data = docSnap.data();
+    return {
+      ...data,
+      createdAtDate: data.created_at ? data.created_at.toDate() : new Date(0)
+    };
+  });
+
+  // Sort by date
+  activitiesArray.sort((a, b) => a.createdAtDate - b.createdAtDate);
+
+  // Generate week ranges (Mon–Sun)
+  const weeksMap = {}; // { "Week 1": [activities] }
+  activitiesArray.forEach(a => {
+    const startOfWeek = new Date(a.createdAtDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1); // Monday
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(endOfWeek.getDate() + 6); // Sunday
+
+    const weekKey = `${startOfWeek.toLocaleDateString()} - ${endOfWeek.toLocaleDateString()}`;
+    if (!weeksMap[weekKey]) weeksMap[weekKey] = [];
+    weeksMap[weekKey].push(a);
+  });
+
+  // Populate dropdown
+  Object.keys(weeksMap).forEach(weekKey => {
+    const option = document.createElement("option");
+    option.value = weekKey;
+    option.textContent = weekKey;
+    weekSelect.appendChild(option);
+  });
+
+
+  const completionRateEl = document.querySelector(".completion-rate");
+
+const updateCompletionRate = (activities) => {
+  if (!activities || activities.length === 0) {
+    completionRateEl.textContent = "0%";
+    return;
+  }
+
+  const scoreMap = { full: 100, partial: 50, none: 0 };
+  const totalScore = activities.reduce((sum, a) => sum + (scoreMap[a.activityScore] || 0), 0);
+  const avgScore = Math.round(totalScore / activities.length);
+  completionRateEl.textContent = `${avgScore}%`;
+};
+
+
+
+  // Function to render table
+  const renderTable = (activities) => {
+    activityTableBody.innerHTML = "";
+    activities.forEach(data => {
+      let statusClass = data.activityScore === "full" ? "green" :
+                        data.activityScore === "partial" ? "yellow" : "red";
+      let dateStr = data.createdAtDate.toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${data.activityName || "Unnamed Activity"}</td>
+        <td><span class="status-dot ${statusClass}"></span> (${dateStr})</td>
+        <td>${data.note || ""}</td>
+      `;
+      activityTableBody.appendChild(tr);
+    });
+  };
+
+  // Initially show all activities
+  renderTable(activitiesArray);
+
+  // Handle week selection
+weekSelect.addEventListener("change", () => {
+  const selectedWeek = weekSelect.value;
+  let filteredActivities;
+
+  if (selectedWeek === "all") {
+    filteredActivities = activitiesArray;
+  } else {
+    filteredActivities = weeksMap[selectedWeek] || [];
+  }
+
+  renderTable(filteredActivities);
+  updateCompletionRate(filteredActivities); // <-- update completion rate
+});
+
+
+
+
+// Function to convert activityScore to numeric
+const scoreMap = {
+  full: 100,
+  partial: 50,
+  none: 0
+};
+// Initially show all activities
+renderTable(activitiesArray);
+updateCompletionRate(activitiesArray); // <-- compute completion rate for "All Weeks"
+// Prepare performance data
+const weeks = Object.keys(weeksMap); // Week labels
+const weekScores = weeks.map(weekKey => {
+  const activities = weeksMap[weekKey];
+  if (!activities || activities.length === 0) return 0;
+  const totalScore = activities.reduce((sum, a) => sum + (scoreMap[a.activityScore] || 0), 0);
+  return Math.round(totalScore / activities.length); // average
+});
+
+// Render chart
+const ctx = document.getElementById('performanceChart').getContext('2d');
+const performanceChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: weeks,
+    datasets: [{
+      label: 'Average Performance',
+      data: weekScores,
+      fill: true,                     // Fill under line
+      backgroundColor: 'rgba(250, 204, 21, 0.2)', // Yellow translucent fill
+      borderColor: '#FACC15',         // Yellow line
+      borderWidth: 1,
+      tension: 0.4,                   // Smooth curve
+      pointRadius: 6,
+      pointHoverRadius: 8,
+      pointBackgroundColor: '#FACC15',
+      pointBorderColor: '#fff',
+      pointBorderWidth: 1
+    }],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false   // Hide legend for clean card look
+      },
+      tooltip: {
+        backgroundColor: '#333',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        titleFont: { weight: 'bold' },
+        callbacks: {
+          label: (context) => `${context.parsed.y}%`
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100,
+        grid: {
+          color: 'rgba(0,0,0,0.05)',  // Light grid lines
+          borderDash: [5, 5]
+        },
+        ticks: {
+          stepSize: 20,
+          color: '#666'
+        }
+      },
+      x: {
+        grid: { display: false },
+        ticks: {
+          color: '#666'
+        }
+      }
+    }
+  }
+});
+
+
+})();
+
+
+    </script>
+  </body>
+</html>

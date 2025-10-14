@@ -1,0 +1,321 @@
+/* Global Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Container */
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Card */
+.card {
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  overflow: hidden;
+  max-width: 900px; /* Adjust max-width as needed */
+  width: 100%;
+}
+
+/* Left Panel - Branding Section */
+.left-panel {
+  background-color: #124594; /* Darker blue */
+  color: #fff;
+  flex: 1;
+  padding: 40px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-box {
+  background: none; /* No box around logo in the image */
+  padding: 0;
+}
+
+.logo {
+  height: auto;
+  width: 250px;
+  display: block;
+}
+
+.brand {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 10px 0;
+}
+
+.tagline {
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  padding: 0 10px;
+}
+
+/* Right Panel - Login Form */
+.right-panel {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.welcome h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  text-align: left; /* Aligns with the design */
+}
+
+.welcome p {
+  color: #666;
+  margin-top: 5px;
+  margin-bottom: 25px; /* Added space below the welcome message */
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Spacing between form groups */
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: 0.3s;
+  box-sizing: border-box; /* Ensures padding doesn't affect total width */
+}
+
+.form-group input:focus {
+  border-color: #124594;
+  box-shadow: 0 0 5px rgba(18, 69, 148, 0.5);
+}
+
+/* Forgot Password */
+.forgot-password {
+  text-align: right;
+  font-size: 0.9rem;
+  color: #124594;
+  text-decoration: none;
+  margin-top: -10px;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+
+/* Buttons and Links */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.btn {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  flex: 1;
+  transition: background-color 0.3s;
+  background-color: #FFc414;
+  
+}
+
+.back-btn {
+  background-color: #FF8214; /* Corrected to FF8214 */
+  color: #fff;
+}
+
+.back-btn:hover {
+  background-color: #e67512; /* A slightly darker shade for hover effect */
+}
+
+.next-btn {
+  background-color: #FFC414; /* Corrected to FFC414 */
+  color: #fff;
+}
+
+.next-btn:hover {
+  background-color: #e6a800; /* A slightly darker shade for hover effect */
+}
+
+/* Signup Link */
+.signup-link {
+  text-align: left; /* Aligned left as in the image */
+  margin-top: 25px; /* Spacing below the button */
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.signup-link a {
+  color: #124594;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+
+/* Verification Page Specific Styles */
+.verification-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.verification-form .btn {
+  background-color: #ffc414;
+  color: #fff;
+}
+
+.verification-form .btn:hover {
+  background-color: #e67512;
+}
+
+.link-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 25px;
+  font-size: 0.9rem;
+}
+
+.link-group a {
+  color: #124594;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link-group a:hover {
+  text-decoration: underline;
+}
+
+.link-group span {
+  color: #ccc;
+}
+
+
+/* =======================
+   Sign Up Form Specific Styles
+======================= */
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Consistent vertical spacing */
+}
+
+/* Container for First Name and Last Name */
+.form-row {
+    display: flex;
+    gap: 20px; /* Space between First Name and Last Name fields */
+    width: 100%;
+}
+
+.form-row .form-group {
+    flex: 1; /* Makes each name field take up half the width */
+    margin-bottom: 0; /* Remove extra margin from .form-group within a row */
+}
+
+/* Terms and Conditions Text */
+.terms {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 5px 0 20px 0; /* Space above and below the text */
+    text-align: left;
+}
+
+/* Ensure buttons take equal space */
+.signup-form .buttons {
+    margin-top: 10px;
+}
+
+/* =======================
+   Media Query for Mobile Devices
+======================= */
+
+@media (max-width: 768px) {
+    body {
+        min-height: auto;
+    }
+
+    /* Stack the panels vertically */
+    .card {
+        flex-direction: column;
+        max-width: 95%;
+        margin: 20px 0;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* Adjust padding for smaller screens */
+    .left-panel {
+        padding: 30px 20px;
+        order: -1; /* Place the left panel (branding) at the top */
+        border-radius: 16px 16px 0 0;
+    }
+    
+    .right-panel {
+        padding: 30px 20px;
+    }
+
+    /* Make the logo smaller on mobile */
+    .logo {
+        width: 150px;
+    }
+
+    .brand {
+        font-size: 1.8rem;
+    }
+
+    .tagline {
+        font-size: 0.9rem;
+    }
+    
+    .welcome h2 {
+        font-size: 1.5rem;
+    }
+
+    /* Stack the name fields (First Name/Last Name) vertically on mobile */
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}

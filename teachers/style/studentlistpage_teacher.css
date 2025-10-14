@@ -1,0 +1,574 @@
+ /* =======================
+       Base Styles
+     ======================= */
+      /* Set global font, background, and color for the entire page */
+      html,
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        font-size: 16px;
+        font-family: "Poppins", Arial, sans-serif;
+        background-color: #dbe7f7;
+        color: #000;
+      }
+
+      /* =======================
+       Navbar
+     ======================= */
+      /* Styles for the top navigation bar */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 24px;
+        background-color: #0a3b82;
+        color: white;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-img {
+        width: 70px;
+        height: 40px;
+      }
+
+      .logo-text-img {
+        height: 28px;
+      }
+      .middle-logo {
+        width: 90px;
+        height: 40px;
+        margin: 0 auto;
+      }
+      .nav-icons {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .nav-icons .icon {
+        width: 30px;
+        height: 25px;
+        cursor: pointer;
+      }
+
+      .account-menu {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #e0e0e0;
+      }
+
+      /* =======================
+       Secondary Header
+     ======================= */
+      /* Styles for the secondary navigation menu */
+      .secondary-header {
+        background-color: #e7efff;
+        display: flex;
+        justify-content: center;
+        padding: 12px 30px;
+        position: static;
+        top: 44px;
+        z-index: 999;
+        border-bottom: 1px solid #c9d7f8;
+      }
+
+      .nav-menu {
+        display: flex;
+        gap: 22px;
+        align-items: center;
+        font-size: 16px;
+      }
+
+      .nav-item {
+        color: #000;
+        text-decoration: none;
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 3px;
+        transition: background-color 0.3s;
+      }
+
+      /* Style for the active/current page link */
+      .nav-item.active {
+        font-weight: 700;
+        border-bottom: 2px solid #000;
+      }
+
+      .nav-item:hover {
+        background-color: #c9d7f8;
+      }
+
+      /* =======================
+       Separator Line
+     ======================= */
+      .separator {
+        width: 100%;
+        height: 1px;
+        background-color: #000;
+        margin: 0;
+        color: #000;
+      }
+
+      /* =======================
+       Main Content
+     ======================= */
+      /* Main content layout */
+      .main-content {
+        padding: 35px 45px;
+      }
+
+      .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* Responsive layout for larger screens */
+      @media (min-width: 768px) {
+        .content-wrapper {
+          flex-direction: row;
+          align-items: flex-start;
+        }
+      }
+
+      /* =======================
+       Student Section
+     ======================= */
+      /* Styles for the student list area */
+      .student-section {
+        flex: 1;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .section-title {
+        font-size: 24px;
+        font-weight: 900;
+        color: #333;
+      }
+
+      .section-subtitle {
+        font-size: 18px;
+        color: #555;
+      }
+
+      .student-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+  gap: 20px;
+  justify-items: stretch; /* make children stretch */
+}
+
+.student-card,
+.add-student-card {
+  width: 100%;        /* fill grid cell */
+  aspect-ratio: 1;    /* always square */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  border: 2px solid #000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* student card styles */
+.student-card {
+  background-color: #fbbc05;
+  transition: transform 0.2s ease-in-out;
+}
+.student-card:hover {
+  transform: scale(1.05);
+}
+
+/* add student card styles */
+.add-student-card {
+  background-color: #8ce68c;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  /* ✅ remove the old padding */
+  padding: 0;
+  text-align: center;
+}
+
+.add-student-card:hover {
+  background-color: #6fd86f;
+}
+
+.add-icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+
+      /* Grid for displaying student cards */
+    
+
+      /* Position for edit and delete icons */
+      .edit-icon,
+      .delete-icon {
+        position: absolute;
+        top: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        color: #1e293b;
+      }
+
+      .edit-icon {
+        right: 35px;
+      }
+
+      .delete-icon {
+        right: 10px;
+      }
+
+      /* Card for adding a new student */
+      
+      .add-student-card:hover {
+        background-color: #6fd86f;
+      }
+
+
+      /* =======================
+       Sidebar
+     ======================= */
+      /* Styles for the sidebar container */
+      .sidebar {
+        width: 100%;
+        max-width: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .sidebar-box {
+        background-color: #cfe2ff;
+        color: #1a3d7c;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 2px solid #000;
+      }
+
+      .highlight {
+        font-weight: bold;
+      }
+
+      /* Button styles */
+      .btn {
+        font-weight: bold;
+        padding: 12px;
+        border-radius: 50px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .btn-yellow {
+        background-color: #fbbc05;
+        color: #333;
+      }
+
+      .btn-yellow:hover {
+        background-color: #fbbc05;
+      }
+
+      .btn-green {
+        background-color: #81c784;
+        color: #333;
+      }
+
+      .btn-green:hover {
+        background-color: #66bb6a;
+      }
+
+      .note {
+        font-size: 14px;
+        color: #666;
+      }
+
+      /* =======================
+       Modal Pop-up Styles
+     ======================= */
+      /* General styles for the modal overlay, hidden by default */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+      }
+
+      /* Modal content box */
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 25px;
+        border: 2px solid #000;
+        width: 80%;
+        max-width: 400px;
+        border-radius: 20px;
+        position: relative;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+      }
+
+      .modal-content h2,
+      .modal-content h3 {
+        color: #000;
+      }
+
+      /* Close button style and positioning */
+      .close-button {
+        color: #aaa;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 30px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close-button:hover,
+      .close-button:focus {
+        color: #333;
+      }
+
+      /* Form group for label and input */
+      .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .form-group input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      /* Container for form action buttons */
+      .form-actions {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 20px;
+      }
+
+      /* Specific button styles */
+      .btn-primary {
+        background-color: #0a3b82;
+        color: white;
+        border: none;
+      }
+
+      .btn-primary:hover {
+        background-color: #082d62;
+      }
+
+      .btn-cancel {
+        background-color: #ccc;
+        color: #000;
+        border: none;
+      }
+
+      .btn-cancel:hover {
+        background-color: #bbb;
+      }
+
+      .btn-red {
+        background-color: #e57373;
+        color: white;
+        border: none;
+      }
+
+      .btn-red:hover {
+        background-color: #ef5350;
+      }
+
+    .suggestions {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 10;
+  display: none; /* hide by default */
+}
+
+.suggestion {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.suggestion:hover {
+  background-color: #f0f0f0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-filter {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+
+/*loading screen*/
+        #loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2); /* dim screen */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+.loader-3 {
+  width: 10em;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.circle {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+}
+
+.circle:nth-child(1) {
+  background-color: #90be6d;
+}
+
+.circle:nth-child(2) {
+  background-color: #f9c74f;
+}
+
+.circle:nth-child(3) {
+  background-color: #f8961e;
+}
+
+.circle:nth-child(4) {
+  background-color: #f3722c;
+}
+
+.circle:nth-child(5) {
+  background-color: #f94346;
+}
+
+.circle::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: animateLoader38 2s ease-out infinite;
+}
+
+.circle:nth-child(1)::before {
+  background-color: #90be6d;
+}
+
+.circle:nth-child(2)::before {
+  background-color: #f9c74f;
+  animation-delay: 0.2s;
+}
+
+.circle:nth-child(3)::before {
+  background-color: #f8961e;
+  animation-delay: 0.4s;
+}
+
+.circle:nth-child(4)::before {
+  background-color: #f3722c;
+  animation-delay: 0.6s;
+}
+
+.circle:nth-child(5)::before {
+  background-color: #f94346;
+  animation-delay: 0.8s;
+}
+
+@keyframes animateLoader38 {
+  0% {
+    transform: scale(1);
+  }
+
+  50%,
+  75% {
+    transform: scale(2.5);
+  }
+
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes popup {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.student-card,
+.add-student-card,
+.sidebar-box,
+.modal-content {
+  animation: popup 0.6s ease-out;
+  animation-fill-mode: both; /* Stay at final state */
+}
+.student-card:nth-child(1) { animation-delay: 0.1s; }
+.student-card:nth-child(2) { animation-delay: 0.2s; }
+.student-card:nth-child(3) { animation-delay: 0.3s; }
+.student-card:nth-child(4) { animation-delay: 0.4s; }

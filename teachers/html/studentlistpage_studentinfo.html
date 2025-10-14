@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AcadBird Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+<link rel="stylesheet" href="../style/studentlistpage_studentinfo.css" />
+</head>
+<body>
+<div class="container">
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
+            <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
+        </div>
+        <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+        <div class="nav-icons">
+    <a href="notification_teacher.html" target="_blank">
+        <img src="Notification.png" alt="Notifications" class="icon">
+    </a>
+    <a href="help_teacher.html" target="_blank">
+        <img src="Help.png" alt="Help" class="icon">
+    </a>
+    <a href="settings_teacher.html" target="_blank">
+        <div class="account-menu">
+            <img src="account icon.png" alt="User Account" class="icon">
+        </div>
+    </a>
+</div>
+
+    </nav>
+
+    <div class="secondary-header">
+        <nav class="nav-menu">
+            <a href="homepage-teachers.html" class="nav-item">Home</a>
+            <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
+            <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
+            <a href="resources_teacher.html" class="nav-item">Resources</a>
+            <a href="messages_teacher.html" class="nav-item">Messages</a>
+            <a href="studentlistpage_teacher.html" class="nav-item active">Student List</a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="student-info-container">
+            <div class="student-header">
+                <div class="student-details">
+                    <h1 class="student-name">Mark Santiago</h1>
+                    <p class="student-class">Kinder Lily</p>
+                </div>
+                <div class="parent-code-card">
+                    <p><strong>Parent:</strong> Kianna Santiago</p>
+                    <p><strong>Code:</strong> <span id="parent-code-text">apple-111</span></p>
+                    <p class="connected">Connected</p>
+                </div>
+            </div>
+
+            <div class="parent-actions-container">
+                <div class="week-buttons">
+                    <button id="generate-code-btn">Generate Code</button>
+                    <button id="share-code-btn">Share Code</button>
+                </div>
+                <p class="note-info" id="share-expired" style="display:none;">*Shared code expired</p>
+            </div>
+
+            <div class="week-actions">
+                <select id="week-dropdown">
+                    <option value="week31">Week of April 1–5</option>
+                    <option value="week32">Week of April 8–12</option>
+                </select>
+            </div>
+
+            <div class="week-details">
+                <p><i class="fas fa-book"></i> Week 31: Filipino Identity – National Symbols</p>
+                <p><i class="fas fa-calendar-alt"></i> April 1–5, 2025</p>
+            </div>
+
+            <div class="activity-table-container">
+                <table class="activity-table">
+                    <thead>
+                        <tr>
+                            <th>Activity</th>
+                            <th>Note</th>
+                            <th>Full</th>
+                            <th>Partial</th>
+                            <th>None</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Music & Movement</td>
+                            <td class="note-cell"><i class="fas fa-plus add-note-icon"></i></td>
+                            <td><div class="checkbox-full checked"></div></td>
+                            <td><div class="checkbox-partial"></div></td>
+                            <td><div class="checkbox-none"></div></td>
+                        </tr>
+                        <tr>
+                            <td>Arts & Crafts</td>
+                            <td class="note-cell"><i class="fas fa-plus add-note-icon"></i></td>
+                            <td><div class="checkbox-full checked"></div></td>
+                            <td><div class="checkbox-partial"></div></td>
+                            <td><div class="checkbox-none"></div></td>
+                        </tr>
+                        <tr>
+                            <td>Play-Based Learning</td>
+                            <td class="note-cell"><i class="fas fa-plus add-note-icon"></i></td>
+                            <td><div class="checkbox-full checked"></div></td>
+                            <td><div class="checkbox-partial"></div></td>
+                            <td><div class="checkbox-none"></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="note-modal" class="modal-overlay">
+        <div class="modal-box note-modal-box">
+            <a href="#" class="close-btn" id="close-note-modal"><i class="fas fa-times"></i></a>
+            <h2>Add Note</h2>
+            <textarea id="note-text" placeholder="Enter note here..."></textarea>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" id="cancel-note-btn">Cancel</button>
+                <button class="btn btn-save" id="save-note-btn">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="code-modal" class="modal-overlay">
+        <div class="modal-box code-modal-box">
+            <a href="#" class="close-btn" id="close-code-modal"><i class="fas fa-times"></i></a>
+            <h2 class="modal-title">Generate Class Code</h2>
+            <p>New Class Code:</p>
+            <div class="code-display">
+                <span id="generated-code">cheeky-435</span>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-ok" id="ok-code-btn">OK</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="../js/studentlistpage_studentinfo.js"></script>
+</body>
+</html>

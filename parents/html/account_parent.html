@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Settings - AcadBird</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="../style/account_parent.css">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="dashboard_parents.html"><img src="../../main/img/back.png" alt="Back" class="back-icon" /></a>
+                <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+                <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+            </div>
+            <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
+            <div class="nav-icons">
+                <a href="notification_parent.html">
+                    <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
+                </a>
+                <a href="help_parent.html">
+                    <img src="../../main/img/Help.png" alt="Help" class="icon" />
+                </a>
+                <a href="account_parent.html">
+                    <div class="account-menu">
+                        <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
+                        <i class="fas fa-caret-down dropdown-icon"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="secondary-header">
+            <nav class="nav-menu">
+                <a href="homepage_parents.html" class="nav-item">Home</a>
+                <a href="dashboard_parents.html" class="nav-item">Dashboard</a>
+                <a href="activitylog_parents.html" class="nav-item">Activity Logs</a>
+                <a href="resources_parents.html" class="nav-item">Resources</a>
+                <a href="messages_parents.html" class="nav-item">Messages</a>
+                <a href="settings_parent.html" class="nav-item active">Settings</a>
+            </nav>
+        </div>
+
+        
+        <div class="separator"></div>
+
+        <div class="main-content">
+            <div class="settings-container" id="settings-view">
+                <h1 class="main-title">Settings</h1>
+                <div class="settings-layout">
+                    <div class="settings-column">
+                        <div class="card profile-card">
+                            <h2 class="card-title">Profile</h2>
+                            <div class="profile-details">
+                                <div class="profile-pic">
+                                    <div class="avatar-placeholder">O</div>
+                                    <button class="change-photo-btn">Change Photo</button>
+                                </div>
+                                <div class="profile-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="first-name">First Name</label>
+                                            <input type="text" id="first-name" value="Name">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="last-name">Last Name</label>
+                                            <input type="text" id="last-name" value="Name">
+                                        </div>
+                                    </div>
+                                
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                            <input type="email" id="email" value="sampleemail@school.edu.ph">
+                                    </div>
+                                    <button class="text-button" id="change-password-btn">Change Password</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="action-button logout-btn-main">Log out</button>
+                    </div>
+                    <div class="settings-column">
+                        <div class="card notification-card">
+                            <h2 class="card-title">Notification Settings</h2>
+                            <div class="setting-item">
+                                <span>Toggle All Notifications</span>
+                                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Message Notifications</span>
+                                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Comments/likes on a post</span>
+                                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Parent joining a class</span>
+                                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                            </div>
+                            <div class="setting-item">
+                                <span>Admin announcements</span>
+                                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                            </div>
+                        </div>
+                        <div class="card display-card">
+                            <h2 class="card-title">Display Settings</h2>
+                            <div class="setting-item">
+                                <span>Dark Mode</span>
+                                <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="change-password-container hidden" id="password-view">
+                <div class="card password-card">
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <input type="password" id="current-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm New Password</label>
+                        <input type="password"id="confirm-password">
+                    </div>
+                    <button class="action-button">Change Password</button>
+                </div>
+            </div>
+        </div>
+    </div>
+   <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+// --- Firebase Config ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+    authDomain: "acadbird-379e3.firebaseapp.com",
+    projectId: "acadbird-379e3",
+    storageBucket: "acadbird-379e3.firebasestorage.app",
+    messagingSenderId: "575491576951",
+    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+    measurementId: "G-N6Z672SXWJ"
+  };
+
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// --- Elements ---
+const firstNameInput = document.getElementById('first-name');
+const lastNameInput = document.getElementById('last-name');
+const emailInput = document.getElementById('email');
+const avatarPlaceholder = document.querySelector('.avatar-placeholder');
+
+// --- Load Current User ---
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const uid = user.uid;
+    try {
+      const userDocRef = doc(db, "users", uid);
+      const userSnapshot = await getDoc(userDocRef);
+
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.data();
+
+        // Populate fields
+        firstNameInput.value = userData.firstName || "";
+        lastNameInput.value = userData.lastName || "";
+        emailInput.value = userData.email || "";
+
+        // Optional: Avatar
+        if (userData.avatarUrl) {
+          avatarPlaceholder.innerHTML = `<img src="${userData.avatarUrl}" alt="Avatar" class="avatar-img">`;
+        } else {
+          avatarPlaceholder.textContent = userData.firstName ? userData.firstName[0].toUpperCase() : "O";
+        }
+
+      } else {
+        console.log("User document not found!");
+      }
+    } catch (error) {
+      console.error("Error loading user data:", error);
+    }
+  } else {
+    console.log("No user is signed in.");
+    // Optionally redirect to login page
+  }
+});
+
+const logoutBtn = document.querySelector('.logout-btn-main');
+
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', async () => {
+    try {
+      await auth.signOut();
+      console.log("User signed out successfully!");
+      // Redirect to login page
+      window.location.href = "../../main/html/login.html"; // <-- change this to your login page path
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  });
+}
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Element Selections ---
+            const accountMenu = document.querySelector('.account-menu');
+            const dropdown = document.querySelector('.dropdown-content');
+            const settingsView = document.getElementById('settings-view');
+            const passwordView = document.getElementById('password-view');
+            
+            // Buttons for switching views
+            const goToPasswordBtn = document.getElementById('change-password-btn');
+            const submitPasswordBtn = document.querySelector('#password-view .action-button');
+
+            // --- Functions ---
+            function showSettingsPage() {
+                // Hide password view and show settings view
+                passwordView.classList.add('hidden');
+                settingsView.classList.remove('hidden');
+            }
+
+            function showPasswordPage() {
+                // Hide settings view and show password view
+                settingsView.classList.add('hidden');
+                passwordView.classList.remove('hidden');
+            }
+
+            // --- Event Listeners ---
+
+            // 1. Toggle Dropdown Menu
+            accountMenu.addEventListener('click', function (event) {
+                event.stopPropagation();
+                dropdown.classList.toggle('show');
+            });
+
+            // 2. Close dropdown if clicked outside
+            window.addEventListener('click', function () {
+                if (dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                }
+            });
+
+            // 3. Switch to Change Password view
+            if (goToPasswordBtn) {
+                goToPasswordBtn.addEventListener('click', showPasswordPage);
+            }
+            
+            // 4. After submitting new password, return to settings
+            if (submitPasswordBtn) {
+                submitPasswordBtn.addEventListener('click', function() {
+                    // Here you would typically add logic to validate and save the new password.
+                    console.log("Password change submitted!");
+                    
+                    // Return to the main settings view
+                    showSettingsPage();
+                });
+            }
+
+            // Initialize the page with the correct header and view
+            showSettingsPage();
+
+        });
+    </script>
+</body>
+</html>
