@@ -7,25 +7,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="../style/resources_teacher.css" />
+    <!-- Firebase App (core) SDK -->
+<!-- Firebase App (core) SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<!-- Firebase Firestore SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<!-- Firebase Storage SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+
+
 </head>
 <body>
     <div class="container">
          <nav class="navbar">
         <div class="logo">
-            <img src="AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
-            <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
+            <img src="../../main/img/AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
+            <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
         </div>
-        <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+        <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
         <div class="nav-icons">
     <a href="notification_teacher.html" target="_blank">
-        <img src="Notification.png" alt="Notifications" class="icon">
+        <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
     </a>
     <a href="help_teacher.html" target="_blank">
-        <img src="Help.png" alt="Help" class="icon">
+        <img src="../../main/img/Help.png" alt="Help" class="icon">
     </a>
     <a href="settings_teacher.html" target="_blank">
         <div class="account-menu">
-            <img src="account icon.png" alt="User Account" class="icon">
+            <img src="../../main/img/account icon.png" alt="User Account" class="icon">
         </div>
     </a>
 </div>
@@ -115,6 +125,600 @@
             </div>
         </div>
     </div>
-    <script src="resources_teacher.js"></script>
+    
+    <script>
+
+  
+    const firebaseConfig = {
+    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+    authDomain: "acadbird-379e3.firebaseapp.com",
+    projectId: "acadbird-379e3",
+   storageBucket: "acadbird-379e3.appspot.com",
+
+    messagingSenderId: "575491576951",
+    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+    measurementId: "G-N6Z672SXWJ"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+        document.addEventListener('DOMContentLoaded', () => {
+    const resourcesSection = document.querySelector('.resources-section');
+    const addWeekBtn = document.querySelector('.add-week-btn');
+    const popupOverlay = document.getElementById('content-popup');
+    const popupCloseBtn = document.querySelector('.popup-close');
+    const addFileBtn = document.getElementById('add-file-btn');
+    const popupFileInput = document.getElementById('popup-file-input');
+    const postBtn = document.getElementById('post-btn');
+    const popupText = document.getElementById('popup-text');
+    
+    let currentTopicCard = null;
+    let currentContentItem = null;
+    let nextWeekNumber = 2;
+    let nextTopicId = 14;
+
+     let classroomID = new URLSearchParams(window.location.search).get('classroomID') 
+        || localStorage.getItem('selectedClassId');
+
+    if (!classroomID) {
+        console.error("Classroom ID is missing!");
+    } else {
+        console.log("Classroom ID:", classroomID);
+    }
+
+    // Now you can safely call fetchWeeks
+    fetchWeeks(classroomID);
+
+
+    // Initial state setup for the first week
+    const week1Card = document.querySelector('.week-card:first-of-type');
+    if (week1Card) {
+        week1Card.classList.add('active');
+        const week1Content = week1Card.querySelector('.week-content');
+        if (week1Content) {
+            week1Content.classList.add('active');
+        }
+    }
+
+    // Function to handle the lock/unlock state and visual updates
+    function updateLockStatus(card) {
+        if (card.classList.contains('unlocked')) {
+            card.style.borderLeft = '10px solid #76c784';
+        } else {
+            card.style.borderLeft = '10px solid #000';
+        }
+    }
+
+   async function fetchWeeks(classroomID) {
+    if (!classroomID) return;
+
+    try {
+        const weekSnapshot = await db.collection('week')
+            .where('classroomID', '==', classroomID)
+            .orderBy('weekNo')
+            .get();
+
+        const resourcesSection = document.querySelector('.resources-section');
+
+        weekSnapshot.forEach(async (doc) => {
+            const weekData = doc.data();
+            const weekId = doc.id;
+            const weekNo = weekData.weekNo || 'Week';
+            const weekTitle = weekData.weekTitle || 'New Week';
+
+            const newWeekHtml = `
+                <div class="week-card unlocked" data-week-id="${weekId}">
+                    <div class="week-header">
+                        <span class="week-title">${weekNo}</span>
+                        <span class="week-subtitle">${weekTitle}</span>
+                        <i class="fas fa-pencil-alt edit-icon week-edit-icon"></i>
+                        <div class="lock-status">
+                            <i class="fas fa-lock-open unlock-icon"></i>
+                            <i class="fas fa-lock lock-icon"></i>
+                        </div>
+                        <i class="fas fa-trash-alt delete-week-icon"></i>
+                    </div>
+                    <div class="week-content active">
+                        <div class="add-topic-btn">
+                            <i class="fas fa-plus"></i> Add Topic
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            resourcesSection.insertBefore(
+                document.createRange().createContextualFragment(newWeekHtml),
+                document.querySelector('.add-week-btn-container')
+            );
+
+            // Fetch topics for this week
+            await fetchTopicsForWeek(weekId);
+        });
+
+        initEventListeners();
+    } catch (error) {
+        console.error('Error fetching weeks:', error);
+    }
+}
+
+async function fetchContentForTopic(topicID) {
+    try {
+        const contentSnapshot = await db.collection('topicContent')
+            .where('topicID', '==', topicID)
+            .get();
+
+        const topicCard = document.querySelector(`.topic-card[data-topic-id="${topicID}"]`);
+        if (!topicCard) return;
+        const topicContentDiv = topicCard.querySelector('.topic-content');
+        const addContentBtn = topicContentDiv.querySelector('.add-content-btn');
+
+        contentSnapshot.forEach(doc => {
+            const contentData = doc.data();
+            const contentId = doc.id;
+            const description = contentData.description || '';
+            const fileURL = contentData.file || '';
+            let newContentHtml = '';
+
+            if (fileURL) {
+                // If it's a file
+                newContentHtml = `
+                    <div class="topic-item file-item" data-content-id="${contentId}">
+                        <i class="fas fa-download"></i>
+                        <a href="${fileURL}" download class="download-link">
+                            <span class="item-text">${description || fileURL.split('/').pop()}</span>
+                        </a>
+                        <i class="fas fa-trash-alt delete-item-icon"></i>
+                    </div>
+                `;
+            } else {
+                // If it's text content
+                newContentHtml = `
+                    <div class="topic-item content-item-editable" data-content-id="${contentId}">
+                        <i class="fas fa-book-open"></i>
+                        <span class="item-text">${description}</span>
+                        <i class="fas fa-pencil-alt edit-item-icon"></i>
+                        <i class="fas fa-trash-alt delete-item-icon"></i>
+                    </div>
+                `;
+            }
+
+            addContentBtn.insertAdjacentHTML('afterend', newContentHtml);
+        });
+
+        initEventListeners(); // Reinitialize event listeners for new content
+    } catch (error) {
+        console.error("Error fetching content for topic:", topicID, error);
+    }
+}
+
+
+
+async function fetchTopicsForWeek(weekID) {
+    try {
+        const topicSnapshot = await db.collection('topic')
+    .where('weekID', '==', weekID)
+    .get();
+
+
+        const weekCard = document.querySelector(`.week-card[data-week-id="${weekID}"]`);
+        if (!weekCard) return;
+        const weekContent = weekCard.querySelector('.week-content');
+        const addTopicBtnDiv = weekContent.querySelector('.add-topic-btn');
+
+        topicSnapshot.forEach(async doc => {
+    const topicData = doc.data();
+    const topicId = doc.id;
+    const topicName = topicData.topicName || 'New Topic';
+
+    const topicHtml = `
+        <div class="topic-card unlocked" data-topic-id="${topicId}">
+            <div class="topic-header">
+                <span class="topic-title">${topicName}</span>
+                <i class="fas fa-pencil-alt edit-icon topic-edit-icon"></i>
+                <div class="lock-status">
+                    <i class="fas fa-lock-open unlock-icon"></i>
+                    <i class="fas fa-lock lock-icon"></i>
+                </div>
+                <i class="fas fa-trash-alt delete-topic-icon"></i>
+            </div>
+            <div class="topic-content active">
+                <div class="topic-item content-item add-content-btn">
+                    <i class="fas fa-plus"></i>
+                    <span class="item-text">Add Topic Content</span>
+                </div>
+            </div>
+        </div>
+    `;
+    addTopicBtnDiv.insertAdjacentHTML('beforebegin', topicHtml);
+
+    // Fetch topic content
+    await fetchContentForTopic(topicId);
+});
+
+        initEventListeners();
+    } catch (error) {
+        console.error("Error fetching topics for week:", weekID, error);
+    }
+}
+
+
+
+    // Function to initialize all event listeners on dynamically added elements
+    function initEventListeners() {
+        // Handle week header click to toggle content
+        document.querySelectorAll('.week-header').forEach(header => {
+            header.onclick = (event) => {
+                const weekCard = header.parentElement;
+                if (!event.target.closest('.edit-icon') && !event.target.closest('.delete-week-icon') && !event.target.closest('.lock-status')) {
+                    const weekContent = header.nextElementSibling;
+                    weekContent.classList.toggle('active');
+                    weekCard.classList.toggle('active');
+                }
+            };
+        });
+
+        // Handle topic header click to toggle content
+        document.querySelectorAll('.topic-header').forEach(header => {
+            header.onclick = (event) => {
+                const topicCard = header.parentElement;
+                if (!event.target.closest('.edit-icon') && !event.target.closest('.delete-topic-icon') && !event.target.closest('.lock-status')) {
+                    const topicContent = header.nextElementSibling;
+                    if (topicContent) {
+                        topicContent.classList.toggle('active');
+                    }
+                    topicCard.classList.toggle('active');
+                }
+            };
+        });
+
+        // Toggle lock/unlock status for weeks and topics
+        document.querySelectorAll('.week-card .lock-status, .topic-card .lock-status').forEach(lockStatus => {
+            lockStatus.onclick = (event) => {
+                event.stopPropagation();
+                const card = lockStatus.closest('.week-card') || lockStatus.closest('.topic-card');
+                const isLocked = card.classList.toggle('locked');
+                const isUnlocked = card.classList.toggle('unlocked');
+                
+                // If it's a week card, lock/unlock all child topics
+                if (card.classList.contains('week-card')) {
+                    const topics = card.querySelectorAll('.topic-card');
+                    topics.forEach(topic => {
+                        topic.classList.toggle('locked', isLocked);
+                        topic.classList.toggle('unlocked', isUnlocked);
+                        updateLockStatus(topic);
+                    });
+                }
+                updateLockStatus(card);
+            };
+        });
+        
+        // Edit functionality for week/topic titles
+        document.querySelectorAll('.week-edit-icon, .topic-edit-icon').forEach(icon => {
+            icon.onclick = (event) => {
+                const parent = event.target.closest('.week-header') || event.target.closest('.topic-header');
+                let textSpan;
+                let isWeekSubtitle = false;
+
+                if (parent.classList.contains('week-header')) {
+                    textSpan = parent.querySelector('.week-subtitle');
+                    isWeekSubtitle = true;
+                } else {
+                    textSpan = parent.querySelector('.topic-title');
+                }
+
+                if (textSpan) {
+                    const currentText = textSpan.textContent;
+                    const inputField = document.createElement('input');
+                    inputField.type = 'text';
+                    inputField.classList.add('editable-field');
+                    inputField.value = currentText;
+
+                    textSpan.replaceWith(inputField);
+                    inputField.focus();
+
+                    const saveEdit = () => {
+                        const newText = inputField.value || (isWeekSubtitle ? 'New Week' : 'New Topic');
+                        const newSpan = document.createElement('span');
+                        newSpan.textContent = newText;
+                        newSpan.classList.add(isWeekSubtitle ? 'week-subtitle' : 'topic-title');
+                        inputField.replaceWith(newSpan);
+                        initEventListeners();
+                    };
+
+                    inputField.addEventListener('blur', saveEdit);
+                    inputField.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            inputField.blur();
+                        }
+                    });
+                }
+            };
+        });
+
+        // Open pop-up for adding new content
+        document.querySelectorAll('.add-content-btn').forEach(item => {
+            item.onclick = (event) => {
+                currentTopicCard = event.target.closest('.topic-card');
+                currentContentItem = null; // Clear to signal new content
+                popupText.innerHTML = ''; // Clear pop-up text
+                popupOverlay.classList.remove('hidden');
+            };
+        });
+
+        // Open pop-up for editing existing content
+        document.querySelectorAll('.topic-item.content-item-editable').forEach(item => {
+            item.onclick = (event) => {
+                if (!event.target.closest('.edit-item-icon') && !event.target.closest('.delete-item-icon')) {
+                    currentContentItem = item;
+                    currentTopicCard = item.closest('.topic-card');
+                    popupText.innerHTML = item.querySelector('.item-text').innerHTML;
+                    popupOverlay.classList.remove('hidden');
+                }
+            };
+        });
+
+        // Delete content item
+        document.querySelectorAll('.delete-item-icon').forEach(icon => {
+            icon.onclick = (event) => {
+                const item = event.target.closest('.topic-item');
+                if (item && !item.classList.contains('add-content-btn')) {
+                    item.remove();
+                }
+            };
+        });
+        
+        // Add Topic Button functionality
+        // Add Topic Button functionality
+document.querySelectorAll('.add-topic-btn').forEach(btn => {
+    btn.onclick = async () => {
+        const weekCard = btn.closest('.week-card');
+        if (!weekCard) return;
+
+        const weekID = weekCard.dataset.weekId;
+        if (!weekID) {
+            console.error("Week ID missing! Cannot add topic.");
+            return;
+        }
+
+        const topicName = "New Topic";
+
+        try {
+            // Save topic in Firestore
+            const docRef = await db.collection('topic').add({
+                classroomID: classroomID,
+                weekID: weekID,
+                topicName: topicName,
+                created_at: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            console.log("Topic added with ID:", docRef.id);
+
+            // Add DOM element
+            const newTopicHtml = `
+                <div class="topic-card unlocked" data-topic-id="${docRef.id}">
+                    <div class="topic-header">
+                        <span class="topic-title">${topicName}</span>
+                        <i class="fas fa-pencil-alt edit-icon topic-edit-icon"></i>
+                        <div class="lock-status">
+                            <i class="fas fa-lock-open unlock-icon"></i>
+                            <i class="fas fa-lock lock-icon"></i>
+                        </div>
+                        <i class="fas fa-trash-alt delete-topic-icon"></i>
+                    </div>
+                    <div class="topic-content active">
+                        <div class="topic-item content-item add-content-btn">
+                            <i class="fas fa-plus"></i>
+                            <span class="item-text">Add Topic Content</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            const weekContent = weekCard.querySelector('.week-content');
+            const addTopicBtnDiv = weekContent.querySelector('.add-topic-btn');
+            addTopicBtnDiv.insertAdjacentHTML('beforebegin', newTopicHtml);
+
+            // Reinitialize event listeners for the new topic
+            initEventListeners();
+        } catch (error) {
+            console.error("Error adding topic: ", error);
+        }
+    };
+});
+
+
+        // Delete entire week
+        document.querySelectorAll('.delete-week-icon').forEach(icon => {
+            icon.onclick = (event) => {
+                event.stopPropagation();
+                const weekCard = event.target.closest('.week-card');
+                if (confirm('Are you sure you want to delete this entire week? This action cannot be undone.')) {
+                    weekCard.remove();
+                }
+            };
+        });
+
+        // Delete entire topic
+        document.querySelectorAll('.delete-topic-icon').forEach(icon => {
+            icon.onclick = (event) => {
+                event.stopPropagation();
+                const topicCard = event.target.closest('.topic-card');
+                if (confirm('Are you sure you want to delete this topic? This action cannot be undone.')) {
+                    topicCard.remove();
+                }
+            };
+        });
+    }
+
+    // Add Week functionality
+addWeekBtn.onclick = async () => {
+    const weekCount = document.querySelectorAll('.week-card').length + 1;
+    const weekTitle = `New Week`;
+
+    // Use the classroomID from outer scope
+    if (!classroomID) {
+        console.error("Classroom ID is missing! Cannot add week.");
+        return;
+    }
+
+    try {
+        const docRef = await db.collection('week').add({
+            classroomID: classroomID,
+            weekNo: `Week ${weekCount}`,
+            weekTitle: weekTitle
+        });
+            console.log("Week added with ID:", docRef.id);
+
+            // Add DOM element
+            const newWeekHtml = `
+                <div class="week-card unlocked" data-week-id="${docRef.id}">
+                    <div class="week-header">
+                        <span class="week-title">Week ${weekCount}</span>
+                        <span class="week-subtitle">${weekTitle}</span>
+                        <i class="fas fa-pencil-alt edit-icon week-edit-icon"></i>
+                        <div class="lock-status">
+                            <i class="fas fa-lock-open unlock-icon"></i>
+                            <i class="fas fa-lock lock-icon"></i>
+                        </div>
+                        <i class="fas fa-trash-alt delete-week-icon"></i>
+                    </div>
+                    <div class="week-content active">
+                        <div class="topic-card unlocked" data-topic-id="${nextTopicId++}">
+                            <div class="topic-header">
+                                <span class="topic-title">New Topic</span>
+                                <i class="fas fa-pencil-alt edit-icon topic-edit-icon"></i>
+                                <div class="lock-status">
+                                    <i class="fas fa-lock-open unlock-icon"></i>
+                                    <i class="fas fa-lock lock-icon"></i>
+                                </div>
+                                <i class="fas fa-trash-alt delete-topic-icon"></i>
+                            </div>
+                            <div class="topic-content active">
+                                <div class="topic-item content-item add-content-btn">
+                                    <i class="fas fa-plus"></i>
+                                    <span class="item-text">Add Topic Content</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="add-topic-btn">
+                            <i class="fas fa-plus"></i> Add Topic
+                        </div>
+                    </div>
+                </div>
+            `;
+            resourcesSection.insertBefore(document.createRange().createContextualFragment(newWeekHtml), addWeekBtn.parentElement);
+            initEventListeners();
+            nextWeekNumber++;
+
+        } catch (error) {
+            console.error("Error adding week: ", error);
+        }
+};
+
+    // Pop-up close functionality
+    popupCloseBtn.onclick = () => {
+        popupOverlay.classList.add('hidden');
+    };
+
+    // Post content from pop-up
+   let selectedFile = null; // store selected file
+
+addFileBtn.onclick = () => {
+    popupFileInput.click();
+};
+
+popupFileInput.onchange = (event) => {
+    selectedFile = event.target.files[0];
+    if (selectedFile) {
+        alert(`Selected file: ${selectedFile.name}`);
+    }
+};
+
+postBtn.onclick = async () => {
+    const textContent = popupText.innerHTML.trim();
+
+    if (!textContent && !selectedFile) {
+        alert("Please add text or select a file!");
+        return;
+    }
+
+    if (!currentTopicCard) {
+        console.error("No topic selected to add content.");
+        return;
+    }
+
+    const topicID = currentTopicCard.dataset.topicId;
+    const weekID = currentTopicCard.closest('.week-card').dataset.weekId;
+
+    try {
+        let fileURL = "";
+
+        // Upload file to Firebase Storage if a file was selected
+        if (selectedFile) {
+           const storageRef = firebase.storage().ref();
+
+// 2. Choose a file path
+const file = selectedFile; // from <input type="file">
+const fileRef = storageRef.child(`topicFiles/${Date.now()}_${file.name}`);
+
+// 3. Upload the file
+await fileRef.put(file);
+
+// 4. Get download URL
+const fileURL = await fileRef.getDownloadURL();
+
+console.log("File uploaded at:", fileURL);
+        }
+
+        // Save content data to Firestore
+        const contentData = {
+            classroomID: classroomID,
+            topicID: topicID,
+            weekID: weekID,
+            description: textContent || selectedFile.name,
+            file: fileURL,
+            created_at: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        const docRef = await db.collection('topicContent').add(contentData);
+
+        // Add content to DOM
+        const newContentHtml = `
+            <div class="topic-item ${fileURL ? 'file-item' : 'content-item-editable'}" data-content-id="${docRef.id}">
+                <i class="fas ${fileURL ? 'fa-download' : 'fa-book-open'}"></i>
+                ${fileURL 
+                    ? `<a href="${fileURL}" download class="download-link"><span class="item-text">${selectedFile.name}</span></a>` 
+                    : `<span class="item-text">${textContent}</span>`}
+                <i class="fas fa-pencil-alt edit-item-icon"></i>
+                <i class="fas fa-trash-alt delete-item-icon"></i>
+            </div>
+        `;
+
+        const topicContent = currentTopicCard.querySelector('.topic-content');
+        const addContentBtn = topicContent.querySelector('.add-content-btn');
+        addContentBtn.insertAdjacentHTML('afterend', newContentHtml);
+
+        // Reset popup
+        popupOverlay.classList.add('hidden');
+        popupText.innerHTML = '';
+        selectedFile = null;
+        popupFileInput.value = '';
+
+        // Re-initialize event listeners for new elements
+        initEventListeners();
+
+    } catch (error) {
+        console.error("Error posting content:", error);
+        alert("Failed to add content. Check console for details.");
+    }
+};
+
+
+    
+    // Initial call to set up all event listeners
+    initEventListeners();
+    
+});
+    </script>
 </body>
 </html>
+

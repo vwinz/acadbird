@@ -64,17 +64,19 @@
                 <div class="week-selector-container">
                     <div class="week-selector">
                         <div class="dropdown">
-                            <button class="dropdown-toggle">
-                                Week of April 1 - 5
-                                <i class="fas fa-chevron-down"></i>
-                            </button>
-                        </div>
+    <button class="dropdown-toggle">
+        Week of April 1 - 5
+        <i class="fas fa-chevron-down"></i>
+    </button>
+    <div class="dropdown-menu hidden"></div>
+</div>
+
                     </div>
                     <div class="week-info">
                         <span class="week-icon">📚</span>
-                        <p><strong>Week 3:</strong> Filipino Identity – National Symbols</p>
+                        
                         <span class="date-icon">🗓️</span>
-                        <p>April 1–5, 2025</p>
+                        
                     </div>
                 </div>
 
@@ -177,6 +179,19 @@
         </div>
     </div>
 
+    <div class="modal-overlay hidden" id="noteModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Student Note</h2>
+            <button class="close-modal-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p id="noteText">This is a note</p>
+        </div>
+    </div>
+</div>
+
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getFirestore, collection, getDocs, query, where, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
@@ -208,32 +223,160 @@ onAuthStateChanged(auth, async (user) => {
     if (!user) return console.log("No user signed in.");
     teacherID = user.uid;
 
-    // Show loading overlay before fetching
     showLoading();
 
     try {
         await fetchStudentsFromFirestore();
         await fetchActivitiesFromFirestore();
+        generateWeeks();
+
+        // Render everything after data is ready
+        const participationChart = document.getElementById("participationChart");
+        const activityCardsContainer = document.getElementById("activityCardsContainer");
+
+        renderAll();
+
+        // Populate add activity table
+        const addActivityTableBody = document.querySelector("#addActivityTable tbody");
+        populateStudentTables(addActivityTableBody);
+        
+        // Populate quick log table
+        const quickLogTableBody = document.querySelector("#quickLogTable tbody");
+        populateStudentTables(quickLogTableBody);
+        
     } catch (err) {
         console.error("Error loading data:", err);
     } finally {
-        // Hide loading overlay after everything is done
         hideLoading();
     }
 });
 
 
+
 async function fetchStudentsFromFirestore() {
     try {
-        const snapshot = await getDocs(collection(db, "students"));
+        const classroomID = localStorage.getItem('selectedClassId');
+        if (!classroomID) return;
+
+       const snapshot = await getDocs(query(collection(db, "students"), where("classroomId", "==", classroomID)));
+
         STUDENTS = snapshot.docs.map(doc => {
             const data = doc.data();
             return { id: doc.id, fullName: `${data.firstName} ${data.lastName}` };
         });
-        STUDENTS.sort((a,b) => a.fullName.localeCompare(b.fullName));
+
+        // Sort alphabetically
+        STUDENTS.sort((a, b) => a.fullName.localeCompare(b.fullName));
     } catch (err) {
         console.error("Error fetching students:", err);
     }
+}
+
+
+let weeksData = []; // array of { weekLabel: 'Week 1: ...', start: Date, end: Date }
+
+function generateWeeks() {
+    if (!activitiesData.length) return;
+
+    // Get min and max dates
+    const dates = activitiesData.map(a => a.created_at.toDate()); // Firestore Timestamp -> JS Date
+    const minDate = new Date(Math.min(...dates));
+    const maxDate = new Date(Math.max(...dates));
+
+    weeksData = [];
+    let currentStart = new Date(minDate);
+    currentStart.setHours(0,0,0,0);
+
+    let weekNum = 1;
+    while (currentStart <= maxDate) {
+        const currentEnd = new Date(currentStart);
+        currentEnd.setDate(currentEnd.getDate() + 6); // 7-day week
+
+        weeksData.push({
+            weekLabel: `Week ${weekNum}: ${currentStart.toLocaleDateString()} - ${currentEnd.toLocaleDateString()}`,
+            start: new Date(currentStart),
+            end: new Date(currentEnd)
+        });
+
+        currentStart.setDate(currentStart.getDate() + 7);
+        weekNum++;
+    }
+
+    populateWeekDropdown();
+}
+
+const weekInfoContainer = document.querySelector('.week-info');
+
+function updateWeekInfo(selectedWeek) {
+    if (!selectedWeek.start || !selectedWeek.end) {
+        // All Weeks
+        weekInfoContainer.innerHTML = `
+            <span class="week-icon">📚</span>
+            <p><strong>${selectedWeek.weekLabel}</strong></p>
+        `;
+    } else {
+        weekInfoContainer.innerHTML = `
+            <span class="week-icon">📚</span>
+            <p><strong>${selectedWeek.weekLabel}</strong></p>
+            <span class="date-icon">🗓️</span>
+            <p>${selectedWeek.start.toLocaleDateString()} – ${selectedWeek.end.toLocaleDateString()}</p>
+        `;
+    }
+}
+
+function recalculateAllScores() {
+    studentParticipationScores = calculateScores(activitiesData);
+}
+
+
+const weekDropdown = document.querySelector('.dropdown-toggle');
+
+function populateWeekDropdown() {
+    const menu = document.querySelector('.dropdown-menu');
+    if (!weeksData.length) return;
+
+    // Include "All Weeks" as the first option
+    const allWeeksOption = `<div class="dropdown-item" data-idx="-1">All Weeks</div>`;
+
+    menu.innerHTML = allWeeksOption + weeksData.map((week, idx) =>
+        `<div class="dropdown-item" data-idx="${idx}">${week.weekLabel}</div>`
+    ).join('');
+
+    // Set default toggle to All Weeks
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    dropdownToggle.innerHTML = `All Weeks <i class="fas fa-chevron-down"></i>`;
+
+    // Show all activities by default
+    renderActivityCards(activitiesData);
+    updateWeekInfo({ weekLabel: 'All Weeks', start: null, end: null });
+
+    // Click listeners for dropdown
+    menu.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            const idx = parseInt(e.target.dataset.idx);
+            dropdownToggle.innerHTML = `${e.target.textContent} <i class="fas fa-chevron-down"></i>`;
+            menu.classList.add('hidden');
+
+            if (idx === -1) {
+    // All Weeks
+    renderActivityCards(activitiesData);
+    const scores = calculateScores(activitiesData);
+    renderParticipationChart(scores);
+    updateWeekInfo({ weekLabel: 'All Weeks', start: null, end: null });
+} else {
+    const selectedWeek = weeksData[idx];
+    const filteredActivities = activitiesData.filter(a => {
+        const createdDate = a.created_at.toDate();
+        return createdDate >= selectedWeek.start && createdDate <= selectedWeek.end;
+    });
+    renderActivityCards(filteredActivities);
+    const scores = calculateScores(filteredActivities);
+    renderParticipationChart(scores);
+    updateWeekInfo(selectedWeek);
+}
+
+        });
+    });
 }
 
 async function fetchActivitiesFromFirestore() {
@@ -243,21 +386,30 @@ async function fetchActivitiesFromFirestore() {
 
         const q = query(collection(db, "activity"), where("classroomID", "==", classroomID));
         const snapshot = await getDocs(q);
+        
+       const rawActivities = snapshot.docs.map(doc => {
+    const data = doc.data();
+    return {
+        activityNumber: data.activityNo,
+        description: data.activityName,
+        participants: { 
+    [data.studentID]: { 
+        level: data.activityScore, 
+        note: data.note || '' 
+    } 
+}
+,
+        created_at: data.created_at // <-- add this
+    };
+});
 
-        const rawActivities = snapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-                activityNumber: data.activityNo,
-                description: data.activityName,
-                participants: { [data.studentID]: data.activityScore }
-            };
-        });
 
-        const merged = {};
-        rawActivities.forEach(a => {
-            if (!merged[a.activityNumber]) merged[a.activityNumber] = { ...a, participants: {} };
-            Object.assign(merged[a.activityNumber].participants, a.participants);
-        });
+       const merged = {};
+rawActivities.forEach(a => {
+    if (!merged[a.activityNumber]) merged[a.activityNumber] = { ...a, participants: {} };
+    Object.assign(merged[a.activityNumber].participants, a.participants);
+});
+
 
         activitiesData = Object.values(merged);
         recalculateAllScores();
@@ -276,27 +428,47 @@ function hideLoading() {
   loadingOverlay.style.display = "none";
 }
 
-function recalculateAllScores() {
-    studentParticipationScores = STUDENTS.map(s => ({ name: s.fullName, score: 0 }));
-    activitiesData.forEach(act => {
-        for (const studentID in act.participants) {
-            const student = STUDENTS.find(s => s.id === studentID);
-            if (!student) continue;
-            const scoreObj = studentParticipationScores.find(s => s.name === student.fullName);
-            scoreObj.score = Math.min(100, scoreObj.score + PARTICIPATION_POINTS[act.participants[studentID]]);
-        }
+function filterActivitiesByWeek(startDate, endDate) {
+    const filtered = activitiesData.filter(a => {
+        const createdDate = a.created_at.toDate(); // Firestore timestamp -> JS Date
+        return createdDate >= startDate && createdDate <= endDate;
+    });
+
+    renderActivityCards(filtered);
+}
+
+
+
+function calculateScores(filteredActivities) {
+    //KNN - Neighbor Average computation
+    return STUDENTS.map(student => {
+        let totalScore = 0;
+        let count = 0;
+
+        filteredActivities.forEach(act => {
+            if (act.participants[student.id]) {
+                const level = typeof act.participants[student.id] === 'object' ? act.participants[student.id].level : act.participants[student.id];
+                const points = level === 'full' ? 100 : level === 'partial' ? 50 : 0; // normalized 0-100
+                totalScore += points;
+                count++;
+            }
+        });
+
+        const avgScore = count > 0 ? totalScore / count : 0;
+        return { name: student.fullName, score: avgScore };
     });
 }
 
+
+
  const getBarColor = score => score >= 70 ? COLOR_MAP.high : score >= 30 ? COLOR_MAP.medium : COLOR_MAP.low;
 
-   const renderParticipationChart = () => {
+   const renderParticipationChart = (scores = studentParticipationScores) => {
     if (!participationChart) return;
     participationChart.innerHTML = '';
 
-    studentParticipationScores
-        .slice()
-        .sort((a, b) => b.score - a.score)
+    scores.slice()
+        .sort((a,b) => b.score - a.score)
         .forEach(student => {
             const bar = document.createElement('div');
             bar.className = 'chart-bar';
@@ -314,7 +486,8 @@ function recalculateAllScores() {
             barFill.style.backgroundColor = getBarColor(student.score);
 
             const scoreDisplay = document.createElement('span');
-            scoreDisplay.textContent = student.score;
+            scoreDisplay.textContent = student.score.toFixed(0) + '%';
+
             scoreDisplay.style.position = 'absolute';
             scoreDisplay.style.right = '5px';
 
@@ -328,21 +501,32 @@ function recalculateAllScores() {
 };
 
 
-    const renderActivityCards = () => {
-        if (!activityCardsContainer) return;
-        activityCardsContainer.innerHTML = '';
-        activitiesData.slice().reverse().forEach(act=>{
-            const card=document.createElement('div'); card.className='activity-card';
-            const rowsHtml=Object.keys(act.participants).map(id=>{
-                const student=STUDENTS.find(s=>s.id===id);
-                if(!student) return '';
-                const level=act.participants[id];
-                return `<tr><td>${student.fullName}</td><td style="text-align:center;"><div class="participation-dot dot-${level}"></div></td><td><i class="fas fa-eye" title="View Note"></i></td></tr>`;
-            }).join('');
-            card.innerHTML=`<div class="activity-card-header"><p>Activity ${act.activityNumber}</p><p>${act.description}</p></div><table class="activity-table"><thead><tr><th>Name</th><th>Participation Level</th><th>Note</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
-            activityCardsContainer.appendChild(card);
-        });
-    };
+   const renderActivityCards = (data = activitiesData) => {
+    if (!activityCardsContainer) return;
+    activityCardsContainer.innerHTML = '';
+    data.slice().reverse().forEach(act => {
+        const card = document.createElement('div');
+        card.className = 'activity-card';
+        const rowsHtml = Object.keys(act.participants)
+    .map(id => {
+        const student = STUDENTS.find(s => s.id === id);
+        if (!student) return ''; // skip if student is not in this classroom
+        const participant = act.participants[id];
+        const level = typeof participant === 'object' ? participant.level : participant;
+        const note = typeof participant === 'object' ? participant.note || '' : '';
+        return `<tr>
+            <td>${student.fullName}</td>
+            <td style="text-align:center;"><div class="participation-dot dot-${level}"></div></td>
+            <td><i class="fas fa-eye view-note" data-note="${note}" title="View Note"></i></td>
+        </tr>`;
+    }).join('');
+
+
+        card.innerHTML = `<div class="activity-card-header"><p>Activity ${act.activityNumber}</p><p>${act.description}</p></div><table class="activity-table"><thead><tr><th>Name</th><th>Participation Level</th><th>Note</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
+        activityCardsContainer.appendChild(card);
+    });
+};
+
 
     const renderAll = () => { recalculateAllScores(); renderParticipationChart(); renderActivityCards(); };
 
@@ -406,6 +590,70 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeModal = modal => modal.classList.add("hidden");
 
   
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+
+
+     dropdownToggle.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('hidden');
+    });
+
+    // Call this after renderActivityCards
+const noteModal = document.getElementById("noteModal");
+const noteText = document.getElementById("noteText");
+const noteCloseBtn = noteModal.querySelector(".close-modal-btn");
+
+activityCardsContainer.addEventListener('click', (e) => {
+    const target = e.target;
+    if (target.classList.contains('view-note')) {
+        const note = target.dataset.note;
+        noteText.textContent = note || "No note available for this student.";
+        noteModal.classList.remove("hidden");
+    }
+});
+
+noteCloseBtn.addEventListener('click', () => noteModal.classList.add("hidden"));
+
+
+
+    // Handle week selection
+   dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+        const idx = parseInt(e.target.dataset.idx);
+        dropdownToggle.innerHTML = `${e.target.textContent} <i class="fas fa-chevron-down"></i>`;
+        dropdownMenu.classList.add('hidden');
+
+        let filteredActivities = [];
+
+        if (idx === -1) {
+            // All Weeks
+            filteredActivities = activitiesData;
+            updateWeekInfo({ weekLabel: 'All Weeks', start: null, end: null });
+        } else {
+            const selectedWeek = weeksData[idx];
+            filteredActivities = activitiesData.filter(a => {
+                const createdDate = a.created_at.toDate();
+                return createdDate >= selectedWeek.start && createdDate <= selectedWeek.end;
+            });
+            updateWeekInfo(selectedWeek);
+        }
+
+        // Recalculate scores and render both chart and activity cards
+        const scores = calculateScores(filteredActivities);
+        renderParticipationChart(scores);
+        renderActivityCards(filteredActivities);
+    });
+});
+
+
+
+    // Close dropdown if clicked outside
+    document.addEventListener('click', (e) => {
+        if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+
    
     const setupSelectAllLogic = (checkbox, radios, tableBody) => {
         checkbox.addEventListener('change', ()=>{if(checkbox.checked){applySelectAll(radios[0].value,tableBody);}else{applySelectAll('none',tableBody);}});
@@ -432,17 +680,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!classroomID) { alert("No classroom selected"); return; }
 
     const participants = {};
-    addActivityTableBody.querySelectorAll('tr').forEach(row => {
-        const id = row.dataset.studentId;
-        const name = row.querySelector('td:first-child').textContent;
-        const checked = row.querySelector(`input[name="student-${name.replace(/\s/g,'-').replace(/[^\w-]/g,'')}"]:checked`);
-        const note = row.querySelector('.note-input')?.value || '';
+addActivityTableBody.querySelectorAll('tr').forEach(row => {
+    const id = row.dataset.studentId;
+    const name = row.querySelector('td:first-child').textContent;
+    const checked = row.querySelector(`input[name="student-${name.replace(/\s/g,'-').replace(/[^\w-]/g,'')}"]:checked`);
+    const noteInput = row.querySelector('.note-input');
+    const note = noteInput ? noteInput.value.trim() : ''; // make sure it's a string
 
-        participants[id] = {
-            level: checked ? checked.value : 'none',
-            note: note
-        };
-    });
+    console.log('Logging student:', name, 'note:', note, 'level:', checked?.value);
+
+    participants[id] = {
+        level: checked ? checked.value : 'none',
+        note: note
+    };
+});
+
 
     const newAct = { activityNumber: activitiesData.length + 1, description: title, participants };
     activitiesData.push(newAct);
@@ -461,7 +713,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    renderAll();
     closeModal(addActivityModal);
 });
 

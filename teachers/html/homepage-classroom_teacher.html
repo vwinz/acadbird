@@ -315,18 +315,22 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+
 async function loadClassData() {
     const classId = localStorage.getItem('selectedClassId');
     const className = localStorage.getItem('selectedClassName');
 
+    console.log("Selected classId:", classId);
+    console.log("Selected className:", className);
+
     const classroomTitle = document.getElementById("classroom-title");
     const studentCountEl = document.getElementById("student-count");
     const parentCountEl = document.getElementById("parent-count");
-
     const topEngagedList = document.querySelector(".top-engaged .student-list");
     const lowEngagedList = document.querySelector(".low-engagement .student-list");
 
     if (!classId || !className) {
+        console.log("No class selected in localStorage.");
         classroomTitle.textContent = "No class selected.";
         studentCountEl.textContent = 0;
         parentCountEl.textContent = 0;
@@ -338,51 +342,91 @@ async function loadClassData() {
     classroomTitle.textContent = className;
 
     try {
+        // 1️⃣ Fetch all students in the classroom
         const studentsRef = collection(db, "students");
-        const q = query(studentsRef, where("classroomId", "==", classId));
-        const querySnapshot = await getDocs(q);
+        const studentsQuery = query(studentsRef, where("classroomId", "==", classId));
+        const studentsSnapshot = await getDocs(studentsQuery);
 
-        const students = [];
-        const parentIds = new Set();
+        console.log("Students snapshot:", studentsSnapshot.docs.map(d => d.data()));
 
-        querySnapshot.forEach(doc => {
-            const student = doc.data();
-            students.push(student);
-            if (student.parentId) parentIds.add(student.parentId);
+        const students = studentsSnapshot.docs.map(doc => ({
+            id: doc.id,
+            fullName: `${doc.data().firstName} ${doc.data().lastName}`,
+            parentId: doc.data().parentId || null
+        }));
+
+        console.log("Mapped students:", students);
+
+        const parentIds = new Set(students.map(s => s.parentId).filter(Boolean));
+        console.log("Parent IDs:", Array.from(parentIds));
+
+        // 2️⃣ Fetch all activities in this classroom
+        const activitiesRef = collection(db, "activity");
+   const activitiesQuery = query(activitiesRef, where("classroomID", "==", classId));
+
+
+        
+        const activitiesSnapshot = await getDocs(activitiesQuery);
+console.log("Activities count:", activitiesSnapshot.size);  // Should be > 0
+activitiesSnapshot.forEach(doc => console.log(doc.id, doc.data()));
+
+
+        console.log("Activities snapshot:", activitiesSnapshot.docs.map(d => d.data()));
+
+        const filteredActivities = activitiesSnapshot.docs.map(doc => doc.data());
+
+        // 3️⃣ Compute total/average score per student
+        function calculateScores(activities) {
+    return students.map(student => {
+        // Filter activities for this student
+        const studentActs = activities.filter(act => act.studentID === student.id);
+
+        let totalScore = 0;
+        studentActs.forEach(act => {
+            const points = act.activityScore === "full" ? 100
+                        : act.activityScore === "partial" ? 50
+                        : 0;
+            totalScore += points;
         });
+
+        const avgScore = studentActs.length > 0 ? totalScore / studentActs.length : 0;
+        return { ...student, score: avgScore };
+    });
+}
+
+
+        const scoredStudents = calculateScores(filteredActivities);
+        console.log("Scored students:", scoredStudents);
 
         studentCountEl.textContent = students.length;
         parentCountEl.textContent = parentIds.size;
 
-        // --- Sort by participationScore ---
-        const sortedStudents = students.sort((a, b) => (b.participationScore || 0) - (a.participationScore || 0));
+        // 4️⃣ Render top/low engaged students
+        const sortedStudents = scoredStudents.sort((a, b) => b.score - a.score);
+        console.log("Sorted students:", sortedStudents);
 
-        // --- Top Engaged (Top 3) ---
         topEngagedList.innerHTML = "";
         sortedStudents.slice(0, 3).forEach(student => {
-            const percent = Math.min((student.participationScore || 0) * 5, 100); // example scaling
             topEngagedList.innerHTML += `
                 <div class="student-item">
-                    <span class="student-name">${student.firstName} ${student.lastName}</span>
+                    <span class="student-name">${student.fullName}</span>
                     <div class="progress-bar">
-                        <div class="progress-fill-green" style="width: ${percent}%;"></div>
+                        <div class="progress-fill-green" style="width: ${student.score}%;"></div>
                     </div>
-                    <span class="progress-value">${student.participationScore || 0}</span>
+                    <span class="progress-value">${Math.round(student.score)}</span>
                 </div>
             `;
         });
 
-        // --- Low Engagement (Bottom 3) ---
         lowEngagedList.innerHTML = "";
         sortedStudents.slice(-3).forEach(student => {
-            const percent = Math.min((student.participationScore || 0) * 5, 100);
             lowEngagedList.innerHTML += `
                 <div class="student-item">
-                    <span class="student-name">${student.firstName} ${student.lastName}</span>
+                    <span class="student-name">${student.fullName}</span>
                     <div class="progress-bar">
-                        <div class="progress-fill-red" style="width: ${percent}%;"></div>
+                        <div class="progress-fill-red" style="width: ${student.score}%;"></div>
                     </div>
-                    <span class="progress-value">${student.participationScore || 0}</span>
+                    <span class="progress-value">${Math.round(student.score)}</span>
                 </div>
             `;
         });
@@ -400,3 +444,4 @@ async function loadClassData() {
 
 </body>
 </html>
+
