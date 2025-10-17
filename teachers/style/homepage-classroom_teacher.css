@@ -474,6 +474,11 @@
             font-weight: bold;
             cursor: pointer;
         }
+.calendar-day.has-event {
+    background-color: #ffdede;
+    border-radius: 50%;
+    cursor: pointer;
+}
 
         .close-button:hover,
         .close-button:focus {

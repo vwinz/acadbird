@@ -6,6 +6,7 @@
     <title>AcadBird Admin - Classes Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="../style/classes-management.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         // Customizing Tailwind to match the AcadBird color scheme and font
@@ -39,108 +40,22 @@
         /* =======================
             Base Styles
         ======================= */
-        html, body {
-            height: 100%; width: 100%; margin: 0; font-family: "Poppins", Arial, sans-serif; background-color: #dbe7f7; font-size: 16px; color: #000;
-        }
-        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; background-color: #0a3b82; color: white; border-bottom: 1px solid #000; }
-        .logo { display: flex; align-items: center; gap: 10px; }
-        .logo-img { width: 70px; height: 40px; }
-        .logo-text-img { height: 28px; }
-        .middle-logo { width: 90px; height: 40px; margin: 0 auto; }
-        .back-icon { font-size: 1.5rem; cursor: pointer; }
-        .nav-icons { display: flex; align-items: center; gap: 18px; }
-        .nav-icons .icon { width: 30px; height: 25px; font-size: 1.5rem; cursor: pointer; display: flex; justify-content: center; align-items: center; }
-        .secondary-header { background-color: #e7efff; display: flex; justify-content: center; padding: 12px 0; position: static; top: 44px; z-index: 999; border-bottom: 1px solid #000; }
-        .nav-menu { display: flex; gap: 22px; align-items: center; font-size: 16px; overflow-x: auto; white-space: nowrap; }
-        .nav-item { color: #000; text-decoration: none; font-weight: 500; padding: 5px 10px; border-radius: 3px; transition: background-color 0.3s; }
-        .nav-item.active { font-weight: 700; color: #000; border-bottom: 2px solid #000; }
-        .nav-item:hover { background-color: #c9d7f8; }
-        .separator { width: 100%; height: 1px; background-color: #000; margin: 0; color:#000; display: block; }
-        .main-content { padding: 35px 45px; background-color: transparent; position: relative; z-index: 0; overflow: auto; min-height: calc(100vh - 100px); display: flex; justify-content: center; align-items: flex-start; gap: 30px; }
-        @media (max-width: 1024px) {
-            .main-content { flex-direction: column; padding: 20px; }
-        }
-        .classes-table th { text-align: left; padding: 12px; font-weight: 600; text-transform: uppercase; font-size: 0.875rem; border-bottom: 2px solid #e5e7eb; }
-        .classes-table td { padding: 12px; border-bottom: 1px solid #f3f4f6; font-size: 0.95rem; }
-
-        /* =======================
-            Modal Pop-up Styles
-        ======================= */
-        .modal {
-            display: none; 
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            z-index: 1000;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(2px);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 30px;
-            border: 2px solid #0a3b82;
-            width: 90%;
-            max-width: 450px;
-            border-radius: 15px;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation-name: animatetop;
-            animation-duration: 0.4s
-        }
-        
-        .modal-content.large {
-            max-width: 600px;
-        }
-        
-        @keyframes animatetop {
-            from {top: -300px; opacity: 0}
-            to {top: 0; opacity: 1}
-        }
-
-        .close-button {
-            color: #aaa;
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 30px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close-button:hover, .close-button:focus { color: #333; }
-        
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #0a3b82; }
-        .form-group input, .form-group select {
-            width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 8px; background-color: #fff;
-        }
-        .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
-        .btn { font-weight: 600; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background-color 0.3s; border: 1px solid transparent; }
-        .btn-primary { background-color: #0a3b82; color: white; }
-        .btn-primary:hover { background-color: #082d62; }
-        .btn-cancel { background-color: #ccc; color: #000; }
-        .btn-cancel:hover { background-color: #bbb; }
-        
-        /* Archived List Styles */
-        .archived-list-item {
-            display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; background-color: #f9f9f9; border-radius: 8px; margin-bottom: 8px;
-        }
-        .archived-list-item:hover { background-color: #fff3f3; }
-        .archived-name { font-weight: 600; color: #ef4444; }
-        .archived-actions button { margin-left: 8px; }
+    
     </style>
 </head>
 <body>
     <div class="page-wrapper">
         <div class="navbar">
+                <button id="back-button">
+    ← Back
+</button>
+
             <div class="flex justify-between items-center w-full px-6">
                 <div class="logo">
-                    <img src="AcadBird - White no text.png" alt="AcadBird Logo" class="logo-img" />
-                    <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+                    <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird Logo" class="logo-img" />
+                    <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
                 </div>
-                <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+                <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
                 <div class="nav-icons">
                     <a href="notification_admin.html" target="_blank" title="Notifications">
                         <i class="fas fa-bell icon"></i>
@@ -188,20 +103,21 @@
                 <div class="flex flex-col gap-4">
                     <h3 class="text-lg font-semibold text-gray-700">Class Metrics</h3>
                     <div class="p-4 rounded-xl shadow-lg text-center bg-metric-green text-white font-bold border border-black">
-                        <p class="text-4xl" id="metric-active-classes">5</p>
+                        <p class="text-4xl" id="metric-active-classes">Loading...</p>
                         <p class="text-sm uppercase tracking-wider">Active Classes</p>
                     </div>
                     <div class="p-4 rounded-xl shadow-lg text-center bg-metric-blue text-white font-bold border border-black">
-                        <p class="text-4xl" id="metric-total-students">52</p>
+                        <p class="text-4xl" id="metric-total-students">Loading...</p>
                         <p class="text-sm uppercase tracking-wider">Total Students</p>
                     </div>
                     <div class="p-4 rounded-xl shadow-lg text-center bg-metric-orange text-white font-bold border border-black">
-                        <p class="text-4xl" id="metric-teachers-assigned">2</p>
-                        <p class="text-sm uppercase tracking-wider">Teachers Assigned</p>
+                        <p class="text-4xl" id="metric-teachers-pendingclassroom">Loading...</p>
+                        <p class="text-sm uppercase tracking-wider">Unassigned Classroom</p>
                     </div>
                 </div>
 
             </div>
+        
 
             <div class="w-full lg:w-3/4 flex flex-col gap-6">
 
@@ -215,20 +131,20 @@
                         </div>
                         <div class="flex gap-3 items-center">
                             <select id="filter-teacher" class="py-2 px-3 border border-gray-300 rounded-lg focus:ring-acad-navy focus:border-acad-navy text-sm">
-                                <option value="">Filter by Teacher</option>
-                                <option value="Ms. Rose">Ms. Rose</option>
-                                <option value="Mr. David">Mr. David</option>
-                                <option value="Unassigned">(Unassigned)</option>
+                                <option value="">All Teacher</option>
+                                <option value="Unassigned">Unassigned</option>
                             </select>
                             <select id="filter-status" class="py-2 px-3 border border-gray-300 rounded-lg focus:ring-acad-navy focus:border-acad-navy text-sm">
-                                <option value="">Filter by Status</option>
-                                <option value="Active">Active</option>
-                                <option value="Pending Setup">Pending Setup</option>
+                            
+  <option value="">Filter by Status</option>
+  <option value="active">Active</option>
+  <option value="pending">Pending</option>
+    <option value="archived">Archived</option>
+
+</select>
                                 </select>
                             
-                            <button id="view-archived-button" class="px-3 py-2 bg-yellow-600 text-white rounded-lg text-sm font-semibold hover:bg-yellow-700 transition flex items-center gap-1">
-                                <i class="fas fa-box-archive"></i> Archived (<span id="archived-count">1</span>)
-                            </button>
+                            
                         </div>
                     </div>
 
@@ -246,31 +162,31 @@
                                 </tr>
                             </thead>
                             <tbody id="classes-table-body">
-                                <tr class="hover:bg-acad-light-bg/50 transition" data-id="1" data-class-name="Kinder Lily" data-teacher="Ms. Rose" data-status="Active" data-students-count="20" data-max-students="25">
-                                    <td class="class-name-cell"><a href="class-details.html?id=1" class="text-acad-navy font-semibold hover:underline">Kinder Lily</a></td>
-                                    <td class="teacher-cell">Ms. Rose</td>
-                                    <td>20 / 25</td>
-                                    <td class="status-cell"><span class="text-status-active font-medium">Active</span></td>
-                                    <td class="whitespace-nowrap">
-                                        <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="1"><i class="fas fa-edit"></i></button>
-                                        <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="1"><i class="fas fa-archive"></i></button>
-                                    </td>
-                                </tr>
-                                <tr class="hover:bg-acad-light-bg/50 transition" data-id="2" data-class-name="Grade 1 Daisy" data-teacher="Mr. David" data-status="Active" data-students-count="32" data-max-students="35">
-                                    <td class="class-name-cell"><a href="/class/grade1-daisy" class="text-acad-navy font-semibold hover:underline">Grade 1 Daisy</a></td>
-                                    <td class="teacher-cell">Mr. David</td>
-                                    <td>32 / 35</td>
-                                    <td class="status-cell"><span class="text-status-active font-medium">Active</span></td>
-                                    <td class="whitespace-nowrap">
-                                        <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="2"><i class="fas fa-edit"></i></button>
-                                        <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="2"><i class="fas fa-archive"></i></button>
-                                    </td>
-                                </tr>
+                                 <tr class="hover:bg-acad-light-bg/50 transition" data-id="1" data-class-name="Kinder Lily" data-teacher="Ms. Rose" data-teacher-id="msroseid" data-status="Active" data-students-count="20" data-max-students="25">
+        <td class="class-name-cell"><a href="class-details.html?id=1" class="text-acad-navy font-semibold hover:underline">Kinder Lily</a></td>
+        <td class="teacher-cell">Ms. Rose</td>
+        <td>20 / 25</td>
+        <td class="status-cell"><span class="text-status-active font-medium">Active</span></td>
+        <td class="whitespace-nowrap">
+            <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="1"><i class="fas fa-edit"></i></button>
+            <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="1"><i class="fas fa-archive"></i></button>
+        </td>
+    </tr>
+    <tr class="hover:bg-acad-light-bg/50 transition" data-id="2" data-class-name="Grade 1 Daisy" data-teacher="Mr. David" data-teacher-id="mrdavidid" data-status="Active" data-students-count="32" data-max-students="35">
+        <td class="class-name-cell"><a href="/class/grade1-daisy" class="text-acad-navy font-semibold hover:underline">Grade 1 Daisy</a></td>
+        <td class="teacher-cell">Mr. David</td>
+        <td>32 / 35</td>
+        <td class="status-cell"><span class="text-status-active font-medium">Active</span></td>
+        <td class="whitespace-nowrap">
+            <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="2"><i class="fas fa-edit"></i></button>
+            <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="2"><i class="fas fa-archive"></i></button>
+        </td>
+    </tr>
                                 <tr class="hover:bg-acad-light-bg/50 transition bg-yellow-50/50" data-id="3" data-class-name="Kinder Rose" data-teacher="Unassigned" data-status="Pending Setup" data-students-count="0" data-max-students="25">
                                     <td class="class-name-cell"><a href="/class/kinder-rose" class="text-acad-navy font-semibold hover:underline">Kinder Rose</a></td>
                                     <td class="teacher-cell">(Unassigned)</td>
                                     <td>0 / 25</td>
-                                    <td class="status-cell"><span class="text-status-pending font-medium">Pending Setup</span></td>
+                                    <td class="status-cell"><span class="text-status-pending font-medium">Pending</span></td>
                                     <td class="whitespace-nowrap">
                                         <button title="Assign Teacher" class="text-acad-navy hover:text-acad-navy/80 mr-3 assign-btn" data-class-id="3"><i class="fas fa-user-plus"></i></button>
                                         <button title="Delete Class" class="text-gray-500 hover:text-gray-900 delete-btn" data-class-id="3"><i class="fas fa-trash"></i></button>
@@ -330,14 +246,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="new-teacher">Assign Teacher:</label>
-                    <select id="new-teacher" name="teacher" required>
-                        <option value="" disabled selected>Select a Teacher</option>
-                        <option value="Ms. Rose">Ms. Rose</option>
-                        <option value="Mr. David">Mr. David</option>
-                        <option value="Unassigned">Assign Later (Unassigned)</option>
-                    </select>
-                </div>
+  <label for="new-teacher">Assign Teacher:</label>
+  <select id="new-teacher" name="teacher" required>
+      <option value="" disabled selected>Select a Teacher</option>
+      <option value="unassigned">Assign Later (Unassigned)</option>
+  </select>
+</div>
+
 
                 <div class="form-actions">
                     <button type="button" class="btn btn-cancel" onclick="closeAddClassModal()">Cancel</button>
@@ -395,12 +310,291 @@
     </div>
 
 
-    <script>
+    <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+  getFirestore, collection, getDocs, query, where, doc, getDoc, updateDoc, addDoc, deleteDoc, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+    authDomain: "acadbird-379e3.firebaseapp.com",
+    projectId: "acadbird-379e3",
+    storageBucket: "acadbird-379e3.firebasestorage.app",
+    messagingSenderId: "575491576951",
+    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+    measurementId: "G-N6Z672SXWJ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function loadMetrics() {
+    try {
+      // 🔹 Active Classes
+      const activeSnap = await getDocs(
+        query(collection(db, "classrooms"), where("status", "==", "active"))
+      );
+      document.getElementById("metric-active-classes").textContent = activeSnap.size;
+
+      // 🔹 Unassigned Classroom (pending)
+      const pendingSnap = await getDocs(
+        query(collection(db, "classrooms"), where("status", "==", "pending"))
+      );
+      document.getElementById("metric-teachers-pendingclassroom").textContent = pendingSnap.size;
+
+      // 🔹 Total Students
+      const studentSnap = await getDocs(collection(db, "students"));
+      document.getElementById("metric-total-students").textContent = studentSnap.size;
+
+    } catch (err) {
+      console.error("Error fetching metrics:", err);
+    }
+  }
+
+
+  async function populateEditTeacherSelect(currentTeacherId) {
+  const select = document.getElementById("edit-teacher");
+
+  // clear previous options
+  select.innerHTML = "";
+
+  // always include Unassigned
+  const unassignedOpt = document.createElement("option");
+  unassignedOpt.value = "unassigned";
+  unassignedOpt.textContent = "Unassigned";
+  select.appendChild(unassignedOpt);
+
+  // query only teachers
+  const teacherQuery = query(
+    collection(db, "users"),
+    where("role", "==", "teacher")
+  );
+
+  const snap = await getDocs(teacherQuery);
+
+  snap.forEach(docSnap => {
+    const data = docSnap.data();
+    const teacherName = data.fullName || `${data.firstName} ${data.lastName}`;
+    const opt = document.createElement("option");
+    opt.value = docSnap.id; // store teacherId as value
+    opt.textContent = teacherName;
+    select.appendChild(opt);
+  });
+
+  // preselect current teacher
+  if (currentTeacherId) {
+    select.value = currentTeacherId;
+  } else {
+    select.value = "unassigned";
+  }
+}
+
+
+  const tableBody = document.getElementById("classes-table-body");
+
+// 🔹 Utility: fetch teacher name by id
+async function getTeacherName(teacherId) {
+  if (!teacherId) return "(Unassigned)";
+  try {
+    const teacherRef = doc(db, "users", teacherId);
+    const teacherSnap = await getDoc(teacherRef);
+    if (teacherSnap.exists()) {
+      const data = teacherSnap.data();
+      return data.firstName && data.lastName 
+        ? `${data.firstName} ${data.lastName}`
+        : data.name || "(Unassigned)";
+    }
+  } catch (err) {
+    console.warn("Teacher fetch error:", err);
+  }
+  return "(Unassigned)";
+}
+
+// 🔹 Load Classes Table
+// 🔹 Load Classes Table
+async function loadClassesTable() {
+  tableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4">Loading...</td></tr>`;
+
+  try {
+    const classSnap = await getDocs(collection(db, "classrooms"));
+    tableBody.innerHTML = "";
+
+    for (const classroomDoc of classSnap.docs) {
+      const classroom = classroomDoc.data();
+      const classId = classroomDoc.id;
+
+      const className = classroom.classroomName || "Unnamed Class";
+      const status = classroom.status || "pending";
+      const teacherName = await getTeacherName(classroom.teacherId);
+
+      // 🔹 Count students assigned to this class
+      const studentSnap = await getDocs(
+        query(collection(db, "students"), where("classroomId", "==", classId))
+      );
+      const studentCount = studentSnap.size;
+      const maxStudents = classroom.maxStudents || 25;
+
+      // 🔹 Row styling
+      const statusClass = 
+        status.toLowerCase() === "active" ? "text-status-active" :
+        status.toLowerCase().includes("pending") ? "text-status-pending" :
+        status.toLowerCase() === "archived" ? "text-status-archived" : "";
+
+      // 🔹 Build table row
+      const row = document.createElement("tr");
+      row.className = "hover:bg-acad-light-bg/50 transition";
+      if (status === 'archived') {
+        row.classList.add('opacity-70');
+      }
+      row.setAttribute("data-id", classId);
+      row.setAttribute("data-class-name", className);
+      row.setAttribute("data-teacher", teacherName);
+      row.setAttribute("data-teacher-id", classroom.teacherId || "unassigned");
+      row.setAttribute("data-status", status);
+      row.setAttribute("data-students-count", studentCount);
+      row.setAttribute("data-max-students", maxStudents);
+
+      // Determine action buttons based on status
+      let actionButtons = '';
+      if (status === 'archived') {
+        actionButtons = `
+          <button title="Restore Class" class="text-metric-green hover:text-metric-green/80 mr-3 restore-btn" data-class-id="${classId}"><i class="fas fa-redo-alt"></i></button>
+          <button title="Permanent Delete" class="text-gray-500 hover:text-gray-900 delete-btn" data-class-id="${classId}"><i class="fas fa-trash"></i></button>
+        `;
+      } else if (!classroom.teacherId || classroom.teacherId === "unassigned") {
+        actionButtons = `
+          <button title="Assign Teacher" class="text-acad-navy hover:text-acad-navy/80 mr-3 assign-btn" data-class-id="${classId}"><i class="fas fa-user-plus"></i></button>
+          <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="${classId}"><i class="fas fa-archive"></i></button>
+        `;
+      } else {
+        actionButtons = `
+          <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="${classId}"><i class="fas fa-edit"></i></button>
+          <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="${classId}"><i class="fas fa-archive"></i></button>
+        `;
+      }
+
+      row.innerHTML = `
+        <td class="class-name-cell">
+          <a href="class-details.html?id=${classId}" 
+             class="text-acad-navy font-semibold hover:underline">
+             ${className}
+          </a>
+        </td>
+        <td class="teacher-cell">${teacherName}</td>
+        <td>${studentCount} / ${maxStudents}</td>
+        <td class="status-cell"><span class="font-medium ${statusClass}">${status}</span></td>
+        <td class="whitespace-nowrap">
+          ${actionButtons}
+        </td>
+      `;
+
+      // Hide archived classes by default
+      if (status === 'archived') {
+        row.style.display = 'none';
+      }
+
+      tableBody.appendChild(row);
+    }
+
+    if (classSnap.empty) {
+      tableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-gray-500">No classes found.</td></tr>`;
+    }
+  } catch (err) {
+    console.error("Error loading classes:", err);
+    tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-red-600">Error loading classes</td></tr>`;
+  }
+}
+const filterTeacher = document.getElementById("filter-teacher");
+const filterStatus = document.getElementById("filter-status");
+
+filterStatus.addEventListener("change", () => {
+  const selectedStatus = filterStatus.value; // lowercase
+  const rows = tableBody.querySelectorAll("tr");
+
+  rows.forEach(row => {
+    const rowStatus = row.getAttribute("data-status");
+    if (!selectedStatus || rowStatus === selectedStatus) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+});
+
+
+
+// 🟢 Populate teachers dynamically
+async function populateTeacherFilter() {
+  // 🔹 query users collection where role == "teacher"
+  const teacherQuery = query(
+    collection(db, "users"),
+    where("role", "==", "teacher")
+  );
+
+  const teacherSnap = await getDocs(teacherQuery);
+  const teachers = [];
+
+  teacherSnap.forEach(docSnap => {
+    const data = docSnap.data();
+    const name = data.fullName || (data.firstName + " " + data.lastName);
+    teachers.push(name);
+  });
+
+filterTeacher.innerHTML = `
+    <option value="">All Teachers</option>
+    <option value="unassigned">Unassigned</option>
+  `;
+
+  teacherSnap.forEach(docSnap => {
+    const data = docSnap.data();
+    const teacherName = data.fullName || `${data.firstName} ${data.lastName}`;
+
+    const opt = document.createElement("option");
+    opt.value = docSnap.id; // ✅ teacherId, not name
+    opt.textContent = teacherName;
+    filterTeacher.appendChild(opt);
+  });
+}
+
+async function populateTeacherSelect(selectElementId) {
+  const select = document.getElementById(selectElementId);
+
+  // clear all except the first option
+  select.innerHTML = `<option value="" disabled selected>Select a Teacher</option>
+                      <option value="unassigned">Assign Later (Unassigned)</option>`;
+
+  // query teachers from Firestore
+  const teacherQuery = query(
+    collection(db, "users"),
+    where("role", "==", "teacher")
+  );
+  const teacherSnap = await getDocs(teacherQuery);
+
+  teacherSnap.forEach(docSnap => {
+    const data = docSnap.data();
+    const teacherName = data.fullName || `${data.firstName} ${data.lastName}`;
+    const opt = document.createElement("option");
+    opt.value = docSnap.id; // store teacherId
+    opt.textContent = teacherName;
+    select.appendChild(opt);
+  });
+}
+
+
+
+// Run on page load
+loadClassesTable();
+await populateTeacherFilter();
+await populateTeacherSelect("new-teacher");
+await populateTeacherSelect("edit-teacher");
+
+  // Run on load
+  loadMetrics();
         // DOM Elements
-        const tableBody = document.getElementById('classes-table-body');
+     
         const searchInput = document.getElementById('search-input');
-        const filterTeacher = document.getElementById('filter-teacher');
-        const filterStatus = document.getElementById('filter-status');
+      
         const sortableHeaders = document.querySelectorAll('.sortable-header');
         const backButton = document.getElementById('back-button');
 
@@ -417,7 +611,7 @@
         
         // Archived Modal
         const archivedClassesModal = document.getElementById('archived-classes-modal');
-        const viewArchivedButton = document.getElementById('view-archived-button');
+        
         const archivedListContainer = document.getElementById('archived-list-container');
         const archivedCountSpan = document.getElementById('archived-count');
         
@@ -425,6 +619,9 @@
         function closeModal(modalElement) {
             modalElement.style.display = 'none';
         }
+
+
+  
 
         // Close when clicking outside
         window.onclick = function(event) {
@@ -456,53 +653,36 @@
 
         addClassButton.addEventListener('click', openAddClassModal);
 
-        addClassForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const className = document.getElementById('new-class-name').value;
-            const maxStudents = document.getElementById('new-max-students').value;
-            const teacher = document.getElementById('new-teacher').value;
-            const status = (teacher === 'Unassigned') ? 'Pending Setup' : 'Active';
+     addClassForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-            alert(`SUCCESS: Class "${className}" created! Teacher: ${teacher}`);
+  const className = document.getElementById("new-class-name").value.trim();
+  const maxStudents = parseInt(document.getElementById("new-max-students").value, 10);
+  const teacherId = document.getElementById("new-teacher").value;
 
-            // SIMULATE TABLE UPDATE 
-            const newId = tableBody.children.length + 10; 
-            const newRow = tableBody.insertRow(0); 
-            
-            newRow.classList.add('hover:bg-acad-light-bg/50', 'transition');
-            if (status === 'Pending Setup') { newRow.classList.add('bg-yellow-50/50'); }
-            
-            newRow.setAttribute('data-id', newId);
-            newRow.setAttribute('data-class-name', className);
-            newRow.setAttribute('data-teacher', teacher);
-            newRow.setAttribute('data-status', status);
-            newRow.setAttribute('data-students-count', '0');
-            newRow.setAttribute('data-max-students', maxStudents);
-            
-            const statusClass = status === 'Active' ? 'text-status-active' : 'text-status-pending';
+  try {
+    await addDoc(collection(db, "classrooms"), {
+      classroomName: className,
+      maxStudents: maxStudents,
+      teacherId: teacherId === "unassigned" ? null : teacherId,
+      status: teacherId === "unassigned" ? "pending" : "active",
+      created_at: serverTimestamp()
+    });
 
-            newRow.innerHTML = `
-                <td class="class-name-cell"><a href="/class/${className.toLowerCase().replace(/\s/g, '-')}" class="text-acad-navy font-semibold hover:underline">${className}</a></td>
-                <td class="teacher-cell">${teacher === 'Unassigned' ? '(Unassigned)' : teacher}</td>
-                <td>0 / ${maxStudents}</td>
-                <td class="status-cell"><span class="font-medium ${statusClass}">${status}</span></td>
-                <td class="whitespace-nowrap">
-                    <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="${newId}"><i class="fas fa-edit"></i></button>
-                    <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="${newId}"><i class="fas fa-archive"></i></button>
-                </td>
-            `;
+    alert("Class added successfully ✅");
 
-            // Update metrics and list display
-            if (status === 'Active') {
-                document.getElementById('metric-active-classes').textContent = parseInt(document.getElementById('metric-active-classes').textContent) + 1;
-            }
-            sortTable(currentSortKey, sortDirection);
-            applyFiltersAndSearch();
+    addClassForm.reset();
+    closeAddClassModal();
 
-            closeAddClassModal();
-        });
+    // reload your table
+    loadClassesTable();
+    loadMetrics();
 
+  } catch (err) {
+    console.error("Error adding class:", err);
+    alert("Failed to add class ❌");
+  }
+});
 
         // --- 3. Edit Class Modal Logic ---
         function openEditClassModal(rowElement) {
@@ -523,51 +703,26 @@
             closeModal(editClassModal);
         }
 
-        editClassForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const classId = editClassIdInput.value;
-            const newClassName = editClassNameInput.value;
-            const newTeacher = editTeacherSelect.value;
-            const row = document.querySelector(`tr[data-id="${classId}"]`);
+        editClassForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-            if (!row) {
-                alert("Error: Could not find class row.");
-                closeEditClassModal();
-                return;
-            }
+  const classroomId = document.getElementById("edit-class-id").value; // ✅ get ID from hidden input
+  const newTeacherId = document.getElementById("edit-teacher").value;
 
-            alert(`SUCCESS: Class ID ${classId} updated to Name: "${newClassName}", Teacher: ${newTeacher}`);
+  try {
+    await updateDoc(doc(db, "classrooms", classroomId), {
+      teacherId: newTeacherId === "unassigned" ? null : newTeacherId
+    });
 
-            // 1. Update the Row's Data Attributes and Cells
-            const oldStatus = row.getAttribute('data-status');
-            
-            let newStatus = oldStatus;
-            if (newTeacher !== 'Unassigned' && oldStatus === 'Pending Setup') {
-                 newStatus = 'Active';
-            } else if (newTeacher === 'Unassigned' && oldStatus === 'Active') {
-                newStatus = 'Pending Setup';
-            }
+    alert("Class updated successfully!");
+    closeModal(editClassModal);
+    loadClassesTable(); // ✅ reload table so changes show
+  } catch (err) {
+    console.error("Error updating teacher:", err);
+    alert("Failed to update class. See console for details.");
+  }
+});
 
-            row.setAttribute('data-class-name', newClassName);
-            row.querySelector('.class-name-cell a').textContent = newClassName;
-            row.setAttribute('data-teacher', newTeacher);
-            row.querySelector('.teacher-cell').textContent = (newTeacher === 'Unassigned' ? '(Unassigned)' : newTeacher);
-            
-            // Update Status if necessary
-            if (newStatus !== oldStatus) {
-                row.setAttribute('data-status', newStatus);
-                const statusSpan = row.querySelector('.status-cell span');
-                statusSpan.textContent = newStatus;
-                statusSpan.className = `font-medium text-status-${newStatus.toLowerCase().replace(/\s/g, '-')}`;
-            }
-
-            // 2. Re-run sorting and filtering to place the row correctly
-            sortTable(currentSortKey, sortDirection);
-            applyFiltersAndSearch();
-            
-            closeEditClassModal();
-        });
 
         // --- 4. Archived Classes Modal Logic (NEW) ---
         
@@ -575,7 +730,7 @@
             closeModal(archivedClassesModal);
         }
 
-        viewArchivedButton.addEventListener('click', openArchivedClassesModal);
+      
         
         function openArchivedClassesModal() {
             archivedListContainer.innerHTML = '';
@@ -619,136 +774,171 @@
         // --- 5. Unified Action Handlers (Edit/Archive/Delete/Restore) ---
 
         function updateRowActions(row, newStatus, classId) {
-            const actionsCell = row.querySelector('.whitespace-nowrap');
-            if (actionsCell) {
-                if (newStatus === 'Archived') {
-                    actionsCell.innerHTML = `
-                         <button title="Restore Class" class="text-metric-green hover:text-metric-green/80 mr-3 restore-btn" data-class-id="${classId}"><i class="fas fa-redo-alt"></i></button>
-                         <button title="Permanent Delete" class="text-gray-500 hover:text-gray-900 delete-btn" data-class-id="${classId}"><i class="fas fa-trash"></i></button>
-                    `;
-                } else if (newStatus === 'Active' || newStatus === 'Pending Setup') {
-                     actionsCell.innerHTML = `
-                         <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="${classId}"><i class="fas fa-edit"></i></button>
-                         <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="${classId}"><i class="fas fa-archive"></i></button>
-                    `;
-                }
+    const actionsCell = row.querySelector('.whitespace-nowrap');
+    if (actionsCell) {
+        if (newStatus === 'archived') {
+            actionsCell.innerHTML = `
+                 <button title="Restore Class" class="text-metric-green hover:text-metric-green/80 mr-3 restore-btn" data-class-id="${classId}"><i class="fas fa-redo-alt"></i></button>
+                 <button title="Permanent Delete" class="text-gray-500 hover:text-gray-900 delete-btn" data-class-id="${classId}"><i class="fas fa-trash"></i></button>
+            `;
+        } else if (newStatus === 'active' || newStatus === 'pending') {
+            // Check if teacher is assigned to determine button type
+            const teacherCell = row.querySelector('.teacher-cell');
+            const isUnassigned = teacherCell && (teacherCell.textContent.includes('Unassigned') || teacherCell.textContent.includes('(Unassigned)'));
+            
+            if (isUnassigned) {
+                actionsCell.innerHTML = `
+                    <button title="Assign Teacher" class="text-acad-navy hover:text-acad-navy/80 mr-3 assign-btn" data-class-id="${classId}"><i class="fas fa-user-plus"></i></button>
+                    <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="${classId}"><i class="fas fa-archive"></i></button>
+                `;
+            } else {
+                actionsCell.innerHTML = `
+                    <button title="Edit Class" class="text-acad-navy hover:text-acad-navy/80 mr-3 edit-btn" data-class-id="${classId}"><i class="fas fa-edit"></i></button>
+                    <button title="Archive Class" class="text-status-archived hover:text-status-archived/80 archive-btn" data-class-id="${classId}"><i class="fas fa-archive"></i></button>
+                `;
             }
         }
+    }
+}
 
-        document.addEventListener('click', (e) => {
-            const button = e.target.closest('.edit-btn, .archive-btn, .assign-btn, .restore-btn, .delete-btn');
-            if (!button) return;
+    document.addEventListener('click', async (e) => {
+    const button = e.target.closest('.edit-btn, .archive-btn, .assign-btn, .restore-btn, .delete-btn');
+    if (!button) return;
 
-            const action = button.title;
-            const classId = button.getAttribute('data-class-id');
-            const row = document.querySelector(`tr[data-id="${classId}"]`);
+    const action = button.title;
+    const classId = button.getAttribute('data-class-id');
+    const row = document.querySelector(`tr[data-id="${classId}"]`);
 
-            if (action === 'Edit Class' || action === 'Assign Teacher') {
-                if(row) openEditClassModal(row);
-                return;
+    if (action === 'Edit Class' || action === 'Assign Teacher') {
+        if(row) openEditClassModal(row);
+        return;
+    }
+
+    if (confirm(`Are you sure you want to perform "${action}" on class ID ${classId}?`)) {
+        try {
+            let message = `Successfully performed "${action}" on Class ID ${classId}.`;
+            let oldStatus = row ? row.getAttribute('data-status') : null;
+            let newStatus = oldStatus;
+            
+            if (action === 'Archive Class') {
+                // Update Firestore to set status to "archived"
+                await updateDoc(doc(db, "classrooms", classId), {
+                    status: "archived"
+                });
+                newStatus = 'archived';
+                message = `Class ID ${classId} has been moved to the Archive.`;
+            } else if (action === 'Restore Class') {
+                // Update Firestore to set status to "active"
+                await updateDoc(doc(db, "classrooms", classId), {
+                    status: "active"
+                });
+                newStatus = 'active'; 
+                message = `Class ID ${classId} has been Restored and is now Active.`;
+            } else if (action === 'Delete Class' || action === 'Permanent Delete') {
+                // For permanent delete, remove from Firestore
+                // Note: You need to import deleteDoc first
+                await deleteDoc(doc(db, "classrooms", classId));
+                if (row) row.remove();
+                // Also remove from the archived modal list if it was deleted there
+                const archivedItem = archivedListContainer.querySelector(`div[data-id="${classId}"]`);
+                if (archivedItem) archivedItem.remove();
+                message = `Successfully permanently deleted Class ID ${classId}.`;
             }
-
-            if (confirm(`Are you sure you want to perform "${action}" on class ID ${classId}?`)) {
-                let message = `Successfully performed "${action}" on Class ID ${classId}.`;
-                let oldStatus = row ? row.getAttribute('data-status') : null;
-                let newStatus = oldStatus;
+            
+            // Update the main table row visualization and data attributes
+            if (row && newStatus !== oldStatus) {
+                row.setAttribute('data-status', newStatus);
+                const statusSpan = row.querySelector('.status-cell span');
+                statusSpan.textContent = newStatus;
+                statusSpan.className = `font-medium text-status-${newStatus.toLowerCase().replace(/\s/g, '-')}`;
                 
-                if (action === 'Archive Class') {
-                    newStatus = 'Archived';
-                    message = `Class ID ${classId} has been moved to the Archive.`;
-                } else if (action === 'Restore Class') {
-                    // Restoring a class makes it Active by default
-                    newStatus = 'Active'; 
-                    message = `Class ID ${classId} has been Restored and is now Active.`;
-                } else if (action === 'Delete Class' || action === 'Permanent Delete') {
-                    // Delete is final regardless of location (main table or archive modal)
-                    if (row) row.remove();
-                    // Also remove from the archived modal list if it was deleted there
-                    const archivedItem = archivedListContainer.querySelector(`div[data-id="${classId}"]`);
-                    if (archivedItem) archivedItem.remove();
-                    message = `Successfully permanently deleted Class ID ${classId}.`;
-                }
-                
-                // Update the main table row visualization and data attributes
-                if (row && newStatus !== oldStatus) {
-                    row.setAttribute('data-status', newStatus);
-                    const statusSpan = row.querySelector('.status-cell span');
-                    statusSpan.textContent = newStatus;
-                    statusSpan.className = `font-medium text-status-${newStatus.toLowerCase().replace(/\s/g, '-')}`;
-                    
-                    if (newStatus === 'Archived') {
-                        // Ensure the row is hidden when archived, as per the filter logic
-                        row.style.display = 'none';
-                        row.classList.add('opacity-70');
-                    } else {
-                        row.classList.remove('opacity-70');
+                if (newStatus === 'archived') {
+                    // Ensure the row is hidden when archived, as per the filter logic
+                    row.style.display = 'none';
+                    row.classList.add('opacity-70');
+                } else {
+                    row.classList.remove('opacity-70');
+                    row.style.display = "";
+                    row.classList.remove('bg-yellow-50/50');
+                    // Update status class for active classes
+                    if (newStatus === 'active') {
+                        statusSpan.className = 'font-medium text-status-active';
                     }
-
-                    updateRowActions(row, newStatus, classId);
                 }
 
-                alert(message);
-                
-                // If the action was taken from the archived modal, refresh its view
-                if (archivedClassesModal.style.display === 'flex') {
-                    openArchivedClassesModal(); // Re-populate list to reflect changes
-                }
-
-                // Re-sort and filter main table
-                sortTable(currentSortKey, sortDirection);
-                applyFiltersAndSearch();
+                updateRowActions(row, newStatus, classId);
             }
-        });
+            
+            alert(message);
+            
+            // Reload metrics to reflect changes
+            loadMetrics();
+            
+            // If the action was taken from the archived modal, refresh its view
+            if (archivedClassesModal.style.display === 'flex') {
+                openArchivedClassesModal(); // Re-populate list to reflect changes
+            }
 
+            // Re-sort and filter main table
+            sortTable(currentSortKey, sortDirection);
+            applyFiltersAndSearch();
 
+        } catch (err) {
+            console.error("Error performing action:", err);
+            alert(`Failed to perform "${action}". Please try again.`);
+        }
+    }
+});
         // =======================
         // Filtering & Sorting Functions
         // =======================
-        function applyFiltersAndSearch() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const teacherFilter = filterTeacher.value;
-            const statusFilter = filterStatus.value;
-            const rows = tableBody.querySelectorAll('tr');
-            let visibleCount = 0;
-            let archivedCount = 0;
+      function applyFiltersAndSearch() {
+  const selectedTeacherId = filterTeacher.value; 
+  const selectedStatus = filterStatus.value;
+  const searchValue = searchInput.value.toLowerCase().trim();
 
-            rows.forEach(row => {
-                const className = row.getAttribute('data-class-name').toLowerCase();
-                const teacher = row.getAttribute('data-teacher');
-                const status = row.getAttribute('data-status');
-                
-                if (status === 'Archived') {
-                    archivedCount++;
-                }
+  const rows = document.querySelectorAll("#classes-table-body tr");
 
-                const passesSearch = className.includes(searchTerm) || teacher.toLowerCase().includes(searchTerm);
-                const passesTeacherFilter = !teacherFilter || teacherFilter === '' || teacher === teacherFilter;
-                
-                // The main table MUST NOT show archived classes unless the status filter explicitly requests it.
-                // Since 'Archived' is now removed from the select, we simply check that status is NOT 'Archived'.
-                let passesStatusFilter = true;
-                
-                if (statusFilter && statusFilter !== '') {
-                    // User selected Active or Pending: show only that status
-                    passesStatusFilter = (status === statusFilter);
-                } else {
-                    // No filter selected: show Active and Pending, hide Archived
-                    passesStatusFilter = (status !== 'Archived');
-                }
+  rows.forEach(row => {
+    const rowTeacherId = row.getAttribute("data-teacher-id");
+    const rowStatus = row.getAttribute("data-status");
+    const className = row.querySelector("td:nth-child(1)")?.textContent.toLowerCase() || "";
+    const teacher = row.querySelector("td:nth-child(2)")?.textContent.toLowerCase() || "";
+    const status = row.querySelector("td:nth-child(4)")?.textContent.toLowerCase() || "";
 
-                if (passesSearch && passesTeacherFilter && passesStatusFilter) {
-                    row.style.display = '';
-                    visibleCount++;
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-            
-            // Adjust pagination count based on visible rows
-            document.getElementById('pagination-end').textContent = visibleCount;
-            document.getElementById('pagination-total').textContent = tableBody.children.length; // Total rows in the tbody
-            archivedCountSpan.textContent = archivedCount; // Update the button count
-        }
+    // Teacher filter logic
+    const matchTeacher =
+      selectedTeacherId === "" || // No teacher filter selected
+      (selectedTeacherId === "unassigned" && (!rowTeacherId || rowTeacherId === "unassigned")) || // Unassigned filter
+      rowTeacherId === selectedTeacherId; // Specific teacher filter
+
+    // Status filter logic - show archived only when specifically filtered
+    const matchStatus =
+      selectedStatus === "" ? rowStatus !== 'archived' : // Don't show archived by default
+      rowStatus.toLowerCase() === selectedStatus.toLowerCase();
+
+    // Search filter logic
+    const matchSearch =
+      searchValue === "" ||
+      className.includes(searchValue) ||
+      teacher.includes(searchValue) ||
+      status.includes(searchValue);
+
+    // Show only if ALL conditions match
+    if (matchTeacher && matchStatus && matchSearch) {
+      row.style.display = "";
+    } else {
+      row.style.display = "none";
+    }
+  });
+}
+searchInput.addEventListener('input', applyFiltersAndSearch);
+filterTeacher.addEventListener('change', applyFiltersAndSearch);
+filterStatus.addEventListener('change', applyFiltersAndSearch);
+
+
+
+
 
         searchInput.addEventListener('input', applyFiltersAndSearch);
         filterTeacher.addEventListener('change', applyFiltersAndSearch);
@@ -757,7 +947,7 @@
         let currentSortKey = 'name';
         let sortDirection = 'asc';
 
-        function sortTable(key, direction) {
+        function sortTable(key, direction) {    
             const rowsArray = Array.from(tableBody.querySelectorAll('tr'));
 
             rowsArray.sort((a, b) => {

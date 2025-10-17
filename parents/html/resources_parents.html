@@ -6,322 +6,44 @@
     <title>AcadBird Resources</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <style>
-        /* =======================
-            Base Styles
-        ======================= */
-        html {
-            height: 100%;
-        }
-
-        body {
-            height: 100%;
-            width: 100%;
-            font-family: "Poppins", Arial, sans-serif;
-            background-color: #dbe7f7; /* light blue background */
-            margin: 0;
-            font-size: 16px;
-            color: #000;
-        }
-
-        /* =======================
-            Layout
-        ======================= */
-        .container {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .main-content {
-            padding: 35px 45px;
-            background-color: transparent;
-            position: relative;
-            z-index: 0;
-            overflow: auto;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 30px;
-        }
-
-        .resources-section {
-            flex: 2;
-            max-width: 650px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        /* =======================
-            Navbar and Secondary Header
-        ======================= */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 24px;
-            background-color: #0a3b82; /* sample dark blue */
-            color: white;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .back-icon {
-            width: 25px;
-            height: 25px;
-            cursor: pointer;
-        }
-
-        .logo-img {
-            width: 70px;
-            height: 40px;
-        }
-
-        .logo-text-img {
-            height: 28px;
-        }
-        
-        .middle-logo {
-        width: 90px;
-        height: 40px;
-        margin: 0 auto;
-      }
-      
-        .nav-icons {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .nav-icons .icon {
-            width: 30px;
-            height: 25px;
-            cursor: pointer;
-        }
-
-        .account-menu {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .account-menu .dropdown-icon {
-            width: 12px;
-            height: 14px;
-            cursor: pointer;
-            color: #fff;
-        }
-
-        .secondary-header {
-            background-color: #e7efff;
-            display: flex;
-            justify-content: center;
-            padding: 12px 30px;
-            border-bottom: 1px solid #c9d7f8;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 22px;
-            align-items: center;
-            font-size: 16px;
-        }
-
-        .nav-item {
-            color: #000;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 5px 10px;
-            border-radius: 3px;
-            transition: background-color 0.3s;
-        }
-
-        .nav-item.active {
-            font-weight: 700;
-            color: #000;
-            border-bottom: 2px solid #000;
-        }
-
-        .nav-item:hover {
-            background-color: #c9d7f8;
-        }
-
-        .separator {
-            width: 100%;
-            height: 1px;
-            background-color: #000;
-            margin: 0;
-        }
-
-        /* =======================
-            Resources Content
-        ======================= */
-
-        .week-card {
-            background-color: #e7efff;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 25px;
-            border: 2px solid #000;
-            position: relative;
-            transition: all 0.2s ease;
-        }
-
-        .week-card.unlocked {
-            border-left: 10px solid #76c784;
-        }
-
-        .week-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 20px;
-            position: relative;
-            padding-right: 30px;
-        }
-
-        .week-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #000;
-        }
-
-        .week-subtitle {
-            font-size: 18px;
-            font-weight: 400;
-            color: #555;
-            margin-left: 10px;
-        }
-
-        .week-content {
-            margin-top: 15px;
-            display: none;
-        }
-
-        .week-content.active {
-            display: block;
-        }
-
-        .week-card.active .week-header::before {
-            transform: rotate(180deg);
-        }
-
-        .week-header::before {
-            content: '\25BC';
-            font-size: 18px;
-            margin-right: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        /* Topic Card */
-        .topic-card {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            margin-bottom: 10px;
-            border: 2px solid #000;
-            position: relative;
-            transition: all 0.2s ease;
-        }
-
-        .topic-card.unlocked {
-            border-left: 10px solid #76c784;
-        }
-
-        .topic-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 16px;
-            position: relative;
-        }
-
-        .topic-header::before {
-            content: '\25B6';
-            font-size: 14px;
-            margin-right: 8px;
-            transition: transform 0.3s ease;
-        }
-
-        .topic-content.active + .topic-header::before,
-        .topic-card.active .topic-header::before {
-            transform: rotate(90deg);
-        }
-
-        .topic-content {
-            margin-top: 10px;
-            padding-left: 25px;
-            display: none;
-        }
-
-        .topic-content.active {
-            display: block;
-        }
-
-        .topic-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 5px;
-            border: 1px solid transparent;
-            border-radius: 5px;
-            padding: 5px 8px;
-        }
-
-        .topic-item i {
-            color: #6c757d;
-        }
-
-        .topic-item .item-text {
-            font-size: 14px;
-        }
-
-        .topic-item:not(.file-item) {
-            cursor: default;
-        }
-
-        .topic-item.file-item {
-            cursor: pointer;
-        }
-
-        .download-link {
-            text-decoration: none;
-            color: inherit;
-        }
-    </style>
+    <link rel="stylesheet" href="../style/resources_parents.css">
 </head>
 <body>
     <div class="container">
         <nav class="navbar">
             <div class="logo">
-                <img src="AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
-                <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
+                <img src="../../main/img/AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
+                <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
             </div>
-            <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+            <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
 
             <div class="nav-icons">
-          <a href="notification_parent.html">
-            <img src="Notification.png" alt="Notifications" class="icon" />
-          </a>
+         <div class="notification-wrapper">
+    <a href="notification_parent.html">
+        <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
+        <span class="notification-badge" id="notificationBadge">0</span>
+    </a>
+</div>
           <a href="help_parent.html">
-            <img src="Help.png" alt="Help" class="icon" />
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
           </a>
           <a href="account_parent.html">
             <div class="account-menu">
-              <img src="account icon.png" alt="User Account" class="icon" />
+              <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
             </div>
           </a>
         </div>
+        <div id="loading-overlay">
+
+<div class="loader-3">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+</div>
+        
         </nav>
         <div class="secondary-header">
             <nav class="nav-menu">
@@ -336,65 +58,339 @@
         </div>
         <div class="separator"></div>
         <div class="main-content">
-            <div class="resources-section">
-                <div class="week-card unlocked active">
-                    <div class="week-header">
-                        <span class="week-title">Week 1</span>
-                        <span class="week-subtitle">Me and My Name</span>
-                    </div>
-                    <div class="week-content active">
-                        <div class="topic-card unlocked active">
-                            <div class="topic-header">
-                                <span class="topic-title">All About Me</span>
-                            </div>
-                            <div class="topic-content active">
-                                <div class="topic-item content-item-view">
-                                    <i class="fas fa-book-open"></i>
-                                    <span class="item-text">This is an existing content.</span>
-                                </div>
-                                <div class="topic-item file-item">
-                                    <i class="fas fa-download"></i>
-                                    <a href="#" class="download-link">
-                                        <span class="item-text">Worksheet-Week1-Trace_Name.pdf</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Function to initialize all event listeners for viewer mode
-            function initEventListeners() {
-                // Handle week header click to toggle content
-                document.querySelectorAll('.week-header').forEach(header => {
-                    header.onclick = () => {
-                        const weekCard = header.parentElement;
-                        const weekContent = header.nextElementSibling;
-                        weekContent.classList.toggle('active');
-                        weekCard.classList.toggle('active');
-                    };
-                });
+  <div class="resources-section" id="resourcesSection">
+    <!-- Weeks, Topics, Contents will be injected here -->
+  </div>
+</div>
 
-                // Handle topic header click to toggle content
-                document.querySelectorAll('.topic-header').forEach(header => {
-                    header.onclick = () => {
-                        const topicCard = header.parentElement;
-                        const topicContent = header.nextElementSibling;
-                        if (topicContent) {
-                            topicContent.classList.toggle('active');
-                        }
-                        topicCard.classList.toggle('active');
-                    };
-                });
+    </div>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+    getFirestore, collection, query, where, getDocs, doc, getDoc, onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+    authDomain: "acadbird-379e3.firebaseapp.com",
+    projectId: "acadbird-379e3",
+    storageBucket: "acadbird-379e3.firebasestorage.app",
+    messagingSenderId: "575491576951",
+    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+    measurementId: "G-N6Z672SXWJ"   
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+const loadingOverlay = document.getElementById("loading-overlay");
+
+function showLoading() {
+    loadingOverlay.style.display = "flex";
+}
+
+function hideLoading() {
+    loadingOverlay.style.display = "none";
+}
+
+// Load resources for multiple classrooms
+async function loadResources(classroomIds) {
+    const resourcesSection = document.getElementById("resourcesSection");
+    resourcesSection.innerHTML = "";
+
+    let resourcesFound = false; // ✅ Track if we have any content
+
+    for (const classroomID of classroomIds) {
+        const weekQuery = query(collection(db, "week"), where("classroomID", "==", classroomID));
+        const weekSnap = await getDocs(weekQuery);
+
+        for (const weekDoc of weekSnap.docs) {
+            const weekData = weekDoc.data();
+
+            const weekCard = document.createElement("div");
+            weekCard.classList.add("week-card", "unlocked");
+            weekCard.innerHTML = `
+                <div class="week-header">
+                    <span class="week-title">${weekData.weekNo}</span>
+                    <span class="week-subtitle">${weekData.weekTitle}</span>
+                </div>
+                <div class="week-content"></div>
+            `;
+            const weekContentDiv = weekCard.querySelector(".week-content");
+
+            const topicQuery = query(collection(db, "topic"), 
+                where("classroomID", "==", classroomID), 
+                where("weekID", "==", weekDoc.id)
+            );
+            const topicSnap = await getDocs(topicQuery);
+
+            for (const topicDoc of topicSnap.docs) {
+                const topicData = topicDoc.data();
+
+                const topicCard = document.createElement("div");
+                topicCard.classList.add("topic-card", "unlocked");
+                topicCard.innerHTML = `
+                    <div class="topic-header">
+                        <span class="topic-title">${topicData.topicName}</span>
+                    </div>
+                    <div class="topic-content"></div>
+                `;
+                const topicContentDiv = topicCard.querySelector(".topic-content");
+
+                const contentQuery = query(collection(db, "topicContent"), 
+                    where("classroomID", "==", classroomID),
+                    where("weekID", "==", weekDoc.id),
+                    where("topicID", "==", topicDoc.id)
+                );
+                const contentSnap = await getDocs(contentQuery);
+
+                if (!contentSnap.empty) resourcesFound = true;
+
+                for (const contentDoc of contentSnap.docs) {
+                    const contentData = contentDoc.data();
+                    if (contentData.description) {
+                        topicContentDiv.innerHTML += `
+                            <div class="topic-item content-item-view">
+                                <i class="fas fa-book-open"></i>
+                                <span class="item-text">${contentData.description}</span>
+                            </div>`;
+                    }
+                    if (contentData.file) {
+                        topicContentDiv.innerHTML += `
+                            <div class="topic-item file-item">
+                                <i class="fas fa-download"></i>
+                                <a href="${contentData.file}" target="_blank" class="download-link">
+                                    <span class="item-text">${contentData.file.split('/').pop()}</span>
+                                </a>
+                            </div>`;
+                    }
+                }
+                weekContentDiv.appendChild(topicCard);
+            }
+            resourcesSection.appendChild(weekCard);
+        }
+    }
+
+    if (!resourcesFound) {
+        resourcesSection.innerHTML = `<p class="no-resources">No resources available.</p>`;
+    }
+
+    initEventListeners();
+}
+
+function initEventListeners() {
+    document.querySelectorAll('.week-header').forEach(header => {
+        header.onclick = () => {
+            const weekCard = header.parentElement;
+            const weekContent = header.nextElementSibling;
+            weekContent.classList.toggle('active');
+            weekCard.classList.toggle('active');
+        };
+    });
+    document.querySelectorAll('.topic-header').forEach(header => {
+        header.onclick = () => {
+            const topicCard = header.parentElement;
+            const topicContent = header.nextElementSibling;
+            if (topicContent) topicContent.classList.toggle('active');
+            topicCard.classList.toggle('active');
+        };
+    });
+}
+
+const BadgeService = {
+    currentUser: null,
+    studentIds: [],
+    
+    async init() {
+        return new Promise((resolve) => {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    this.currentUser = user;
+                    await this.loadStudentIds();
+                    await this.setupRealTimeListener();
+                    await this.updateBadgeCount();
+                    resolve();
+                } else {
+                    resolve();
+                }
+            });
+        });
+    },
+
+    async loadStudentIds() {
+        try {
+            const studentsQuery = query(
+                collection(db, 'students'),
+                where('parentId', '==', this.currentUser.uid)
+            );
+            
+            const querySnapshot = await getDocs(studentsQuery);
+            this.studentIds = querySnapshot.docs.map(doc => doc.id);
+        } catch (error) {
+            console.error('Error loading student IDs:', error);
+            this.studentIds = [];
+        }
+    },
+
+    async setupRealTimeListener() {
+        if (this.studentIds.length === 0) return;
+
+        // Listen for new activities
+        this.studentIds.forEach(studentId => {
+            const activitiesQuery = query(
+                collection(db, 'activity'),
+                where('studentID', '==', studentId)
+            );
+
+            onSnapshot(activitiesQuery, () => {
+                this.updateBadgeCount();
+            });
+        });
+
+        // Listen for new resources
+        const classroomIds = await this.getClassroomIds();
+        classroomIds.forEach(classroomId => {
+            const topicContentQuery = query(
+                collection(db, 'topicContent'),
+                where('classroomID', '==', classroomId)
+            );
+
+            onSnapshot(topicContentQuery, () => {
+                this.updateBadgeCount();
+            });
+        });
+    },
+
+    async getClassroomIds() {
+        const classroomIds = new Set();
+        
+        try {
+            for (const studentId of this.studentIds) {
+                const studentDoc = await getDoc(doc(db, 'students', studentId));
+                if (studentDoc.exists()) {
+                    const studentData = studentDoc.data();
+                    if (studentData.classroomId) {
+                        classroomIds.add(studentData.classroomId);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching classroom IDs:', error);
+        }
+        
+        return Array.from(classroomIds);
+    },
+
+    async getUnreadCount() {
+        if (!this.currentUser || this.studentIds.length === 0) {
+            return 0;
+        }
+
+        try {
+            let unreadCount = 0;
+            
+            // Count unread activities
+            for (const studentId of this.studentIds) {
+                const activitiesQuery = query(
+                    collection(db, 'activity'),
+                    where('studentID', '==', studentId)
+                );
+                
+                const activitiesSnapshot = await getDocs(activitiesQuery);
+                
+                for (const activityDoc of activitiesSnapshot.docs) {
+                    const isRead = await this.checkIfRead(activityDoc.id, 'activity');
+                    if (!isRead) unreadCount++;
+                }
+            }
+            
+            // Count unread resources
+            const classroomIds = await this.getClassroomIds();
+            for (const classroomId of classroomIds) {
+                const topicContentQuery = query(
+                    collection(db, 'topicContent'),
+                    where('classroomID', '==', classroomId)
+                );
+                
+                const topicContentSnapshot = await getDocs(topicContentQuery);
+                
+                for (const topicDoc of topicContentSnapshot.docs) {
+                    const isRead = await this.checkIfRead(topicDoc.id, 'resource');
+                    if (!isRead) unreadCount++;
+                }
+            }
+            
+            return unreadCount;
+        } catch (error) {
+            console.error('Error counting unread notifications:', error);
+            return 0;
+        }
+    },
+
+    async checkIfRead(itemId, type) {
+        if (!itemId) return false;
+        
+        try {
+            const fieldName = type === 'activity' ? 'activityId' : 'resourceId';
+            const notificationsQuery = query(
+                collection(db, 'notification'),
+                where(fieldName, '==', itemId),
+                where('parentId', '==', this.currentUser.uid)
+            );
+            
+            const querySnapshot = await getDocs(notificationsQuery);
+            return !querySnapshot.empty;
+        } catch (error) {
+            console.error('Error checking read status:', error);
+            return false;
+        }
+    },
+
+    async updateBadgeCount() {
+        const badge = document.getElementById('notificationBadge');
+        if (badge) {
+            const count = await this.getUnreadCount();
+            badge.textContent = count;
+            badge.style.display = count > 0 ? 'inline' : 'none';
+        }
+    }
+};
+
+// Initialize everything on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    showLoading();
+
+    try {
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) return hideLoading();
+
+            // Get all classroom IDs for this parent
+            const studentQuery = query(
+                collection(db, 'students'),
+                where('parentId', '==', user.uid)
+            );
+            const studentSnap = await getDocs(studentQuery);
+            const classroomIds = studentSnap.docs
+                .map(doc => doc.data().classroomId)
+                .filter(Boolean); // Remove undefined/null
+
+            if (classroomIds.length > 0) {
+                await loadResources(classroomIds);
             }
 
-            // Initial call to set up all event listeners
-            initEventListeners();
+            await BadgeService.init();
+            hideLoading();
         });
-    </script>
+    } catch (error) {
+        console.error("Error initializing page:", error);
+        hideLoading();
+    }
+});
+</script>
+
+
 </body>
 </html>

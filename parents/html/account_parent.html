@@ -18,9 +18,12 @@
             </div>
             <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
             <div class="nav-icons">
-                <a href="notification_parent.html">
-                    <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
-                </a>
+                 <div class="notification-wrapper">
+    <a href="notification_parent.html">
+        <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
+        <span class="notification-badge" id="notificationBadge">0</span>
+    </a>
+</div>
                 <a href="help_parent.html">
                     <img src="../../main/img/Help.png" alt="Help" class="icon" />
                 </a>
@@ -44,7 +47,18 @@
             </nav>
         </div>
 
-        
+        <div id="loading-overlay">
+
+<div class="loader-3">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+</div>
+</div>
+
         <div class="separator"></div>
 
         <div class="main-content">
@@ -136,9 +150,18 @@
         </div>
     </div>
    <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+    getFirestore, 
+    collection, 
+    query, 
+    where, 
+    getDocs,
+    doc,
+    getDoc,
+    onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // --- Firebase Config ---
   const firebaseConfig = {
@@ -162,9 +185,23 @@ const lastNameInput = document.getElementById('last-name');
 const emailInput = document.getElementById('email');
 const avatarPlaceholder = document.querySelector('.avatar-placeholder');
 
+
+const loadingOverlay = document.getElementById("loading-overlay");
+
+   function showLoading() {
+  loadingOverlay.style.display = "flex";
+}
+
+// Hide overlay
+function hideLoading() {
+  loadingOverlay.style.display = "none";
+}
+
+
 // --- Load Current User ---
 onAuthStateChanged(auth, async (user) => {
   if (user) {
+     showLoading();
     const uid = user.uid;
     try {
       const userDocRef = doc(db, "users", uid);
@@ -271,6 +308,179 @@ if (logoutBtn) {
             showSettingsPage();
 
         });
+
+        
+// Badge Service
+const BadgeService = {
+    currentUser: null,
+    studentIds: [],
+    
+    async init() {
+        return new Promise((resolve) => {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    this.currentUser = user;
+                    await this.loadStudentIds();
+                    await this.setupRealTimeListener();
+                    await this.updateBadgeCount();
+                    resolve();
+                } else {
+                    resolve();
+                }
+            });
+        });
+    },
+
+    async loadStudentIds() {
+        try {
+            const studentsQuery = query(
+                collection(db, 'students'),
+                where('parentId', '==', this.currentUser.uid)
+            );
+            
+            const querySnapshot = await getDocs(studentsQuery);
+            this.studentIds = querySnapshot.docs.map(doc => doc.id);
+        } catch (error) {
+            console.error('Error loading student IDs:', error);
+            this.studentIds = [];
+        }
+    },
+
+    async setupRealTimeListener() {
+        if (this.studentIds.length === 0) return;
+
+        // Listen for new activities
+        this.studentIds.forEach(studentId => {
+            const activitiesQuery = query(
+                collection(db, 'activity'),
+                where('studentID', '==', studentId)
+            );
+
+            onSnapshot(activitiesQuery, () => {
+                this.updateBadgeCount();
+            });
+        });
+
+        // Listen for new resources
+        const classroomIds = await this.getClassroomIds();
+        classroomIds.forEach(classroomId => {
+            const topicContentQuery = query(
+                collection(db, 'topicContent'),
+                where('classroomID', '==', classroomId)
+            );
+
+            onSnapshot(topicContentQuery, () => {
+                this.updateBadgeCount();
+            });
+        });
+    },
+
+    async getClassroomIds() {
+        const classroomIds = new Set();
+        
+        try {
+            for (const studentId of this.studentIds) {
+                const studentDoc = await getDoc(doc(db, 'students', studentId));
+                if (studentDoc.exists()) {
+                    const studentData = studentDoc.data();
+                    if (studentData.classroomId) {
+                        classroomIds.add(studentData.classroomId);
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching classroom IDs:', error);
+        }
+        
+        return Array.from(classroomIds);
+    },
+
+    async getUnreadCount() {
+        if (!this.currentUser || this.studentIds.length === 0) {
+            return 0;
+        }
+
+        try {
+            let unreadCount = 0;
+            
+            // Count unread activities
+            for (const studentId of this.studentIds) {
+                const activitiesQuery = query(
+                    collection(db, 'activity'),
+                    where('studentID', '==', studentId)
+                );
+                
+                const activitiesSnapshot = await getDocs(activitiesQuery);
+                
+                for (const activityDoc of activitiesSnapshot.docs) {
+                    const isRead = await this.checkIfRead(activityDoc.id, 'activity');
+                    if (!isRead) unreadCount++;
+                }
+            }
+            
+            // Count unread resources
+            const classroomIds = await this.getClassroomIds();
+            for (const classroomId of classroomIds) {
+                const topicContentQuery = query(
+                    collection(db, 'topicContent'),
+                    where('classroomID', '==', classroomId)
+                );
+                
+                const topicContentSnapshot = await getDocs(topicContentQuery);
+                
+                for (const topicDoc of topicContentSnapshot.docs) {
+                    const isRead = await this.checkIfRead(topicDoc.id, 'resource');
+                    if (!isRead) unreadCount++;
+                }
+            }
+            
+            return unreadCount;
+        } catch (error) {
+            console.error('Error counting unread notifications:', error);
+            return 0;
+        }
+    },
+
+    async checkIfRead(itemId, type) {
+        if (!itemId) return false;
+        
+        try {
+            const fieldName = type === 'activity' ? 'activityId' : 'resourceId';
+            const notificationsQuery = query(
+                collection(db, 'notification'),
+                where(fieldName, '==', itemId),
+                where('parentId', '==', this.currentUser.uid)
+            );
+            
+            const querySnapshot = await getDocs(notificationsQuery);
+            return !querySnapshot.empty;
+        } catch (error) {
+            console.error('Error checking read status:', error);
+            return false;
+        }
+    },
+
+    async updateBadgeCount() {
+        const badge = document.getElementById('notificationBadge');
+        if (badge) {
+            const count = await this.getUnreadCount();
+            badge.textContent = count;
+            badge.style.display = count > 0 ? 'inline' : 'none';
+        }
+    }
+};
+
+// Initialize badge service
+document.addEventListener('DOMContentLoaded', async function() {
+    showLoading(); // ✅ Show overlay while badges load
+    try {
+        await BadgeService.init();
+    } catch (error) {
+        console.error("Error initializing BadgeService:", error);
+    } finally {
+        hideLoading(); // ✅ Hide overlay after initialization
+    }
+});
     </script>
 </body>
 </html>

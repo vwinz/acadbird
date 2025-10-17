@@ -1,0 +1,652 @@
+ /* =======================
+            Base Styles
+        ======================= */
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            font-family: "Poppins", Arial, sans-serif;
+            background-color: #dbe7f7; /* light blue background */
+            margin: 0;
+            font-size: 16px;
+            color: #000;
+        }
+
+        /* =======================
+            Navbar
+        ======================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            background-color: #0a3b82; /* sample dark blue */
+            color: white;
+            border-bottom: 1px solid #000;
+        }
+        
+        /* Utility styles needed for structure since Tailwind was removed */
+        .navbar > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 24px; /* Simulating px-6 */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Enforce user's explicit image dimensions for placeholders */
+        .logo-img {
+            width: 70px;
+            height: 40px;
+        }
+
+        .logo-text-img {
+            height: 28px;
+        }
+        .middle-logo {
+            width: 90px;
+            height: 40px;
+            margin: 0 auto;
+        }
+        .back-icon {
+            font-size: 1.5rem; /* Make the FA icon visible */
+            color: white; /* Simulating text-white */
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        /* Styles for the Font Awesome icons used in the nav-icons */
+        .nav-icons .icon {
+            width: 30px; 
+            height: 25px; 
+            font-size: 1.5rem; /* Make FA icons look right */
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white; /* Icons in navbar should be white */
+        }
+
+        .account-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .account-menu .dropdown-icon {
+            width: 12px;
+            height: 14px;
+            cursor: pointer;
+            color: white;
+            font-size: 0.75rem; /* Smaller size for the caret */
+        }
+
+        /* =======================
+            Secondary Header (Navigation)
+        ======================= */
+        .secondary-header {
+            background-color: #e7efff;
+            display: flex;
+            justify-content: center;
+            padding: 12px 0;
+            position: static;
+            top: 44px;
+            z-index: 999;
+            border-bottom: 1px solid #000;
+        }
+
+        /* Utility styles needed for structure since Tailwind was removed */
+        .secondary-header > div {
+            width: 100%; 
+            padding: 0 24px; /* Simulating px-6 */
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            font-size: 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-item {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item.active {
+            font-weight: 700;
+            color: #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .nav-item:hover {
+            background-color: #c9d7f8;
+        }
+
+        /* =======================
+            Separator Line
+        ======================= */
+        .separator {
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            margin: 0;
+            color:#000;
+            display: block;
+        }
+        
+        /* =======================
+            Main Content
+        ======================= */
+        .main-content {
+            padding: 35px 45px;
+            background-color: transparent;
+            position: relative;
+            z-index: 0;
+            overflow: auto;
+            min-height: calc(100vh - 100px); 
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                padding: 20px;
+            }
+        }
+
+        /* Calendar Page Styles */
+        .calendar-page {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-title-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .calendar-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0a3b82;
+            margin: 0;
+        }
+
+        .add-event-btn {
+            background: #0a3b82;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-event-btn:hover {
+            background: #082a5f;
+        }
+
+        .calendar-controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .month-navigation {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .month-navigation button {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            color: #0a3b82;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .month-navigation button:hover {
+            background: rgba(10, 59, 130, 0.1);
+        }
+
+        .current-month {
+            font-size: 1.25rem;
+            font-weight: 600;
+            min-width: 140px;
+            text-align: left;
+            color: #0a3b82;
+        }
+
+        .calendar-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 1024px) {
+            .calendar-container {
+                grid-template-columns: 3fr 1fr;
+            }
+        }
+
+        /* Full Calendar Styles */
+        .full-calendar {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+        }
+
+        .calendar-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .calendar-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-day {
+            min-height: 120px;
+            padding: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            position: relative;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .calendar-day:hover {
+            background-color: #f9fafb;
+        }
+
+        .calendar-day.empty {
+            background-color: #f9fafb;
+            border: none;
+            cursor: default;
+        }
+
+        .day-number {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .calendar-day.today .day-number {
+            background-color: #0a3b82;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 85px;
+            overflow-y: auto;
+        }
+
+        .event-item {
+            font-size: 0.75rem;
+            padding: 2px 4px;
+            border-radius: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+
+        .event-item.staff {
+            background-color: #fef08a;
+            color: #854d0e;
+        }
+
+        .event-item.deadline {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+
+        .event-item.meeting {
+            background-color: #bbf7d0;
+            color: #166534;
+        }
+
+        .event-item.holiday {
+            background-color: #ddd6fe;
+            color: #5b21b6;
+        }
+
+        .event-item.other {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        /* Sidebar Styles */
+        .calendar-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .upcoming-events {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+        }
+
+        .upcoming-events h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #0a3b82;
+        }
+
+        .events-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .upcoming-event {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            transition: background-color 0.3s;
+        }
+
+        .upcoming-event:hover {
+            background-color: #e7efff;
+        }
+
+        .event-date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #0a3b82;
+            color: white;
+            border-radius: 6px;
+            padding: 8px;
+            min-width: 50px;
+        }
+
+        .event-date .day {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .event-date .month {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .event-details {
+            flex: 1;
+        }
+
+        .event-details .title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .event-details .time {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .event-actions button {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .event-actions button:hover {
+            background-color: #e5e7eb;
+        }
+
+        .quick-actions {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid #000;
+        }
+
+        .quick-actions h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #0a3b82;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #e7efff;
+            border-color: #0a3b82;
+        }
+
+        .action-button i {
+            color: #0a3b82;
+            font-size: 1.25rem;
+        }
+
+        .action-button span {
+            font-weight: 500;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0a3b82;
+            margin: 0;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #0a3b82;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #082a5f;
+        }
+
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+
+        /* Month Selector Styles */
+        .month-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .month-selector select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-color: white;
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+        /* Event Details Modal */
+        .event-details-modal .event-info {
+            margin-bottom: 20px;
+        }
+
+        .event-details-modal .event-info p {
+            margin: 8px 0;
+        }
+
+        .event-details-modal .event-info strong {
+            color: #0a3b82;
+        }

@@ -187,26 +187,31 @@
             </div>
         </div>
     </div>
+
    <script type="module">
+
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+    import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-    authDomain: "acadbird-379e3.firebaseapp.com",
-    projectId: "acadbird-379e3",
-    storageBucket: "acadbird-379e3.firebasestorage.app",
-    messagingSenderId: "575491576951",
-    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-    measurementId: "G-N6Z672SXWJ"
-};
+    const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ"
+    };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-await setPersistence(auth, browserLocalPersistence);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        let classId = null; // Global
+let className = null; // Also global
+
+        await setPersistence(auth, browserLocalPersistence);
 
 let currentDate = new Date();
 const calendarGrid = document.getElementById("calendar-grid");
@@ -228,6 +233,37 @@ function hideLoading() {
   loadingOverlay.style.display = "none";
 }
 
+
+
+let calendarEvents = []; // Will store all events fetched from Firestore
+
+// Fetch events from Firestore
+// Fetch all events from Firestore (no classroomId filter)
+async function loadCalendarEvents() {
+    showLoading();
+    try {
+        const calendarRef = collection(db, "calendar");
+        const snapshot = await getDocs(calendarRef); // no query filter
+
+        calendarEvents = snapshot.docs.map(doc => {
+            const data = doc.data();
+            return {
+                id: doc.id,
+                title: data.title,
+                description: data.description,
+                date: data.date,  // "YYYY-MM-DD"
+                time: data.time,
+                type: data.type
+            };
+        });
+
+        console.log("Loaded all calendar events:", calendarEvents);
+    } catch (err) {
+        console.error("Error loading calendar events:", err);
+    } finally {
+        hideLoading();
+    }
+}
 
 // ----------------- Calendar -----------------
 function renderCalendar(date) {
@@ -252,13 +288,42 @@ function renderCalendar(date) {
             dayCell.classList.add("today");
         }
 
+        // Check if there are events on this day
+        const dayStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const eventsForDay = calendarEvents.filter(ev => ev.date === dayStr);
+
+        if (eventsForDay.length > 0) {
+            dayCell.classList.add("has-event");
+            dayCell.title = eventsForDay.map(ev => `${ev.title} (${ev.time})`).join("\n");
+        }
+
         dayCell.addEventListener("click", () => {
-            openDateModal(day, month, year);
+            openDateModal(day, month, year, eventsForDay);
         });
 
         calendarGrid.appendChild(dayCell);
     }
 }
+
+// Modified modal to show events
+function openDateModal(day, month, year, eventsForDay = []) {
+    modalDateEl.textContent = `${monthNames[month]} ${day}, ${year}`;
+
+    if (eventsForDay.length === 0) {
+        modalDetails.innerHTML = "<p>No events for this day.</p>";
+    } else {
+        modalDetails.innerHTML = eventsForDay.map(ev => `
+            <p><strong>${ev.type}:</strong> ${ev.title}</p>
+            <p><strong>Time:</strong> ${ev.time}</p>
+            <p><strong>Description:</strong> ${ev.description}</p>
+        `).join("<hr>");
+    }
+
+    calendarModal.style.display = "flex";
+}
+
+
+// ----------------- Calendar -----------------
 
 document.getElementById("prev-month").addEventListener("click", (e) => {
     e.preventDefault();
@@ -277,13 +342,7 @@ const calendarModal = document.getElementById("calendar-modal");
 const modalDateEl = document.getElementById("modal-date");
 const modalDetails = document.getElementById("modal-details");
 
-function openDateModal(day, month, year) {
-    modalDateEl.textContent = `${monthNames[month]} ${day}, ${year}`;
-    modalDetails.innerHTML = `<p><strong>Exams:</strong> Example Exam</p>
-                              <p><strong>Assignments Due:</strong> Example Assignment</p>
-                              <p><strong>Events:</strong> Example Event</p>`;
-    calendarModal.style.display = "flex";
-}
+
 
 function closePopup() {
     calendarModal.style.display = "none";
@@ -305,8 +364,12 @@ onAuthStateChanged(auth, async (user) => {
       return;
     }
 
-    await loadClassData(); // wait for classroom & student data
-    renderCalendar(currentDate); 
+// wait for classroom & student data
+await loadClassData();
+await loadCalendarEvents(); // just fetch all events
+renderCalendar(currentDate);
+
+
 
   } catch (err) {
     console.error(err);
@@ -317,12 +380,12 @@ onAuthStateChanged(auth, async (user) => {
 
 
 async function loadClassData() {
-    const classId = localStorage.getItem('selectedClassId');
-    const className = localStorage.getItem('selectedClassName');
-
+ classId = localStorage.getItem('selectedClassId');
+    className = localStorage.getItem('selectedClassName');
+    
     console.log("Selected classId:", classId);
     console.log("Selected className:", className);
-
+    
     const classroomTitle = document.getElementById("classroom-title");
     const studentCountEl = document.getElementById("student-count");
     const parentCountEl = document.getElementById("parent-count");
@@ -341,8 +404,9 @@ async function loadClassData() {
 
     classroomTitle.textContent = className;
 
+
     try {
-        // 1️⃣ Fetch all students in the classroom
+       
         const studentsRef = collection(db, "students");
         const studentsQuery = query(studentsRef, where("classroomId", "==", classId));
         const studentsSnapshot = await getDocs(studentsQuery);
@@ -360,7 +424,7 @@ async function loadClassData() {
         const parentIds = new Set(students.map(s => s.parentId).filter(Boolean));
         console.log("Parent IDs:", Array.from(parentIds));
 
-        // 2️⃣ Fetch all activities in this classroom
+       
         const activitiesRef = collection(db, "activity");
    const activitiesQuery = query(activitiesRef, where("classroomID", "==", classId));
 
@@ -375,10 +439,10 @@ activitiesSnapshot.forEach(doc => console.log(doc.id, doc.data()));
 
         const filteredActivities = activitiesSnapshot.docs.map(doc => doc.data());
 
-        // 3️⃣ Compute total/average score per student
+        
         function calculateScores(activities) {
     return students.map(student => {
-        // Filter activities for this student
+       
         const studentActs = activities.filter(act => act.studentID === student.id);
 
         let totalScore = 0;
