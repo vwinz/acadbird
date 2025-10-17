@@ -98,17 +98,28 @@ function hideLoading() {
 
 // Load resources for multiple classrooms
 async function loadResources(classroomIds) {
+    console.log("Classroom IDs:", classroomIds); // ✅ Check classroom IDs
+
     const resourcesSection = document.getElementById("resourcesSection");
     resourcesSection.innerHTML = "";
 
-    let resourcesFound = false; // ✅ Track if we have any content
+    let resourcesFound = false;
 
     for (const classroomID of classroomIds) {
-        const weekQuery = query(collection(db, "week"), where("classroomID", "==", classroomID));
+        console.log("Fetching weeks for classroom:", classroomID);
+
+        // Fetch only public weeks
+        const weekQuery = query(
+            collection(db, "week"),
+            where("classroomID", "==", classroomID),
+            where("status", "==", "public")
+        );
         const weekSnap = await getDocs(weekQuery);
+        console.log("Weeks found:", weekSnap.size); // ✅ Number of weeks returned
 
         for (const weekDoc of weekSnap.docs) {
             const weekData = weekDoc.data();
+            console.log("Week data:", weekData); // ✅ Check week data
 
             const weekCard = document.createElement("div");
             weekCard.classList.add("week-card", "unlocked");
@@ -121,14 +132,19 @@ async function loadResources(classroomIds) {
             `;
             const weekContentDiv = weekCard.querySelector(".week-content");
 
-            const topicQuery = query(collection(db, "topic"), 
-                where("classroomID", "==", classroomID), 
-                where("weekID", "==", weekDoc.id)
+            // Fetch only public topics
+            const topicQuery = query(
+                collection(db, "topic"),
+                where("classroomID", "==", classroomID),
+                where("weekID", "==", weekDoc.id),
+                where("status", "==", "public")
             );
             const topicSnap = await getDocs(topicQuery);
+            console.log(`Topics found for week ${weekData.weekNo}:`, topicSnap.size);
 
             for (const topicDoc of topicSnap.docs) {
                 const topicData = topicDoc.data();
+                console.log("Topic data:", topicData);
 
                 const topicCard = document.createElement("div");
                 topicCard.classList.add("topic-card", "unlocked");
@@ -140,17 +156,21 @@ async function loadResources(classroomIds) {
                 `;
                 const topicContentDiv = topicCard.querySelector(".topic-content");
 
-                const contentQuery = query(collection(db, "topicContent"), 
+                const contentQuery = query(
+                    collection(db, "topicContent"),
                     where("classroomID", "==", classroomID),
                     where("weekID", "==", weekDoc.id),
                     where("topicID", "==", topicDoc.id)
                 );
                 const contentSnap = await getDocs(contentQuery);
+                console.log(`Content items found for topic ${topicData.topicName}:`, contentSnap.size);
 
                 if (!contentSnap.empty) resourcesFound = true;
 
                 for (const contentDoc of contentSnap.docs) {
                     const contentData = contentDoc.data();
+                    console.log("Content data:", contentData);
+
                     if (contentData.description) {
                         topicContentDiv.innerHTML += `
                             <div class="topic-item content-item-view">
@@ -175,11 +195,13 @@ async function loadResources(classroomIds) {
     }
 
     if (!resourcesFound) {
+        console.log("No resources found!"); // ✅ Debug log
         resourcesSection.innerHTML = `<p class="no-resources">No resources available.</p>`;
     }
 
     initEventListeners();
 }
+
 
 function initEventListeners() {
     document.querySelectorAll('.week-header').forEach(header => {
@@ -308,20 +330,33 @@ const BadgeService = {
             }
             
             // Count unread resources
-            const classroomIds = await this.getClassroomIds();
-            for (const classroomId of classroomIds) {
-                const topicContentQuery = query(
-                    collection(db, 'topicContent'),
-                    where('classroomID', '==', classroomId)
-                );
-                
-                const topicContentSnapshot = await getDocs(topicContentQuery);
-                
-                for (const topicDoc of topicContentSnapshot.docs) {
-                    const isRead = await this.checkIfRead(topicDoc.id, 'resource');
-                    if (!isRead) unreadCount++;
-                }
-            }
+           // Count unread resources (only public topics)
+const classroomIds = await this.getClassroomIds();
+for (const classroomId of classroomIds) {
+    const topicContentQuery = query(
+        collection(db, 'topicContent'),
+        where('classroomID', '==', classroomId)
+    );
+
+    const topicContentSnapshot = await getDocs(topicContentQuery);
+
+    for (const topicContentDoc of topicContentSnapshot.docs) {
+        const topicContentData = topicContentDoc.data();
+        const topicId = topicContentData.topicID;
+
+        // Fetch topic doc
+        const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
+        if (!topicDocSnap.exists()) continue;
+        const topicData = topicDocSnap.data();
+
+        // Only count if topic is public
+        if (topicData.status !== "public") continue;
+
+        const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
+        if (!isRead) unreadCount++;
+    }
+}
+
             
             return unreadCount;
         } catch (error) {
@@ -329,7 +364,6 @@ const BadgeService = {
             return 0;
         }
     },
-
     async checkIfRead(itemId, type) {
         if (!itemId) return false;
         

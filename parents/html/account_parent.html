@@ -419,20 +419,33 @@ const BadgeService = {
             }
             
             // Count unread resources
-            const classroomIds = await this.getClassroomIds();
-            for (const classroomId of classroomIds) {
-                const topicContentQuery = query(
-                    collection(db, 'topicContent'),
-                    where('classroomID', '==', classroomId)
-                );
-                
-                const topicContentSnapshot = await getDocs(topicContentQuery);
-                
-                for (const topicDoc of topicContentSnapshot.docs) {
-                    const isRead = await this.checkIfRead(topicDoc.id, 'resource');
-                    if (!isRead) unreadCount++;
-                }
-            }
+           // Count unread resources (only public topics)
+const classroomIds = await this.getClassroomIds();
+for (const classroomId of classroomIds) {
+    const topicContentQuery = query(
+        collection(db, 'topicContent'),
+        where('classroomID', '==', classroomId)
+    );
+
+    const topicContentSnapshot = await getDocs(topicContentQuery);
+
+    for (const topicContentDoc of topicContentSnapshot.docs) {
+        const topicContentData = topicContentDoc.data();
+        const topicId = topicContentData.topicID;
+
+        // Fetch topic doc
+        const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
+        if (!topicDocSnap.exists()) continue;
+        const topicData = topicDocSnap.data();
+
+        // Only count if topic is public
+        if (topicData.status !== "public") continue;
+
+        const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
+        if (!isRead) unreadCount++;
+    }
+}
+
             
             return unreadCount;
         } catch (error) {
@@ -440,7 +453,6 @@ const BadgeService = {
             return 0;
         }
     },
-
     async checkIfRead(itemId, type) {
         if (!itemId) return false;
         

@@ -43,9 +43,11 @@
             <input type="password" id="password" placeholder="Enter your password" required>
           </div>
 
-          <a href="#" class="forgot-password">Forgot Password?</a>
+         <a href="#" class="forgot-password" id="forgotPasswordLink">Forgot Password?</a>
+
 
           <p id="errorMessage" style="color: red; text-align: center; margin-top: 10px;"></p>
+<p id="successMessage" style="color: green; text-align: center; margin-top: 10px;"></p>
 
           <button type="submit" class="btn" id="loginButton">Login</button>
         </form>
@@ -60,6 +62,114 @@
   </div>
 
   <!-- Firebase Login Logic -->
-  <script type="module" src="../js/login.js"></script>
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs } 
+  from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+    authDomain: "acadbird-379e3.firebaseapp.com",
+    projectId: "acadbird-379e3",
+    storageBucket: "acadbird-379e3.appspot.com",
+    messagingSenderId: "575491576951",
+    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+    measurementId: "G-N6Z672SXWJ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const loginButton = document.getElementById("loginButton");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const errorMessageDisplay = document.getElementById("errorMessage");
+    const successMessageDisplay = document.getElementById("successMessage");
+    const forgotPasswordLink = document.getElementById("forgotPasswordLink");
+
+    // LOGIN FUNCTION
+    loginButton.addEventListener("click", async (event) => {
+      event.preventDefault();
+      errorMessageDisplay.textContent = "";
+      successMessageDisplay.textContent = "";
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          emailInput.value.trim(),
+          passwordInput.value.trim()
+        );
+
+        const user = userCredential.user;
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        if (!userDoc.exists()) throw new Error("No profile found");
+
+        const userData = userDoc.data();
+        localStorage.setItem("user", JSON.stringify({ id: user.uid, ...userData }));
+
+        switch (userData.role) {
+          case "teacher":
+            window.location.href = "../../teachers/html/homepage-teachers.html";
+            break;
+          case "parent":
+            window.location.href = "../../parents/html/homepage_parents.html";
+            break;
+          case "admin":
+            window.location.href = "../../admin/html/dashboard_admin.html";
+            break;
+        }
+      } catch (err) {
+        console.error("Login error:", err);
+        errorMessageDisplay.textContent = "Invalid email or password.";
+      }
+    });
+
+    // FORGOT PASSWORD FUNCTION
+    // FORGOT PASSWORD FUNCTION with Firestore check
+forgotPasswordLink.addEventListener("click", async (event) => {
+  event.preventDefault();
+  errorMessageDisplay.textContent = "";
+  successMessageDisplay.textContent = "";
+
+  const email = emailInput.value.trim();
+  if (!email) {
+    errorMessageDisplay.textContent = "Please enter your email first.";
+    return;
+  }
+
+  try {
+    console.log("🔍 Checking email in Firestore:", email);
+
+    // ✅ Check Firestore users collection for the email
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("email", "==", email));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      console.log("⚠️ Email not found in Firestore:", email);
+      errorMessageDisplay.textContent = "No account found with this email.";
+      return;
+    }
+
+    console.log("✅ Email found in Firestore, sending reset email:", email);
+
+    // ✅ Send password reset email if user exists in Firestore
+    await sendPasswordResetEmail(auth, email);
+    successMessageDisplay.textContent = "Password reset email sent! Check your inbox.";
+    console.log("📩 Password reset email sent successfully to:", email);
+
+  } catch (err) {
+    console.error("❌ Password reset error:", err);
+    errorMessageDisplay.textContent = "Error sending reset email. Please try again.";
+  }
+});
+
+  });
+</script>
+
 </body>
 </html>

@@ -186,36 +186,45 @@ function hideLoading() {
             },
 
             async getResourceNotifications() {
-                const notifications = [];
-                
-                try {
-                    const classroomIds = await this.getClassroomIds();
+    const notifications = [];
+    
+    try {
+        const classroomIds = await this.getClassroomIds();
 
-                    if (classroomIds.length === 0) {
-                        return notifications;
+        if (classroomIds.length === 0) return notifications;
+
+        for (const classroomId of classroomIds) {
+            const topicContentQuery = query(
+                collection(db, 'topicContent'),
+                where('classroomID', '==', classroomId),
+                orderBy('created_at', 'desc')
+            );
+
+            const querySnapshot = await getDocs(topicContentQuery);
+
+            for (const docSnap of querySnapshot.docs) {
+                const topicContent = docSnap.data();
+
+                // Fetch topic to check status
+                const topicDoc = await getDoc(doc(db, 'topic', topicContent.topicID));
+                if (topicDoc.exists()) {
+                    const topicData = topicDoc.data();
+
+                    // Only create notification if topic is public
+                    if (topicData.status === 'public') {
+                        const notification = await this.createResourceNotification(topicContent, classroomId, docSnap.id);
+                        notifications.push(notification);
                     }
-
-                    for (const classroomId of classroomIds) {
-                        const topicContentQuery = query(
-                            collection(db, 'topicContent'),
-                            where('classroomID', '==', classroomId),
-                            orderBy('created_at', 'desc')
-                        );
-                        
-                        const querySnapshot = await getDocs(topicContentQuery);
-
-                        for (const doc of querySnapshot.docs) {
-                            const topicContent = doc.data();
-                            const notification = await this.createResourceNotification(topicContent, classroomId, doc.id);
-                            notifications.push(notification);
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error fetching resource notifications:', error);
                 }
-                
-                return notifications;
-            },
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching resource notifications:', error);
+    }
+
+    return notifications;
+},
+
 
             async getClassroomIds() {
                 const classroomIds = new Set();

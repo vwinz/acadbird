@@ -7,26 +7,91 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 <link rel="stylesheet" href="../style/studentlistpage_studentinfo.css" />
+<style>
+    /* Add these styles for the progress bar */
+    .progress-section {
+        margin: 20px 0;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
+    }
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .progress-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin: 0;
+    }
+
+    .progress-percentage {
+        font-size: 18px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .progress-bar-container {
+        width: 100%;
+        height: 20px;
+        background: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .progress-bar {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
+    }
+
+    .progress-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        font-size: 12px;
+        color: #666;
+    }
+
+    .progress-level {
+        text-align: center;
+        margin-top: 8px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    /* Color states */
+    .progress-low { background: linear-gradient(90deg, #ff5757, #ff8a8a); }
+    .progress-medium { background: linear-gradient(90deg, #ffc107, #ffd54f); }
+    .progress-high { background: linear-gradient(90deg, #79de87, #a8e6a3); }
+</style>
 </head>
 <body>
 <div class="container">
 
     <nav class="navbar">
         <div class="logo">
-            <img src="AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
-            <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
+            <img src="../../main/img/AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
+            <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
         </div>
-        <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+        <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
         <div class="nav-icons">
     <a href="notification_teacher.html" target="_blank">
-        <img src="Notification.png" alt="Notifications" class="icon">
+        <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
     </a>
     <a href="help_teacher.html" target="_blank">
-        <img src="Help.png" alt="Help" class="icon">
+        <img src="../../main/img/Help.png" alt="Help" class="icon">
     </a>
     <a href="settings_teacher.html" target="_blank">
         <div class="account-menu">
-            <img src="account icon.png" alt="User Account" class="icon">
+            <img src="../../main/img/account icon.png" alt="User Account" class="icon">
         </div>
     </a>
 </div>
@@ -58,24 +123,25 @@
                 </div>
             </div>
 
-            <div class="parent-actions-container">
-                <div class="week-buttons">
-                    <button id="generate-code-btn">Generate Code</button>
-                    <button id="share-code-btn">Share Code</button>
+            <!-- Progress Bar Section -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <h3 class="progress-title">Overall Performance</h3>
+                    <span class="progress-percentage" id="progress-percentage">0%</span>
                 </div>
-                <p class="note-info" id="share-expired" style="display:none;">*Shared code expired</p>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+                </div>
+                <div class="progress-labels">
+                    
+                </div>
+                <div class="progress-level" id="progress-level">Calculating...</div>
             </div>
 
             <div class="week-actions">
                 <select id="week-dropdown">
-                    <option value="week31">Week of April 1–5</option>
-                    <option value="week32">Week of April 8–12</option>
+                    <option disabled selected>Loading weeks...</option>
                 </select>
-            </div>
-
-            <div class="week-details">
-                <p><i class="fas fa-book"></i> Week 31: Filipino Identity – National Symbols</p>
-                <p><i class="fas fa-calendar-alt"></i> April 1–5, 2025</p>
             </div>
 
             <div class="activity-table-container">
@@ -89,28 +155,8 @@
                             <th>None</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>Music & Movement</td>
-                            <td class="note-cell"><i class="fas fa-plus add-note-icon"></i></td>
-                            <td><div class="checkbox-full checked"></div></td>
-                            <td><div class="checkbox-partial"></div></td>
-                            <td><div class="checkbox-none"></div></td>
-                        </tr>
-                        <tr>
-                            <td>Arts & Crafts</td>
-                            <td class="note-cell"><i class="fas fa-plus add-note-icon"></i></td>
-                            <td><div class="checkbox-full checked"></div></td>
-                            <td><div class="checkbox-partial"></div></td>
-                            <td><div class="checkbox-none"></div></td>
-                        </tr>
-                        <tr>
-                            <td>Play-Based Learning</td>
-                            <td class="note-cell"><i class="fas fa-plus add-note-icon"></i></td>
-                            <td><div class="checkbox-full checked"></div></td>
-                            <td><div class="checkbox-partial"></div></td>
-                            <td><div class="checkbox-none"></div></td>
-                        </tr>
+                    <tbody id="activity-table-body">
+                        <!-- Dynamic activities will load here -->
                     </tbody>
                 </table>
             </div>
@@ -144,6 +190,311 @@
     </div>
 
 </div>
-<script src="../js/studentlistpage_studentinfo.js"></script>
+<script type="module">
+import { 
+  initializeApp 
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+import { 
+  getFirestore, doc, getDoc, collection, query, where, getDocs 
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+  authDomain: "acadbird-379e3.firebaseapp.com",
+  projectId: "acadbird-379e3",
+  storageBucket: "acadbird-379e3.appspot.com",
+  messagingSenderId: "575491576951",
+  appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+  measurementId: "G-N6Z672SXWJ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const params = new URLSearchParams(window.location.search);
+const studentId = params.get("studentId");
+
+const studentNameEl = document.querySelector(".student-name");
+const studentClassEl = document.querySelector(".student-class");
+const parentCodeText = document.getElementById("parent-code-text");
+const parentCodeCard = document.querySelector(".parent-code-card");
+const activityTableBody = document.getElementById("activity-table-body");
+const weekSelect = document.getElementById("week-dropdown");
+
+// Progress bar elements
+const progressBar = document.getElementById("progress-bar");
+const progressPercentage = document.getElementById("progress-percentage");
+const progressLevel = document.getElementById("progress-level");
+
+// Store all activities for filtering
+let allActivities = [];
+
+// Score mapping
+const SCORE_MAPPING = {
+    'full': 100,
+    'partial': 50,
+    'none': 0
+};
+
+async function loadStudent() {
+  if (!studentId) return;
+
+  const studentRef = doc(db, "students", studentId);
+  const studentSnap = await getDoc(studentRef);
+
+  if (studentSnap.exists()) {
+    const student = studentSnap.data();
+    studentNameEl.textContent = `${student.firstName} ${student.lastName}`;
+    parentCodeText.textContent = student.studentCode || "—";
+    parentCodeCard.querySelector("p").innerHTML =
+      `<strong>Parent:</strong> ${student.parentName || "—"}`;
+
+    if (student.classroomId) {
+      const classroomRef = doc(db, "classrooms", student.classroomId);
+      const classroomSnap = await getDoc(classroomRef);
+      if (classroomSnap.exists()) {
+        studentClassEl.textContent = classroomSnap.data().classroomName || "Unknown";
+      }
+    }
+
+    // Load all activities first, then weeks
+    await loadAllActivities(studentId);
+    await loadWeeks();
+  }
+}
+
+async function loadAllActivities(studentId) {
+  const activitiesRef = collection(db, "activity");
+  const q = query(activitiesRef, where("studentID", "==", studentId));
+  const snapshot = await getDocs(q);
+  
+  allActivities = [];
+  snapshot.forEach(docSnap => {
+    const activity = docSnap.data();
+    activity.id = docSnap.id;
+    allActivities.push(activity);
+  });
+  
+  // Display all activities initially
+  displayActivities(allActivities);
+  // Calculate and update progress
+  updateProgressBar(allActivities);
+}
+
+function updateProgressBar(activities) {
+    if (activities.length === 0) {
+        progressBar.style.width = '0%';
+        progressPercentage.textContent = '0%';
+        progressLevel.textContent = 'No activities yet';
+        progressBar.className = 'progress-bar';
+        return;
+    }
+
+    let totalScore = 0;
+    let activityCount = 0;
+
+    activities.forEach(activity => {
+        if (activity.activityScore && SCORE_MAPPING.hasOwnProperty(activity.activityScore)) {
+            totalScore += SCORE_MAPPING[activity.activityScore];
+            activityCount++;
+        }
+    });
+
+    if (activityCount === 0) {
+        progressBar.style.width = '0%';
+        progressPercentage.textContent = '0%';
+        progressLevel.textContent = 'No scored activities';
+        progressBar.className = 'progress-bar';
+        return;
+    }
+
+    const averageScore = totalScore / activityCount;
+    const percentage = Math.round(averageScore);
+
+    // Update progress bar width and percentage
+    progressBar.style.width = `${percentage}%`;
+    progressPercentage.textContent = `${percentage}%`;
+
+    // Update color and level based on percentage
+    if (percentage >= 70) {
+        progressBar.className = 'progress-bar progress-high';
+        progressLevel.textContent = 'High Performance';
+        progressLevel.style.color = '#2e7d32';
+    } else if (percentage >= 40) {
+        progressBar.className = 'progress-bar progress-medium';
+        progressLevel.textContent = 'Medium Performance';
+        progressLevel.style.color = '#f57c00';
+    } else {
+        progressBar.className = 'progress-bar progress-low';
+        progressLevel.textContent = 'Low Performance';
+        progressLevel.style.color = '#c62828';
+    }
+}
+
+function displayActivities(activities) {
+  activityTableBody.innerHTML = ""; // clear old rows
+
+  if (activities.length === 0) {
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = 5;
+    cell.textContent = "No activities found for the selected week";
+    cell.style.textAlign = "center";
+    row.appendChild(cell);
+    activityTableBody.appendChild(row);
+    return;
+  }
+
+  activities.forEach(activity => {
+    const row = document.createElement("tr");
+
+    // Activity name
+    const nameCell = document.createElement("td");
+    nameCell.textContent = activity.activityName || "Unnamed Activity";
+    row.appendChild(nameCell);
+
+    // Note
+    const noteCell = document.createElement("td");
+    noteCell.textContent = activity.note || "";
+    row.appendChild(noteCell);
+
+    // Score checkboxes
+    const scores = ["full", "partial", "none"];
+    scores.forEach(score => {
+      const cell = document.createElement("td");
+      const div = document.createElement("div");
+      div.classList.add(`checkbox-${score}`);
+      if (activity.activityScore === score) div.classList.add("checked");
+      cell.appendChild(div);
+      row.appendChild(cell);
+    });
+
+    activityTableBody.appendChild(row);
+  });
+}
+
+// Helper to compute ISO week number
+function getWeekNumber(date) {
+  const tempDate = new Date(date.getTime());
+  tempDate.setHours(0, 0, 0, 0);
+
+  // Thursday in current week decides the year
+  tempDate.setDate(tempDate.getDate() + 3 - ((tempDate.getDay() + 6) % 7));
+
+  // Week 1 is the week with Jan 4th in it
+  const week1 = new Date(tempDate.getFullYear(), 0, 4);
+
+  // Calculate full weeks to nearest Thursday
+  return (
+    1 +
+    Math.round(
+      ((tempDate.getTime() - week1.getTime()) / 86400000 -
+        3 +
+        ((week1.getDay() + 6) % 7)) /
+        7
+    )
+  );
+}
+
+// Get week range (Monday to Sunday)
+function getWeekRange(date) {
+  const day = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
+  const diffToMonday = day === 0 ? -6 : 1 - day; // Adjust for Sunday
+  
+  const monday = new Date(date);
+  monday.setDate(date.getDate() + diffToMonday);
+  monday.setHours(0, 0, 0, 0);
+  
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  sunday.setHours(23, 59, 59, 999);
+  
+  return { start: monday, end: sunday };
+}
+
+function formatDateRange(start, end) {
+  const options = { month: "short", day: "numeric" };
+  const startStr = start.toLocaleDateString("en-US", options);
+  const endStr = end.toLocaleDateString("en-US", options);
+  return `${startStr} - ${endStr}`;
+}
+
+async function loadWeeks() {
+  // Get unique weeks from all activities
+  const weekMap = new Map();
+
+  allActivities.forEach(activity => {
+    if (activity.created_at && activity.created_at.toDate) {
+      const date = activity.created_at.toDate();
+      const weekNum = getWeekNumber(date);
+      const year = date.getFullYear();
+      const weekKey = `${year}-W${weekNum.toString().padStart(2, '0')}`;
+      
+      const { start, end } = getWeekRange(date);
+      const rangeLabel = formatDateRange(start, end);
+      const displayText = `${rangeLabel} (Week ${weekNum})`;
+
+      if (!weekMap.has(weekKey)) {
+        weekMap.set(weekKey, {
+          displayText,
+          start,
+          end,
+          weekNum,
+          year
+        });
+      }
+    }
+  });
+
+  // Convert to array and sort by date (newest first)
+  const weeksArray = Array.from(weekMap.entries())
+    .sort(([,a], [,b]) => b.start - a.start);
+
+  weekSelect.innerHTML = '<option value="all">All Weeks</option>';
+  
+  if (weeksArray.length > 0) {
+    weeksArray.forEach(([weekKey, weekData]) => {
+      const option = document.createElement("option");
+      option.value = weekKey;
+      option.textContent = weekData.displayText;
+      weekSelect.appendChild(option);
+    });
+  } else {
+    weekSelect.innerHTML = '<option value="all">No weeks found</option>';
+  }
+}
+
+// Filter activities by selected week
+function filterActivitiesByWeek(weekKey) {
+  let filteredActivities;
+  
+  if (weekKey === "all") {
+    filteredActivities = allActivities;
+  } else {
+    filteredActivities = allActivities.filter(activity => {
+      if (!activity.created_at || !activity.created_at.toDate) return false;
+      
+      const activityDate = activity.created_at.toDate();
+      const activityWeekNum = getWeekNumber(activityDate);
+      const activityYear = activityDate.getFullYear();
+      const activityWeekKey = `${activityYear}-W${activityWeekNum.toString().padStart(2, '0')}`;
+      
+      return activityWeekKey === weekKey;
+    });
+  }
+
+  displayActivities(filteredActivities);
+  updateProgressBar(filteredActivities); // Update progress bar for filtered activities
+}
+
+// Event listener for week dropdown
+weekSelect.addEventListener("change", e => {
+  const selectedWeek = e.target.value;
+  filterActivitiesByWeek(selectedWeek);
+});
+
+// Initial load
+loadStudent();
+</script>
 </body>
 </html>

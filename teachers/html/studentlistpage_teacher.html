@@ -246,8 +246,9 @@ function createStudentCard(student, studentGrid, addStudentCard) {
   const card = document.createElement("div");
   card.classList.add("student-card");
 
-  // Add status badge
-  
+  // Store student ID for navigation
+  card.dataset.studentId = student.id;
+
   // Student name
   const nameEl = document.createElement("h3");
   nameEl.textContent = `${student.firstName} ${student.lastName}`;
@@ -260,10 +261,15 @@ function createStudentCard(student, studentGrid, addStudentCard) {
   card.appendChild(nameEl);
   card.appendChild(parentEl);
 
+  // 👉 Add click event to go to student info page
+  card.addEventListener("click", () => {
+    window.location.href = `studentlistpage_studentinfo.html?studentId=${student.id}`;
+  });
 
   // Insert before "Add Student" card
   studentGrid.insertBefore(card, addStudentCard);
 }
+
 
 
   function attachCardListeners(card) {

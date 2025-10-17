@@ -213,23 +213,28 @@
         </div>
 
         <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { 
-  getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, updateDoc, serverTimestamp 
+import { 
+    getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, setDoc, updateDoc, serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    const firebaseConfig = {
-        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-        authDomain: "acadbird-379e3.firebaseapp.com",
-        projectId: "acadbird-379e3",
-        storageBucket: "acadbird-379e3.firebasestorage.app",
-        messagingSenderId: "575491576951",
-        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-        measurementId: "G-N6Z672SXWJ"
-    };
+import { 
+    getAuth, createUserWithEmailAndPassword 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+    authDomain: "acadbird-379e3.firebaseapp.com",
+    projectId: "acadbird-379e3",
+    storageBucket: "acadbird-379e3.firebasestorage.app",
+    messagingSenderId: "575491576951",
+    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+    measurementId: "G-N6Z672SXWJ"
+  };
+
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
+const auth = getAuth(app);
     // =========================================================================================
     // DATA STRUCTURES
     // =========================================================================================
@@ -672,20 +677,8 @@ async function handleTeacherFormSubmission(e) {
     const selectedClassCheckboxes = classesTaughtMultiselect.querySelectorAll('input[type="checkbox"]:checked');
     const classesTaught = Array.from(selectedClassCheckboxes).map(cb => cb.value);
     
-    console.log('📋 Selected classes from form:', classesTaught);
-    console.log('📋 All checkboxes in multiselect:', classesTaughtMultiselect.querySelectorAll('input[type="checkbox"]').length);
-    
     const isEditMode = !!teacherIdInput.value;
     const teacherId = teacherIdInput.value;
-    
-    console.log('🔧 Form details:', {
-        isEditMode: isEditMode,
-        teacherId: teacherId,
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        classesTaught: classesTaught
-    });
     
     // Basic validation
     if (!firstName || !lastName || !email) {
@@ -712,61 +705,70 @@ async function handleTeacherFormSubmission(e) {
             }
         }
 
-        // Create teacher data for Firestore
-        const teacherData = {
-            firstName: firstName,
-            lastName: lastName,
-            fullName: `${firstName} ${lastName}`,
-            email: email,
-            role: "teacher",
-            classesTaught: classesTaught,
-            updatedAt: serverTimestamp()
-        };
-
         let finalTeacherId = teacherId;
         
         if (isEditMode) {
             // Update existing teacher
+            const teacherData = {
+                firstName: firstName,
+                lastName: lastName,
+                fullName: `${firstName} ${lastName}`,
+                email: email,
+                classesTaught: classesTaught,
+                updatedAt: serverTimestamp()
+            };
+
             await updateDoc(doc(db, "users", teacherId), teacherData);
             alert(`SUCCESS: Teacher "${firstName} ${lastName}" updated!`);
         } else {
-            // Add new teacher
-            teacherData.createdAt = serverTimestamp();
-            const teacherRef = await addDoc(collection(db, "users"), teacherData);
-            finalTeacherId = teacherRef.id;
-            alert(`SUCCESS: Teacher "${firstName} ${lastName}" created!`);
+            // CREATE NEW TEACHER IN FIREBASE AUTHENTICATION
+            const password = "TempPassword123!"; // You can generate a random password or set a default
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const authUid = userCredential.user.uid;
+            
+            // Create teacher data for Firestore
+            const teacherData = {
+                uid: authUid, // Store the auth UID in Firestore
+                firstName: firstName,
+                lastName: lastName,
+                fullName: `${firstName} ${lastName}`,
+                email: email,
+                role: "teacher",
+                classesTaught: classesTaught,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            };
+
+            // Add to Firestore with the same UID as authentication
+            await setDoc(doc(db, "users", authUid), teacherData);
+            finalTeacherId = authUid;
+            
+            alert(`SUCCESS: Teacher "${firstName} ${lastName}" created! Account email: ${email}`);
         }
         
-        // ====================================================================
-        // UPDATE CLASSROOM ASSIGNMENTS - ONLY FOR NEWLY SELECTED CLASSROOMS
-        // ====================================================================
-        
-        // Get all classrooms to find the ones that match the selected names
+        // UPDATE CLASSROOM ASSIGNMENTS
         const classroomsSnap = await getDocs(collection(db, "classrooms"));
         const classroomUpdates = [];
         
-        // Process all selected classrooms (these are all unassigned classrooms)
+        // Process all selected classrooms
         for (const checkbox of selectedClassCheckboxes) {
             const classroomName = checkbox.value;
             
-            // Find the classroom document that matches this name
             const classroomDoc = classroomsSnap.docs.find(doc => 
                 doc.data().classroomName === classroomName
             );
             
             if (classroomDoc) {
-                // Assign this teacher to the classroom AND set status to "active"
                 classroomUpdates.push(
                     updateDoc(doc(db, "classrooms", classroomDoc.id), {
-                        teacherId: finalTeacherId, // ← Assign teacher
-                        status: "active" // ← Set status to active
+                        teacherId: finalTeacherId,
+                        status: "active"
                     })
                 );
             }
         }
         
-        // Handle unassigning - remove teacher from classrooms that were deselected
-        // This is important for edit mode
+        // Handle unassigning for edit mode
         if (isEditMode) {
             const allClassCheckboxes = classesTaughtMultiselect.querySelectorAll('input[type="checkbox"]');
             const deselectedClasses = Array.from(allClassCheckboxes)
@@ -780,34 +782,36 @@ async function handleTeacherFormSubmission(e) {
                 );
                 
                 if (classroomDoc) {
-                    // Remove teacher assignment and set status back to "pending"
                     classroomUpdates.push(
                         updateDoc(doc(db, "classrooms", classroomDoc.id), {
-                            teacherId: "", // ← Remove teacher assignment
-                            status: "pending" // ← Set status back to pending
+                            teacherId: "",
+                            status: "pending"
                         })
                     );
                 }
             }
         }
         
-        // Execute all classroom updates
         if (classroomUpdates.length > 0) {
             await Promise.all(classroomUpdates);
         }
         
-        // ====================================================================
-        // END OF CLASSROOM ASSIGNMENT UPDATES
-        // ====================================================================
-        
         closeTeacherModal();
-        
-        // Reload the teacher table to show the updated data
         await renderTeacherTable();
         
     } catch (err) {
         console.error("Error saving teacher:", err);
-        alert("Failed to save teacher. Please try again.");
+        
+        // Handle specific authentication errors
+        if (err.code === 'auth/email-already-in-use') {
+            alert("This email is already registered in the system.");
+        } else if (err.code === 'auth/invalid-email') {
+            alert("Please enter a valid email address.");
+        } else if (err.code === 'auth/weak-password') {
+            alert("The password is too weak.");
+        } else {
+            alert("Failed to save teacher. Please try again.");
+        }
     }
 }
 
