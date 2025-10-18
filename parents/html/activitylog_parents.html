@@ -205,7 +205,7 @@
 </div>
 </div>
 </div>
-    <script type="module">
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { 
   getFirestore, 
@@ -214,11 +214,16 @@ import {
   orderBy, 
   getDocs,
   doc,
-  getDoc, where,
-  onSnapshot
+  getDoc, 
+  where,
+  onSnapshot,
+  addDoc,
+  serverTimestamp,
+  deleteDoc
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+
 // ✅ Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
@@ -236,54 +241,295 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 const loadingOverlay = document.getElementById("loading-overlay");
+let currentUser = null;
+let loggedInParentName = "Parent";
 
-   function showLoading() {
+function showLoading() {
   loadingOverlay.style.display = "flex";
 }
 
-// Hide overlay
 function hideLoading() {
   loadingOverlay.style.display = "none";
 }
-
 
 const currentClassroomID = localStorage.getItem("currentClassroomID");
 if (!currentClassroomID) {
   console.error("No classroom ID found. Make sure to select a student first.");
 }
 
+// Function to load likes for a post
+async function loadLikesForPost(postId, likeCountSpan, likeBtn) {
+    try {
+        const likesRef = collection(db, "likes");
+        const q = query(likesRef, where("postId", "==", postId));
+        const querySnapshot = await getDocs(q);
+        
+        const likeCount = querySnapshot.size;
+        likeCountSpan.textContent = likeCount;
+        
+        // Check if current user has liked this post
+        if (currentUser) {
+            const userLikeQuery = query(
+                likesRef, 
+                where("postId", "==", postId),
+                where("userId", "==", currentUser.uid)
+            );
+            const userLikeSnapshot = await getDocs(userLikeQuery);
+            if (!userLikeSnapshot.empty) {
+                // User has liked this post - make heart red
+                const heartIcon = likeBtn.querySelector('i');
+                heartIcon.classList.add('liked');
+                heartIcon.style.color = '#ff4444';
+            } else {
+                // User hasn't liked this post - make heart white
+                const heartIcon = likeBtn.querySelector('i');
+                heartIcon.classList.remove('liked');
+                heartIcon.style.color = '#666';
+            }
+        }
+    } catch (error) {
+        console.error("Error loading likes:", error);
+    }
+}
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const postFeed = document.getElementById("post-feed");
-    showLoading();
-  await loadPosts();
-  await loadEvents();
-  await loadReminders();
-  await loadTasks();
+// Function to load comments for a post
+async function loadCommentsForPost(postId, commentsList, commentCountSpan) {
+    try {
+        const commentsRef = collection(db, "comments");
+        const q = query(
+            commentsRef, 
+            where("postId", "==", postId),
+            orderBy("createdAt", "asc")
+        );
+        const querySnapshot = await getDocs(q);
+        
+        commentsList.innerHTML = '';
+        querySnapshot.forEach(doc => {
+            const commentData = doc.data();
+            const commentElement = createCommentElement(commentData);
+            commentsList.appendChild(commentElement);
+        });
+        
+        commentCountSpan.textContent = querySnapshot.size;
+    } catch (error) {
+        console.error("Error loading comments:", error);
+    }
+}
 
+// Function to create comment element
+function createCommentElement(commentData) {
+    const commentElement = document.createElement('div');
+    commentElement.classList.add('comment-item');
+    commentElement.setAttribute('data-comment-id', commentData.commentId || commentData.id);
+    
+    const timestamp = commentData.createdAt?.toDate 
+        ? commentData.createdAt.toDate().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+        : 'Just now';
 
+    commentElement.innerHTML = `
+        <div class="comment-author">${commentData.userName || 'Unknown User'}</div>
+        <div class="comment-text">${commentData.text}</div>
+        <div class="comment-timestamp">${timestamp}</div>
+        <button class="delete-comment-btn"><i class="fas fa-times-circle"></i></button>
+    `;
+    
+    return commentElement;
+}
 
-  // Function to render a single post
- // Function to render a single post
-function renderPost(postData) {
+// Function to setup real-time listeners for likes and comments
+function setupRealtimeListeners(postId, likeCountSpan, likeBtn, commentsList, commentCountSpan) {
+    // Real-time listener for likes
+    const likesRef = collection(db, "likes");
+    const likesQuery = query(likesRef, where("postId", "==", postId));
+    
+    onSnapshot(likesQuery, (snapshot) => {
+        const likeCount = snapshot.size;
+        likeCountSpan.textContent = likeCount;
+        
+        // Check if current user has liked this post
+        if (currentUser) {
+            const userLiked = snapshot.docs.some(doc => doc.data().userId === currentUser.uid);
+            const heartIcon = likeBtn.querySelector('i');
+            if (userLiked) {
+                // User has liked this post - make heart red
+                heartIcon.classList.add('liked');
+                heartIcon.style.color = '#ff4444';
+            } else {
+                // User hasn't liked this post - make heart white
+                heartIcon.classList.remove('liked');
+                heartIcon.style.color = '#666';
+            }
+        }
+    });
+
+    // Real-time listener for comments
+    const commentsRef = collection(db, "comments");
+    const commentsQuery = query(
+        commentsRef, 
+        where("postId", "==", postId),
+        orderBy("createdAt", "asc")
+    );
+    
+    onSnapshot(commentsQuery, (snapshot) => {
+        commentsList.innerHTML = '';
+        snapshot.forEach(doc => {
+            const commentData = doc.data();
+            const commentElement = createCommentElement(commentData);
+            commentsList.appendChild(commentElement);
+        });
+        commentCountSpan.textContent = snapshot.size;
+    });
+}
+
+// Function to add interaction listeners
+function addPostInteractionListeners(postElement, postId) {
+    const likeBtn = postElement.querySelector('.like-btn');
+    const likeCountSpan = postElement.querySelector('.like-count');
+    const commentBtn = postElement.querySelector('.comment-btn');
+    const commentsSection = postElement.querySelector('.comments-section');
+    const commentInputContainer = commentsSection.querySelector('.comment-input-container');
+    const commentsList = commentsSection.querySelector('.comments-list');
+    const commentInput = commentInputContainer.querySelector('.comment-input');
+    const submitCommentBtn = commentInputContainer.querySelector('.submit-comment-btn');
+    const commentCountSpan = postElement.querySelector('.comment-count');
+
+    // Load initial likes and comments
+    loadLikesForPost(postId, likeCountSpan, likeBtn);
+    loadCommentsForPost(postId, commentsList, commentCountSpan);
+    
+    // Setup real-time listeners
+    setupRealtimeListeners(postId, likeCountSpan, likeBtn, commentsList, commentCountSpan);
+
+    // Like button functionality
+    likeBtn.addEventListener('click', async () => {
+        if (!currentUser) {
+            alert('Please sign in to like posts');
+            return;
+        }
+
+        try {
+            const likesRef = collection(db, "likes");
+            const userLikeQuery = query(
+                likesRef, 
+                where("postId", "==", postId),
+                where("userId", "==", currentUser.uid)
+            );
+            
+            const userLikeSnapshot = await getDocs(userLikeQuery);
+            const heartIcon = likeBtn.querySelector('i');
+            
+            if (userLikeSnapshot.empty) {
+                // Add like
+                await addDoc(likesRef, {
+                    postId: postId,
+                    userId: currentUser.uid,
+                    userName: loggedInParentName,
+                    createdAt: serverTimestamp()
+                });
+                // Heart will turn red via real-time listener
+            } else {
+                // Remove like (unlike)
+                const likeDoc = userLikeSnapshot.docs[0];
+                await deleteDoc(doc(db, "likes", likeDoc.id));
+                // Heart will turn white via real-time listener
+            }
+        } catch (error) {
+            console.error("Error toggling like:", error);
+        }
+    });
+
+    // Toggle comment box
+    commentBtn.addEventListener('click', () => {
+        commentInputContainer.classList.toggle('hidden');
+        commentsSection.classList.toggle('hidden');
+        if (!commentInputContainer.classList.contains('hidden')) {
+            commentInput.focus();
+        }
+    });
+
+    // Add comment
+    submitCommentBtn.addEventListener('click', async () => {
+        const commentText = commentInput.value.trim();
+        
+        if (!commentText) {
+            alert('Please enter a comment');
+            return;
+        }
+        
+        if (!currentUser) {
+            alert('Please sign in to comment');
+            return;
+        }
+
+        try {
+            const commentsRef = collection(db, "comments");
+            await addDoc(commentsRef, {
+                postId: postId,
+                userId: currentUser.uid,
+                userName: loggedInParentName,
+                text: commentText,
+                createdAt: serverTimestamp()
+            });
+            
+            commentInput.value = '';
+        } catch (error) {
+            console.error("Error adding comment:", error);
+            alert("Failed to add comment. Please try again.");
+        }
+    });
+
+    // Delete comment functionality
+    commentsList.addEventListener('click', async (event) => {
+        if (event.target.closest('.delete-comment-btn')) {
+            const commentItem = event.target.closest('.comment-item');
+            const commentId = commentItem.getAttribute('data-comment-id');
+            
+            try {
+                // Find the comment document by matching the data
+                const commentsRef = collection(db, "comments");
+                const commentQuery = query(
+                    commentsRef, 
+                    where("postId", "==", postId),
+                    where("userId", "==", currentUser.uid)
+                );
+                
+                const commentSnapshot = await getDocs(commentQuery);
+                if (!commentSnapshot.empty) {
+                    const commentDoc = commentSnapshot.docs[0];
+                    await deleteDoc(doc(db, "comments", commentDoc.id));
+                }
+            } catch (error) {
+                console.error("Error deleting comment:", error);
+            }
+        }
+    });
+}
+
+// Function to render a single post
+function renderPost(postData, postId) {
   const postElement = document.createElement("div");
   postElement.classList.add("card", "post-feed-card");
+  postElement.setAttribute('data-post-id', postId);
+
+  // Format date for display
+  const formattedDate = postData.date ? new Date(postData.date).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }) : '';
 
   postElement.innerHTML = `
     <div class="post-info">
       <div class="user-info">
         <i class="fas fa-user-circle post-avatar"></i>
         <div>
-    <p class="user-name">${postData.teacherName || "Unknown Teacher"}</p>
-
-
-         <p class="class-name">${postData.classroomName || ""}</p>
-
+          <p class="user-name">${postData.teacherName || "Unknown Teacher"}</p>
+          <p class="class-name">${postData.classroomName || ""}</p>
         </div>
       </div>
       <div class="post-meta">
         <span class="timestamp">${postData.timestamp || ""}</span>
-        ${postData.date ? `<span class="post-date">${postData.date}</span>` : ""}
+        ${formattedDate ? `<span class="post-date">${formattedDate}</span>` : ""}
       </div>
     </div>
     <h3 class="post-title">${postData.type || ""}</h3>
@@ -295,41 +541,30 @@ function renderPost(postData) {
     }
     <div class="post-footer">
       <div class="post-details">
-        ${postData.date ? `<p class="event-info"><i class="fas fa-clock"></i> ${postData.date}</p>` : ""}
+        ${formattedDate ? `<p class="event-info"><i class="fas fa-clock"></i> ${formattedDate}</p>` : ""}
       </div>
       <div class="post-interaction">
         <button class="like-btn">
           <i class="fas fa-heart"></i>
-          <span class="like-count">${postData.likes || 0}</span>
+          <span class="like-count">0</span>
         </button>
         <button class="comment-btn">
           <i class="fas fa-comment-dots"></i>
-          <span class="comment-count">${postData.comments?.length || 0}</span>
+          <span class="comment-count">0</span>
         </button>
       </div>
     </div>
-    <div class="comments-section">
+    <div class="comments-section hidden">
       <div class="comment-input-container hidden">
         <input type="text" class="comment-input" placeholder="Write a comment..."/>
         <button class="submit-comment-btn">Post</button>
       </div>
-      <div class="comments-list">
-        ${
-          postData.comments?.map(
-            c => `
-            <div class="comment-item">
-              <div class="comment-author">${c.author}</div>
-              <div class="comment-text">${c.text}</div>
-              <div class="comment-timestamp">${c.timestamp}</div>
-            </div>`
-          ).join("") || ""
-        }
-      </div>
+      <div class="comments-list"></div>
     </div>
   `;
 
   // Add listeners
-  addPostInteractionListeners(postElement);
+  addPostInteractionListeners(postElement, postId);
 
   return postElement;
 }
@@ -341,7 +576,7 @@ async function getClassroomName(classroomID) {
     const snap = await getDoc(classroomRef);
     if (snap.exists()) {
       const data = snap.data();
-      return data.classroomName || ""; // adjust field name to match your DB
+      return data.classroomName || "";
     }
   } catch (e) {
     console.error("Error fetching classroom name:", e);
@@ -349,11 +584,10 @@ async function getClassroomName(classroomID) {
   return "";
 }
 
-
 async function getTeacherName(teacherID) {
   if (!teacherID) return "Unknown Teacher";
   try {
-    const userRef = doc(db, "users", teacherID); // 🔹 assumes teacher accounts are in "users" collection
+    const userRef = doc(db, "users", teacherID);
     const snap = await getDoc(userRef);
     if (snap.exists()) {
       const data = snap.data();
@@ -365,66 +599,9 @@ async function getTeacherName(teacherID) {
   return "Unknown Teacher";
 }
 
-
-  // Function to add interaction listeners
-  function addPostInteractionListeners(postElement) {
-    const likeBtn = postElement.querySelector(".like-btn");
-    const likeCountSpan = postElement.querySelector(".like-count");
-    const commentBtn = postElement.querySelector(".comment-btn");
-    const commentsSection = postElement.querySelector(".comments-section");
-    const commentInputContainer = commentsSection.querySelector(".comment-input-container");
-    const commentsList = commentsSection.querySelector(".comments-list");
-    const commentInput = commentInputContainer.querySelector(".comment-input");
-    const submitCommentBtn = commentInputContainer.querySelector(".submit-comment-btn");
-
-    // Like button
-    likeBtn.addEventListener("click", () => {
-      let likes = parseInt(likeCountSpan.textContent);
-      if (likeBtn.classList.contains("liked")) {
-        likes--;
-        likeBtn.classList.remove("liked");
-      } else {
-        likes++;
-        likeBtn.classList.add("liked");
-      }
-      likeCountSpan.textContent = likes;
-    });
-
-    // Toggle comment box
-    commentBtn.addEventListener("click", () => {
-      commentInputContainer.classList.toggle("hidden");
-      if (!commentInputContainer.classList.contains("hidden")) {
-        commentInput.focus();
-      }
-    });
-
-    // Add comment
-    submitCommentBtn.addEventListener("click", () => {
-      const commentText = commentInput.value.trim();
-      if (commentText) {
-        const commentElement = document.createElement("div");
-        commentElement.classList.add("comment-item");
-        const now = new Date();
-        const timestamp = now.toLocaleTimeString("en-US", { hour: "numeric", minute: "numeric", hour12: true });
-
-        commentElement.innerHTML = `
-          <div class="comment-author">Parent</div>
-          <div class="comment-text">${commentText}</div>
-          <div class="comment-timestamp">${timestamp}</div>
-        `;
-        commentsList.appendChild(commentElement);
-        commentInput.value = "";
-
-        const commentCountSpan = postElement.querySelector(".comment-count");
-        let commentCount = parseInt(commentCountSpan.textContent);
-        commentCount++;
-        commentCountSpan.textContent = commentCount;
-      }
-    });
-  }
-
-  // ✅ Fetch posts from Firestore
+// ✅ Fetch posts from Firestore
 async function loadPosts() {
+  const postFeed = document.getElementById("post-feed");
   postFeed.innerHTML = ""; 
 
   // ✅ Filter only posts for the current classroom
@@ -448,12 +625,63 @@ async function loadPosts() {
     postData.teacherName = await getTeacherName(postData.teacherID);
     postData.classroomName = await getClassroomName(postData.classroomID);
 
-    const postElement = renderPost(postData);
+    // Add timestamp for display
+    if (postData.created_at) {
+      const createdDate = postData.created_at.toDate();
+      const now = new Date();
+      const diffMs = now - createdDate;
+      const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+      
+      if (diffHours < 1) {
+        postData.timestamp = 'Just now';
+      } else if (diffHours < 24) {
+        postData.timestamp = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+      } else {
+        const diffDays = Math.floor(diffHours / 24);
+        postData.timestamp = `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+      }
+    }
+
+    const postElement = renderPost(postData, docSnap.id);
     postFeed.appendChild(postElement);
   }
 }
 
+// Load parent name
+async function loadParentName() {
+  if (!currentUser) return;
+  
+  try {
+    const userRef = doc(db, "users", currentUser.uid);
+    const snap = await getDoc(userRef);
+    if (snap.exists()) {
+      const data = snap.data();
+      loggedInParentName = `${data.firstName || ""} ${data.lastName || ""}`.trim() || "Parent";
+    }
+  } catch (e) {
+    console.error("Error fetching parent name:", e);
+  }
+}
 
+// Initialize the page
+document.addEventListener("DOMContentLoaded", async () => {
+  showLoading();
+  
+  // Wait for authentication
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUser = user;
+      await loadParentName();
+      await loadPosts();
+      await loadEvents();
+      await loadReminders();
+      await loadTasks();
+      hideLoading();
+    } else {
+      hideLoading();
+      console.log("User not authenticated");
+    }
+  });
 });
 
 // ✅ Load Upcoming Events
@@ -466,6 +694,7 @@ async function loadEvents() {
   const q = query(
     collection(db, "posts"),
     where("classroomID", "==", currentClassroomID),
+    where("type", "==", "Event"),
     orderBy("date", "desc")
   );
 
@@ -499,6 +728,7 @@ async function loadReminders() {
   const q = query(
     collection(db, "posts"),
     where("classroomID", "==", currentClassroomID),
+    where("type", "==", "Reminder"),
     orderBy("date", "desc")
   );
 
@@ -531,7 +761,8 @@ async function loadTasks() {
 
   const q = query(
     collection(db, "posts"),
-    where("classroomID", "==", currentClassroomID)
+    where("classroomID", "==", currentClassroomID),
+    where("type", "==", "Task")
   );
 
   const snapshot = await getDocs(q);
@@ -554,6 +785,7 @@ async function loadTasks() {
   });
 }
 
+// ... rest of your BadgeService code remains the same ...
 const BadgeService = {
     currentUser: null,
     studentIds: [],
@@ -661,34 +893,32 @@ const BadgeService = {
                 }
             }
             
-            // Count unread resources
-           // Count unread resources (only public topics)
-const classroomIds = await this.getClassroomIds();
-for (const classroomId of classroomIds) {
-    const topicContentQuery = query(
-        collection(db, 'topicContent'),
-        where('classroomID', '==', classroomId)
-    );
+            // Count unread resources (only public topics)
+            const classroomIds = await this.getClassroomIds();
+            for (const classroomId of classroomIds) {
+                const topicContentQuery = query(
+                    collection(db, 'topicContent'),
+                    where('classroomID', '==', classroomId)
+                );
 
-    const topicContentSnapshot = await getDocs(topicContentQuery);
+                const topicContentSnapshot = await getDocs(topicContentQuery);
 
-    for (const topicContentDoc of topicContentSnapshot.docs) {
-        const topicContentData = topicContentDoc.data();
-        const topicId = topicContentData.topicID;
+                for (const topicContentDoc of topicContentSnapshot.docs) {
+                    const topicContentData = topicContentDoc.data();
+                    const topicId = topicContentData.topicID;
 
-        // Fetch topic doc
-        const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
-        if (!topicDocSnap.exists()) continue;
-        const topicData = topicDocSnap.data();
+                    // Fetch topic doc
+                    const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
+                    if (!topicDocSnap.exists()) continue;
+                    const topicData = topicDocSnap.data();
 
-        // Only count if topic is public
-        if (topicData.status !== "public") continue;
+                    // Only count if topic is public
+                    if (topicData.status !== "public") continue;
 
-        const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
-        if (!isRead) unreadCount++;
-    }
-}
-
+                    const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
+                    if (!isRead) unreadCount++;
+                }
+            }
             
             return unreadCount;
         } catch (error) {
@@ -730,11 +960,7 @@ for (const classroomId of classroomIds) {
 // Initialize badge service
 document.addEventListener('DOMContentLoaded', async function() {
     await BadgeService.init();
-    hideLoading();
-   
 });
-
-
-    </script>
+</script>
   </body>
 </html>

@@ -45,14 +45,7 @@
 
         <div class="main-content">
             <div class="left-section">
-                <div class="card parents-status-card">
-                    <p class="status-text">2 parents still need to connect!</p>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill"></div>
-                        <div class="progress-percent">60%</div>
-                    </div>
-                    <button class="share-code-btn">Share Class Code</button>
-                </div>
+
 
                 <div class="card post-card" id="post-creation-card">
                    <div class="post-header">
@@ -172,7 +165,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-import { collection, addDoc, serverTimestamp, query, orderBy, getDocs, where } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { collection, addDoc, serverTimestamp, query, orderBy, getDocs, where, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 
 // --------------------
@@ -206,88 +199,6 @@ function hideLoading() {
 }
 
 
-function createPostElement(title, content, type, date, files, teacherName, createdAt) {
-    const postElement = document.createElement('div');
-    postElement.classList.add('card', 'post-feed-card');
-
-    // --- File handling ---
-    let fileHtml = '';
-    if (files.length > 0) {
-        const firstFile = files[0];
-        if (firstFile.type.startsWith('image/')) {
-            const imageUrl = URL.createObjectURL(firstFile);
-            fileHtml = `<img src="${imageUrl}" alt="Uploaded image" class="post-image">`;
-        } else {
-            fileHtml = `<p class="post-text">Attached File: ${firstFile.name}</p>`;
-        }
-    }
-
-    // --- Relative timestamp ---
-    function getRelativeTime(timestamp) {
-        if (!timestamp) return '';
-        const now = new Date();
-        const createdTime = timestamp.toDate ? timestamp.toDate() : new Date(timestamp); // Firestore Timestamp
-        const diffMs = now - createdTime;
-        const diffSeconds = Math.floor(diffMs / 1000);
-        const diffMinutes = Math.floor(diffSeconds / 60);
-        const diffHours = Math.floor(diffMinutes / 60);
-        const diffDays = Math.floor(diffHours / 24);
-
-        if (diffSeconds < 60) return 'Just now';
-        if (diffMinutes < 60) return `${diffMinutes} min${diffMinutes > 1 ? 's' : ''} ago`;
-        if (diffHours < 24) return `${diffHours} hr${diffHours > 1 ? 's' : ''} ago`;
-        return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-    }
-
-    const relativeTimestamp = getRelativeTime(createdAt);
-
-    // --- Additional details ---
-    let additionalDetails = '';
-    if (date) {
-        const [year, month, day] = date.split('-');
-        const formattedDate = `${day}/${month}/${year.slice(2)}`;
-        additionalDetails += `<li><i class="fas fa-calendar-alt"></i> Date: ${formattedDate}</li>`;
-    }
-    if (type === 'Event') {
-        additionalDetails += `<li><i class="fas fa-clock"></i> Time: To be announced</li>`;
-    }
-
-    const postHtml = `
-<div class="post-info">
-    <div class="user-info">
-        <i class="fas fa-user-circle post-avatar"></i>
-        <div>
-            <p class="user-name">${teacherName}</p>
-            <p class="class-name">Kinder Lily</p>
-        </div>
-    </div>
-    <span class="timestamp">${relativeTimestamp}</span>
-</div>
-<h3 class="post-title">${title} ${type === 'Event' ? '🎉' : ''}</h3>
-<p class="post-text">${content.replace(/\n/g, '<br>')}</p>
-${additionalDetails ? `<ul class="post-details">${additionalDetails}</ul>` : ''}
-${fileHtml}
-<div class="post-actions">
-    <button class="like-btn">Like (<span class="like-count">0</span>)</button>
-    <button class="comment-btn">Comment (<span class="comment-count">0</span>)</button>
-    <button class="more-btn">...</button>
-    <div class="dropdown-menu hidden">
-        <button class="delete-btn">Delete</button>
-    </div>
-</div>
-<div class="comments-section hidden">
-    <div class="comments-list"></div>
-    <div class="comment-input-container hidden">
-        <input type="text" class="comment-input" placeholder="Write a comment..." />
-        <button class="submit-comment-btn">Post</button>
-    </div>
-</div>
-`;
-
-
-    postElement.innerHTML = postHtml;
-    return postElement;
-}
 
 
 const eventList = document.getElementById('event-list');
@@ -319,7 +230,112 @@ function createRightSectionItem(title, date, type) {
         }
     }
 
+// Function to load likes for a post
+// Function to load likes for a post
+// Function to load likes for a post
 
+// Like button functionality
+
+// Function to load comments for a post
+async function loadCommentsForPost(postId, commentsList, commentCountSpan) {
+    try {
+        const commentsRef = collection(db, "comments");
+        const q = query(
+            commentsRef, 
+            where("postId", "==", postId),
+            orderBy("createdAt", "asc")
+        );
+        const querySnapshot = await getDocs(q);
+        
+        commentsList.innerHTML = '';
+        querySnapshot.forEach(doc => {
+            const commentData = doc.data();
+            const commentElement = createCommentElement(commentData);
+            commentsList.appendChild(commentElement);
+        });
+        
+        commentCountSpan.textContent = querySnapshot.size;
+    } catch (error) {
+        console.error("Error loading comments:", error);
+    }
+}
+
+// Function to create comment element
+function createCommentElement(commentData) {
+    const commentElement = document.createElement('div');
+    commentElement.classList.add('comment-item');
+    commentElement.setAttribute('data-comment-id', commentData.commentId || commentData.id);
+    
+    const timestamp = commentData.createdAt?.toDate 
+        ? commentData.createdAt.toDate().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+        : 'Just now';
+
+    commentElement.innerHTML = `
+        <div class="comment-author">${commentData.userName || 'Unknown User'}</div>
+        <div class="comment-text">${commentData.text}</div>
+        <div class="comment-timestamp">${timestamp}</div>
+        <button class="delete-comment-btn"><i class="fas fa-times-circle"></i></button>
+    `;
+    
+    return commentElement;
+}
+
+// Function to setup real-time listeners for likes and comments
+
+// Function to get teacher name from post data
+async function getTeacherNameForPost(teacherID) {
+    if (!teacherID) {
+        console.log("❌ No teacherID provided for post");
+        return "Unknown Teacher";
+    }
+    
+    try {
+        console.log(`🔍 Fetching teacher name for ID: ${teacherID}`);
+        const userRef = doc(db, "users", teacherID);
+        const snap = await getDoc(userRef);
+        
+        if (snap.exists()) {
+            const data = snap.data();
+            const teacherName = `${data.firstName || ""} ${data.lastName || ""}`.trim() || "Unknown Teacher";
+            console.log(`✅ Found teacher: ${teacherName}`);
+            return teacherName;
+        } else {
+            console.log("❌ Teacher document not found");
+            return "Unknown Teacher";
+        }
+    } catch (e) {
+        console.error("Error fetching teacher name:", e);
+        return "Unknown Teacher";
+    }
+}
+
+// Function to get classroom name
+async function getClassroomName(classroomID) {
+    if (!classroomID) {
+        console.log("❌ No classroomID provided");
+        return "";
+    }
+    
+    try {
+        console.log(`🔍 Fetching classroom name for ID: ${classroomID}`);
+        const classroomRef = doc(db, "classrooms", classroomID);
+        const snap = await getDoc(classroomRef);
+        if (snap.exists()) {
+            const data = snap.data();
+            const className = data.classroomName || "";
+            console.log(`✅ Found classroom: ${className}`);
+            return className;
+        } else {
+            console.log("❌ Classroom document not found");
+            return "";
+        }
+    } catch (e) {
+        console.error("Error fetching classroom name:", e);
+        return "";
+    }
+}
+
+// Updated loadPosts function to fetch teacher names for each post
 async function loadPosts() {
     try {
         // get classroomId from URL or localStorage
@@ -333,6 +349,8 @@ async function loadPosts() {
             return;
         }
 
+        console.log(`📝 Loading posts for classroom: ${classroomId}`);
+
         // Firestore query only for this classroom
         const postsRef = collection(db, "posts");
         const q = query(
@@ -345,34 +363,142 @@ async function loadPosts() {
 
         postFeed.innerHTML = ""; // clear feed first
 
-        querySnapshot.forEach(docSnap => {
+        if (querySnapshot.empty) {
+            postFeed.innerHTML = '<div class="notification-item">No posts found for this classroom</div>';
+            return;
+        }
+
+        console.log(`📄 Found ${querySnapshot.size} posts`);
+
+        // Process each post and fetch teacher names
+        for (const docSnap of querySnapshot.docs) {
             const data = docSnap.data();
-            const { task: title, description: content, type, date, created_at } = data;
+            console.log(`🔄 Processing post ${docSnap.id}:`, data);
+
+            // Fetch teacher name for this specific post
+            const teacherName = await getTeacherNameForPost(data.teacherID);
+            const classroomName = await getClassroomName(data.classroomID);
+
+            console.log(`✅ Post ${docSnap.id} - Teacher: ${teacherName}, Classroom: ${classroomName}`);
 
             const files = [];
             const postElement = createPostElement(
-                title || type,
-                content || '',
-                type,
-                date || '',
+                docSnap.id, // Pass post ID
+                data.task || data.type,
+                data.description || '',
+                data.type,
+                data.date || '',
                 files,
-                loggedInTeacherName,
-                created_at
+                teacherName, // Use the fetched teacher name, not loggedInTeacherName
+                data.created_at
             );
 
-            postFeed.prepend(postElement);
+            postFeed.appendChild(postElement);
             addPostInteractionListeners(postElement);
 
-            if (type === 'Event' || type === 'Reminder' || type === 'Task') {
-                createRightSectionItem(title || type, date || '', type);
+            if (data.type === 'Event' || data.type === 'Reminder' || data.type === 'Task') {
+                createRightSectionItem(data.task || data.type, data.date || '', data.type);
             }
-        });
+        }
 
     } catch (error) {
         console.error("Error loading posts:", error);
+        const postFeed = document.getElementById('post-feed');
+        postFeed.innerHTML = '<div class="notification-item">Error loading posts</div>';
     }
 }
 
+// Updated createPostElement function (no changes needed here, just for reference)
+function createPostElement(postId, title, content, type, date, files, teacherName, createdAt, classroomName) {
+    const postElement = document.createElement('div');
+    postElement.classList.add('card', 'post-feed-card');
+    postElement.setAttribute('data-post-id', postId);
+
+    // --- File handling ---
+    let fileHtml = '';
+    if (files.length > 0) {
+        const firstFile = files[0];
+        if (firstFile.type.startsWith('image/')) {
+            const imageUrl = URL.createObjectURL(firstFile);
+            fileHtml = `<img src="${imageUrl}" alt="Uploaded image" class="post-image">`;
+        } else {
+            fileHtml = `<p class="post-text">Attached File: ${firstFile.name}</p>`;
+        }
+    }
+
+    // --- Relative timestamp ---
+    function getRelativeTime(timestamp) {
+        if (!timestamp) return '';
+        const now = new Date();
+        const createdTime = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+        const diffMs = now - createdTime;
+        const diffSeconds = Math.floor(diffMs / 1000);
+        const diffMinutes = Math.floor(diffSeconds / 60);
+        const diffHours = Math.floor(diffMinutes / 60);
+        const diffDays = Math.floor(diffHours / 24);
+
+        if (diffSeconds < 60) return 'Just now';
+        if (diffMinutes < 60) return `${diffMinutes} min${diffMinutes > 1 ? 's' : ''} ago`;
+        if (diffHours < 24) return `${diffHours} hr${diffHours > 1 ? 's' : ''} ago`;
+        return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    }
+
+    const relativeTimestamp = getRelativeTime(createdAt);
+
+    // --- Additional details ---
+    let additionalDetails = '';
+    if (date) {
+        const [year, month, day] = date.split('-');
+        const formattedDate = `${day}/${month}/${year.slice(2)}`;
+        additionalDetails += `<li><i class="fas fa-calendar-alt"></i> Date: ${formattedDate}</li>`;
+    }
+    if (type === 'Event') {
+        additionalDetails += `<li><i class="fas fa-clock"></i> Time: To be announced</li>`;
+    }
+
+    const postHtml = `
+<div class="post-info">
+    <div class="user-info">
+        <i class="fas fa-user-circle post-avatar"></i>
+        <div>
+            <p class="user-name">${teacherName}</p>
+            <p class="class-name">${classroomName || "Classroom"}</p>
+        </div>
+    </div>
+    <span class="timestamp">${relativeTimestamp}</span>
+</div>
+<h3 class="post-title">${title} ${type === 'Event' ? '🎉' : ''}</h3>
+<p class="post-text">${content.replace(/\n/g, '<br>')}</p>
+${additionalDetails ? `<ul class="post-details">${additionalDetails}</ul>` : ''}
+${fileHtml}
+<div class="post-interaction">
+    <button class="like-btn" data-post-id="${postId}">
+        <i class="fas fa-heart"></i>
+        <span class="like-count">0</span>
+    </button>
+    <button class="comment-btn" data-post-id="${postId}">
+        <i class="fas fa-comment-dots"></i>
+        <span class="comment-count">0</span>
+    </button>
+</div>
+<div class="post-actions">
+    <button class="more-btn">...</button>
+    <div class="dropdown-menu hidden">
+        <button class="delete-btn">Delete</button>
+    </div>
+</div>
+<div class="comments-section hidden" data-post-id="${postId}">
+    <div class="comments-list"></div>
+    <div class="comment-input-container hidden">
+        <input type="text" class="comment-input" placeholder="Write a comment..." />
+        <button class="submit-comment-btn">Post</button>
+    </div>
+</div>
+`;
+
+    postElement.innerHTML = postHtml;
+    return postElement;
+}
 // --------------------
 // 2. Load teacher name
 // --------------------
@@ -418,91 +544,236 @@ onAuthStateChanged(auth, async (user) => {
 
 
 
- function addPostInteractionListeners(postElement) {
-        const likeBtn = postElement.querySelector('.like-btn');
-        const likeCountSpan = postElement.querySelector('.like-count');
-        const commentBtn = postElement.querySelector('.comment-btn');
-        const moreBtn = postElement.querySelector('.more-btn');
-        const deleteBtn = postElement.querySelector('.delete-btn');
-        const dropdownMenu = postElement.querySelector('.dropdown-menu');
-        const commentsSection = postElement.querySelector('.comments-section');
-        const commentInputContainer = commentsSection.querySelector('.comment-input-container');
-        const commentsList = commentsSection.querySelector('.comments-list');
-        const commentInput = commentInputContainer.querySelector('.comment-input');
-        const submitCommentBtn = commentInputContainer.querySelector('.submit-comment-btn');
-
-        // Toggle dropdown menu for delete button
-        moreBtn.addEventListener('click', () => {
-            dropdownMenu.classList.toggle('hidden');
-        });
-
-        // Hide dropdown if user clicks outside
-        document.addEventListener('click', (event) => {
-            if (!moreBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.classList.add('hidden');
-            }
-        });
-
-        // Like button functionality
-        likeBtn.addEventListener('click', () => {
-            let likes = parseInt(likeCountSpan.textContent);
-            if (likeBtn.classList.contains('liked')) {
-                likes--;
-                likeBtn.classList.remove('liked');
+// Function to load likes for a post - UPDATED for new structure
+async function loadLikesForPost(postId, likeCountSpan, likeBtn) {
+    try {
+        const likesRef = collection(db, "likes");
+        const q = query(likesRef, where("postId", "==", postId));
+        const querySnapshot = await getDocs(q);
+        
+        const likeCount = querySnapshot.size;
+        likeCountSpan.textContent = likeCount;
+        
+        // Check if current user has liked this post
+        const currentUserId = auth.currentUser?.uid;
+        if (currentUserId) {
+            const userLikeQuery = query(
+                likesRef, 
+                where("postId", "==", postId),
+                where("userId", "==", currentUserId)
+            );
+            const userLikeSnapshot = await getDocs(userLikeQuery);
+            if (!userLikeSnapshot.empty) {
+                // User has liked this post - make heart red
+                const heartIcon = likeBtn.querySelector('i');
+                heartIcon.classList.add('liked');
+                heartIcon.style.color = '#ff4444';
             } else {
-                likes++;
-                likeBtn.classList.add('liked');
+                // User hasn't liked this post - make heart white
+                const heartIcon = likeBtn.querySelector('i');
+                heartIcon.classList.remove('liked');
+                heartIcon.style.color = '#666';
             }
-            likeCountSpan.textContent = likes;
-        });
-
-        // Comment button functionality
-        commentBtn.addEventListener('click', () => {
-            commentInputContainer.classList.toggle('hidden');
-            if (!commentInputContainer.classList.contains('hidden')) {
-                commentInput.focus();
-            }
-        });
-
-        // Submit comment
-        submitCommentBtn.addEventListener('click', () => {
-            const commentText = commentInput.value.trim();
-            if (commentText) {
-                const commentElement = document.createElement('div');
-                commentElement.classList.add('comment-item');
-                const now = new Date();
-                const timestamp = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
-
-                commentElement.innerHTML = `
-                    <div class="comment-author">Mrs. Juana C. Cruz</div>
-                    <div class="comment-text">${commentText}</div>
-                    <div class="comment-timestamp">${timestamp}</div>
-                    <button class="delete-comment-btn"><i class="fas fa-times-circle"></i></button>
-                `;
-                commentsList.appendChild(commentElement);
-                commentInput.value = '';
-
-                const commentCountSpan = postElement.querySelector('.comment-count');
-                let commentCount = parseInt(commentCountSpan.textContent);
-                commentCount++;
-                commentCountSpan.textContent = commentCount;
-
-                // Add event listener for the new delete comment button
-                commentElement.querySelector('.delete-comment-btn').addEventListener('click', () => {
-                    commentElement.remove();
-                    let commentCount = parseInt(commentCountSpan.textContent);
-                    commentCount--;
-                    commentCountSpan.textContent = commentCount;
-                });
-            }
-        });
-
-        // Delete post functionality with modal
-        deleteBtn.addEventListener('click', () => {
-            postToDelete = postElement;
-            deleteModal.classList.remove('hidden');
-        });
+        }
+    } catch (error) {
+        console.error("Error loading likes:", error);
     }
+}
+
+// Function to setup real-time listeners for likes and comments - UPDATED
+function setupRealtimeListeners(postId, likeCountSpan, likeBtn, commentsList, commentCountSpan) {
+    // Real-time listener for likes
+    const likesRef = collection(db, "likes");
+    const likesQuery = query(likesRef, where("postId", "==", postId));
+    
+    onSnapshot(likesQuery, (snapshot) => {
+        const likeCount = snapshot.size;
+        likeCountSpan.textContent = likeCount;
+        
+        // Check if current user has liked this post
+        const currentUserId = auth.currentUser?.uid;
+        if (currentUserId) {
+            const userLiked = snapshot.docs.some(doc => doc.data().userId === currentUserId);
+            const heartIcon = likeBtn.querySelector('i');
+            if (userLiked) {
+                // User has liked this post - make heart red
+                heartIcon.classList.add('liked');
+                heartIcon.style.color = '#ff4444';
+            } else {
+                // User hasn't liked this post - make heart white
+                heartIcon.classList.remove('liked');
+                heartIcon.style.color = '#666';
+            }
+        }
+    });
+
+    // Real-time listener for comments
+    const commentsRef = collection(db, "comments");
+    const commentsQuery = query(
+        commentsRef, 
+        where("postId", "==", postId),
+        orderBy("createdAt", "asc")
+    );
+    
+    onSnapshot(commentsQuery, (snapshot) => {
+        commentsList.innerHTML = '';
+        snapshot.forEach(doc => {
+            const commentData = doc.data();
+            const commentElement = createCommentElement(commentData);
+            commentsList.appendChild(commentElement);
+        });
+        commentCountSpan.textContent = snapshot.size;
+    });
+}
+
+// UPDATED addPostInteractionListeners function
+function addPostInteractionListeners(postElement) {
+    const postId = postElement.getAttribute('data-post-id');
+    const likeBtn = postElement.querySelector('.like-btn');
+    const likeCountSpan = postElement.querySelector('.like-count');
+    const commentBtn = postElement.querySelector('.comment-btn');
+    const moreBtn = postElement.querySelector('.more-btn');
+    const deleteBtn = postElement.querySelector('.delete-btn');
+    const dropdownMenu = postElement.querySelector('.dropdown-menu');
+    const commentsSection = postElement.querySelector('.comments-section');
+    const commentInputContainer = commentsSection.querySelector('.comment-input-container');
+    const commentsList = commentsSection.querySelector('.comments-list');
+    const commentInput = commentInputContainer.querySelector('.comment-input');
+    const submitCommentBtn = commentInputContainer.querySelector('.submit-comment-btn');
+    const commentCountSpan = postElement.querySelector('.comment-count');
+
+    // Load initial likes and comments
+    loadLikesForPost(postId, likeCountSpan, likeBtn);
+    loadCommentsForPost(postId, commentsList, commentCountSpan);
+    
+    // Setup real-time listeners
+    setupRealtimeListeners(postId, likeCountSpan, likeBtn, commentsList, commentCountSpan);
+
+    // Toggle dropdown menu for delete button
+    moreBtn.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('hidden');
+    });
+
+    // Hide dropdown if user clicks outside
+    document.addEventListener('click', (event) => {
+        if (!moreBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.classList.add('hidden');
+        }
+    });
+
+    // Like button functionality - UPDATED
+    likeBtn.addEventListener('click', async () => {
+        const currentUser = auth.currentUser;
+        if (!currentUser) {
+            alert('Please sign in to like posts');
+            return;
+        }
+
+        try {
+            const likesRef = collection(db, "likes");
+            const userLikeQuery = query(
+                likesRef, 
+                where("postId", "==", postId),
+                where("userId", "==", currentUser.uid)
+            );
+            
+            const userLikeSnapshot = await getDocs(userLikeQuery);
+            const heartIcon = likeBtn.querySelector('i');
+            
+            if (userLikeSnapshot.empty) {
+                // Add like
+                await addDoc(likesRef, {
+                    postId: postId,
+                    userId: currentUser.uid,
+                    userName: loggedInTeacherName,
+                    createdAt: serverTimestamp()
+                });
+                // Heart will turn red via real-time listener
+            } else {
+                // Remove like (unlike)
+                const likeDoc = userLikeSnapshot.docs[0];
+                await deleteDoc(doc(db, "likes", likeDoc.id));
+                // Heart will turn white via real-time listener
+            }
+        } catch (error) {
+            console.error("Error toggling like:", error);
+        }
+    });
+
+    // Comment button functionality
+    commentBtn.addEventListener('click', () => {
+        commentInputContainer.classList.toggle('hidden');
+        commentsSection.classList.toggle('hidden');
+        if (!commentInputContainer.classList.contains('hidden')) {
+            commentInput.focus();
+        }
+    });
+
+    // Submit comment
+    submitCommentBtn.addEventListener('click', async () => {
+        const commentText = commentInput.value.trim();
+        const currentUser = auth.currentUser;
+        
+        if (!commentText) {
+            alert('Please enter a comment');
+            return;
+        }
+        
+        if (!currentUser) {
+            alert('Please sign in to comment');
+            return;
+        }
+
+        try {
+            const commentsRef = collection(db, "comments");
+            await addDoc(commentsRef, {
+                postId: postId,
+                userId: currentUser.uid,
+                userName: loggedInTeacherName,
+                text: commentText,
+                createdAt: serverTimestamp()
+            });
+            
+            commentInput.value = '';
+        } catch (error) {
+            console.error("Error adding comment:", error);
+            alert("Failed to add comment. Please try again.");
+        }
+    });
+
+    // Delete comment functionality
+    commentsList.addEventListener('click', async (event) => {
+        if (event.target.closest('.delete-comment-btn')) {
+            const commentItem = event.target.closest('.comment-item');
+            const commentId = commentItem.getAttribute('data-comment-id');
+            
+            try {
+                // Find the comment document by matching the data
+                const commentsRef = collection(db, "comments");
+                const commentQuery = query(
+                    commentsRef, 
+                    where("postId", "==", postId),
+                    where("userId", "==", auth.currentUser.uid)
+                );
+                
+                const commentSnapshot = await getDocs(commentQuery);
+                if (!commentSnapshot.empty) {
+                    const commentDoc = commentSnapshot.docs[0];
+                    await deleteDoc(doc(db, "comments", commentDoc.id));
+                }
+            } catch (error) {
+                console.error("Error deleting comment:", error);
+            }
+        }
+    });
+
+    // Delete post functionality with modal
+    deleteBtn.addEventListener('click', () => {
+        postToDelete = postElement;
+        deleteModal.classList.remove('hidden');
+    });
+}
+
 
         document.addEventListener('DOMContentLoaded', () => {
     // DOM elements
@@ -649,7 +920,7 @@ if (!classroomId) {
             console.log("Post added with ID:", docRef.id);
 
             // Create local DOM element
-            const newPost = createPostElement(title, content, postType, date, files);
+            const newPost = createPostElement(docRef.id, title, content, postType, date, files);
             postFeed.prepend(newPost);
             addPostInteractionListeners(newPost);
             if (postType === 'Event' || postType === 'Reminder' || postType === 'Task') {
@@ -713,22 +984,6 @@ if (!classroomId) {
     // Initialize listeners for any pre-existing posts on page load (like the pizza party post)
     document.querySelectorAll('.post-feed-card').forEach(post => {
         addPostInteractionListeners(post);
-    });
-
-    // Add event listeners to delete existing comments on page load
-    document.querySelectorAll('.comment-item .delete-comment-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const commentItem = btn.closest('.comment-item');
-            const postCard = btn.closest('.post-feed-card');
-            if (commentItem && postCard) {
-                commentItem.remove();
-                const commentCountSpan = postCard.querySelector('.comment-count');
-                if (commentCountSpan) {
-                    let count = parseInt(commentCountSpan.textContent);
-                    commentCountSpan.textContent = count > 0 ? count - 1 : 0;
-                }
-            }
-        });
     });
 });
     </script>
