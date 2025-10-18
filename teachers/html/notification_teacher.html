@@ -67,7 +67,9 @@
             orderBy, 
             addDoc,
             where,
-            serverTimestamp 
+            serverTimestamp,
+            doc,
+            getDoc
         } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -86,13 +88,14 @@
         let currentUser = null;
 
         // Function to check if notification is already read
-        async function isNotificationRead(teacherId, calendarId) {
+        async function isNotificationRead(teacherId, notificationId, type = 'calendar') {
             try {
                 const notificationsRef = collection(db, "notification_teacher");
                 const q = query(
                     notificationsRef, 
                     where("teacherID", "==", teacherId),
-                    where("calendarID", "==", calendarId),
+                    where("notificationID", "==", notificationId),
+                    where("type", "==", type),
                     where("status", "==", "read")
                 );
                 const snapshot = await getDocs(q);
@@ -116,11 +119,48 @@
                 const readNotifications = {};
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    readNotifications[data.calendarID] = true;
+                    const key = `${data.type}_${data.notificationID}`;
+                    readNotifications[key] = true;
                 });
                 return readNotifications;
             } catch (error) {
                 console.error("Error getting read notifications:", error);
+                return {};
+            }
+        }
+
+        // Function to get classroom name by ID
+        async function getClassroomName(classroomId) {
+            try {
+                if (!classroomId) return "Classroom";
+                
+                const classroomDoc = await getDoc(doc(db, "classrooms", classroomId));
+                if (classroomDoc.exists()) {
+                    return classroomDoc.data().classroomName || "Classroom";
+                }
+                return "Classroom";
+            } catch (error) {
+                console.error("Error getting classroom name:", error);
+                return "Classroom";
+            }
+        }
+
+        // Function to get teacher's classrooms - FIXED: changed teacherID to teacherId
+        async function getTeacherClassrooms(teacherId) {
+            try {
+                const classroomsRef = collection(db, "classrooms");
+                const q = query(classroomsRef, where("teacherId", "==", teacherId));
+                const snapshot = await getDocs(q);
+                
+                const teacherClassrooms = {};
+                snapshot.forEach(doc => {
+                    teacherClassrooms[doc.id] = doc.data();
+                });
+                
+                console.log("Teacher classrooms:", teacherClassrooms);
+                return teacherClassrooms;
+            } catch (error) {
+                console.error("Error getting teacher classrooms:", error);
                 return {};
             }
         }
@@ -132,17 +172,49 @@
                 const calendarRef = collection(db, "calendar");
                 const calendarSnapshot = await getDocs(calendarRef);
                 
+                // Get teacher's classrooms
+                const teacherClassrooms = await getTeacherClassrooms(teacherId);
+                const teacherClassroomIds = Object.keys(teacherClassrooms);
+                
+                console.log("Teacher classroom IDs:", teacherClassroomIds);
+                
+                // Get all students with status "active" in teacher's classrooms
+                let studentsSnapshot;
+                if (teacherClassroomIds.length > 0) {
+                    const studentsRef = collection(db, "students");
+                    const studentsQuery = query(
+                        studentsRef, 
+                        where("status", "==", "active"),
+                        where("classroomId", "in", teacherClassroomIds)
+                    );
+                    studentsSnapshot = await getDocs(studentsQuery);
+                } else {
+                    studentsSnapshot = { docs: [] };
+                }
+                
+                console.log("Active students in teacher's classrooms:", studentsSnapshot.docs.length);
+                
                 // Get all read notifications
                 const readNotifications = await getReadNotifications(teacherId);
                 
-                // Count unread notifications
+                // Count unread calendar notifications
                 let unreadCount = 0;
                 calendarSnapshot.forEach(doc => {
-                    if (!readNotifications[doc.id]) {
+                    const key = `calendar_${doc.id}`;
+                    if (!readNotifications[key]) {
                         unreadCount++;
                     }
                 });
                 
+                // Count unread student join notifications
+                studentsSnapshot.forEach(doc => {
+                    const key = `student_${doc.id}`;
+                    if (!readNotifications[key]) {
+                        unreadCount++;
+                    }
+                });
+                
+                console.log("Total unread notifications:", unreadCount);
                 return unreadCount;
             } catch (error) {
                 console.error("Error counting unread notifications:", error);
@@ -169,11 +241,11 @@
             }
         }
 
-        // Function to save notification to Firestore (only required fields)
-        async function saveNotification(teacherId, calendarId) {
+        // Function to save notification to Firestore
+        async function saveNotification(teacherId, notificationId, type = 'calendar') {
             try {
                 // Check if notification already exists
-                const exists = await isNotificationRead(teacherId, calendarId);
+                const exists = await isNotificationRead(teacherId, notificationId, type);
                 if (exists) {
                     console.log("Notification already exists");
                     return;
@@ -181,7 +253,8 @@
 
                 const notificationData = {
                     teacherID: teacherId,
-                    calendarID: calendarId,
+                    notificationID: notificationId,
+                    type: type,
                     status: "read",
                     createdAt: serverTimestamp()
                 };
@@ -196,132 +269,233 @@
             }
         }
 
-        // Function to fetch calendar events and create notifications
-        async function loadCalendarNotifications() {
+        // Function to fetch calendar events and students, then create notifications
+        async function loadAllNotifications() {
             try {
-                const calendarRef = collection(db, "calendar");
-                const q = query(calendarRef, orderBy("createdAt", "desc"));
-                const snapshot = await getDocs(q);
-
                 const notificationsList = document.getElementById('notifications-list');
                 notificationsList.innerHTML = '';
 
-                if (snapshot.empty) {
+                if (!currentUser) {
+                    notificationsList.innerHTML = '<div class="notification-item">Please log in to view notifications</div>';
+                    return;
+                }
+
+                console.log("Current user:", currentUser.uid);
+
+                // Get teacher's classrooms
+                const teacherClassrooms = await getTeacherClassrooms(currentUser.uid);
+                const teacherClassroomIds = Object.keys(teacherClassrooms);
+
+                console.log("Teacher's classroom IDs:", teacherClassroomIds);
+
+                // Get all calendar events
+                const calendarRef = collection(db, "calendar");
+                const calendarQuery = query(calendarRef, orderBy("createdAt", "desc"));
+                const calendarSnapshot = await getDocs(calendarQuery);
+
+                // Get all students with status "active" in teacher's classrooms
+                let studentsSnapshot;
+                if (teacherClassroomIds.length > 0) {
+                    const studentsRef = collection(db, "students");
+                    const studentsQuery = query(
+                        studentsRef, 
+                        where("status", "==", "active"),
+                        where("classroomId", "in", teacherClassroomIds)
+                    );
+                    studentsSnapshot = await getDocs(studentsQuery);
+                    console.log("Students found:", studentsSnapshot.docs.length);
+                } else {
+                    // If teacher has no classrooms, create empty snapshot
+                    studentsSnapshot = { docs: [] };
+                    console.log("No classrooms found for teacher");
+                }
+
+                // Get all read notifications for current teacher
+                const readNotifications = await getReadNotifications(currentUser.uid);
+
+                // Create array to hold all notifications
+                const allNotifications = [];
+
+                // Process calendar events
+                calendarSnapshot.forEach(doc => {
+                    const eventData = doc.data();
+                    const isRead = readNotifications[`calendar_${doc.id}`] || false;
+                    allNotifications.push({
+                        id: doc.id,
+                        type: 'calendar',
+                        data: eventData,
+                        isRead: isRead,
+                        timestamp: eventData.createdAt || new Date()
+                    });
+                });
+
+                // Process student join events
+                for (const doc of studentsSnapshot.docs) {
+                    const studentData = doc.data();
+                    console.log("Processing student:", studentData.firstName, studentData.lastName);
+                    
+                    // Get classroom name
+                    const classroomName = await getClassroomName(studentData.classroomId);
+                    const isRead = readNotifications[`student_${doc.id}`] || false;
+                    
+                    allNotifications.push({
+                        id: doc.id,
+                        type: 'student',
+                        data: {
+                            ...studentData,
+                            classroomName: classroomName
+                        },
+                        isRead: isRead,
+                        timestamp: studentData.createdAt || new Date()
+                    });
+                }
+
+                // Sort all notifications by timestamp (newest first)
+                allNotifications.sort((a, b) => b.timestamp - a.timestamp);
+
+                console.log("Total notifications to display:", allNotifications.length);
+
+                if (allNotifications.length === 0) {
                     notificationsList.innerHTML = '<div class="notification-item">No notifications found</div>';
                     return;
                 }
 
-                // Get all read notifications for current teacher
-                let readNotifications = {};
-                if (currentUser) {
-                    readNotifications = await getReadNotifications(currentUser.uid);
-                }
-
-                snapshot.forEach(doc => {
-                    const eventData = doc.data();
-                    const isRead = readNotifications[doc.id] || false;
-                    const notificationItem = createNotificationItem(doc.id, eventData, isRead);
+                // Create notification items
+                allNotifications.forEach(notification => {
+                    const notificationItem = createNotificationItem(notification);
                     notificationsList.appendChild(notificationItem);
                 });
 
             } catch (error) {
-                console.error("Error loading calendar notifications:", error);
+                console.error("Error loading notifications:", error);
                 const notificationsList = document.getElementById('notifications-list');
                 notificationsList.innerHTML = '<div class="notification-item">Error loading notifications</div>';
             }
         }
 
         // Function to create notification HTML
-       // Function to create notification HTML
-function createNotificationItem(calendarId, eventData, isRead = false) {
-    const notificationItem = document.createElement('div');
-    
-    // Set class based on read status
-    if (isRead) {
-        notificationItem.className = 'notification-item read';
-    } else {
-        notificationItem.className = 'notification-item unread';
-    }
-    
-    // Format the date for display
-    const eventDate = new Date(eventData.date);
-    const formattedDate = eventDate.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+        function createNotificationItem(notification) {
+            const notificationItem = document.createElement('div');
+            const { id, type, data, isRead } = notification;
+            
+            // Set class based on read status
+            if (isRead) {
+                notificationItem.className = 'notification-item read';
+            } else {
+                notificationItem.className = 'notification-item unread';
+            }
+            
+            let notificationContent = '';
+            
+            if (type === 'calendar') {
+                // Calendar event notification
+                const eventDate = new Date(data.date);
+                const formattedDate = eventDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
 
-    // Get appropriate icon based on event type
-    const eventIcon = getEventIcon(eventData.type);
+                const eventIcon = getEventIcon(data.type);
 
-    notificationItem.innerHTML = `
-        <a href="#" class="notification-icon">
-            <i class="${eventIcon}"></i>
-        </a>
-        <div class="notification-text">
-            <strong>New ${eventData.type || 'Event'} Added</strong><br>
-            "${eventData.title}"<br>
-            <small>Date: ${formattedDate} | Time: ${eventData.time || 'All day'}</small>
-            ${eventData.description ? `<br><small>Description: ${eventData.description}</small>` : ''}
-        </div>
-        <a href="#" class="mark-as-read-btn">${isRead ? 'Read' : 'Mark As Read'}</a>
-    `;
+                notificationContent = `
+                    <a href="#" class="notification-icon">
+                        <i class="${eventIcon}"></i>
+                    </a>
+                    <div class="notification-text">
+                        <strong>New ${data.type || 'Event'} Added</strong><br>
+                        "${data.title}"<br>
+                        <small>Date: ${formattedDate} | Time: ${data.time || 'All day'}</small>
+                        ${data.description ? `<br><small>Description: ${data.description}</small>` : ''}
+                    </div>
+                    <a href="#" class="mark-as-read-btn">${isRead ? 'Read' : 'Mark As Read'}</a>
+                `;
+            } else if (type === 'student') {
+                // Student join notification
+                const joinDate = new Date(data.createdAt?.toDate() || new Date());
+                const formattedDate = joinDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
 
-    // Only add click events if notification is not already read
-    if (!isRead) {
-        // Add click event for the entire notification item (redirect to classroom)
-        notificationItem.addEventListener('click', async (event) => {
-            // Don't trigger if clicking the mark as read button
-            if (!event.target.classList.contains('mark-as-read-btn')) {
-                event.preventDefault();
-                
-                // Save notification to Firestore (only required fields)
-                if (currentUser) {
-                    await saveNotification(currentUser.uid, calendarId);
-                }
-                
-                // Update UI to show as read
-                notificationItem.classList.add('read');
-                notificationItem.classList.remove('unread');
+                notificationContent = `
+                    <a href="#" class="notification-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </a>
+                    <div class="notification-text">
+                        <strong>New Student Joined</strong><br>
+                        "${data.firstName} ${data.lastName}" joined ${data.classroomName}<br>
+                        <small>Student Code: ${data.studentCode || 'N/A'} | Joined: ${formattedDate}</small>
+                    </div>
+                    <a href="#" class="mark-as-read-btn">${isRead ? 'Read' : 'Mark As Read'}</a>
+                `;
+            }
+
+            notificationItem.innerHTML = notificationContent;
+
+            // Only add click events if notification is not already read
+            if (!isRead) {
+                // Add click event for the entire notification item
+                notificationItem.addEventListener('click', async (event) => {
+                    // Don't trigger if clicking the mark as read button
+                    if (!event.target.classList.contains('mark-as-read-btn')) {
+                        event.preventDefault();
+                        
+                        // Save notification to Firestore
+                        if (currentUser) {
+                            await saveNotification(currentUser.uid, id, type);
+                        }
+                        
+                        // Update UI to show as read
+                        notificationItem.classList.add('read');
+                        notificationItem.classList.remove('unread');
+                        const markAsReadBtn = notificationItem.querySelector('.mark-as-read-btn');
+                        markAsReadBtn.textContent = 'Read';
+                        
+                        // Update badge count immediately
+                        await updateNotificationBadge();
+                        
+                        // Redirect based on notification type
+                        if (type === 'calendar') {
+                            window.location.href = 'homepage-classroom_teacher.html';
+                        } else if (type === 'student') {
+                            window.location.href = 'studentlistpage_teacher.html';
+                        }
+                    }
+                });
+
+                // Add click event for mark as read button
                 const markAsReadBtn = notificationItem.querySelector('.mark-as-read-btn');
-                markAsReadBtn.textContent = 'Read';
-                
-                // Update badge count immediately
-                await updateNotificationBadge();
-                
-                // Redirect to classroom page
-                window.location.href = 'homepage-classroom_teacher.html';
+                markAsReadBtn.addEventListener('click', async (event) => {
+                    event.preventDefault();
+                    event.stopPropagation(); // Prevent triggering the main notification click
+                    
+                    // Update UI
+                    notificationItem.classList.add('read');
+                    notificationItem.classList.remove('unread');
+                    markAsReadBtn.textContent = 'Read';
+                    
+                    // Save to Firestore when marked as read
+                    if (currentUser) {
+                        await saveNotification(currentUser.uid, id, type);
+                    }
+                    
+                    // Update badge count immediately
+                    await updateNotificationBadge();
+                });
+            } else {
+                // If already read, disable the mark as read button
+                const markAsReadBtn = notificationItem.querySelector('.mark-as-read-btn');
+                markAsReadBtn.style.cursor = 'default';
+                markAsReadBtn.style.opacity = '0.6';
             }
-        });
 
-        // Add click event for mark as read button
-        const markAsReadBtn = notificationItem.querySelector('.mark-as-read-btn');
-        markAsReadBtn.addEventListener('click', async (event) => {
-            event.preventDefault();
-            event.stopPropagation(); // Prevent triggering the main notification click
-            
-            // Update UI
-            notificationItem.classList.add('read');
-            notificationItem.classList.remove('unread');
-            markAsReadBtn.textContent = 'Read';
-            
-            // Save to Firestore when marked as read
-            if (currentUser) {
-                await saveNotification(currentUser.uid, calendarId);
-            }
-            
-            // Update badge count immediately
-            await updateNotificationBadge();
-        });
-    } else {
-        // If already read, disable the mark as read button
-        const markAsReadBtn = notificationItem.querySelector('.mark-as-read-btn');
-        markAsReadBtn.style.cursor = 'default';
-        markAsReadBtn.style.opacity = '0.6';
-    }
+            return notificationItem;
+        }
 
-    return notificationItem;
-}
         // Function to get appropriate icon for event type
         function getEventIcon(eventType) {
             const iconMap = {
@@ -341,7 +515,8 @@ function createNotificationItem(calendarId, eventData, isRead = false) {
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser = user;
-                await loadCalendarNotifications();
+                console.log("User authenticated:", user.uid);
+                await loadAllNotifications();
                 await updateNotificationBadge();
             } else {
                 console.log("User not authenticated");
