@@ -155,7 +155,65 @@
             font-weight: 600;
             margin-bottom: 10px;
         }
+/* Calendar day styling */
+.calendar-day {
+    position: relative;
+    padding: 8px;
+    text-align: center;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 
+.calendar-day:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Today styling */
+.calendar-day.today {
+    border: 2px solid #333;
+    font-weight: bold;
+}
+
+/* Event count badge */
+.event-count-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Modal event items */
+.modal-event-item {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.modal-event-item p {
+    margin: 5px 0;
+}
+
+/* Legend colors */
+.holiday { background-color: #45b7d1 !important; }
+.meeting { background-color: #96ceb4 !important; }
+.event { background-color: #feca57 !important; }
+.staff { background-color: #ff9ff3 !important; }
+.deadline { background-color: #54a0ff !important; }
         /* ===== Calendar card ===== */
         .calendar-card {
             flex: 1 1 70%;
@@ -474,11 +532,7 @@
             font-weight: bold;
             cursor: pointer;
         }
-.calendar-day.has-event {
-    background-color: #ffdede;
-    border-radius: 50%;
-    cursor: pointer;
-}
+
 
         .close-button:hover,
         .close-button:focus {
@@ -641,3 +695,27 @@
 .card-section { animation-delay: 0.4s; }
 .class-card { animation-delay: 0.2s; }
 .new-class-card { animation-delay: 0.3s; }
+
+/* Event indicators in calendar */
+.event-indicators {
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    margin-top: 2px;
+    flex-wrap: wrap;
+}
+
+.event-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Calendar day with events */
+
+
+/* Modal event items */
+
+
+/* Ensure the existing legend styles work with the new colors */

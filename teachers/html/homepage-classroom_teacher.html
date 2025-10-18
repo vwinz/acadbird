@@ -79,16 +79,24 @@
                         </div>
                     
                     <div class="calendar-legends">
-                        <div class="legend-item">
-                            <span class="legend-color exam-day"></span> Exam Day
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color due-date"></span> Due Date
-                        </div>
-                        <div class="legend-item">
-                            <span class="legend-color holiday"></span> Holiday
-                        </div>
-                    </div>
+
+  
+    <div class="legend-item">
+        <span class="legend-color holiday"></span> Holiday
+    </div>
+    <div class="legend-item">
+        <span class="legend-color meeting"></span> Meeting
+    </div>
+    <div class="legend-item">
+        <span class="legend-color event"></span> Event
+    </div>
+    <div class="legend-item">
+        <span class="legend-color staff"></span> Staff
+    </div>
+    <div class="legend-item">
+        <span class="legend-color deadline"></span> Deadline
+    </div>
+</div>
                 </div>
 
                 <div class="data-dashboard">
@@ -178,7 +186,7 @@
 
     <div id="calendar-modal" class="modal">
         <div class="modal-content">
-            <span class="close-button" onclick="closePopup()">&times;</span>
+          <span class="close-button" id="close-modal-button">&times;</span>
             <h2 id="modal-date">March 18, 2025</h2>
             <div id="modal-details" class="modal-details">
                 <p><strong>Exams:</strong> Final Exams</p>
@@ -266,6 +274,19 @@ async function loadCalendarEvents() {
 }
 
 // ----------------- Calendar -----------------
+// Event type colors
+// Event type colors
+const EVENT_TYPE_COLORS = {
+    'exam': { class: 'exam-day', color: '#ff6b6b' },
+    'due date': { class: 'due-date', color: '#4ecdc4' },
+    'holiday': { class: 'holiday', color: '#45b7d1' },
+    'meeting': { class: 'meeting', color: '#96ceb4' },
+    'event': { class: 'event', color: '#feca57' },
+    'staff': { class: 'staff', color: '#ff9ff3' },
+    'deadline': { class: 'deadline', color: '#54a0ff' }
+};
+
+// Modified renderCalendar function with colored date cells
 function renderCalendar(date) {
     calendarGrid.innerHTML = "";
     const year = date.getFullYear();
@@ -293,8 +314,43 @@ function renderCalendar(date) {
         const eventsForDay = calendarEvents.filter(ev => ev.date === dayStr);
 
         if (eventsForDay.length > 0) {
-            dayCell.classList.add("has-event");
-            dayCell.title = eventsForDay.map(ev => `${ev.title} (${ev.time})`).join("\n");
+            // Get the primary event type for coloring (use the first event's type)
+            const primaryEvent = eventsForDay[0];
+            const eventType = primaryEvent.type?.toLowerCase() || 'event';
+            const eventColor = EVENT_TYPE_COLORS[eventType] || EVENT_TYPE_COLORS['event'];
+            
+            // Apply color to the entire date cell
+            dayCell.style.backgroundColor = eventColor.color;
+            dayCell.style.color = '#ffffff'; // White text for better contrast
+            dayCell.style.borderRadius = '8px'; // Rounded corners
+            dayCell.style.fontWeight = 'bold';
+            
+            // Add event count badge for multiple events
+            if (eventsForDay.length > 1) {
+                const eventCount = document.createElement("div");
+                eventCount.className = "event-count-badge";
+                eventCount.textContent = eventsForDay.length;
+                eventCount.style.position = 'absolute';
+                eventCount.style.top = '2px';
+                eventCount.style.right = '2px';
+                eventCount.style.background = 'rgba(255,255,255,0.9)';
+                eventCount.style.color = eventColor.color;
+                eventCount.style.borderRadius = '50%';
+                eventCount.style.width = '18px';
+                eventCount.style.height = '18px';
+                eventCount.style.fontSize = '10px';
+                eventCount.style.display = 'flex';
+                eventCount.style.alignItems = 'center';
+                eventCount.style.justifyContent = 'center';
+                eventCount.style.fontWeight = 'bold';
+                dayCell.style.position = 'relative';
+                dayCell.appendChild(eventCount);
+            }
+            
+            // Tooltip with all events
+            dayCell.title = eventsForDay.map(ev => 
+                `${ev.title} (${ev.type}) - ${ev.time}`
+            ).join("\n");
         }
 
         dayCell.addEventListener("click", () => {
@@ -305,23 +361,33 @@ function renderCalendar(date) {
     }
 }
 
-// Modified modal to show events
+// Modified modal to show colored events (same as before)
 function openDateModal(day, month, year, eventsForDay = []) {
     modalDateEl.textContent = `${monthNames[month]} ${day}, ${year}`;
 
     if (eventsForDay.length === 0) {
         modalDetails.innerHTML = "<p>No events for this day.</p>";
     } else {
-        modalDetails.innerHTML = eventsForDay.map(ev => `
-            <p><strong>${ev.type}:</strong> ${ev.title}</p>
-            <p><strong>Time:</strong> ${ev.time}</p>
-            <p><strong>Description:</strong> ${ev.description}</p>
-        `).join("<hr>");
+        modalDetails.innerHTML = eventsForDay.map(ev => {
+            const eventType = ev.type?.toLowerCase() || 'event';
+            const eventColor = EVENT_TYPE_COLORS[eventType] || EVENT_TYPE_COLORS['event'];
+            
+            return `
+                <div class="modal-event-item" style="border-left: 4px solid ${eventColor.color}; padding-left: 10px; margin-bottom: 15px;">
+                    <p><strong style="color: ${eventColor.color};">${ev.type}:</strong> ${ev.title}</p>
+                    <p><strong>Time:</strong> ${ev.time}</p>
+                    <p><strong>Description:</strong> ${ev.description}</p>
+                </div>
+            `;
+        }).join("");
     }
 
     calendarModal.style.display = "flex";
 }
 
+// Modified renderCalendar function with colored events
+
+// Modified modal to show colored events
 
 // ----------------- Calendar -----------------
 
@@ -338,16 +404,27 @@ document.getElementById("next-month").addEventListener("click", (e) => {
 });
 
 // Modal functions
+// Modal functions
 const calendarModal = document.getElementById("calendar-modal");
 const modalDateEl = document.getElementById("modal-date");
 const modalDetails = document.getElementById("modal-details");
+const closeModalButton = document.getElementById("close-modal-button");
 
+// Add event listener for close button
+if (closeModalButton) {
+    closeModalButton.addEventListener('click', closePopup);
+}
 
+// Also close modal when clicking outside
+calendarModal.addEventListener('click', function(e) {
+    if (e.target === calendarModal) {
+        closePopup();
+    }
+});
 
 function closePopup() {
     calendarModal.style.display = "none";
 }
-
 // ----------------- Auth + Load Class -----------------
 onAuthStateChanged(auth, async (user) => {
   if (!user) return;

@@ -6,248 +6,27 @@
     <title>AcadBird - Notifications</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <style>
-        /* =======================
-           Base Styles
-        ======================= */
-        html {
-            height: 100%;
-        }
-
-        body {
-            height: 100%;
-            width: 100%;
-            font-family: "Poppins", Arial, sans-serif;
-            background-color: #dbe7f7; /* light blue background */
-            margin: 0;
-            font-size: 16px;
-            color: #000;
-        }
-
-        /* =======================
-           Main Content
-        ======================= */
-        .main-content {
-            padding: 35px 45px;
-            background-color: transparent;
-            position: relative;
-            z-index: 0;
-            overflow: auto;
-            height: calc(100vh - 100px); /* This calculation should be correct if the fixed headers are 90px total */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        /* =======================
-           Navbar
-        ======================= */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 24px;
-            background-color: #0a3b82; /* sample dark blue */
-            color: white;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-img {
-            width: 70px;
-            height: 40px;
-        }
-
-        .logo-text-img {
-            height: 28px; /* adjust to match your design */
-        }
-        .middle-logo {
-        width: 90px;
-        height: 40px;
-        margin: 0 auto;
-      }
-
-        .nav-icons {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .nav-icons .icon {
-            width: 30px;
-            height: 25px;
-            cursor: pointer;
-        }
-
-        .account-menu {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .account-menu .dropdown-icon {
-            width: 12px;
-            height: 14px;
-            cursor: pointer;
-        }
-
-        /* =======================
-           Secondary Header (Navigation)
-        ======================= */
-        .secondary-header {
-            background-color: #e7efff;
-            display: flex;
-            justify-content: center;
-            padding: 12px 30px;
-            position: static;
-            top: 44px;
-            z-index: 999;
-            border-bottom: 1px solid #c9d7f8;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 22px;
-            align-items: center;
-            font-size: 16px;
-        }
-
-        .nav-item {
-            color: #000;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 5px 10px;
-            border-radius: 3px;
-            transition: background-color 0.3s;
-        }
-
-        .nav-item.active {
-            font-weight: 700;
-            color: #000;
-            border-bottom: 2px solid #000;
-        }
-
-        .nav-item:hover {
-            background-color: #c9d7f8;
-        }
-
-        /* =======================
-           Separator Line
-        ======================= */
-        .separator {
-            width: 100%;
-            height: 1px;
-            background-color: #000;
-            margin: 0;
-            color: #000;
-        }
-
-        /* =======================
-           Notification Styles
-        ======================= */
-        .notifications-container {
-            width: 60%;
-            max-width: 800px;
-            background-color: #f0f4ff;
-            border: 1px solid #c9d7f8;
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            padding: 20px 0;
-            margin-top: 20px;
-        }
-
-        .notifications-header {
-            text-align: center;
-            padding: 0 20px 20px;
-            border-bottom: 1px solid #c9d7f8;
-        }
-
-        .notifications-header h2 {
-            margin: 0;
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .notifications-list {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .notification-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            border-bottom: 1px solid #c9d7f8;
-            transition: background-color 0.3s ease;
-        }
-
-        .notification-item:last-child {
-            border-bottom: none;
-        }
-
-        .notification-icon {
-            font-size: 30px;
-            color: #4da6ff;
-            margin-right: 15px;
-        }
-
-        .notification-text {
-            flex-grow: 1;
-            font-size: 16px;
-            font-weight: 400;
-        }
-
-        .mark-as-read-btn {
-            font-size: 14px;
-            color: #0a3b82;
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-
-        .mark-as-read-btn:hover {
-            color: #00224d;
-            text-decoration: underline;
-        }
-
-        /* Styles for "read" notifications */
-        .notification-item.read {
-            background-color: #f7f9fc;
-            color: #888;
-        }
-
-        .notification-item.read .mark-as-read-btn {
-            color: #888;
-            cursor: default;
-            text-decoration: none;
-            pointer-events: none; /* Disables clicking */
-        }
-    </style>
+    <link rel="stylesheet" href="../style/notification_teacher.css" />
 </head>
 <body>
     <div class="container">
         <div class="navbar">
             <div class="logo">
-                <img src="AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-                <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+                <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+                <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
             </div>
-            <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+           
             <div class="nav-icons">
-                <a href="notification_teacher.html" target="_blank">
-                    <img src="Notification.png" alt="Notifications" class="icon">
+                <a href="notification_teacher.html" target="_blank" class="notification-link">
+                    <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
+                    <span class="notification-badge" id="notification-badge">0</span>
                 </a>
                 <a href="help_teacher.html" target="_blank">
-                    <img src="Help.png" alt="Help" class="icon">
+                    <img src="../../main/img/Help.png" alt="Help" class="icon">
                 </a>
                 <a href="settings_teacher.html" target="_blank">
                     <div class="account-menu">
-                        <img src="account icon.png" alt="User Account" class="icon">
+                        <img src="../../main/img/account icon.png" alt="User Account" class="icon">
                     </div>
                 </a>
             </div>
@@ -269,70 +48,359 @@
                 <div class="notifications-header">
                     <h2>Notifications</h2>
                 </div>
-                <div class="notifications-list">
-                    <div class="notification-item unread">
-                        <a href="#" class="notification-icon">
-                            <i class="fas fa-user-circle"></i>
-                        </a>
-                        <div class="notification-text">Notification Text</div>
-                        <a href="#" class="mark-as-read-btn">Mark As Read</a>
-                    </div>
-                    <div class="notification-item unread">
-                        <a href="#" class="notification-icon">
-                            <i class="fas fa-user-circle"></i>
-                        </a>
-                        <div class="notification-text">Notification Text</div>
-                        <a href="#" class="mark-as-read-btn">Mark As Read</a>
-                    </div>
-                    <div class="notification-item unread">
-                        <a href="#" class="notification-icon">
-                            <i class="fas fa-user-circle"></i>
-                        </a>
-                        <div class="notification-text">Notification Text</div>
-                        <a href="#" class="mark-as-read-btn">Mark As Read</a>
-                    </div>
-                    <div class="notification-item unread">
-                        <a href="#" class="notification-icon">
-                            <i class="fas fa-user-circle"></i>
-                        </a>
-                        <div class="notification-text">Notification Text</div>
-                        <a href="#" class="mark-as-read-btn">Mark As Read</a>
-                    </div>
-                    <div class="notification-item unread">
-                        <a href="#" class="notification-icon">
-                            <i class="fas fa-user-circle"></i>
-                        </a>
-                        <div class="notification-text">Notification Text</div>
-                        <a href="#" class="mark-as-read-btn">Mark As Read</a>
-                    </div>
+                <div class="notifications-list" id="notifications-list">
+                    <!-- Notifications will be dynamically generated here -->
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Select all "Mark As Read" links
-            const markAsReadLinks = document.querySelectorAll('.mark-as-read-btn');
 
-            // Add a click event listener to each link
-            markAsReadLinks.forEach(link => {
-                link.addEventListener('click', (event) => {
-                    // Prevent the default link behavior (e.g., navigating to #)
-                    event.preventDefault();
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            query, 
+            orderBy, 
+            addDoc,
+            where,
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-                    // Find the parent notification item
-                    const notificationItem = link.closest('.notification-item');
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+            authDomain: "acadbird-379e3.firebaseapp.com",
+            projectId: "acadbird-379e3",
+            storageBucket: "acadbird-379e3.firebasestorage.app",
+            messagingSenderId: "575491576951",
+            appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+            measurementId: "G-N6Z672SXWJ"
+        };
 
-                    // Add the 'read' class to the parent item
-                    if (notificationItem) {
-                        notificationItem.classList.add('read');
-                        notificationItem.classList.remove('unread');
-                        // You could also change the text of the link here if desired
-                        // link.textContent = 'Read';
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        let currentUser = null;
+
+        // Function to check if notification is already read
+        async function isNotificationRead(teacherId, calendarId) {
+            try {
+                const notificationsRef = collection(db, "notification_teacher");
+                const q = query(
+                    notificationsRef, 
+                    where("teacherID", "==", teacherId),
+                    where("calendarID", "==", calendarId),
+                    where("status", "==", "read")
+                );
+                const snapshot = await getDocs(q);
+                return !snapshot.empty;
+            } catch (error) {
+                console.error("Error checking notification status:", error);
+                return false;
+            }
+        }
+
+        // Function to get all read notifications for current teacher
+        async function getReadNotifications(teacherId) {
+            try {
+                const notificationsRef = collection(db, "notification_teacher");
+                const q = query(
+                    notificationsRef, 
+                    where("teacherID", "==", teacherId),
+                    where("status", "==", "read")
+                );
+                const snapshot = await getDocs(q);
+                const readNotifications = {};
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    readNotifications[data.calendarID] = true;
+                });
+                return readNotifications;
+            } catch (error) {
+                console.error("Error getting read notifications:", error);
+                return {};
+            }
+        }
+
+        // Function to count unread notifications
+        async function countUnreadNotifications(teacherId) {
+            try {
+                // Get all calendar events
+                const calendarRef = collection(db, "calendar");
+                const calendarSnapshot = await getDocs(calendarRef);
+                
+                // Get all read notifications
+                const readNotifications = await getReadNotifications(teacherId);
+                
+                // Count unread notifications
+                let unreadCount = 0;
+                calendarSnapshot.forEach(doc => {
+                    if (!readNotifications[doc.id]) {
+                        unreadCount++;
                     }
                 });
-            });
+                
+                return unreadCount;
+            } catch (error) {
+                console.error("Error counting unread notifications:", error);
+                return 0;
+            }
+        }
+
+        // Function to update notification badge
+        async function updateNotificationBadge() {
+            if (!currentUser) return;
+            
+            const unreadCount = await countUnreadNotifications(currentUser.uid);
+            const badge = document.getElementById('notification-badge');
+            
+            if (badge) {
+                badge.textContent = unreadCount;
+                
+                // Hide badge if count is 0
+                if (unreadCount === 0) {
+                    badge.style.display = 'none';
+                } else {
+                    badge.style.display = 'flex';
+                }
+            }
+        }
+
+        // Function to save notification to Firestore (only required fields)
+        async function saveNotification(teacherId, calendarId) {
+            try {
+                // Check if notification already exists
+                const exists = await isNotificationRead(teacherId, calendarId);
+                if (exists) {
+                    console.log("Notification already exists");
+                    return;
+                }
+
+                const notificationData = {
+                    teacherID: teacherId,
+                    calendarID: calendarId,
+                    status: "read",
+                    createdAt: serverTimestamp()
+                };
+
+                await addDoc(collection(db, "notification_teacher"), notificationData);
+                console.log("Notification saved successfully");
+                
+                // Update badge count after saving
+                updateNotificationBadge();
+            } catch (error) {
+                console.error("Error saving notification:", error);
+            }
+        }
+
+        // Function to fetch calendar events and create notifications
+        async function loadCalendarNotifications() {
+            try {
+                const calendarRef = collection(db, "calendar");
+                const q = query(calendarRef, orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+
+                const notificationsList = document.getElementById('notifications-list');
+                notificationsList.innerHTML = '';
+
+                if (snapshot.empty) {
+                    notificationsList.innerHTML = '<div class="notification-item">No notifications found</div>';
+                    return;
+                }
+
+                // Get all read notifications for current teacher
+                let readNotifications = {};
+                if (currentUser) {
+                    readNotifications = await getReadNotifications(currentUser.uid);
+                }
+
+                snapshot.forEach(doc => {
+                    const eventData = doc.data();
+                    const isRead = readNotifications[doc.id] || false;
+                    const notificationItem = createNotificationItem(doc.id, eventData, isRead);
+                    notificationsList.appendChild(notificationItem);
+                });
+
+            } catch (error) {
+                console.error("Error loading calendar notifications:", error);
+                const notificationsList = document.getElementById('notifications-list');
+                notificationsList.innerHTML = '<div class="notification-item">Error loading notifications</div>';
+            }
+        }
+
+        // Function to create notification HTML
+       // Function to create notification HTML
+function createNotificationItem(calendarId, eventData, isRead = false) {
+    const notificationItem = document.createElement('div');
+    
+    // Set class based on read status
+    if (isRead) {
+        notificationItem.className = 'notification-item read';
+    } else {
+        notificationItem.className = 'notification-item unread';
+    }
+    
+    // Format the date for display
+    const eventDate = new Date(eventData.date);
+    const formattedDate = eventDate.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+
+    // Get appropriate icon based on event type
+    const eventIcon = getEventIcon(eventData.type);
+
+    notificationItem.innerHTML = `
+        <a href="#" class="notification-icon">
+            <i class="${eventIcon}"></i>
+        </a>
+        <div class="notification-text">
+            <strong>New ${eventData.type || 'Event'} Added</strong><br>
+            "${eventData.title}"<br>
+            <small>Date: ${formattedDate} | Time: ${eventData.time || 'All day'}</small>
+            ${eventData.description ? `<br><small>Description: ${eventData.description}</small>` : ''}
+        </div>
+        <a href="#" class="mark-as-read-btn">${isRead ? 'Read' : 'Mark As Read'}</a>
+    `;
+
+    // Only add click events if notification is not already read
+    if (!isRead) {
+        // Add click event for the entire notification item (redirect to classroom)
+        notificationItem.addEventListener('click', async (event) => {
+            // Don't trigger if clicking the mark as read button
+            if (!event.target.classList.contains('mark-as-read-btn')) {
+                event.preventDefault();
+                
+                // Save notification to Firestore (only required fields)
+                if (currentUser) {
+                    await saveNotification(currentUser.uid, calendarId);
+                }
+                
+                // Update UI to show as read
+                notificationItem.classList.add('read');
+                notificationItem.classList.remove('unread');
+                const markAsReadBtn = notificationItem.querySelector('.mark-as-read-btn');
+                markAsReadBtn.textContent = 'Read';
+                
+                // Update badge count immediately
+                await updateNotificationBadge();
+                
+                // Redirect to classroom page
+                window.location.href = 'homepage-classroom_teacher.html';
+            }
         });
+
+        // Add click event for mark as read button
+        const markAsReadBtn = notificationItem.querySelector('.mark-as-read-btn');
+        markAsReadBtn.addEventListener('click', async (event) => {
+            event.preventDefault();
+            event.stopPropagation(); // Prevent triggering the main notification click
+            
+            // Update UI
+            notificationItem.classList.add('read');
+            notificationItem.classList.remove('unread');
+            markAsReadBtn.textContent = 'Read';
+            
+            // Save to Firestore when marked as read
+            if (currentUser) {
+                await saveNotification(currentUser.uid, calendarId);
+            }
+            
+            // Update badge count immediately
+            await updateNotificationBadge();
+        });
+    } else {
+        // If already read, disable the mark as read button
+        const markAsReadBtn = notificationItem.querySelector('.mark-as-read-btn');
+        markAsReadBtn.style.cursor = 'default';
+        markAsReadBtn.style.opacity = '0.6';
+    }
+
+    return notificationItem;
+}
+        // Function to get appropriate icon for event type
+        function getEventIcon(eventType) {
+            const iconMap = {
+                'holiday': 'fas fa-umbrella-beach',
+                'meeting': 'fas fa-users',
+                'event': 'fas fa-calendar-alt',
+                'staff': 'fas fa-user-tie',
+                'deadline': 'fas fa-flag-checkered',
+                'exam': 'fas fa-file-alt',
+                'due date': 'fas fa-clock'
+            };
+            
+            return iconMap[eventType?.toLowerCase()] || 'fas fa-calendar-plus';
+        }
+
+        // Initialize when user is authenticated
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                await loadCalendarNotifications();
+                await updateNotificationBadge();
+            } else {
+                console.log("User not authenticated");
+                // Redirect to login or show message
+            }
+        });
+
+        // Add CSS for notification badge
+        const style = document.createElement('style');
+        style.textContent = `
+            .notification-link {
+                position: relative;
+                display: inline-block;
+            }
+            .notification-badge {
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background-color: #ff4444;
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+            .notification-item {
+                transition: all 0.3s ease;
+                cursor: pointer;
+            }
+            .notification-item:hover:not(.read) {
+                background-color: #e3f2fd;
+            }
+            .notification-item.unread {
+                background-color: #f0f8ff;
+                border-left: 4px solid #007bff;
+            }
+            .notification-item.read {
+                background-color: #f8f9fa;
+                opacity: 0.6;
+                border-left: 4px solid #6c757d;
+            }
+            .notification-text small {
+                color: #666;
+                font-size: 0.85em;
+            }
+            .mark-as-read-btn {
+                cursor: pointer;
+            }
+            .notification-item.read .mark-as-read-btn {
+                cursor: default;
+                opacity: 0.6;
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>

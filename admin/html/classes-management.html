@@ -163,7 +163,7 @@
                             </thead>
                             <tbody id="classes-table-body">
                                  <tr class="hover:bg-acad-light-bg/50 transition" data-id="1" data-class-name="Kinder Lily" data-teacher="Ms. Rose" data-teacher-id="msroseid" data-status="Active" data-students-count="20" data-max-students="25">
-        <td class="class-name-cell"><a href="class-details.html?id=1" class="text-acad-navy font-semibold hover:underline">Kinder Lily</a></td>
+        <td class="class-name-cell"><a href="class-details.html" class="text-acad-navy font-semibold hover:underline">Kinder Lily</a></td>
         <td class="teacher-cell">Ms. Rose</td>
         <td>20 / 25</td>
         <td class="status-cell"><span class="text-status-active font-medium">Active</span></td>
@@ -474,20 +474,21 @@ async function loadClassesTable() {
         `;
       }
 
-      row.innerHTML = `
-        <td class="class-name-cell">
-          <a href="class-details.html?id=${classId}" 
-             class="text-acad-navy font-semibold hover:underline">
-             ${className}
-          </a>
-        </td>
-        <td class="teacher-cell">${teacherName}</td>
-        <td>${studentCount} / ${maxStudents}</td>
-        <td class="status-cell"><span class="font-medium ${statusClass}">${status}</span></td>
-        <td class="whitespace-nowrap">
-          ${actionButtons}
-        </td>
-      `;
+      // In your loadClassesTable() function, update the table row generation:
+row.innerHTML = `
+  <td class="class-name-cell">
+    <a href="class-details.html?id=${classId}" 
+       class="text-acad-navy font-semibold hover:underline">
+       ${className}
+    </a>
+  </td>
+  <td class="teacher-cell">${teacherName}</td>
+  <td>${studentCount} / ${maxStudents}</td>
+  <td class="status-cell"><span class="font-medium ${statusClass}">${status}</span></td>
+  <td class="whitespace-nowrap">
+    ${actionButtons}
+  </td>
+`;
 
       // Hide archived classes by default
       if (status === 'archived') {

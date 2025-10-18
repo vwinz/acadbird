@@ -732,3 +732,124 @@
             font-size: 0.875rem; /* text-sm */
             color: #4b5563; /* text-gray-600 */
         }
+
+         .event-item {
+            font-size: 0.75rem;
+            padding: 2px 4px;
+            border-radius: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+
+        .event-item.staff {
+            background-color: #fef08a;
+            color: #854d0e;
+        }
+
+        .event-item.deadline {
+            background-color: #fecaca;
+            color: #991b1b;
+        }
+
+        .event-item.meeting {
+            background-color: #bbf7d0;
+            color: #166534;
+        }
+
+        .event-item.holiday {
+            background-color: #ddd6fe;
+            color: #5b21b6;
+        }
+
+        .event-item.other {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+
+        .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.modal-header h3 {
+    margin: 0;
+    flex: 1;
+}
+
+.close-modal {
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.event-detail {
+    margin-bottom: 15px;
+}
+
+.event-detail strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.event-type {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
+.event-type.holiday { background: #ddd6fe; color: #5b21b6; }
+.event-type.meeting { background: #bbf7d0; color: #166534; }
+.event-type.deadline { background: #fecaca; color: #991b1b; }
+.event-type.staff { background: #fef08a; color: #854d0e; }
+.event-type.event { background: #bfdbfe; color: #1e40af; }
+.event-type.other { background: #e5e7eb; color: #374151; }
+
+.modal-footer {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.btn-close {
+    padding: 8px 16px;
+    background: #6b7280;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-close:hover {
+    background: #4b5563;
+}

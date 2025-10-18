@@ -86,15 +86,15 @@
 
                 <div style="display: flex; flex-direction: column; gap: 24px;">
 
-                    <a href="/full-calendar-view" class="calendar-widget" onclick="handleCalendarClick(event)">
+                 <a href="#" class="calendar-widget">
                         <span style="z-index: 10;"></span>
 
                         <div class="calendar-header">
                             <div>
-                                <span>2025</span>
+                                <span id="calendar-year">2025</span>
                                 <div>
                                     <i class="fas fa-arrow-circle-left"></i>
-                                    <span>March</span>
+                                    <span id="calendar-month">March</span>
                                     <i class="fas fa-arrow-circle-right"></i>
                                 </div>
                             </div>
@@ -108,93 +108,7 @@
                             <div>Thu</div>
                             <div>Fri</div>
                             <div>Sat</div>
-
-                            <div class="prev-next-month">23</div>
-                            <div class="prev-next-month">24</div>
-                            <div class="prev-next-month">25</div>
-                            <div class="prev-next-month">26</div>
-                            <div class="prev-next-month">27</div>
-                            <div class="prev-next-month">28</div>
-                            <div class="prev-next-month today">1</div> <div>2</div>
-                            <div>3</div>
-                            <div>4</div>
-                            <div>5</div>
-                            <div>6</div>
-                            <div>7</div>
-                            <div>8</div>
-
-                            <div>9</div>
-                            <div>10</div>
-                            <div>11</div>
-                            <div class="event-day-group">
-                                <div class="event-day">12</div>
-                                <div class="tooltip">
-                                    <p>Events on March 12</p>
-                                    <div class="tooltip-event-list">
-                                        <div class="tooltip-event">
-                                            <span class="tooltip-dot tooltip-dot-green"></span>
-                                            <span>Parent-Teacher Meeting</span>
-                                            <span>(2:00 PM)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>13</div>
-                            <div>14</div>
-                            <div>15</div>
-                            
-                            <div>16</div>
-                            <div>17</div>
-                            <div>18</div>
-                            <div class="active-day-group">
-                                <div class="active-day">19</div>
-                                <div class="tooltip">
-                                    <p>Events on March 19</p>
-                                    <div class="tooltip-event-list">
-                                        <div class="tooltip-event">
-                                            <span class="tooltip-dot tooltip-dot-yellow"></span>
-                                            <span>Staff Meeting</span>
-                                            <span>(9:00 AM)</span>
-                                        </div>
-                                        <div class="tooltip-event">
-                                            <span class="tooltip-dot tooltip-dot-red"></span>
-                                            <span>Deadline 1</span>
-                                            <span>(5:00 PM)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>20</div>
-                            <div>21</div>
-                            <div>22</div>
-                            
-                            <div>23</div>
-                            <div>24</div>
-                            <div>25</div>
-                            <div class="event-day-group">
-                                <div class="event-day">26</div>
-                                <div class="tooltip">
-                                    <p>Events on March 26</p>
-                                    <div class="tooltip-event-list">
-                                        <div class="tooltip-event">
-                                            <span class="tooltip-dot tooltip-dot-red"></span>
-                                            <span>Project Submission</span>
-                                            <span>(11:59 PM)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>27</div>
-                            <div>28</div>
-                            <div>29</div>
-                            
-                            <div>30</div>
-                            <div>31</div>
-                            <div class="prev-next-month">1</div>
-                            <div class="prev-next-month">2</div>
-                            <div class="prev-next-month">3</div>
-                            <div class="prev-next-month">4</div>
-                            <div class="prev-next-month">5</div>
+                            <!-- Calendar days will be populated dynamically -->
                         </div>
                     </a>
 
@@ -222,13 +136,13 @@
                         </div>
 
                         <div class="logs-bar-chart-card">
-    <h3>Logs Posted This Week</h3>
-    <!-- Dropdown will be inserted here by JavaScript -->
-    <!-- Week display will be inserted here by JavaScript -->
-    <div class="logs-list">
-        <!-- Content will be dynamically generated -->
-    </div>
-</div>
+                      <h3>Logs Posted This Week</h3>
+                      <!-- Dropdown will be inserted here by JavaScript -->
+                      <!-- Week display will be inserted here by JavaScript -->
+                      <div class="logs-list">
+                          <!-- Content will be dynamically generated -->
+                      </div>
+                  </div>
                     </div>
                 </div>
 
@@ -297,13 +211,13 @@
     <!-- Firebase SDKs -->
 <script type="module">
   // Import Firebase SDK (v9+ modular style)
-  import { 
+import { 
     initializeApp 
-  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 
-  import { 
-    getFirestore, collection, getDocs, query, where, Timestamp 
-  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+import { 
+    getFirestore, collection, getDocs, query, where, Timestamp, orderBy, doc, getDoc
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
   // TODO: replace with your Firebase config
    const firebaseConfig = {
@@ -315,7 +229,6 @@
     appId: "1:575491576951:web:70f86aba1e33b871f8a272",
     measurementId: "G-N6Z672SXWJ"
   };
-
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
@@ -380,7 +293,6 @@ async function getClassroomNames() {
   }
 
   // === Fetch activities last 7 days ===
- // === Fetch activities last 7 days ===
 async function getMostActiveClasses() {
   const sevenDaysAgo = Timestamp.fromDate(
     new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
@@ -528,12 +440,19 @@ function updateLogsChart(dayCounts, weekStart) {
   // Update week display
   updateWeekDisplay(weekStart);
 }
-
+function handleCalendarClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    // Your existing calendar click handling logic here
+    // For example, if you want to open the full calendar view in a modal or same page
+    // instead of redirecting to a new page
+}
 function updateWeekDisplay(weekStart) {
   const weekEnd = new Date(weekStart);
   weekEnd.setDate(weekStart.getDate() + 6);
   
-  const options = { month: 'short', day: 'numeric' };
+  const options = { month: 'short', 'day': 'numeric' };
   const weekDisplay = document.querySelector('.week-display');
   
   if (!weekDisplay) {
@@ -577,6 +496,332 @@ function createWeekFilter() {
   logsHeader.parentNode.insertBefore(dropdown, logsHeader.nextSibling);
 }
 
+// Fetch total uploaded resources from "topicContent" collection
+async function getResourcesUsed() {
+  const snapshot = await getDocs(collection(db, "topicContent"));
+  const totalResources = snapshot.size;
+
+  // Update the DOM
+  const resourcesCard = document.querySelector('.resources-card p:first-of-type');
+  if (resourcesCard) {
+    resourcesCard.textContent = totalResources;
+  }
+}
+
+// ===== CALENDAR FUNCTIONS =====
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+async function fetchCalendarEvents() {
+  try {
+    // Get all calendar events and filter by month/year
+    const q = query(collection(db, "calendar"), orderBy("date"));
+    const snapshot = await getDocs(q);
+    const events = [];
+    
+    snapshot.forEach(doc => {
+      const eventData = doc.data();
+      const eventDate = new Date(eventData.date); // Convert string to Date object
+      
+      // Check if event is in current month/year
+      if (eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear) {
+        events.push({
+          id: doc.id,
+          ...eventData,
+          date: eventDate // Store as Date object for easier handling
+        });
+      }
+    });
+    
+    console.log('📅 Calendar events for current month:', events);
+    renderCalendar(events, currentMonth, currentYear);
+    
+  } catch (error) {
+    console.error('❌ Error fetching calendar events:', error);
+  }
+}
+
+function renderCalendar(events, month, year) {
+  const calendarGrid = document.querySelector('.calendar-grid');
+  if (!calendarGrid) return;
+  
+  // Clear existing calendar days but keep the header (first 7 elements)
+  const headerDays = Array.from(calendarGrid.children).slice(0, 7);
+  calendarGrid.innerHTML = '';
+  
+  // Re-add the header days
+  headerDays.forEach(day => calendarGrid.appendChild(day));
+  
+  // Update calendar header
+  const monthNames = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"];
+  
+  document.getElementById('calendar-month').textContent = monthNames[month];
+  document.getElementById('calendar-year').textContent = year;
+  
+  // Group events by day
+  const eventsByDay = {};
+  events.forEach(event => {
+    const day = event.date.getDate();
+    if (!eventsByDay[day]) {
+      eventsByDay[day] = [];
+    }
+    eventsByDay[day].push(event);
+  });
+  
+  // Generate calendar days
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const daysInMonth = lastDay.getDate();
+  const startingDay = firstDay.getDay(); // 0 = Sunday, 1 = Monday, etc.
+  
+  // Add empty days for previous month
+  for (let i = 0; i < startingDay; i++) {
+    const emptyDay = document.createElement('div');
+    emptyDay.className = 'calendar-day prev-next-month';
+    emptyDay.textContent = '';
+    calendarGrid.appendChild(emptyDay);
+  }
+  
+  // Add current month days
+  const today = new Date();
+  const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
+  
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayElement = document.createElement('div');
+    dayElement.className = 'calendar-day';
+    
+    // Check if today
+    if (isCurrentMonth && day === today.getDate()) {
+      dayElement.classList.add('today');
+    }
+    
+    // Add day number
+    const dayNumber = document.createElement('div');
+    dayNumber.className = 'day-number';
+    dayNumber.textContent = day;
+    dayElement.appendChild(dayNumber);
+    
+    // Add events for this day
+    const dayEvents = eventsByDay[day] || [];
+    if (dayEvents.length > 0) {
+      const eventsList = document.createElement('div');
+      eventsList.className = 'events-list';
+      
+      dayEvents.forEach(event => {
+        const eventItem = document.createElement('div');
+        eventItem.className = `event-item ${event.type}`;
+        eventItem.textContent = event.title;
+        eventItem.title = `${event.title} - ${event.time || 'All day'}`;
+        eventItem.addEventListener('click', function(e) {
+          e.stopPropagation();
+          showEventDetails(event.id);
+        });
+        eventsList.appendChild(eventItem);
+      });
+      
+      dayElement.appendChild(eventsList);
+    }
+    
+    // Add click event to add new event
+    dayElement.addEventListener('click', function() {
+      openAddEventModal(day, month, year);
+    });
+    
+    calendarGrid.appendChild(dayElement);
+  }
+  
+  // Add empty days for next month to complete grid
+  const totalCells = 42; // 6 rows x 7 days
+  const remainingCells = totalCells - (startingDay + daysInMonth);
+  for (let i = 0; i < remainingCells; i++) {
+    const emptyDay = document.createElement('div');
+    emptyDay.className = 'calendar-day prev-next-month';
+    emptyDay.textContent = '';
+    calendarGrid.appendChild(emptyDay);
+  }
+}
+// Event type colors based on your CSS
+const EVENT_TYPE_COLORS = {
+  'staff': { background: '#fef08a', color: '#854d0e' },
+  'deadline': { background: '#fecaca', color: '#991b1b' },
+  'meeting': { background: '#bbf7d0', color: '#166534' },
+  'holiday': { background: '#ddd6fe', color: '#5b21b6' },
+  'event': { background: '#bfdbfe', color: '#1e40af' }, // Added for 'event' type
+  'other': { background: '#e5e7eb', color: '#374151' }  // Added for 'other' type
+};
+
+// Function to get event color (for tooltip dots if needed)
+function getEventColor(eventType) {
+  const colorMap = {
+    'staff': 'yellow',
+    'deadline': 'red', 
+    'meeting': 'green',
+    'holiday': 'purple',
+    'event': 'blue',
+    'other': 'gray'
+  };
+  
+  return colorMap[eventType?.toLowerCase()] || 'gray';
+}
+
+// Initialize calendar navigation
+function initializeCalendarNavigation() {
+  const prevBtn = document.querySelector('.fa-arrow-circle-left');
+  const nextBtn = document.querySelector('.fa-arrow-circle-right');
+  
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      currentMonth--;
+      if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      navigateCalendar(currentMonth, currentYear);
+    });
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      currentMonth++;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      }
+      navigateCalendar(currentMonth, currentYear);
+    });
+  }
+}
+
+// Calendar navigation function
+function navigateCalendar(month, year) {
+    currentMonth = month;
+    currentYear = year;
+    fetchCalendarEvents();
+}
+
+// Function to show event details in modal
+function showEventDetails(eventId) {
+    // Find the event in the database and show details
+    getEventById(eventId).then(event => {
+        if (event) {
+            showEventModal(event);
+        }
+    });
+}
+
+// Function to get event by ID
+async function getEventById(eventId) {
+    try {
+        const docRef = doc(db, "calendar", eventId);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            return {
+                id: docSnap.id,
+                ...docSnap.data()
+            };
+        } else {
+            console.log("No such event found!");
+            return null;
+        }
+    } catch (error) {
+        console.error("Error getting event:", error);
+        return null;
+    }
+}
+
+// Function to show event modal
+// Function to show event modal
+function showEventModal(event) {
+    // Create modal HTML with only the required fields
+    const modalHTML = `
+        <div class="modal-overlay" id="eventModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Event Details</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="event-detail">
+                        <strong>Title:</strong>
+                        <span>${event.title || 'No title'}</span>
+                    </div>
+                    <div class="event-detail">
+                        <strong>Type:</strong>
+                        <span class="event-type ${event.type || 'other'}">${event.type || 'Other'}</span>
+                    </div>
+                    <div class="event-detail">
+                        <strong>Time:</strong>
+                        <span>${event.time || 'All day'}</span>
+                    </div>
+                    <div class="event-detail">
+                        <strong>Description:</strong>
+                        <p>${event.description || 'No description'}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-close">Close</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remove existing modal if any
+    const existingModal = document.getElementById('eventModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Add modal to body
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    
+    // Add event listeners for modal
+    const modal = document.getElementById('eventModal');
+    const closeBtn = modal.querySelector('.close-modal');
+    const closeButton = modal.querySelector('.btn-close');
+    
+    closeBtn.addEventListener('click', closeModal);
+    closeButton.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+}
+// Function to close modal
+function closeModal() {
+    const modal = document.getElementById('eventModal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+// Helper function to format date
+function formatDate(dateString) {
+    if (!dateString) return 'Unknown';
+    
+    try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    } catch (error) {
+        return dateString;
+    }
+}
+
+// Function to open add event modal (if needed)
+function openAddEventModal(day, month, year) {
+    const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    console.log('Add event for date:', dateString);
+    // You can implement add event functionality here
+}
+
 // Add this CSS for the dropdown (you can add to your CSS file)
 const style = document.createElement('style');
 style.textContent = `
@@ -595,40 +840,39 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Fetch total uploaded resources from "topicContent" collection
-async function getResourcesUsed() {
-  const snapshot = await getDocs(collection(db, "topicContent"));
-  const totalResources = snapshot.size;
 
-  // Update the DOM
-  const resourcesCard = document.querySelector('.resources-card p:first-of-type');
-  if (resourcesCard) {
-    resourcesCard.textContent = totalResources;
-  }
-}
-
-// Run after Firebase is initialized
-getResourcesUsed();
-
-
-// Initialize logs functionality
-createWeekFilter();
-getLogsThisWeek(0); // Load current week by default
-// Also update your existing function calls to include the new logs function
-// Remove or comment out the static logs HTML since we're generating dynamically
-
-  // === Run ===
-  getMostActiveClasses();
-
-
-// Run after counts
-getUserRoleDistribution();
-
-  // Run all
+// Initialize everything
+async function initializeDashboard() {
+  // Run all data fetching functions
   getClassesCount();
   getParentsCount();
   getTeachersCount();
-</script>
+  getUserRoleDistribution();
+  getMostActiveClasses();
+  getResourcesUsed();
+  
+  // Initialize logs functionality
+  createWeekFilter();
+  getLogsThisWeek(0);
+  
+  // Initialize calendar
+  fetchCalendarEvents();
+  initializeCalendarNavigation();
+  // Prevent calendar widget redirect
+const calendarWidget = document.querySelector('.calendar-widget');
+if (calendarWidget) {
+    calendarWidget.addEventListener('click', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+    });
+}
+}
 
+// Run when DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeDashboard);
+
+// Add this to your initializeDashboard function or DOMContentLoaded event
+
+</script>
 </body>
 </html>

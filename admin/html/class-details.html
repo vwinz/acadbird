@@ -151,10 +151,10 @@
         <div class="navbar">
             <div class="flex justify-between items-center w-full px-6">
                 <div class="flex items-center gap-4">
-                    <img src="AcadBird - White no text.png" alt="AcadBird Logo" class="w-[70px] h-[40px]" />
-                    <img src="AcadBird - White Text.png" class="h-[28px]" alt="AcadBird Text">
+                    <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird Logo" class="w-[70px] h-[40px]" />
+                    <img src="../../main/img/AcadBird - White Text.png" class="h-[28px]" alt="AcadBird Text">
                 </div>
-                <img src="sunhill.png" alt="AcadBird" class="w-[90px] h-[40px]" />
+                <img src="../../main/img/sunhill.png" alt="AcadBird" class="w-[90px] h-[40px]" />
                 <div class="flex items-center gap-4">
                     <a href="notification_admin.html" title="Notifications"><i class="fas fa-bell text-xl"></i></a>
                     <a href="help_admin.html" title="Help"><i class="fas fa-question-circle text-xl"></i></a>
@@ -172,7 +172,7 @@
                <nav class="nav-menu">
                     <a href="dashboard_admin.html" class="nav-item">Dashboard</a>
                     <a href="classes-management.html" class="nav-item active">Classes Management</a> 
-                    <a href="users-management.html" class="nav-item">Users Management</a>
+                    <a href="teacher-management.html" class="nav-item">Teacher Management</a>
                     <a href="calendar.html" class="nav-item">Calendar</a>
                     <a href="settings_admin.html" class="nav-item">Settings</a>
                 </nav>
@@ -191,7 +191,7 @@
                     <div class="flex summary-info justify-between gap-6 text-gray-700">
                         <div class="flex-1 space-y-2">
                             <p><span class="font-semibold text-xl">Class Name:</span> <span id="className"></span></p>
-                            <p><span class="font-semibold">Grade Level:</span> <span id="classGrade"></span></p>
+                       
                             <p><span class="font-semibold">Students Enrolled:</span> <span id="studentCount"></span> / <span id="classCapacity"></span> Capacity</p>
                             <p><span class="font-semibold">Status:</span> <span id="classStatus" class="font-bold"></span></p>
                         </div>
@@ -199,7 +199,7 @@
                             <h3 class="font-bold text-xl text-acad-navy mb-2">Homeroom Teacher</h3>
                             <p class="text-lg"><i class="fas fa-user-tie mr-2"></i> <span class="font-extrabold" id="teacherName"></span></p>
                             <p class="text-sm text-gray-600"><i class="fas fa-envelope mr-1"></i> <span id="teacherEmail"></span></p>
-                            <p class="text-sm text-gray-600"><i class="fas fa-phone mr-1"></i> <span id="teacherPhone"></span></p>
+                      
                             <button id="viewTeacherProfileBtn" class="mt-3 py-1 px-4 text-sm bg-acad-navy text-white rounded-full hover:bg-acad-navy/90 transition">View Teacher Profile</button>
                         </div>
                     </div>
@@ -256,297 +256,626 @@
       </div>
     </div>
 
-    <div id="addStudentModal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn add-student-modal-close">&times;</span>
-        <h2 class="text-2xl font-bold text-acad-navy mb-4 border-b pb-2">Enroll New Student</h2>
-        
-        <form id="addStudentForm" class="space-y-4">
-            <div>
-                <label for="newStudentName" class="block text-sm font-medium text-gray-700">Student's Full Name:</label>
-                <input type="text" id="newStudentName" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required placeholder="e.g., Emily T. Johnson">
-            </div>
-            <div>
-                <label for="newParentName" class="block text-sm font-medium text-gray-700">Parent/Guardian Name:</label>
-                <input type="text" id="newParentName" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required placeholder="e.g., David Johnson">
-            </div>
-             <div>
-                <label for="newParentEmail" class="block text-sm font-medium text-gray-700">Parent's Email:</label>
-                <input type="email" id="newParentEmail" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required placeholder="e.g., david.j@mail.com">
-            </div>
-             <div>
-                <label for="newParentContact" class="block text-sm font-medium text-gray-700">Parent's Contact Number:</label>
-                <input type="tel" id="newParentContact" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required placeholder="(555) 000-0000">
-            </div>
-            <div class="pt-4 flex justify-end">
-                <button type="button" id="cancelAddStudentBtn" class="py-2 px-4 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition mr-3">Cancel</button>
-                <button type="submit" class="py-2 px-4 bg-acad-navy text-white font-bold rounded-lg shadow-md hover:bg-acad-navy/90 transition">Enroll Student</button>
-            </div>
-        </form>
+   <div id="addStudentModal" class="modal">
+  <div class="modal-content" style="max-width: 600px;">
+    <span class="close-btn add-student-modal-close">&times;</span>
+    <h2 class="text-2xl font-bold text-acad-navy mb-4 border-b pb-2">Enroll New Student</h2>
+    
+    <form id="addStudentForm" class="space-y-4">
+      <input type="hidden" id="selectedParentId">
+      
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="studentFirstName" class="block text-sm font-medium text-gray-700">First Name:</label>
+          <input type="text" id="studentFirstName" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required>
+        </div>
+        <div>
+          <label for="studentLastName" class="block text-sm font-medium text-gray-700">Last Name:</label>
+          <input type="text" id="studentLastName" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required>
+        </div>
       </div>
-    </div>
+      
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="studentAge" class="block text-sm font-medium text-gray-700">Age:</label>
+          <input type="number" id="studentAge" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" min="3" max="18" required>
+        </div>
+        <div>
+          <label for="studentGender" class="block text-sm font-medium text-gray-700">Gender:</label>
+          <select id="studentGender" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" required>
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      
+      <div id="parentSearchContainer" class="relative">
+        <label for="parentSearch" class="block text-sm font-medium text-gray-700">Search Parent:</label>
+        <input type="text" id="parentSearch" class="mt-1 block w-full border-gray-300 border rounded-md shadow-sm p-2 focus:ring-acad-navy focus:border-acad-navy" placeholder="Type to search parents..." autocomplete="off">
+        <div id="parentDropdown" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"></div>
+      </div>
+      
+      <div id="selectedParentInfo" class="p-3 bg-acad-light-bg rounded-md border border-acad-navy/30"></div>
+      
+      <div class="pt-4 flex justify-end">
+        <button type="button" id="cancelAddStudentBtn" class="py-2 px-4 bg-gray-500 text-white font-bold rounded-lg shadow-md hover:bg-gray-600 transition mr-3">Cancel</button>
+        <button type="submit" class="py-2 px-4 bg-acad-navy text-white font-bold rounded-lg shadow-md hover:bg-acad-navy/90 transition">Enroll Student</button>
+      </div>
+    </form>
+  </div>
+</div>
 
+    <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { 
+  getFirestore, collection, getDocs, query, where, doc, getDoc, updateDoc, addDoc, deleteDoc, serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    <script>
-        // Feature 1: Sample Data Structure (Updated with parent emails)
-        let classData = { 
-            id: 'K001',
-            name: "Kinder Lily",
-            grade: "Kindergarten",
-            capacity: 25,
-            status: "Active",
-            teacher: {
-                name: "Ms. Rose",
-                email: "rose.teacher@acadbird.edu",
-                phone: "(555) 123-4567",
-                profileUrl: "teacher-profile-admin.html?id=T101"
-            },
-            students: [
-                { id: 1, name: "Mark Santiago", parent: "Ana Santiago", contact: "(555) 001-2023", email: "ana.santiago@mail.com" },
-                { id: 2, name: "Christine Rivera", parent: "Ben Rivera", contact: "(555) 002-2023", email: "ben.rivera@mail.com" },
-                { id: 3, name: "Princess Luna", parent: "King Luna", contact: "(555) 003-2023", email: "king.luna@mail.com" },
-                { id: 4, name: "Alpha Bautista", parent: "Sarah Bautista", contact: "(555) 004-2023", email: "sarah.bautista@mail.com" }, // Simplified name for sorting
-                { id: 5, name: "Lance Aquino", parent: "Clara Aquino", contact: "(555) 005-2023", email: "clara.aquino@mail.com" }, // Simplified name for sorting
-               ],
-            // Store the original list order (by ID) - This will be dynamic now
-        };
-        
-        // Helper function to extract the last word (surname) from a full name
-        function getSurname(fullName) {
-            const parts = fullName.trim().split(/\s+/);
-            if (parts.length > 1) {
-                return parts[parts.length - 1];
-            }
-            return parts[0]; // Fallback to the first name if no space is found
+const firebaseConfig = {
+  apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+  authDomain: "acadbird-379e3.firebaseapp.com",
+  projectId: "acadbird-379e3",
+  storageBucket: "acadbird-379e3.firebasestorage.app",
+  messagingSenderId: "575491576951",
+  appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+  measurementId: "G-N6Z672SXWJ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Get class ID from URL parameters
+function getClassIdFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('id');
+}
+
+// Fetch class data from Firestore
+async function fetchClassData(classId) {
+  try {
+    const classDoc = await getDoc(doc(db, "classrooms", classId));
+    if (classDoc.exists()) {
+      return classDoc.data();
+    } else {
+      throw new Error("Class not found");
+    }
+  } catch (error) {
+    console.error("Error fetching class data:", error);
+    throw error;
+  }
+}
+
+// Fetch teacher data
+async function fetchTeacherData(teacherId) {
+  if (!teacherId) {
+    return {
+      name: "Unassigned",
+      email: "No email available",
+    };
+  }
+
+  try {
+    const teacherDoc = await getDoc(doc(db, "users", teacherId));
+    if (teacherDoc.exists()) {
+      const data = teacherDoc.data();
+      return {
+        name: data.fullName || `${data.firstName} ${data.lastName}`,
+        email: data.email || "No email available",
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching teacher data:", error);
+  }
+
+  return {
+    name: "Teacher not found",
+    email: "No email available",
+  };
+}
+
+// Fetch students for this class
+async function fetchStudents(classId) {
+  try {
+    const studentsQuery = query(
+      collection(db, "students"),
+      where("classroomId", "==", classId)
+    );
+    const studentSnap = await getDocs(studentsQuery);
+
+    const students = [];
+
+    for (const docSnap of studentSnap.docs) {
+      const data = docSnap.data();
+      
+      let parentEmail = "Email not set";
+      let parentName = "Parent name not set";
+      
+      if (data.parentId) {
+        const parentDoc = await getDoc(doc(db, "users", data.parentId));
+        if (parentDoc.exists()) {
+          const parentData = parentDoc.data();
+          parentEmail = parentData.email || "Email not set";
+          parentName = parentData.fullName || `${parentData.firstName} ${parentData.lastName}` || "Parent name not set";
         }
-        
-        // --- Core Functions ---
+      }
 
-        // Function to update all dynamic data in the HTML
-        function renderClassDetails(studentsList = classData.students) {
-            const currentStudentCount = classData.students.length;
-            const remainingCapacity = classData.capacity - currentStudentCount;
+      students.push({
+        id: docSnap.id,
+        name: data.fullName || `${data.firstName} ${data.lastName}`,
+        parent: parentName,
+        email: parentEmail
+      });
+    }
 
-            // --- Update Overview Details ---
-            document.getElementById('classTitle').textContent = `Class: ${classData.name} Details`;
-            document.getElementById('className').textContent = classData.name;
-            document.getElementById('classGrade').textContent = classData.grade;
-            document.getElementById('studentCount').textContent = currentStudentCount; 
-            document.getElementById('classCapacity').textContent = classData.capacity;
-            document.getElementById('classStatus').textContent = classData.status;
+    return students;
+  } catch (error) {
+    console.error("Error fetching students:", error);
+    return [];
+  }
+}
 
-            const statusElement = document.getElementById('classStatus');
-            statusElement.className = classData.status === 'Active' ? 'text-metric-green font-bold' : 'text-red-500 font-bold';
-
-            document.getElementById('teacherName').textContent = classData.teacher.name;
-            document.getElementById('teacherEmail').textContent = classData.teacher.email;
-            document.getElementById('teacherPhone').textContent = classData.teacher.phone;
-
-            document.getElementById('rosterTitle').textContent = `Student Roster (${currentStudentCount} Students) 🧑‍🎓`;
-            
-            // --- Render Student Roster ---
-            const rosterGrid = document.getElementById('studentRosterGrid');
-            rosterGrid.innerHTML = ''; // Clear existing cards
-
-            studentsList.forEach(student => {
-                const card = document.createElement('div');
-                card.className = 'student-card';
-                card.onclick = () => viewStudentProfile(student.id, student.name);
-                
-                // Card content (No Icon, Detailed Info)
-                card.innerHTML = `
-                    <h3 class="student-name">${student.name}</h3>
-                    <p class="parent-info">Parent: <span class="font-bold">${student.parent}</span></p>
-                    <p class="parent-info text-xs mt-1"><i class="fas fa-envelope mr-1"></i> ${student.email}</p>
-                    <p class="parent-info text-xs">Contact: ${student.contact}</p>
-                `;
-                rosterGrid.appendChild(card);
-            });
-
-            // Add the 'Available Seats' card
-            const capacityCard = document.createElement('div');
-            capacityCard.className = 'student-card bg-gray-200/50 border-dashed border-gray-400 border-2 flex items-center justify-center';
-            capacityCard.style.cursor = 'default';
-            capacityCard.innerHTML = `<p class="text-sm font-semibold text-gray-500">${Math.max(0, remainingCapacity)} Seats Available</p>`;
-            rosterGrid.appendChild(capacityCard);
-            
-            // Re-apply the current sort filter to the newly rendered list
-            const currentSort = document.getElementById('sortFilter').value;
-            // Prevent infinite loop by not calling handleSortChange if it was the one that provided the list
-            if (studentsList === classData.students) { 
-                handleSortChange({ target: { value: currentSort } });
-            }
-        }
-        
-        // --- Filter/Sort Logic ---
-        function handleSortChange(event) {
-            const sortType = event.target.value;
-            // Ensure we sort the primary data array before re-rendering
-            let listToSort = [...classData.students]; 
-
-            if (sortType === 'surname-asc') {
-                listToSort.sort((a, b) => {
-                    const surnameA = getSurname(a.name);
-                    const surnameB = getSurname(b.name);
-                    return surnameA.localeCompare(surnameB);
-                });
-            } else if (sortType === 'surname-desc') {
-                listToSort.sort((a, b) => {
-                    const surnameA = getSurname(a.name);
-                    const surnameB = getSurname(b.name);
-                    return surnameB.localeCompare(surnameA);
-                });
-            } else {
-                // 'default' option: sort by the original ID
-                listToSort.sort((a, b) => a.id - b.id);
-            }
-            // Pass the sorted list to the renderer
-            renderClassDetails(listToSort);
-        }
-
-        function viewStudentProfile(studentId, studentName) {
-            console.log(`Navigating to student profile for ${studentName} (ID: ${studentId})`);
-            alert(`Viewing profile for ${studentName}. (Simulated Navigation)`);
-        }
-        
-        // --- Modal Control Functions (Edit Class Details) ---
-        const editModal = document.getElementById('editClassModal');
-        const editBtn = document.getElementById('editClassBtn');
-        const editCloseBtn = document.querySelector('#editClassModal .close-btn');
-        const cancelEditBtn = document.getElementById('cancelEditBtn');
-        const editForm = document.getElementById('editClassForm');
-        
-        function openEditModal() {
-            document.getElementById('editClassName').value = classData.name;
-            document.getElementById('editClassCapacity').value = classData.capacity;
-            editModal.style.display = "block";
-        }
-        
-        function closeEditModal() {
-            editModal.style.display = "none";
-        }
-        
-        // --- Modal Control Functions (Add Student) ---
-        const addStudentModal = document.getElementById('addStudentModal');
-        const addStudentBtn = document.getElementById('addStudentBtn');
-        const addStudentCloseBtn = document.querySelector('#addStudentModal .close-btn');
-        const cancelAddStudentBtn = document.getElementById('cancelAddStudentBtn');
-        const addStudentForm = document.getElementById('addStudentForm');
-
-        function openAddStudentModal() {
-             if (classData.students.length >= classData.capacity) {
-                alert("Class is at full capacity. Please increase class capacity before adding more students.");
-                return;
-            }
-            // Reset the form on open
-            addStudentForm.reset();
-            addStudentModal.style.display = "block";
-        }
-        
-        function closeAddStudentModal() {
-            addStudentModal.style.display = "none";
-        }
-
-
-        // --- Event Listeners (Triggers) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            renderClassDetails(); // Initial rendering of all data
-
-            // --- FILTER/SORT LISTENER ---
-            document.getElementById('sortFilter').addEventListener('change', handleSortChange);
-            
-            // --- MODAL TRIGGERS ---
-            editBtn.onclick = openEditModal; 
-            editCloseBtn.onclick = closeEditModal;   
-            cancelEditBtn.onclick = closeEditModal; 
-            
-            addStudentBtn.onclick = openAddStudentModal;
-            addStudentCloseBtn.onclick = closeAddStudentModal;
-            cancelAddStudentBtn.onclick = closeAddStudentModal;
-
-
-            // Close modal if the user clicks anywhere outside of it
-            window.onclick = function(event) {
-                if (event.target == editModal) {
-                    closeEditModal();
-                }
-                if (event.target == addStudentModal) {
-                    closeAddStudentModal();
-                }
-            }
-
-            // --- FORM SUBMISSION HANDLERS ---
-            
-            // 1. Edit Class Form
-            editForm.addEventListener('submit', function(e) {
-                e.preventDefault(); 
-                
-                const newName = document.getElementById('editClassName').value.trim();
-                const newCapacity = parseInt(document.getElementById('editClassCapacity').value);
-                
-                if (newName === "") {
-                    alert("Class Name cannot be empty.");
-                    return;
-                }
-                if (newCapacity < classData.students.length) {
-                    alert(`Capacity cannot be less than the current number of students (${classData.students.length}).`);
-                    return;
-                }
-                
-                classData.name = newName;
-                classData.capacity = newCapacity;
-                
-                renderClassDetails();
-                
-                closeEditModal();
-                alert(`Class ${newName} details saved successfully!`);
-            });
-            
-            // 2. Add Student Form
-            addStudentForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const studentName = document.getElementById('newStudentName').value.trim();
-                const parentName = document.getElementById('newParentName').value.trim();
-                const parentEmail = document.getElementById('newParentEmail').value.trim();
-                const parentContact = document.getElementById('newParentContact').value.trim();
-
-                if (classData.students.length >= classData.capacity) {
-                    alert("Cannot enroll student: class is full.");
-                    return;
-                }
-                
-                // Create a new student object
-                const newId = Math.max(...classData.students.map(s => s.id)) + 1;
-                const newStudent = {
-                    id: newId,
-                    name: studentName,
-                    parent: parentName,
-                    contact: parentContact,
-                    email: parentEmail
-                };
-                
-                // Add the new student to the class data
-                classData.students.push(newStudent);
-                
-                // Re-render the list to show the new student, respecting the current sort order
-                renderClassDetails(); 
-                
-                closeAddStudentModal();
-                alert(`${studentName} successfully enrolled in ${classData.name}!`);
-            });
-
-            // --- OTHER BUTTON ACTIONS ---
-            document.getElementById('viewTeacherProfileBtn').addEventListener('click', () => {
-                alert(`Viewing profile for ${classData.teacher.name}. (Simulated Navigation)`);
-            });
-
-            document.getElementById('archiveClassBtn').addEventListener('click', () => {
-                if (confirm(`Are you sure you want to archive the class ${classData.name}?`)) {
-                    alert(`Class ${classData.name} is now archived! (Simulated action)`);
-                }
-            });
+// Fetch parents for searchable dropdown
+async function fetchParents(searchTerm = '') {
+  try {
+    const parentsQuery = query(
+      collection(db, "users"),
+      where("role", "==", "parent")
+    );
+    const parentSnap = await getDocs(parentsQuery);
+    
+    const parents = [];
+    parentSnap.forEach(docSnap => {
+      const data = docSnap.data();
+      const parentName = data.fullName || `${data.firstName} ${data.lastName}`;
+      const parentEmail = data.email || "No email";
+      
+      // Filter by search term if provided
+      if (!searchTerm || 
+          parentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          parentEmail.toLowerCase().includes(searchTerm.toLowerCase())) {
+        parents.push({
+          id: docSnap.id,
+          name: parentName,
+          email: parentEmail,
+          phone: data.phoneNumber || "No phone"
         });
-    </script>
+      }
+    });
+    
+    return parents;
+  } catch (error) {
+    console.error("Error fetching parents:", error);
+    return [];
+  }
+}
+
+// Global class data object
+let classData = {
+  id: '',
+  name: '',
+  capacity: 0,
+  status: '',
+  teacher: {
+    name: '',
+    email: '',
+    profileUrl: '#'
+  },
+  students: []
+};
+
+// Helper function to extract the last word (surname) from a full name
+function getSurname(fullName) {
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length > 1) {
+    return parts[parts.length - 1];
+  }
+  return parts[0];
+}
+
+// Function to update all dynamic data in the HTML
+function renderClassDetails(studentsList = classData.students) {
+  const currentStudentCount = classData.students.length;
+  const remainingCapacity = classData.capacity - currentStudentCount;
+
+  // Update Overview Details
+  document.getElementById('classTitle').textContent = `Class: ${classData.name} Details`;
+  document.getElementById('className').textContent = classData.name;
+  document.getElementById('studentCount').textContent = currentStudentCount; 
+  document.getElementById('classCapacity').textContent = classData.capacity;
+  document.getElementById('classStatus').textContent = classData.status;
+
+  const statusElement = document.getElementById('classStatus');
+  statusElement.className = classData.status === 'active' ? 'text-metric-green font-bold' : 'text-red-500 font-bold';
+
+  document.getElementById('teacherName').textContent = classData.teacher.name;
+  document.getElementById('teacherEmail').textContent = classData.teacher.email;
+
+  document.getElementById('rosterTitle').textContent = `Student Roster (${currentStudentCount} Students) 🧑‍🎓`;
+  
+  // Render Student Roster
+  const rosterGrid = document.getElementById('studentRosterGrid');
+  rosterGrid.innerHTML = '';
+
+  studentsList.forEach(student => {
+    const card = document.createElement('div');
+    card.className = 'student-card';
+    card.onclick = () => viewStudentProfile(student.id, student.name);
+    
+    card.innerHTML = `
+      <h3 class="student-name">${student.name}</h3>
+      <p class="parent-info">Parent: <span class="font-bold">${student.parent}</span></p>
+      <p class="parent-info text-xs mt-1"><i class="fas fa-envelope mr-1"></i> ${student.email}</p>
+    `;
+    rosterGrid.appendChild(card);
+  });
+
+  // Add the 'Available Seats' card
+  const capacityCard = document.createElement('div');
+  capacityCard.className = 'student-card bg-gray-200/50 border-dashed border-gray-400 border-2 flex items-center justify-center';
+  capacityCard.style.cursor = 'default';
+  capacityCard.innerHTML = `<p class="text-sm font-semibold text-gray-500">${Math.max(0, remainingCapacity)} Seats Available</p>`;
+  rosterGrid.appendChild(capacityCard);
+}
+
+// Filter/Sort Logic
+function handleSortChange(event) {
+  const sortType = event.target.value;
+  let listToSort = [...classData.students];
+
+  if (sortType === 'surname-asc') {
+    listToSort.sort((a, b) => {
+      const surnameA = getSurname(a.name);
+      const surnameB = getSurname(b.name);
+      return surnameA.localeCompare(surnameB);
+    });
+  } else if (sortType === 'surname-desc') {
+    listToSort.sort((a, b) => {
+      const surnameA = getSurname(a.name);
+      const surnameB = getSurname(b.name);
+      return surnameB.localeCompare(surnameA);
+    });
+  } else {
+    // 'default' option
+    listToSort.sort((a, b) => a.name.localeCompare(b.name));
+  }
+  
+  renderClassDetails(listToSort);
+}
+
+function viewStudentProfile(studentId, studentName) {
+  console.log(`Navigating to student profile for ${studentName} (ID: ${studentId})`);
+  alert(`Viewing profile for ${studentName}. (Simulated Navigation)`);
+}
+
+// Modal Control Functions
+const editModal = document.getElementById('editClassModal');
+const editBtn = document.getElementById('editClassBtn');
+const editCloseBtn = document.querySelector('#editClassModal .close-btn');
+const cancelEditBtn = document.getElementById('cancelEditBtn');
+const editForm = document.getElementById('editClassForm');
+
+const addStudentModal = document.getElementById('addStudentModal');
+const addStudentBtn = document.getElementById('addStudentBtn');
+const addStudentCloseBtn = document.querySelector('#addStudentModal .close-btn');
+const cancelAddStudentBtn = document.getElementById('cancelAddStudentBtn');
+const addStudentForm = document.getElementById('addStudentForm');
+
+function openEditModal() {
+  document.getElementById('editClassName').value = classData.name;
+  document.getElementById('editClassCapacity').value = classData.capacity;
+  editModal.style.display = "block";
+}
+
+function closeEditModal() {
+  editModal.style.display = "none";
+}
+
+// Populate parent search dropdown
+async function populateParentSearch(searchTerm = '') {
+  const parentSearchInput = document.getElementById('parentSearch');
+  const parentDropdown = document.getElementById('parentDropdown');
+  const selectedParentId = document.getElementById('selectedParentId');
+  const selectedParentInfo = document.getElementById('selectedParentInfo');
+  
+  const parents = await fetchParents(searchTerm);
+  
+  parentDropdown.innerHTML = '';
+  
+  if (parents.length === 0) {
+    const noResult = document.createElement('div');
+    noResult.className = 'p-2 text-gray-500 text-sm';
+    noResult.textContent = 'No parents found';
+    parentDropdown.appendChild(noResult);
+  } else {
+    parents.forEach(parent => {
+      const parentOption = document.createElement('div');
+      parentOption.className = 'p-2 hover:bg-gray-100 cursor-pointer border-b border-gray-200';
+      parentOption.innerHTML = `
+        <div class="font-medium">${parent.name}</div>
+        <div class="text-xs text-gray-500">${parent.email} • ${parent.phone}</div>
+      `;
+      parentOption.addEventListener('click', () => {
+        parentSearchInput.value = parent.name;
+        selectedParentId.value = parent.id;
+        selectedParentInfo.innerHTML = `
+          <div class="text-sm">
+            <strong>Selected:</strong> ${parent.name} 
+            <br><span class="text-xs text-gray-600">${parent.email}</span>
+          </div>
+        `;
+        parentDropdown.classList.add('hidden');
+      });
+      parentDropdown.appendChild(parentOption);
+    });
+  }
+}
+
+function openAddStudentModal() {
+  if (classData.students.length >= classData.capacity) {
+    alert("Class is at full capacity. Please increase class capacity before adding more students.");
+    return;
+  }
+  
+  addStudentForm.reset();
+  document.getElementById('selectedParentInfo').innerHTML = '';
+  document.getElementById('parentDropdown').classList.add('hidden');
+  
+  // Load initial parents list
+  populateParentSearch();
+  
+  addStudentModal.style.display = "block";
+}
+
+function closeAddStudentModal() {
+  addStudentModal.style.display = "none";
+}
+
+// Add new student to Firestore
+async function addStudentToFirestore(studentData) {
+  try {
+    await addDoc(collection(db, "students"), {
+      ...studentData,
+      classroomId: classData.id,
+      fullName: `${studentData.firstName} ${studentData.lastName}`,
+      createdAt: serverTimestamp()
+    });
+    return true;
+  } catch (error) {
+    console.error("Error adding student:", error);
+    return false;
+  }
+}
+
+// Update class in Firestore
+async function updateClassInFirestore(updates) {
+  try {
+    await updateDoc(doc(db, "classrooms", classData.id), updates);
+    return true;
+  } catch (error) {
+    console.error("Error updating class:", error);
+    return false;
+  }
+}
+
+// Archive class
+async function archiveClass() {
+  try {
+    await updateDoc(doc(db, "classrooms", classData.id), {
+      status: "archived"
+    });
+    return true;
+  } catch (error) {
+    console.error("Error archiving class:", error);
+    return false;
+  }
+}
+
+// Initialize the page
+async function initializePage() {
+  const classId = getClassIdFromURL();
+  
+  if (!classId) {
+    alert("No class ID provided in URL");
+    window.location.href = "classes-management.html";
+    return;
+  }
+
+  try {
+    // Show loading state
+    document.getElementById('classTitle').textContent = "Loading class details...";
+    
+    // Fetch class data
+    const classDataFromFirestore = await fetchClassData(classId);
+    
+    // Fetch teacher data
+    const teacherData = await fetchTeacherData(classDataFromFirestore.teacherId);
+    
+    // Fetch students
+    const students = await fetchStudents(classId);
+    
+    // Update global classData object
+    classData = {
+      id: classId,
+      name: classDataFromFirestore.classroomName || "Unnamed Class",
+      capacity: classDataFromFirestore.maxStudents || 25,
+      status: classDataFromFirestore.status || "active",
+      teacher: teacherData,
+      students: students
+    };
+    
+    // Render the data
+    renderClassDetails();
+    
+    // Set up event listeners
+    setupEventListeners();
+    
+  } catch (error) {
+    console.error("Error initializing page:", error);
+    alert("Error loading class details. Redirecting to classes management.");
+    window.location.href = "classes-management.html";
+  }
+}
+
+function setupEventListeners() {
+  // Filter/Sort listener
+  document.getElementById('sortFilter').addEventListener('change', handleSortChange);
+  
+  // Modal triggers
+  editBtn.onclick = openEditModal; 
+  editCloseBtn.onclick = closeEditModal;   
+  cancelEditBtn.onclick = closeEditModal; 
+  
+  addStudentBtn.onclick = openAddStudentModal;
+  addStudentCloseBtn.onclick = closeAddStudentModal;
+  cancelAddStudentBtn.onclick = closeAddStudentModal;
+
+  // Parent search functionality
+  const parentSearchInput = document.getElementById('parentSearch');
+  const parentDropdown = document.getElementById('parentDropdown');
+  
+  parentSearchInput.addEventListener('input', (e) => {
+    const searchTerm = e.target.value;
+    if (searchTerm.length >= 2) {
+      populateParentSearch(searchTerm);
+      parentDropdown.classList.remove('hidden');
+    } else if (searchTerm.length === 0) {
+      populateParentSearch('');
+      parentDropdown.classList.remove('hidden');
+    } else {
+      parentDropdown.classList.add('hidden');
+    }
+  });
+
+  // Close parent dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('#parentSearchContainer')) {
+      parentDropdown.classList.add('hidden');
+    }
+  });
+
+  // Close modal if clicking outside
+  window.onclick = function(event) {
+    if (event.target == editModal) {
+      closeEditModal();
+    }
+    if (event.target == addStudentModal) {
+      closeAddStudentModal();
+    }
+  }
+
+  // Edit Class Form
+  editForm.addEventListener('submit', async function(e) {
+    e.preventDefault(); 
+    
+    const newName = document.getElementById('editClassName').value.trim();
+    const newCapacity = parseInt(document.getElementById('editClassCapacity').value);
+    
+    if (newName === "") {
+      alert("Class Name cannot be empty.");
+      return;
+    }
+    if (newCapacity < classData.students.length) {
+      alert(`Capacity cannot be less than the current number of students (${classData.students.length}).`);
+      return;
+    }
+    
+    // Update in Firestore
+    const success = await updateClassInFirestore({
+      classroomName: newName,
+      maxStudents: newCapacity
+    });
+    
+    if (success) {
+      classData.name = newName;
+      classData.capacity = newCapacity;
+      
+      renderClassDetails();
+      closeEditModal();
+      alert(`Class ${newName} details saved successfully!`);
+    } else {
+      alert("Failed to update class. Please try again.");
+    }
+  });
+  
+  // Add Student Form
+  addStudentForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const firstName = document.getElementById('studentFirstName').value.trim();
+    const lastName = document.getElementById('studentLastName').value.trim();
+    const age = document.getElementById('studentAge').value;
+    const gender = document.getElementById('studentGender').value;
+    const parentId = document.getElementById('selectedParentId').value;
+
+    if (classData.students.length >= classData.capacity) {
+      alert("Cannot enroll student: class is full.");
+      return;
+    }
+
+    if (!parentId) {
+      alert("Please select a parent for this student.");
+      return;
+    }
+
+    if (!firstName || !lastName) {
+      alert("Please enter both first name and last name.");
+      return;
+    }
+
+    if (!age || age < 3 || age > 18) {
+      alert("Please enter a valid age between 3 and 18.");
+      return;
+    }
+    
+    // Add to Firestore
+    const newStudent = {
+      firstName: firstName,
+      lastName: lastName,
+      age: parseInt(age),
+      gender: gender,
+      parentId: parentId,
+      classroomId: classData.id
+    };
+    
+    const success = await addStudentToFirestore(newStudent);
+    
+    if (success) {
+      // Reload students to get the updated list with proper IDs
+      classData.students = await fetchStudents(classData.id);
+      renderClassDetails();
+      closeAddStudentModal();
+      alert(`${firstName} ${lastName} successfully enrolled in ${classData.name}!`);
+    } else {
+      alert("Failed to enroll student. Please try again.");
+    }
+  });
+
+  // Other button actions
+  document.getElementById('viewTeacherProfileBtn').addEventListener('click', () => {
+    if (classData.teacher.name !== "Unassigned" && classData.teacher.name !== "Teacher not found") {
+      alert(`Viewing profile for ${classData.teacher.name}. (Simulated Navigation)`);
+    } else {
+      alert("No teacher assigned to this class.");
+    }
+  });
+
+  document.getElementById('archiveClassBtn').addEventListener('click', async () => {
+    if (confirm(`Are you sure you want to archive the class ${classData.name}?`)) {
+      const success = await archiveClass();
+      if (success) {
+        alert(`Class ${classData.name} has been archived!`);
+        window.location.href = "classes-management.html";
+      } else {
+        alert("Failed to archive class. Please try again.");
+      }
+    }
+  });
+}
+
+// Initialize the page when DOM is loaded
+document.addEventListener('DOMContentLoaded', initializePage);
+</script>
 </body>
 </html>
