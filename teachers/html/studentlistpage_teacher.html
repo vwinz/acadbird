@@ -14,6 +14,8 @@
         rel="stylesheet"
       />
   <link rel="stylesheet" href="../style/studentlistpage_teacher.css" />
+  <!-- Add this with your other script imports -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     </head>
     <body>
@@ -204,9 +206,13 @@
     appId: "1:575491576951:web:70f86aba1e33b871f8a272",
     measurementId: "G-N6Z672SXWJ"
   };
+
+
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const loadingOverlay = document.getElementById("loading-overlay");
+  // Add this after your Firebase config
+emailjs.init("Bf08qF9nwMnYPdI7s"); // Replace with your actual public key
 
   // ----------------------
   // Global Variables
@@ -417,6 +423,63 @@ function renderStudents(studentGrid, addStudentCard, studentCountEl) {
     });
   }
 
+  //email
+
+  // ----------------------
+// Email Sending Function
+// ----------------------
+async function sendVerificationEmail(parentEmail, studentName, studentCode, parentName) {
+    if (!parentEmail) {
+        console.log("❌ No parent email found, skipping email notification");
+        return false;
+    }
+
+    try {
+        const templateParams = {
+            to_email: parentEmail,
+            parent_name: parentName,
+            student_name: studentName,
+            verification_code: studentCode,
+            classroom_name: document.querySelector('.section-title').textContent || "Your Classroom",
+            date_sent: new Date().toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            })
+        };
+
+        const response = await emailjs.send(
+            'service_yq2mtbi', // Replace with your service ID
+            'template_x8gixdr', // Replace with your template ID
+            templateParams
+        );
+        
+        console.log('✅ Verification email sent successfully to:', parentEmail);
+        return true;
+    } catch (error) {
+        console.error('❌ Failed to send verification email:', error);
+        return false;
+    }
+}
+
+// ----------------------
+// Get Parent Email
+// ----------------------
+async function getParentEmail(parentId) {
+    try {
+        const userRef = doc(db, "users", parentId);
+        const userSnap = await getDoc(userRef);
+        
+        if (userSnap.exists()) {
+            const userData = userSnap.data();
+            return userData.email || null;
+        }
+        return null;
+    } catch (error) {
+        console.error("Error fetching parent email:", error);
+        return null;
+    }
+}
   // ----------------------
   // Main Init
   // ----------------------
@@ -473,6 +536,7 @@ document.getElementById("status-filter").addEventListener("change", () => {
     // Submit student form
   // Submit student form
   // Submit student form
+// Submit student form
 studentForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -481,18 +545,11 @@ studentForm.addEventListener('submit', async (e) => {
   const firstName = document.getElementById('first-name').value.trim();
   const lastName = document.getElementById('last-name').value.trim();
   const gender = document.getElementById('gender').value;
-  const age = Number(document.getElementById('age').value);
+const age = Number(document.getElementById('age').value);
+
   const codeModal = document.getElementById("code-modal");
-const codeOkBtn = document.getElementById("code-ok-btn");
-const codeCloseBtn = codeModal.querySelector(".close-button");
-
-codeOkBtn.addEventListener("click", () => {
-  codeModal.style.display = "none";
-});
-
-codeCloseBtn.addEventListener("click", () => {
-  codeModal.style.display = "none";
-});
+  const codeOkBtn = document.getElementById("code-ok-btn");
+  const codeCloseBtn = codeModal.querySelector(".close-button");
 
   // Validate
   if (!parentName || !firstName || !lastName || !gender || !age) {
@@ -508,9 +565,15 @@ codeCloseBtn.addEventListener("click", () => {
   }
 
   try {
+    showLoading(); // Show loading while processing
+
     // 🔑 Generate unique 6-digit alphanumeric code
     const studentCode = generateRandomCode(6);
+    const studentFullName = `${firstName} ${lastName}`;
 
+    // Get parent email
+    const parentEmail = await getParentEmail(parent.id);
+    
     // Student object with classroomId + code
     const studentData = { 
       firstName, 
@@ -528,6 +591,34 @@ codeCloseBtn.addEventListener("click", () => {
     // Save to Firestore "students" collection
     const docRef = await addDoc(collection(db, "students"), studentData);
 
+    // Send verification email to parent
+    if (parentEmail) {
+        const emailSent = await sendVerificationEmail(
+            parentEmail, 
+            studentFullName, 
+            studentCode, 
+            parent.name
+        );
+        
+        if (!emailSent) {
+            console.warn("⚠️ Student added but email notification failed");
+        }
+    } else {
+        console.warn("⚠️ Student added but no parent email found");
+    }
+
+    // Code modal handlers
+codeOkBtn.addEventListener("click", () => {
+  codeModal.style.display = "none";
+  // Optional: Refresh the student list
+  loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
+});
+
+codeCloseBtn.addEventListener("click", () => {
+  codeModal.style.display = "none";
+  // Optional: Refresh the student list
+  loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
+});
     // Add locally
     const newStudent = { id: docRef.id, ...studentData };
     students.push(newStudent);
@@ -542,18 +633,27 @@ codeCloseBtn.addEventListener("click", () => {
     parentInput.value = "";
 
     // ✅ Show generated code in the code modal
-    // 🔽 inside DOMContentLoaded, after loadStudents(...)
-
     document.getElementById("generated-code").textContent = studentCode;
+    
+    // Update modal message based on email status
+    const modalMessage = parentEmail ? 
+        `The verification code has been sent to ${parentEmail} and is shown below:` :
+        "Please share this verification code with the parent manually:";
+    
+    // You might want to update the modal text to show this message
+    document.querySelector("#code-modal p").textContent = modalMessage;
+    
     document.getElementById("code-modal").style.display = 'flex';
 
     console.log("✅ Student added with ID:", docRef.id, "code:", studentCode);
+
   } catch (err) {
     console.error("❌ Error adding student:", err);
     alert("Failed to add student.");
+  } finally {
+    hideLoading(); // Hide loading regardless of outcome
   }
 });
-
 
   });
   </script>

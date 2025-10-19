@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="../style/activitylog_teacher.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 </head>
 <body>
     <div class="container">
@@ -179,8 +181,10 @@ import { collection, addDoc, serverTimestamp, query, orderBy, getDocs, where, de
     messagingSenderId: "575491576951",
     appId: "1:575491576951:web:70f86aba1e33b871f8a272",
     measurementId: "G-N6Z672SXWJ"
+    
   };
-
+// Add this after your Firebase initialization
+emailjs.init("Bf08qF9nwMnYPdI7s"); // Replace with your EmailJS public key
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -877,66 +881,89 @@ function addPostInteractionListeners(postElement) {
     });
 
     // Handle post creation
-    postButton.addEventListener('click', async () => {
+   postButton.addEventListener('click', async () => {
     let content = '';
     let title = '';
     let date = '';
-
 
     if (postType === 'Note' || postType === 'File') {
         content = noteInput.value.trim();
         title = postType;
     } else {
         title = postTitleInput.value.trim();
-        date = postDateInput.value; // can be empty string
+        date = postDateInput.value;
         content = postDescriptionInput.value.trim();
     }
-        const teacherID = auth.currentUser ? auth.currentUser.uid : null;
-let classroomId = new URLSearchParams(window.location.search).get('classroomId');
-if (!classroomId) {
-  classroomId = localStorage.getItem('selectedClassId');
-}
-if (!classroomId) {
-  alert("No classroom selected! Please go back to the homepage.");
-  window.location.href = "homepage-teachers.html";
-}
+
+    const teacherID = auth.currentUser ? auth.currentUser.uid : null;
+    let classroomId = new URLSearchParams(window.location.search).get('classroomId');
+    if (!classroomId) {
+        classroomId = localStorage.getItem('selectedClassId');
+    }
+    if (!classroomId) {
+        alert("No classroom selected! Please go back to the homepage.");
+        window.location.href = "homepage-teachers.html";
+        return;
+    }
 
     const files = fileInput.files;
 
     if (title || content || files.length > 0) {
         try {
-            // Save post to Firestore
-            const postData = {
-    task: title || null,
-    description: content || '',
-    type: postType,
-    date: date || null,
-    teacherID: teacherID,
-    classroomID: classroomId,
-    created_at: serverTimestamp()
-};
+            showLoading(); // Show loading while processing
 
+            const postData = {
+                task: title || null,
+                description: content || '',
+                type: postType,
+                date: date || null,
+                teacherID: teacherID,
+                classroomID: classroomId,
+                created_at: serverTimestamp()
+            };
+
+            // Save post to Firestore
             const docRef = await addDoc(collection(db, "posts"), postData);
-            console.log("Post added with ID:", docRef.id);
+            console.log("✅ Post added with ID:", docRef.id);
+
+            // Send email only for Event, Task, Reminder
+            if (['Event', 'Task', 'Reminder'].includes(postType)) {
+                console.log(`📧 Preparing to send ${postType} notification to parents`);
+                
+                const parentEmails = await getParentEmailsForClassroom(classroomId);
+                const classroomName = await getClassroomName(classroomId);
+                
+                if (parentEmails.length > 0) {
+                    await sendEmailToParents(postData, loggedInTeacherName, classroomName, parentEmails);
+                    console.log(`✅ ${postType} notification sent to ${parentEmails.length} parents`);
+                } else {
+                    console.log("ℹ️ No parent emails found - notification not sent");
+                }
+            } else {
+                console.log("ℹ️ Post type doesn't require email notification");
+            }
 
             // Create local DOM element
             const newPost = createPostElement(docRef.id, title, content, postType, date, files);
             postFeed.prepend(newPost);
             addPostInteractionListeners(newPost);
+            
             if (postType === 'Event' || postType === 'Reminder' || postType === 'Task') {
                 createRightSectionItem(title, date, postType);
             }
 
             resetPostCard();
+            
         } catch (error) {
-            console.error("Error adding post to Firestore:", error);
+            console.error("❌ Error adding post to Firestore:", error);
             alert("Failed to save post. Please try again.");
+        } finally {
+            hideLoading(); // Hide loading regardless of outcome
         }
     } else {
         alert('Please add some content, a title, or a file to your post.');
     }
-    });
-
+});
     
     function resetPostCard() {
         noteInput.value = '';
@@ -954,6 +981,114 @@ if (!classroomId) {
         postActionBtns.forEach(btn => btn.classList.remove('active'));
         document.querySelector('.post-action-btn[data-type="Note"]').classList.add('active');
     }
+
+    async function getParentEmailsForClassroom(classroomID) {
+    try {
+        console.log(`🔍 Fetching parent emails for classroom: ${classroomID}`);
+        
+        // First, get all students in this classroom
+        const studentsRef = collection(db, "students");
+        const studentsQuery = query(
+            studentsRef,
+            where("classroomId", "==", classroomID),
+            where("status", "==", "active")
+        );
+        
+        const studentsSnapshot = await getDocs(studentsQuery);
+        
+        if (studentsSnapshot.empty) {
+            console.log("❌ No active students found in this classroom");
+            return [];
+        }
+
+        console.log(`📚 Found ${studentsSnapshot.size} students in classroom`);
+        
+        // Get unique parent IDs from students
+        const parentIds = [];
+        studentsSnapshot.forEach(doc => {
+            const studentData = doc.data();
+            if (studentData.parentId && !parentIds.includes(studentData.parentId)) {
+                parentIds.push(studentData.parentId);
+            }
+        });
+
+        console.log(`👨‍👩‍👧‍👦 Found ${parentIds.length} unique parent IDs:`, parentIds);
+
+        if (parentIds.length === 0) {
+            console.log("❌ No parent IDs found for students in this classroom");
+            return [];
+        }
+
+        // Get parent emails from users collection
+        const parentEmails = [];
+        
+        for (const parentId of parentIds) {
+            try {
+                const userRef = doc(db, "users", parentId);
+                const userSnap = await getDoc(userRef);
+                
+                if (userSnap.exists()) {
+                    const userData = userSnap.data();
+                    // Check if user is a parent
+                    if (userData.role === "parent" && userData.email) {
+                        parentEmails.push(userData.email);
+                        console.log(`✅ Found parent email: ${userData.email}`);
+                    }
+                } else {
+                    console.log(`❌ User document not found for parent ID: ${parentId}`);
+                }
+            } catch (error) {
+                console.error(`Error fetching user ${parentId}:`, error);
+            }
+        }
+
+        console.log(`📧 Final parent emails list:`, parentEmails);
+        return parentEmails;
+        
+    } catch (error) {
+        console.error("Error fetching parent emails:", error);
+        return [];
+    }
+}
+
+async function sendEmailToParents(postData, teacherName, classroomName, parentEmails) {
+    if (parentEmails.length === 0) {
+        console.log("📭 No parent emails found to send notification");
+        return;
+    }
+
+    console.log(`📤 Sending email to ${parentEmails.length} parents`);
+
+    // EmailJS template parameters
+    const templateParams = {
+        type: postData.type,
+        teacherName: teacherName,
+        classroomName: classroomName,
+        title: postData.task || postData.type,
+        description: postData.description,
+        date: postData.date || '',
+        to_email: parentEmails.join(','),
+        post_date: new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        })
+    };
+
+    try {
+        const response = await emailjs.send(
+            'service_yq2mtbi', // Replace with your EmailJS service ID
+            'template_prmhlmw', // Replace with your EmailJS template ID
+            templateParams
+        );
+        console.log('✅ Email sent successfully:', response);
+        return true;
+    } catch (error) {
+        console.error('❌ Failed to send email:', error);
+        return false;
+    }
+}
+
 
     // Custom Modal Functionality
     const modals = document.querySelectorAll('.modal');
