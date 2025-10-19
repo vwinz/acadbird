@@ -197,6 +197,8 @@ import {
 import { 
   getFirestore, doc, getDoc, collection, query, where, getDocs 
 } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+// Add this with your other Firebase imports
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
@@ -210,6 +212,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
 
 const params = new URLSearchParams(window.location.search);
 const studentId = params.get("studentId");
@@ -235,6 +239,184 @@ const SCORE_MAPPING = {
     'partial': 50,
     'none': 0
 };
+async function getTeacherClassrooms(teacherId) {
+    try {
+        const classroomsRef = collection(db, "classrooms");
+        const q = query(classroomsRef, where("teacherId", "==", teacherId));
+        const snapshot = await getDocs(q);
+        
+        const teacherClassrooms = {};
+        snapshot.forEach(doc => {
+            teacherClassrooms[doc.id] = doc.data();
+        });
+        
+        return teacherClassrooms;
+    } catch (error) {
+        console.error("Error getting teacher classrooms:", error);
+        return {};
+    }
+}
+
+async function getReadNotifications(teacherId) {
+    try {
+        const notificationsRef = collection(db, "notification_teacher");
+        const q = query(
+            notificationsRef, 
+            where("teacherID", "==", teacherId),
+            where("status", "==", "read")
+        );
+        const snapshot = await getDocs(q);
+        const readNotifications = {};
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const key = `${data.type}_${data.notificationID}`;
+            readNotifications[key] = true;
+        });
+        return readNotifications;
+    } catch (error) {
+        console.error("Error getting read notifications:", error);
+        return {};
+    }
+}
+
+async function countUnreadNotifications(teacherId) {
+    try {
+        console.log("🔍 Counting unread notifications for teacher:", teacherId);
+        
+        // Get all calendar events
+        const calendarRef = collection(db, "calendar");
+        const calendarSnapshot = await getDocs(calendarRef);
+        console.log("📅 Total calendar events:", calendarSnapshot.size);
+        
+        // Get teacher's classrooms
+        const teacherClassrooms = await getTeacherClassrooms(teacherId);
+        const teacherClassroomIds = Object.keys(teacherClassrooms);
+        console.log("🏫 Teacher classroom IDs:", teacherClassroomIds);
+        
+        // Get all students with status "active" in teacher's classrooms
+        let studentsSnapshot;
+        if (teacherClassroomIds.length > 0) {
+            const studentsRef = collection(db, "students");
+            const studentsQuery = query(
+                studentsRef, 
+                where("status", "==", "active"),
+                where("classroomId", "in", teacherClassroomIds)
+            );
+            studentsSnapshot = await getDocs(studentsQuery);
+            console.log("👥 Active students in classrooms:", studentsSnapshot.size);
+        } else {
+            studentsSnapshot = { docs: [] };
+            console.log("❌ No classrooms found for teacher");
+        }
+        
+        // Get all read notifications
+        const readNotifications = await getReadNotifications(teacherId);
+        console.log("📖 Read notifications count:", Object.keys(readNotifications).length);
+        
+        // Count unread calendar notifications
+        let unreadCount = 0;
+        calendarSnapshot.forEach(doc => {
+            const key = `calendar_${doc.id}`;
+            if (!readNotifications[key]) {
+                unreadCount++;
+            }
+        });
+        console.log("📆 Unread calendar notifications:", unreadCount);
+        
+        // Count unread student join notifications
+        let studentUnreadCount = 0;
+        studentsSnapshot.forEach(doc => {
+            const key = `student_${doc.id}`;
+            if (!readNotifications[key]) {
+                studentUnreadCount++;
+            }
+        });
+        console.log("👤 Unread student notifications:", studentUnreadCount);
+        
+        unreadCount += studentUnreadCount;
+        console.log("🔢 Total unread notifications:", unreadCount);
+        
+        return unreadCount;
+    } catch (error) {
+        console.error("❌ Error counting unread notifications:", error);
+        return 0;
+    }
+}
+
+async function updateNotificationBadge() {
+    try {
+        const currentUser = auth.currentUser;
+        
+        if (!currentUser) {
+            console.log("❌ No current user found");
+            return;
+        }
+        
+        console.log("🔄 Updating notification badge for user:", currentUser.uid);
+        const unreadCount = await countUnreadNotifications(currentUser.uid);
+        const badge = document.getElementById('notification-badge');
+        
+        if (badge) {
+            badge.textContent = unreadCount;
+            
+            // Hide badge if count is 0
+            if (unreadCount === 0) {
+                badge.style.display = 'none';
+                console.log("✅ Badge hidden (no unread notifications)");
+            } else {
+                badge.style.display = 'flex';
+                console.log("✅ Badge shown with count:", unreadCount);
+            }
+        } else {
+            console.log("❌ Badge element not found!");
+        }
+    } catch (error) {
+        console.error("❌ Error updating notification badge:", error);
+    }
+}
+
+// Update the navbar HTML to include the badge
+const navIconsHTML = `
+    <div class="nav-icons">
+        <a href="notification_teacher.html" target="_blank" class="notification-link">
+            <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
+            <span class="notification-badge" id="notification-badge">0</span>
+        </a>
+        <a href="help_teacher.html" target="_blank">
+            <img src="../../main/img/Help.png" alt="Help" class="icon">
+        </a>
+        <a href="settings_teacher.html" target="_blank">
+            <div class="account-menu">
+                <img src="../../main/img/account icon.png" alt="User Account" class="icon">
+            </div>
+        </a>
+    </div>
+`;
+
+// Replace the existing nav-icons div with the updated one
+document.querySelector('.nav-icons').outerHTML = navIconsHTML;
+
+// Wait for auth state before updating badge
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        console.log("👤 User authenticated:", user.uid);
+        await updateNotificationBadge();
+    } else {
+        console.log("❌ User not authenticated");
+    }
+});
+
+// Add this to your initial load function
+async function initializePage() {
+    // Your existing loadStudent function
+    await loadStudent();
+    
+    // Update notification badge
+    await updateNotificationBadge();
+}
+
+// Call initializePage instead of loadStudent
+initializePage();
 
 async function loadStudent() {
   if (!studentId) return;

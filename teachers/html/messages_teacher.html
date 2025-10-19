@@ -672,6 +672,30 @@
                 height: 60%;
             }
         }
+
+        /* Notification Badge Styles */
+.notification-link {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
     </style>
 </head>
 <body>
@@ -680,14 +704,15 @@
         <div class="navbar">
             <div class="navbar-container">
                 <div class="logo">
-                     <img src="AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-                    <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+                     <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+                    <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
                 </div>
-                <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+                <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
                 <div class="nav-icons">
-                    <a href="notification_teacher.html" title="Notifications">
-                        <i class="fas fa-bell icon"></i>
-                    </a>
+                       <a href="notification_teacher.html" title="Notifications" class="notification-link">
+        <i class="fas fa-bell icon"></i>
+        <span class="notification-badge" id="notification-badge">0</span>
+    </a>
                     <a href="help_teacher.html" title="Help">
                         <i class="fas fa-question-circle icon"></i>
                     </a>
@@ -874,39 +899,212 @@
         </div>
     </div>
 
+    <!-- Add Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+    // Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.appspot.com",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // Notification badge functionality
+    async function getTeacherClassrooms(teacherId) {
+        try {
+            const snapshot = await db.collection('classrooms')
+                .where('teacherId', '==', teacherId)
+                .get();
+            
+            const teacherClassrooms = {};
+            snapshot.forEach(doc => {
+                teacherClassrooms[doc.id] = doc.data();
+            });
+            
+            return teacherClassrooms;
+        } catch (error) {
+            console.error("Error getting teacher classrooms:", error);
+            return {};
+        }
+    }
+
+    async function getReadNotifications(teacherId) {
+        try {
+            const snapshot = await db.collection('notification_teacher')
+                .where('teacherID', '==', teacherId)
+                .where('status', '==', 'read')
+                .get();
+                
+            const readNotifications = {};
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const key = `${data.type}_${data.notificationID}`;
+                readNotifications[key] = true;
+            });
+            return readNotifications;
+        } catch (error) {
+            console.error("Error getting read notifications:", error);
+            return {};
+        }
+    }
+
+    async function countUnreadNotifications(teacherId) {
+        try {
+            console.log("🔍 Counting unread notifications for teacher:", teacherId);
+            
+            // Get all calendar events
+            const calendarSnapshot = await db.collection('calendar').get();
+            console.log("📅 Total calendar events:", calendarSnapshot.size);
+            
+            // Get teacher's classrooms
+            const teacherClassrooms = await getTeacherClassrooms(teacherId);
+            const teacherClassroomIds = Object.keys(teacherClassrooms);
+            console.log("🏫 Teacher classroom IDs:", teacherClassroomIds);
+            
+            // Get all students with status "active" in teacher's classrooms
+            let studentsSnapshot;
+            if (teacherClassroomIds.length > 0) {
+                studentsSnapshot = await db.collection('students')
+                    .where('status', '==', 'active')
+                    .where('classroomId', 'in', teacherClassroomIds)
+                    .get();
+                console.log("👥 Active students in classrooms:", studentsSnapshot.size);
+            } else {
+                studentsSnapshot = { docs: [] };
+                console.log("❌ No classrooms found for teacher");
+            }
+            
+            // Get all read notifications
+            const readNotifications = await getReadNotifications(teacherId);
+            console.log("📖 Read notifications count:", Object.keys(readNotifications).length);
+            
+            // Count unread calendar notifications
+            let unreadCount = 0;
+            calendarSnapshot.forEach(doc => {
+                const key = `calendar_${doc.id}`;
+                if (!readNotifications[key]) {
+                    unreadCount++;
+                }
+            });
+            console.log("📆 Unread calendar notifications:", unreadCount);
+            
+            // Count unread student join notifications
+            let studentUnreadCount = 0;
+            studentsSnapshot.forEach(doc => {
+                const key = `student_${doc.id}`;
+                if (!readNotifications[key]) {
+                    studentUnreadCount++;
+                }
+            });
+            console.log("👤 Unread student notifications:", studentUnreadCount);
+            
+            unreadCount += studentUnreadCount;
+            console.log("🔢 Total unread notifications:", unreadCount);
+            
+            return unreadCount;
+        } catch (error) {
+            console.error("❌ Error counting unread notifications:", error);
+            return 0;
+        }
+    }
+
+    async function updateNotificationBadge() {
+        try {
+            const currentUser = auth.currentUser;
+            
+            if (!currentUser) {
+                console.log("❌ No current user found");
+                return;
+            }
+            
+            console.log("🔄 Updating notification badge for user:", currentUser.uid);
+            const unreadCount = await countUnreadNotifications(currentUser.uid);
+            const badge = document.getElementById('notification-badge');
+            
+            if (badge) {
+                badge.textContent = unreadCount;
+                
+                // Hide badge if count is 0
+                if (unreadCount === 0) {
+                    badge.style.display = 'none';
+                    console.log("✅ Badge hidden (no unread notifications)");
+                } else {
+                    badge.style.display = 'flex';
+                    console.log("✅ Badge shown with count:", unreadCount);
+                }
+            } else {
+                console.log("❌ Badge element not found!");
+            }
+        } catch (error) {
+            console.error("❌ Error updating notification badge:", error);
+        }
+    }
+
+    // Wait for auth state before updating badge
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            console.log("👤 User authenticated:", user.uid);
+            await updateNotificationBadge();
+        } else {
+            console.log("❌ User not authenticated");
+        }
+    });
+</script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const chatItems = document.querySelectorAll('.chat-item');
-            const chatBody = document.getElementById('chat-body');
-            const messageInput = document.getElementById('message-input');
-            const sendBtn = document.getElementById('send-btn');
-            const newMessageBtn = document.getElementById('new-message-btn');
-            const newMessageModal = document.getElementById('new-message-modal');
-            const modalCloseBtn = document.querySelector('.close-btn');
-            const recipientItems = document.querySelectorAll('.recipient-item');
-            const searchInput = document.querySelector('.search-input');
+    console.log("🚀 DOM Content Loaded - Initializing messages page");
+    
+    // Update notification badge when page loads
+    try {
+        updateNotificationBadge();
+    } catch (error) {
+        console.error("Error initializing notification badge:", error);
+    }
 
-            // Store chat histories to persist messages during a session
-            const chatHistory = {
-                'Mark Santiago-Kianna Santiago': [
-                    { type: 'received', text: 'Good morning Ms. Johnson. I wanted to check on Kianna\'s progress in math class.', time: '10:15 AM' },
-                    { type: 'sent', text: 'Good morning Mr. Santiago. Kianna is doing well overall. She scored 92% on her last math test and actively participates in class.', time: '10:20 AM' },
-                    { type: 'received', text: 'That\'s great to hear! Thank you for the update. We\'ve been practicing multiplication at home.', time: '10:24 AM' }
-                ],
-                'Christine Rivera-Lloyd Rivera': [
-                    { type: 'received', text: 'Hello Ms. Johnson, I wanted to confirm our parent-teacher conference scheduled for next week.', time: '3:45 PM' },
-                    { type: 'sent', text: 'Yes, we\'re scheduled for Tuesday at 4:00 PM. Looking forward to discussing Lloyd\'s progress.', time: '4:10 PM' }
-                ],
-                'Princess Luna-Agnes Luna': [
-                    { type: 'received', text: 'Hi, just letting you know that Agnes will be absent tomorrow due to a doctor\'s appointment.', time: '2:30 PM' },
-                    { type: 'sent', text: 'Thank you for letting me know. I hope everything is okay.', time: '2:45 PM' }
-                ],
-                'Robert Johnson-Emma Johnson': [
-                    { type: 'received', text: 'Thank you for your help with Emma\'s science project. She really enjoyed working on it.', time: '11:20 AM' },
-                    { type: 'sent', text: 'You\'re welcome! Emma did a fantastic job on her presentation.', time: '11:35 AM' }
-                ]
-            };
+    // Your existing messages functionality continues here...
+    const chatItems = document.querySelectorAll('.chat-item');
+    const chatBody = document.getElementById('chat-body');
+    const messageInput = document.getElementById('message-input');
+    const sendBtn = document.getElementById('send-btn');
+    const newMessageBtn = document.getElementById('new-message-btn');
+    const newMessageModal = document.getElementById('new-message-modal');
+    const modalCloseBtn = document.querySelector('.close-btn');
+    const recipientItems = document.querySelectorAll('.recipient-item');
+    const searchInput = document.querySelector('.search-input');
 
+    // Store chat histories to persist messages during a session
+    const chatHistory = {
+        'Mark Santiago-Kianna Santiago': [
+            { type: 'received', text: 'Good morning Ms. Johnson. I wanted to check on Kianna\'s progress in math class.', time: '10:15 AM' },
+            { type: 'sent', text: 'Good morning Mr. Santiago. Kianna is doing well overall. She scored 92% on her last math test and actively participates in class.', time: '10:20 AM' },
+            { type: 'received', text: 'That\'s great to hear! Thank you for the update. We\'ve been practicing multiplication at home.', time: '10:24 AM' }
+        ],
+        'Christine Rivera-Lloyd Rivera': [
+            { type: 'received', text: 'Hello Ms. Johnson, I wanted to confirm our parent-teacher conference scheduled for next week.', time: '3:45 PM' },
+            { type: 'sent', text: 'Yes, we\'re scheduled for Tuesday at 4:00 PM. Looking forward to discussing Lloyd\'s progress.', time: '4:10 PM' }
+        ],
+        'Princess Luna-Agnes Luna': [
+            { type: 'received', text: 'Hi, just letting you know that Agnes will be absent tomorrow due to a doctor\'s appointment.', time: '2:30 PM' },
+            { type: 'sent', text: 'Thank you for letting me know. I hope everything is okay.', time: '2:45 PM' }
+        ],
+        'Robert Johnson-Emma Johnson': [
+            { type: 'received', text: 'Thank you for your help with Emma\'s science project. She really enjoyed working on it.', time: '11:20 AM' },
+            { type: 'sent', text: 'You\'re welcome! Emma did a fantastic job on her presentation.', time: '11:35 AM' }
+        ]
+    };
             // Switch chat by updating the chat window content
             function switchChat(name, student) {
                 // Update chat header

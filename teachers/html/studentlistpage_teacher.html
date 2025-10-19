@@ -35,9 +35,10 @@
           </div>
           <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
           <div class="nav-icons">
-            <a href="notification_teacher.html" target="_blank">
-              <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
-            </a>
+              <a href="notification_teacher.html" target="_blank" class="notification-link">
+        <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
+        <span class="notification-badge" id="notification-badge">0</span>
+    </a>
             <a href="help_teacher.html" target="_blank">
               <img src="../../main/img/Help.png" alt="Help" class="icon" />
             </a>
@@ -193,7 +194,7 @@
     doc, 
     getDoc 
   } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
   // ----------------------
   // Firebase Initialization
   // ----------------------
@@ -210,6 +211,8 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const auth = getAuth(app);
+
   const loadingOverlay = document.getElementById("loading-overlay");
   // Add this after your Firebase config
 emailjs.init("Bf08qF9nwMnYPdI7s"); // Replace with your actual public key
@@ -230,6 +233,154 @@ emailjs.init("Bf08qF9nwMnYPdI7s"); // Replace with your actual public key
 function hideLoading() {
   loadingOverlay.style.display = "none";
 }
+
+
+// Notification badge functionality
+async function getTeacherClassrooms(teacherId) {
+    try {
+        const classroomsRef = collection(db, "classrooms");
+        const q = query(classroomsRef, where("teacherId", "==", teacherId));
+        const snapshot = await getDocs(q);
+        
+        const teacherClassrooms = {};
+        snapshot.forEach(doc => {
+            teacherClassrooms[doc.id] = doc.data();
+        });
+        
+        return teacherClassrooms;
+    } catch (error) {
+        console.error("Error getting teacher classrooms:", error);
+        return {};
+    }
+}
+
+async function getReadNotifications(teacherId) {
+    try {
+        const notificationsRef = collection(db, "notification_teacher");
+        const q = query(
+            notificationsRef, 
+            where("teacherID", "==", teacherId),
+            where("status", "==", "read")
+        );
+        const snapshot = await getDocs(q);
+        const readNotifications = {};
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const key = `${data.type}_${data.notificationID}`;
+            readNotifications[key] = true;
+        });
+        return readNotifications;
+    } catch (error) {
+        console.error("Error getting read notifications:", error);
+        return {};
+    }
+}
+
+async function countUnreadNotifications(teacherId) {
+    try {
+        console.log("🔍 Counting unread notifications for teacher:", teacherId);
+        
+        // Get all calendar events
+        const calendarRef = collection(db, "calendar");
+        const calendarSnapshot = await getDocs(calendarRef);
+        console.log("📅 Total calendar events:", calendarSnapshot.size);
+        
+        // Get teacher's classrooms
+        const teacherClassrooms = await getTeacherClassrooms(teacherId);
+        const teacherClassroomIds = Object.keys(teacherClassrooms);
+        console.log("🏫 Teacher classroom IDs:", teacherClassroomIds);
+        
+        // Get all students with status "active" in teacher's classrooms
+        let studentsSnapshot;
+        if (teacherClassroomIds.length > 0) {
+            const studentsRef = collection(db, "students");
+            const studentsQuery = query(
+                studentsRef, 
+                where("status", "==", "active"),
+                where("classroomId", "in", teacherClassroomIds)
+            );
+            studentsSnapshot = await getDocs(studentsQuery);
+            console.log("👥 Active students in classrooms:", studentsSnapshot.size);
+        } else {
+            studentsSnapshot = { docs: [] };
+            console.log("❌ No classrooms found for teacher");
+        }
+        
+        // Get all read notifications
+        const readNotifications = await getReadNotifications(teacherId);
+        console.log("📖 Read notifications count:", Object.keys(readNotifications).length);
+        
+        // Count unread calendar notifications
+        let unreadCount = 0;
+        calendarSnapshot.forEach(doc => {
+            const key = `calendar_${doc.id}`;
+            if (!readNotifications[key]) {
+                unreadCount++;
+            }
+        });
+        console.log("📆 Unread calendar notifications:", unreadCount);
+        
+        // Count unread student join notifications
+        let studentUnreadCount = 0;
+        studentsSnapshot.forEach(doc => {
+            const key = `student_${doc.id}`;
+            if (!readNotifications[key]) {
+                studentUnreadCount++;
+            }
+        });
+        console.log("👤 Unread student notifications:", studentUnreadCount);
+        
+        unreadCount += studentUnreadCount;
+        console.log("🔢 Total unread notifications:", unreadCount);
+        
+        return unreadCount;
+    } catch (error) {
+        console.error("❌ Error counting unread notifications:", error);
+        return 0;
+    }
+}
+
+async function updateNotificationBadge() {
+    try {
+        const currentUser = auth.currentUser;
+        
+        if (!currentUser) {
+            console.log("❌ No current user found");
+            return;
+        }
+        
+        console.log("🔄 Updating notification badge for user:", currentUser.uid);
+        const unreadCount = await countUnreadNotifications(currentUser.uid);
+        const badge = document.getElementById('notification-badge');
+        
+        if (badge) {
+            badge.textContent = unreadCount;
+            
+            // Hide badge if count is 0
+            if (unreadCount === 0) {
+                badge.style.display = 'none';
+                console.log("✅ Badge hidden (no unread notifications)");
+            } else {
+                badge.style.display = 'flex';
+                console.log("✅ Badge shown with count:", unreadCount);
+            }
+        } else {
+            console.log("❌ Badge element not found!");
+        }
+    } catch (error) {
+        console.error("❌ Error updating notification badge:", error);
+    }
+}
+
+// Wait for auth state before updating badge
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        console.log("👤 User authenticated:", user.uid);
+        await updateNotificationBadge();
+    } else {
+        console.log("❌ User not authenticated");
+    }
+});
 
   // ----------------------
   // Helpers
@@ -484,12 +635,21 @@ async function getParentEmail(parentId) {
   // Main Init
   // ----------------------
   document.addEventListener('DOMContentLoaded', async () => {
+    console.log("🚀 DOM Content Loaded - Initializing student list page");
+    
+    // Update notification badge when page loads
+    try {
+        await updateNotificationBadge();
+    } catch (error) {
+        console.error("Error initializing notification badge:", error);
+    }
+
     showLoading();
     let classroomId = new URLSearchParams(window.location.search).get('classroomId');
 
     const classroomNameEl = document.querySelector('.section-title');
     const classroomGradeEl = document.querySelector('.section-subtitle');
-   const studentGrid = document.getElementById('student-grid'); // or .student-grid
+    const studentGrid = document.getElementById('student-grid');
 
     const studentCountEl = document.getElementById('student-count');
     const addEditModal = document.getElementById('add-edit-modal');
@@ -501,25 +661,26 @@ async function getParentEmail(parentId) {
     if (!addStudentCard || !studentForm || !formSubmitBtn || !addEditModal || !modalTitle) return;
 
     if (!classroomId) {
-      classroomId = localStorage.getItem('selectedClassId');
+        classroomId = localStorage.getItem('selectedClassId');
     }
     
     // Load parents and classroom first
     try {
-    // 🔽 Fetch all needed data
-    await loadParents();
-    attachParentAutocomplete();
-    await loadClassroom(classroomId, classroomNameEl, classroomGradeEl);
-    await loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
-  } catch (err) {
-    console.error("Error during initialization:", err);
-  } finally {
-    hideLoading(); // 👈 hide after everything loads
-  }
-document.getElementById("status-filter").addEventListener("change", () => {
-  renderStudents(studentGrid, addStudentCard, studentCountEl);
-});
+        // 🔽 Fetch all needed data
+        await loadParents();
+        attachParentAutocomplete();
+        await loadClassroom(classroomId, classroomNameEl, classroomGradeEl);
+        await loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
+    } catch (err) {
+        console.error("Error during initialization:", err);
+    } finally {
+        hideLoading(); // 👈 hide after everything loads
+    }
 
+    // Rest of your existing code...
+    document.getElementById("status-filter").addEventListener("change", () => {
+        renderStudents(studentGrid, addStudentCard, studentCountEl);
+    });
 
     // Add student modal
     addStudentCard.addEventListener('click', () => {

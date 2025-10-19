@@ -19,8 +19,9 @@
         </div>
         <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
         <div class="nav-icons">
-    <a href="notification_teacher.html" target="_blank">
+    <a href="notification_teacher.html" target="_blank" class="notification-link">
         <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
+        <span class="notification-badge" id="notification-badge">0</span>
     </a>
     <a href="help_teacher.html" target="_blank">
         <img src="../../main/img/Help.png" alt="Help" class="icon">
@@ -503,6 +504,117 @@ ${fileHtml}
     postElement.innerHTML = postHtml;
     return postElement;
 }
+
+// Notification badge functionality
+async function getTeacherClassrooms(teacherId) {
+    try {
+        const classroomsRef = collection(db, "classrooms");
+        const q = query(classroomsRef, where("teacherId", "==", teacherId));
+        const snapshot = await getDocs(q);
+        
+        const teacherClassrooms = {};
+        snapshot.forEach(doc => {
+            teacherClassrooms[doc.id] = doc.data();
+        });
+        
+        return teacherClassrooms;
+    } catch (error) {
+        console.error("Error getting teacher classrooms:", error);
+        return {};
+    }
+}
+
+async function getReadNotifications(teacherId) {
+    try {
+        const notificationsRef = collection(db, "notification_teacher");
+        const q = query(
+            notificationsRef, 
+            where("teacherID", "==", teacherId),
+            where("status", "==", "read")
+        );
+        const snapshot = await getDocs(q);
+        const readNotifications = {};
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const key = `${data.type}_${data.notificationID}`;
+            readNotifications[key] = true;
+        });
+        return readNotifications;
+    } catch (error) {
+        console.error("Error getting read notifications:", error);
+        return {};
+    }
+}
+
+async function countUnreadNotifications(teacherId) {
+    try {
+        // Get all calendar events
+        const calendarRef = collection(db, "calendar");
+        const calendarSnapshot = await getDocs(calendarRef);
+        
+        // Get teacher's classrooms
+        const teacherClassrooms = await getTeacherClassrooms(teacherId);
+        const teacherClassroomIds = Object.keys(teacherClassrooms);
+        
+        // Get all students with status "active" in teacher's classrooms
+        let studentsSnapshot;
+        if (teacherClassroomIds.length > 0) {
+            const studentsRef = collection(db, "students");
+            const studentsQuery = query(
+                studentsRef, 
+                where("status", "==", "active"),
+                where("classroomId", "in", teacherClassroomIds)
+            );
+            studentsSnapshot = await getDocs(studentsQuery);
+        } else {
+            studentsSnapshot = { docs: [] };
+        }
+        
+        // Get all read notifications
+        const readNotifications = await getReadNotifications(teacherId);
+        
+        // Count unread calendar notifications
+        let unreadCount = 0;
+        calendarSnapshot.forEach(doc => {
+            const key = `calendar_${doc.id}`;
+            if (!readNotifications[key]) {
+                unreadCount++;
+            }
+        });
+        
+        // Count unread student join notifications
+        studentsSnapshot.forEach(doc => {
+            const key = `student_${doc.id}`;
+            if (!readNotifications[key]) {
+                unreadCount++;
+            }
+        });
+        
+        return unreadCount;
+    } catch (error) {
+        console.error("Error counting unread notifications:", error);
+        return 0;
+    }
+}
+
+async function updateNotificationBadge() {
+    if (!auth.currentUser) return;
+    
+    const unreadCount = await countUnreadNotifications(auth.currentUser.uid);
+    const badge = document.getElementById('notification-badge');
+    
+    if (badge) {
+        badge.textContent = unreadCount;
+        
+        // Hide badge if count is 0
+        if (unreadCount === 0) {
+            badge.style.display = 'none';
+        } else {
+            badge.style.display = 'flex';
+        }
+        console.log("Notification badge updated:", unreadCount);
+    }
+}
 // --------------------
 // 2. Load teacher name
 // --------------------
@@ -535,6 +647,9 @@ onAuthStateChanged(auth, async (user) => {
 
             // ✅ Load posts after setting teacher name
             await loadPosts();
+            
+            // ✅ Update notification badge
+            await updateNotificationBadge();
 
         } else {
             teacherNameElement.textContent = "Not signed in";
@@ -545,7 +660,6 @@ onAuthStateChanged(auth, async (user) => {
         hideLoading(); // 👈 always hide loading once done
     }
 });
-
 
 
 // Function to load likes for a post - UPDATED for new structure

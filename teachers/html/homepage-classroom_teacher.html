@@ -13,6 +13,28 @@
     <link rel="stylesheet" href="../style/homepage-classroom_teacher.css" />
     <style>
       
+/* Calendar day with events */
+.notification-link {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ff4444;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: none; /* Initially hidden */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
     </style>
 </head>
 
@@ -25,9 +47,10 @@
             </div>
             <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
             <div class="nav-icons">
-                <a href="notification_teacher.html" target="_blank">
-                    <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
-                </a>
+                 <a href="notification_teacher.html" target="_blank" class="notification-link">
+        <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
+        <span class="notification-badge" id="notification-badge">0</span>
+    </a>
                 <a href="help_teacher.html" target="_blank">
                     <img src="../../main/img/Help.png" alt="Help" class="icon">
                 </a>
@@ -196,12 +219,16 @@
         </div>
     </div>
 
-   <script type="module">
-
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
     import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-    import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+    import { 
+        collection, 
+        getDocs, 
+        query, 
+        where 
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
@@ -213,375 +240,456 @@
         measurementId: "G-N6Z672SXWJ"
     };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        let classId = null; // Global
-let className = null; // Also global
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    let classId = null;
+    let className = null;
 
-        await setPersistence(auth, browserLocalPersistence);
+    // Fix setPersistence
+    setPersistence(auth, browserLocalPersistence).catch((error) => {
+        console.error("Error setting persistence:", error);
+    });
 
-let currentDate = new Date();
-const calendarGrid = document.getElementById("calendar-grid");
-const currentMonthYear = document.getElementById("current-month-year");
-const classroomTitle = document.getElementById("classroom-title");
-const studentCountElement = document.querySelector('.data-card-green .data-number');
-const loadingOverlay = document.getElementById("loading-overlay");
-const monthNames = ["January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"];
+    let currentDate = new Date();
+    const calendarGrid = document.getElementById("calendar-grid");
+    const currentMonthYear = document.getElementById("current-month-year");
+    const classroomTitle = document.getElementById("classroom-title");
+    const studentCountElement = document.querySelector('.data-card-green .data-number');
+    const loadingOverlay = document.getElementById("loading-overlay");
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"];
 
-
-
-                    function showLoading() {
-  loadingOverlay.style.display = "flex";
-}
-
-// Hide overlay
-function hideLoading() {
-  loadingOverlay.style.display = "none";
-}
-
-
-
-let calendarEvents = []; // Will store all events fetched from Firestore
-
-// Fetch events from Firestore
-// Fetch all events from Firestore (no classroomId filter)
-async function loadCalendarEvents() {
-    showLoading();
-    try {
-        const calendarRef = collection(db, "calendar");
-        const snapshot = await getDocs(calendarRef); // no query filter
-
-        calendarEvents = snapshot.docs.map(doc => {
-            const data = doc.data();
-            return {
-                id: doc.id,
-                title: data.title,
-                description: data.description,
-                date: data.date,  // "YYYY-MM-DD"
-                time: data.time,
-                type: data.type
-            };
-        });
-
-        console.log("Loaded all calendar events:", calendarEvents);
-    } catch (err) {
-        console.error("Error loading calendar events:", err);
-    } finally {
-        hideLoading();
-    }
-}
-
-// ----------------- Calendar -----------------
-// Event type colors
-// Event type colors
-const EVENT_TYPE_COLORS = {
-    'exam': { class: 'exam-day', color: '#ff6b6b' },
-    'due date': { class: 'due-date', color: '#4ecdc4' },
-    'holiday': { class: 'holiday', color: '#45b7d1' },
-    'meeting': { class: 'meeting', color: '#96ceb4' },
-    'event': { class: 'event', color: '#feca57' },
-    'staff': { class: 'staff', color: '#ff9ff3' },
-    'deadline': { class: 'deadline', color: '#54a0ff' }
-};
-
-// Modified renderCalendar function with colored date cells
-function renderCalendar(date) {
-    calendarGrid.innerHTML = "";
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    currentMonthYear.textContent = `${monthNames[month]} ${year}`;
-    const firstDay = new Date(year, month, 1).getDay();
-    const totalDays = new Date(year, month + 1, 0).getDate();
-
-    for (let i = 0; i < firstDay; i++) {
-        calendarGrid.appendChild(document.createElement("div"));
+    function showLoading() {
+        loadingOverlay.style.display = "flex";
     }
 
-    for (let day = 1; day <= totalDays; day++) {
-        const dayCell = document.createElement("div");
-        dayCell.className = "calendar-day";
-        dayCell.textContent = day;
+    function hideLoading() {
+        loadingOverlay.style.display = "none";
+    }
 
-        const today = new Date();
-        if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-            dayCell.classList.add("today");
+    let calendarEvents = [];
+
+    // Notification functions
+    async function getTeacherClassrooms(teacherId) {
+        try {
+            const classroomsRef = collection(db, "classrooms");
+            const q = query(classroomsRef, where("teacherId", "==", teacherId));
+            const snapshot = await getDocs(q);
+            
+            const teacherClassrooms = {};
+            snapshot.forEach(doc => {
+                teacherClassrooms[doc.id] = doc.data();
+            });
+            
+            return teacherClassrooms;
+        } catch (error) {
+            console.error("Error getting teacher classrooms:", error);
+            return {};
         }
+    }
 
-        // Check if there are events on this day
-        const dayStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-        const eventsForDay = calendarEvents.filter(ev => ev.date === dayStr);
+    async function getReadNotifications(teacherId) {
+        try {
+            const notificationsRef = collection(db, "notification_teacher");
+            const q = query(
+                notificationsRef, 
+                where("teacherID", "==", teacherId),
+                where("status", "==", "read")
+            );
+            const snapshot = await getDocs(q);
+            const readNotifications = {};
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const key = `${data.type}_${data.notificationID}`;
+                readNotifications[key] = true;
+            });
+            return readNotifications;
+        } catch (error) {
+            console.error("Error getting read notifications:", error);
+            return {};
+        }
+    }
 
-        if (eventsForDay.length > 0) {
-            // Get the primary event type for coloring (use the first event's type)
-            const primaryEvent = eventsForDay[0];
-            const eventType = primaryEvent.type?.toLowerCase() || 'event';
-            const eventColor = EVENT_TYPE_COLORS[eventType] || EVENT_TYPE_COLORS['event'];
+    async function countUnreadNotifications(teacherId) {
+        try {
+            // Get all calendar events
+            const calendarRef = collection(db, "calendar");
+            const calendarSnapshot = await getDocs(calendarRef);
             
-            // Apply color to the entire date cell
-            dayCell.style.backgroundColor = eventColor.color;
-            dayCell.style.color = '#ffffff'; // White text for better contrast
-            dayCell.style.borderRadius = '8px'; // Rounded corners
-            dayCell.style.fontWeight = 'bold';
+            // Get teacher's classrooms
+            const teacherClassrooms = await getTeacherClassrooms(teacherId);
+            const teacherClassroomIds = Object.keys(teacherClassrooms);
             
-            // Add event count badge for multiple events
-            if (eventsForDay.length > 1) {
-                const eventCount = document.createElement("div");
-                eventCount.className = "event-count-badge";
-                eventCount.textContent = eventsForDay.length;
-                eventCount.style.position = 'absolute';
-                eventCount.style.top = '2px';
-                eventCount.style.right = '2px';
-                eventCount.style.background = 'rgba(255,255,255,0.9)';
-                eventCount.style.color = eventColor.color;
-                eventCount.style.borderRadius = '50%';
-                eventCount.style.width = '18px';
-                eventCount.style.height = '18px';
-                eventCount.style.fontSize = '10px';
-                eventCount.style.display = 'flex';
-                eventCount.style.alignItems = 'center';
-                eventCount.style.justifyContent = 'center';
-                eventCount.style.fontWeight = 'bold';
-                dayCell.style.position = 'relative';
-                dayCell.appendChild(eventCount);
+            // Get all students with status "active" in teacher's classrooms
+            let studentsSnapshot;
+            if (teacherClassroomIds.length > 0) {
+                const studentsRef = collection(db, "students");
+                const studentsQuery = query(
+                    studentsRef, 
+                    where("status", "==", "active"),
+                    where("classroomId", "in", teacherClassroomIds)
+                );
+                studentsSnapshot = await getDocs(studentsQuery);
+            } else {
+                studentsSnapshot = { docs: [] };
             }
             
-            // Tooltip with all events
-            dayCell.title = eventsForDay.map(ev => 
-                `${ev.title} (${ev.type}) - ${ev.time}`
-            ).join("\n");
+            // Get all read notifications
+            const readNotifications = await getReadNotifications(teacherId);
+            
+            // Count unread calendar notifications
+            let unreadCount = 0;
+            calendarSnapshot.forEach(doc => {
+                const key = `calendar_${doc.id}`;
+                if (!readNotifications[key]) {
+                    unreadCount++;
+                }
+            });
+            
+            // Count unread student join notifications
+            studentsSnapshot.forEach(doc => {
+                const key = `student_${doc.id}`;
+                if (!readNotifications[key]) {
+                    unreadCount++;
+                }
+            });
+            
+            return unreadCount;
+        } catch (error) {
+            console.error("Error counting unread notifications:", error);
+            return 0;
+        }
+    }
+
+    async function updateNotificationBadge() {
+        if (!auth.currentUser) return;
+        
+        const unreadCount = await countUnreadNotifications(auth.currentUser.uid);
+        const badge = document.getElementById('notification-badge');
+        
+        if (badge) {
+            badge.textContent = unreadCount;
+            
+            // Hide badge if count is 0
+            if (unreadCount === 0) {
+                badge.style.display = 'none';
+            } else {
+                badge.style.display = 'flex';
+            }
+            console.log("Notification badge updated:", unreadCount);
+        }
+    }
+
+    // Calendar functions
+    async function loadCalendarEvents() {
+        showLoading();
+        try {
+            const calendarRef = collection(db, "calendar");
+            const snapshot = await getDocs(calendarRef);
+
+            calendarEvents = snapshot.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    id: doc.id,
+                    title: data.title,
+                    description: data.description,
+                    date: data.date,
+                    time: data.time,
+                    type: data.type
+                };
+            });
+
+            console.log("Loaded all calendar events:", calendarEvents);
+        } catch (err) {
+            console.error("Error loading calendar events:", err);
+        } finally {
+            hideLoading();
+        }
+    }
+
+    const EVENT_TYPE_COLORS = {
+        'exam': { class: 'exam-day', color: '#ff6b6b' },
+        'due date': { class: 'due-date', color: '#4ecdc4' },
+        'holiday': { class: 'holiday', color: '#45b7d1' },
+        'meeting': { class: 'meeting', color: '#96ceb4' },
+        'event': { class: 'event', color: '#feca57' },
+        'staff': { class: 'staff', color: '#ff9ff3' },
+        'deadline': { class: 'deadline', color: '#54a0ff' }
+    };
+
+    function renderCalendar(date) {
+        calendarGrid.innerHTML = "";
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        currentMonthYear.textContent = `${monthNames[month]} ${year}`;
+        const firstDay = new Date(year, month, 1).getDay();
+        const totalDays = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstDay; i++) {
+            calendarGrid.appendChild(document.createElement("div"));
         }
 
-        dayCell.addEventListener("click", () => {
-            openDateModal(day, month, year, eventsForDay);
-        });
+        for (let day = 1; day <= totalDays; day++) {
+            const dayCell = document.createElement("div");
+            dayCell.className = "calendar-day";
+            dayCell.textContent = day;
 
-        calendarGrid.appendChild(dayCell);
-    }
-}
+            const today = new Date();
+            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                dayCell.classList.add("today");
+            }
 
-// Modified modal to show colored events (same as before)
-function openDateModal(day, month, year, eventsForDay = []) {
-    modalDateEl.textContent = `${monthNames[month]} ${day}, ${year}`;
+            const dayStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+            const eventsForDay = calendarEvents.filter(ev => ev.date === dayStr);
 
-    if (eventsForDay.length === 0) {
-        modalDetails.innerHTML = "<p>No events for this day.</p>";
-    } else {
-        modalDetails.innerHTML = eventsForDay.map(ev => {
-            const eventType = ev.type?.toLowerCase() || 'event';
-            const eventColor = EVENT_TYPE_COLORS[eventType] || EVENT_TYPE_COLORS['event'];
-            
-            return `
-                <div class="modal-event-item" style="border-left: 4px solid ${eventColor.color}; padding-left: 10px; margin-bottom: 15px;">
-                    <p><strong style="color: ${eventColor.color};">${ev.type}:</strong> ${ev.title}</p>
-                    <p><strong>Time:</strong> ${ev.time}</p>
-                    <p><strong>Description:</strong> ${ev.description}</p>
-                </div>
-            `;
-        }).join("");
-    }
+            if (eventsForDay.length > 0) {
+                const primaryEvent = eventsForDay[0];
+                const eventType = primaryEvent.type?.toLowerCase() || 'event';
+                const eventColor = EVENT_TYPE_COLORS[eventType] || EVENT_TYPE_COLORS['event'];
+                
+                dayCell.style.backgroundColor = eventColor.color;
+                dayCell.style.color = '#ffffff';
+                dayCell.style.borderRadius = '8px';
+                dayCell.style.fontWeight = 'bold';
+                
+                if (eventsForDay.length > 1) {
+                    const eventCount = document.createElement("div");
+                    eventCount.className = "event-count-badge";
+                    eventCount.textContent = eventsForDay.length;
+                    eventCount.style.position = 'absolute';
+                    eventCount.style.top = '2px';
+                    eventCount.style.right = '2px';
+                    eventCount.style.background = 'rgba(255,255,255,0.9)';
+                    eventCount.style.color = eventColor.color;
+                    eventCount.style.borderRadius = '50%';
+                    eventCount.style.width = '18px';
+                    eventCount.style.height = '18px';
+                    eventCount.style.fontSize = '10px';
+                    eventCount.style.display = 'flex';
+                    eventCount.style.alignItems = 'center';
+                    eventCount.style.justifyContent = 'center';
+                    eventCount.style.fontWeight = 'bold';
+                    dayCell.style.position = 'relative';
+                    dayCell.appendChild(eventCount);
+                }
+                
+                dayCell.title = eventsForDay.map(ev => 
+                    `${ev.title} (${ev.type}) - ${ev.time}`
+                ).join("\n");
+            }
 
-    calendarModal.style.display = "flex";
-}
+            dayCell.addEventListener("click", () => {
+                openDateModal(day, month, year, eventsForDay);
+            });
 
-// Modified renderCalendar function with colored events
-
-// Modified modal to show colored events
-
-// ----------------- Calendar -----------------
-
-document.getElementById("prev-month").addEventListener("click", (e) => {
-    e.preventDefault();
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar(currentDate);
-});
-
-document.getElementById("next-month").addEventListener("click", (e) => {
-    e.preventDefault();
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar(currentDate);
-});
-
-// Modal functions
-// Modal functions
-const calendarModal = document.getElementById("calendar-modal");
-const modalDateEl = document.getElementById("modal-date");
-const modalDetails = document.getElementById("modal-details");
-const closeModalButton = document.getElementById("close-modal-button");
-
-// Add event listener for close button
-if (closeModalButton) {
-    closeModalButton.addEventListener('click', closePopup);
-}
-
-// Also close modal when clicking outside
-calendarModal.addEventListener('click', function(e) {
-    if (e.target === calendarModal) {
-        closePopup();
-    }
-});
-
-function closePopup() {
-    calendarModal.style.display = "none";
-}
-// ----------------- Auth + Load Class -----------------
-onAuthStateChanged(auth, async (user) => {
-  if (!user) return;
-
-  showLoading(); // 👈 show loading screen
-
-  try {
-    const teacherRef = doc(db, "users", user.uid);
-    const teacherSnap = await getDoc(teacherRef);
-
-    if (!teacherSnap.exists() || teacherSnap.data().role !== "teacher") {
-      alert("Please log in as a teacher.");
-      window.location.href = "../../main/html/login.html";
-      return;
+            calendarGrid.appendChild(dayCell);
+        }
     }
 
-// wait for classroom & student data
-await loadClassData();
-await loadCalendarEvents(); // just fetch all events
-renderCalendar(currentDate);
-
-
-
-  } catch (err) {
-    console.error(err);
-  } finally {
-    hideLoading(); // 👈 hide loading screen when finished
-  }
-});
-
-
-async function loadClassData() {
- classId = localStorage.getItem('selectedClassId');
-    className = localStorage.getItem('selectedClassName');
-    
-    console.log("Selected classId:", classId);
-    console.log("Selected className:", className);
-    
-    const classroomTitle = document.getElementById("classroom-title");
-    const studentCountEl = document.getElementById("student-count");
-    const parentCountEl = document.getElementById("parent-count");
-    const topEngagedList = document.querySelector(".top-engaged .student-list");
-    const lowEngagedList = document.querySelector(".low-engagement .student-list");
-
-    if (!classId || !className) {
-        console.log("No class selected in localStorage.");
-        classroomTitle.textContent = "No class selected.";
-        studentCountEl.textContent = 0;
-        parentCountEl.textContent = 0;
-        topEngagedList.innerHTML = "<p>No data</p>";
-        lowEngagedList.innerHTML = "<p>No data</p>";
-        return;
-    }
-
-    classroomTitle.textContent = className;
-
-
-    try {
-       
-        const studentsRef = collection(db, "students");
-        const studentsQuery = query(studentsRef, where("classroomId", "==", classId));
-        const studentsSnapshot = await getDocs(studentsQuery);
-
-        console.log("Students snapshot:", studentsSnapshot.docs.map(d => d.data()));
-
-        const students = studentsSnapshot.docs.map(doc => ({
-            id: doc.id,
-            fullName: `${doc.data().firstName} ${doc.data().lastName}`,
-            parentId: doc.data().parentId || null
-        }));
-
-        console.log("Mapped students:", students);
-
-        const parentIds = new Set(students.map(s => s.parentId).filter(Boolean));
-        console.log("Parent IDs:", Array.from(parentIds));
-
-       
-        const activitiesRef = collection(db, "activity");
-   const activitiesQuery = query(activitiesRef, where("classroomID", "==", classId));
-
-
+    function openDateModal(day, month, year, eventsForDay = []) {
+        const modalDateEl = document.getElementById("modal-date");
+        const modalDetails = document.getElementById("modal-details");
         
-        const activitiesSnapshot = await getDocs(activitiesQuery);
-console.log("Activities count:", activitiesSnapshot.size);  // Should be > 0
-activitiesSnapshot.forEach(doc => console.log(doc.id, doc.data()));
+        modalDateEl.textContent = `${monthNames[month]} ${day}, ${year}`;
 
+        if (eventsForDay.length === 0) {
+            modalDetails.innerHTML = "<p>No events for this day.</p>";
+        } else {
+            modalDetails.innerHTML = eventsForDay.map(ev => {
+                const eventType = ev.type?.toLowerCase() || 'event';
+                const eventColor = EVENT_TYPE_COLORS[eventType] || EVENT_TYPE_COLORS['event'];
+                
+                return `
+                    <div class="modal-event-item" style="border-left: 4px solid ${eventColor.color}; padding-left: 10px; margin-bottom: 15px;">
+                        <p><strong style="color: ${eventColor.color};">${ev.type}:</strong> ${ev.title}</p>
+                        <p><strong>Time:</strong> ${ev.time}</p>
+                        <p><strong>Description:</strong> ${ev.description}</p>
+                    </div>
+                `;
+            }).join("");
+        }
 
-        console.log("Activities snapshot:", activitiesSnapshot.docs.map(d => d.data()));
+        document.getElementById("calendar-modal").style.display = "flex";
+    }
 
-        const filteredActivities = activitiesSnapshot.docs.map(doc => doc.data());
-
-        
-        function calculateScores(activities) {
-    return students.map(student => {
-       
-        const studentActs = activities.filter(act => act.studentID === student.id);
-
-        let totalScore = 0;
-        studentActs.forEach(act => {
-            const points = act.activityScore === "full" ? 100
-                        : act.activityScore === "partial" ? 50
-                        : 0;
-            totalScore += points;
-        });
-
-        const avgScore = studentActs.length > 0 ? totalScore / studentActs.length : 0;
-        return { ...student, score: avgScore };
+    // Event listeners
+    document.getElementById("prev-month").addEventListener("click", (e) => {
+        e.preventDefault();
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar(currentDate);
     });
-}
 
+    document.getElementById("next-month").addEventListener("click", (e) => {
+        e.preventDefault();
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar(currentDate);
+    });
 
-        const scoredStudents = calculateScores(filteredActivities);
-        console.log("Scored students:", scoredStudents);
+    const calendarModal = document.getElementById("calendar-modal");
+    const closeModalButton = document.getElementById("close-modal-button");
 
-        studentCountEl.textContent = students.length;
-        parentCountEl.textContent = parentIds.size;
-
-        // 4️⃣ Render top/low engaged students
-        const sortedStudents = scoredStudents.sort((a, b) => b.score - a.score);
-        console.log("Sorted students:", sortedStudents);
-
-        topEngagedList.innerHTML = "";
-        sortedStudents.slice(0, 3).forEach(student => {
-            topEngagedList.innerHTML += `
-                <div class="student-item">
-                    <span class="student-name">${student.fullName}</span>
-                    <div class="progress-bar">
-                        <div class="progress-fill-green" style="width: ${student.score}%;"></div>
-                    </div>
-                    <span class="progress-value">${Math.round(student.score)}</span>
-                </div>
-            `;
-        });
-
-        lowEngagedList.innerHTML = "";
-        sortedStudents.slice(-3).forEach(student => {
-            lowEngagedList.innerHTML += `
-                <div class="student-item">
-                    <span class="student-name">${student.fullName}</span>
-                    <div class="progress-bar">
-                        <div class="progress-fill-red" style="width: ${student.score}%;"></div>
-                    </div>
-                    <span class="progress-value">${Math.round(student.score)}</span>
-                </div>
-            `;
-        });
-
-    } catch (err) {
-        console.error("Error loading students:", err);
-        studentCountEl.textContent = 0;
-        parentCountEl.textContent = 0;
-        topEngagedList.innerHTML = "<p>Error loading data</p>";
-        lowEngagedList.innerHTML = "<p>Error loading data</p>";
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', closePopup);
     }
-}
 
-   </script>
+    calendarModal.addEventListener('click', function(e) {
+        if (e.target === calendarModal) {
+            closePopup();
+        }
+    });
+
+    function closePopup() {
+        calendarModal.style.display = "none";
+    }
+
+    // FIXED: Corrected onAuthStateChanged (removed extra 'o')
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) return;
+
+        showLoading();
+
+        try {
+            const teacherRef = doc(db, "users", user.uid);
+            const teacherSnap = await getDoc(teacherRef);
+
+            if (!teacherSnap.exists() || teacherSnap.data().role !== "teacher") {
+                alert("Please log in as a teacher.");
+                window.location.href = "../../main/html/login.html";
+                return;
+            }
+
+            // Load classroom data and calendar
+            await loadClassData();
+            await loadCalendarEvents();
+            renderCalendar(currentDate);
+            
+            // Update notification badge
+            await updateNotificationBadge();
+
+        } catch (err) {
+            console.error(err);
+        } finally {
+            hideLoading();
+        }
+    });
+
+    // Rest of your loadClassData function remains the same...
+    async function loadClassData() {
+        classId = localStorage.getItem('selectedClassId');
+        className = localStorage.getItem('selectedClassName');
+        
+        console.log("Selected classId:", classId);
+        console.log("Selected className:", className);
+        
+        const classroomTitle = document.getElementById("classroom-title");
+        const studentCountEl = document.getElementById("student-count");
+        const parentCountEl = document.getElementById("parent-count");
+        const topEngagedList = document.querySelector(".top-engaged .student-list");
+        const lowEngagedList = document.querySelector(".low-engagement .student-list");
+
+        if (!classId || !className) {
+            console.log("No class selected in localStorage.");
+            classroomTitle.textContent = "No class selected.";
+            studentCountEl.textContent = 0;
+            parentCountEl.textContent = 0;
+            topEngagedList.innerHTML = "<p>No data</p>";
+            lowEngagedList.innerHTML = "<p>No data</p>";
+            return;
+        }
+
+        classroomTitle.textContent = className;
+
+        try {
+            const studentsRef = collection(db, "students");
+            const studentsQuery = query(studentsRef, where("classroomId", "==", classId));
+            const studentsSnapshot = await getDocs(studentsQuery);
+
+            console.log("Students snapshot:", studentsSnapshot.docs.map(d => d.data()));
+
+            const students = studentsSnapshot.docs.map(doc => ({
+                id: doc.id,
+                fullName: `${doc.data().firstName} ${doc.data().lastName}`,
+                parentId: doc.data().parentId || null
+            }));
+
+            console.log("Mapped students:", students);
+
+            const parentIds = new Set(students.map(s => s.parentId).filter(Boolean));
+            console.log("Parent IDs:", Array.from(parentIds));
+
+            const activitiesRef = collection(db, "activity");
+            const activitiesQuery = query(activitiesRef, where("classroomID", "==", classId));
+            
+            const activitiesSnapshot = await getDocs(activitiesQuery);
+            console.log("Activities count:", activitiesSnapshot.size);
+            activitiesSnapshot.forEach(doc => console.log(doc.id, doc.data()));
+
+            console.log("Activities snapshot:", activitiesSnapshot.docs.map(d => d.data()));
+
+            const filteredActivities = activitiesSnapshot.docs.map(doc => doc.data());
+
+            function calculateScores(activities) {
+                return students.map(student => {
+                    const studentActs = activities.filter(act => act.studentID === student.id);
+
+                    let totalScore = 0;
+                    studentActs.forEach(act => {
+                        const points = act.activityScore === "full" ? 100
+                                    : act.activityScore === "partial" ? 50
+                                    : 0;
+                        totalScore += points;
+                    });
+
+                    const avgScore = studentActs.length > 0 ? totalScore / studentActs.length : 0;
+                    return { ...student, score: avgScore };
+                });
+            }
+
+            const scoredStudents = calculateScores(filteredActivities);
+            console.log("Scored students:", scoredStudents);
+
+            studentCountEl.textContent = students.length;
+            parentCountEl.textContent = parentIds.size;
+
+            const sortedStudents = scoredStudents.sort((a, b) => b.score - a.score);
+            console.log("Sorted students:", sortedStudents);
+
+            topEngagedList.innerHTML = "";
+            sortedStudents.slice(0, 3).forEach(student => {
+                topEngagedList.innerHTML += `
+                    <div class="student-item">
+                        <span class="student-name">${student.fullName}</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill-green" style="width: ${student.score}%;"></div>
+                        </div>
+                        <span class="progress-value">${Math.round(student.score)}</span>
+                    </div>
+                `;
+            });
+
+            lowEngagedList.innerHTML = "";
+            sortedStudents.slice(-3).forEach(student => {
+                lowEngagedList.innerHTML += `
+                    <div class="student-item">
+                        <span class="student-name">${student.fullName}</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill-red" style="width: ${student.score}%;"></div>
+                        </div>
+                        <span class="progress-value">${Math.round(student.score)}</span>
+                    </div>
+                `;
+            });
+
+        } catch (err) {
+            console.error("Error loading students:", err);
+            studentCountEl.textContent = 0;
+            parentCountEl.textContent = 0;
+            topEngagedList.innerHTML = "<p>Error loading data</p>";
+            lowEngagedList.innerHTML = "<p>Error loading data</p>";
+        }
+    }
+</script>
 
 </body>
 </html>
