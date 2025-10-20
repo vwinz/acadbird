@@ -97,8 +97,10 @@ function hideLoading() {
 }
 
 // Load resources for multiple classrooms
+// Load resources for multiple classrooms
+// Load resources for multiple classrooms
 async function loadResources(classroomIds) {
-    console.log("Classroom IDs:", classroomIds); // ✅ Check classroom IDs
+    console.log("Classroom IDs:", classroomIds);
 
     const resourcesSection = document.getElementById("resourcesSection");
     resourcesSection.innerHTML = "";
@@ -115,12 +117,14 @@ async function loadResources(classroomIds) {
             where("status", "==", "public")
         );
         const weekSnap = await getDocs(weekQuery);
-        console.log("Weeks found:", weekSnap.size); // ✅ Number of weeks returned
+        console.log("Public weeks found:", weekSnap.size);
 
         for (const weekDoc of weekSnap.docs) {
             const weekData = weekDoc.data();
-            console.log("Week data:", weekData); // ✅ Check week data
+            console.log("Week data:", weekData);
 
+            // Create week card for ALL public weeks (even if no topics)
+            resourcesFound = true;
             const weekCard = document.createElement("div");
             weekCard.classList.add("week-card", "unlocked");
             weekCard.innerHTML = `
@@ -132,7 +136,7 @@ async function loadResources(classroomIds) {
             `;
             const weekContentDiv = weekCard.querySelector(".week-content");
 
-            // Fetch only public topics
+            // Fetch public topics for this week
             const topicQuery = query(
                 collection(db, "topic"),
                 where("classroomID", "==", classroomID),
@@ -140,7 +144,7 @@ async function loadResources(classroomIds) {
                 where("status", "==", "public")
             );
             const topicSnap = await getDocs(topicQuery);
-            console.log(`Topics found for week ${weekData.weekNo}:`, topicSnap.size);
+            console.log(`Public topics found for week ${weekData.weekNo}:`, topicSnap.size);
 
             for (const topicDoc of topicSnap.docs) {
                 const topicData = topicDoc.data();
@@ -156,6 +160,7 @@ async function loadResources(classroomIds) {
                 `;
                 const topicContentDiv = topicCard.querySelector(".topic-content");
 
+                // Fetch content for this topic
                 const contentQuery = query(
                     collection(db, "topicContent"),
                     where("classroomID", "==", classroomID),
@@ -164,8 +169,6 @@ async function loadResources(classroomIds) {
                 );
                 const contentSnap = await getDocs(contentQuery);
                 console.log(`Content items found for topic ${topicData.topicName}:`, contentSnap.size);
-
-                if (!contentSnap.empty) resourcesFound = true;
 
                 for (const contentDoc of contentSnap.docs) {
                     const contentData = contentDoc.data();
@@ -188,20 +191,23 @@ async function loadResources(classroomIds) {
                             </div>`;
                     }
                 }
+
+                // Add topic card even if it has no content
                 weekContentDiv.appendChild(topicCard);
             }
+
+            // Add week card even if it has no topics
             resourcesSection.appendChild(weekCard);
         }
     }
 
     if (!resourcesFound) {
-        console.log("No resources found!"); // ✅ Debug log
+        console.log("No resources found!");
         resourcesSection.innerHTML = `<p class="no-resources">No resources available.</p>`;
     }
 
     initEventListeners();
 }
-
 
 function initEventListeners() {
     document.querySelectorAll('.week-header').forEach(header => {

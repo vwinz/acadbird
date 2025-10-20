@@ -45,14 +45,15 @@ function getRandomColor() {
 }
 
 // Function to create a class card element
+// Function to create a class card element
 async function createClassCard(classObj) {
     const card = document.createElement('div');
     card.className = `class-card ${classObj.color || getRandomColor()}`;
     card.setAttribute('data-class-id', classObj.id);
 
-    // ✅ Get actual student count from Firestore
+    // ✅ Get actual student count from Firestore - ONLY ACTIVE STUDENTS
     const studentCount = await getStudentCountForClass(classObj.id);
-    console.log(`Class "${classObj.name}" has ${studentCount} students.`); // Debug
+    console.log(`Class "${classObj.name}" has ${studentCount} active students.`); // Debug
 
     card.innerHTML = `
         <div class="card-icons">
@@ -74,19 +75,19 @@ async function createClassCard(classObj) {
     return card;
 }
 
-
+// Function to get student count for a class - ONLY ACTIVE STUDENTS
 async function getStudentCountForClass(classId) {
     try {
         const snapshot = await db.collection('students')
                                  .where('classroomId', '==', classId)
+                                 .where('status', '==', 'active') // ✅ Only count active students
                                  .get();
-        return snapshot.size; // number of students in this class
+        return snapshot.size; // number of ACTIVE students in this class
     } catch (err) {
-        console.error("Failed to count students for class", classId, err);
+        console.error("Failed to count active students for class", classId, err);
         return 0;
     }
 }
-
 
 // Function to render all classes
 async function renderClasses() {
@@ -99,6 +100,27 @@ async function renderClasses() {
     }
 
     if (newClassCard) classGrid.appendChild(newClassCard);
+}
+
+// Function to load and display classrooms using a real-time listener
+function setupClassListener(uid) {
+    const classesRef = db.collection('classrooms')
+                         .where('teacherId', '==', uid)
+                         .where('status', '==', 'active');
+
+    classesRef.onSnapshot(snapshot => {
+        currentClasses = [];
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            currentClasses.push({
+                id: doc.id,
+                name: data.classroomName || "Unnamed Class"
+            });
+        });
+
+        console.log("Classes loaded:", currentClasses); // Debug
+        renderClasses(); // Will now fetch ACTIVE student count per class
+    });
 }
 
 
@@ -163,26 +185,6 @@ async function loadTeacherProfile(uid) {
 
 
 // Function to load and display classrooms using a real-time listener
-function setupClassListener(uid) {
-    const classesRef = db.collection('classrooms')
-                         .where('teacherId', '==', uid)
-                         .where('status', '==', 'active');
-
-    // In setupClassListener
-    classesRef.onSnapshot(snapshot => {
-        currentClasses = [];
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            currentClasses.push({
-                id: doc.id,
-                name: data.classroomName || "Unnamed Class"
-            });
-        });
-
-        console.log("Classes loaded:", currentClasses); // Debug
-        renderClasses(); // Will now fetch student count per class
-    });
-} // ✅ Added missing closing brace
 
 
 
