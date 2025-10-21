@@ -322,3 +322,62 @@ body {
 .option.teacher {
   background-color: #A8E6CF;
 }
+
+/* === Sign Up Dropdown === */
+.signup-btn {
+  position: relative;
+}
+
+.signup-btn > a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 15px;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+}
+
+.signup-btn > a:hover {
+  background-color: #004aad;
+  border-radius: 5px;
+}
+
+/* Dropdown hidden by default */
+.signup-dropdown {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 999;
+  flex-direction: column;
+  min-width: 150px;
+  padding: 8px 0;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.25s ease;
+}
+
+/* Visible dropdown (hover or click) */
+.signup-btn.show .signup-dropdown,
+.signup-btn:hover .signup-dropdown {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dropdown links */
+.signup-dropdown a {
+  padding: 5px 10px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 300;
+  transition: all 0.2s ease;
+}
+
+.signup-dropdown a:hover {
+  background-color: #e8f1ff;
+  color: #004aad;
+}

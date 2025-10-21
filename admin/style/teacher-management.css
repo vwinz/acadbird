@@ -677,3 +677,12 @@
             justify-content: center;
             gap: 15px;
         }
+        .status-archived {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid #d1d5db;
+}

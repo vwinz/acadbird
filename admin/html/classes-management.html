@@ -275,14 +275,15 @@
                     <input type="text" id="edit-class-name" name="class-name" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="edit-teacher">Change Teacher:</label>
-                    <select id="edit-teacher" name="teacher" required>
-                        <option value="Ms. Rose">Ms. Rose</option>
-                        <option value="Mr. David">Mr. David</option>
-                        <option value="Unassigned">Unassigned</option>
-                    </select>
-                </div>
+               <div class="form-group">
+    <label for="edit-teacher">Change Teacher (Optional):</label>
+    <select id="edit-teacher" name="teacher">
+        <option value="">Keep Current Teacher</option>
+        <option value="Ms. Rose">Ms. Rose</option>
+        <option value="Mr. David">Mr. David</option>
+        <option value="Unassigned">Unassigned</option>
+    </select>
+</div>
 
                 <div class="form-actions">
                     <button type="button" class="btn btn-cancel" onclick="closeEditClassModal()">Cancel</button>
@@ -652,6 +653,55 @@ await populateTeacherSelect("edit-teacher");
             addClassForm.reset();
         }
 
+editClassForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const classroomId = document.getElementById("edit-class-id").value;
+  const className = document.getElementById("edit-class-name").value.trim();
+  const newTeacherId = document.getElementById("edit-teacher").value;
+
+  try {
+    // Create update object with only the fields that changed
+    const updateData = {
+      classroomName: className
+    };
+    
+    // Only update teacher if a new one was selected
+    if (newTeacherId) {
+      updateData.teacherId = newTeacherId === "unassigned" ? null : newTeacherId;
+      
+      // Update status based on teacher assignment
+      updateData.status = newTeacherId === "unassigned" ? "pending" : "active";
+    }
+
+    await updateDoc(doc(db, "classrooms", classroomId), updateData);
+
+    alert("Class updated successfully!");
+    closeModal(editClassModal);
+    loadClassesTable();
+  } catch (err) {
+    console.error("Error updating class:", err);
+    alert("Failed to update class. See console for details.");
+  }
+});
+
+// Update the function that opens the edit modal
+function openEditClassModal(rowElement) {
+    const classId = rowElement.getAttribute('data-id');
+    const className = rowElement.getAttribute('data-class-name');
+    const teacherId = rowElement.getAttribute('data-teacher-id');
+    
+    // Populate the modal fields
+    editClassIdInput.value = classId;
+    editClassNameInput.value = className;
+    
+    // Set the default option to "Keep Current Teacher"
+    editTeacherSelect.value = "";
+    editClassTitle.textContent = className;
+    
+    editClassModal.style.display = 'flex';
+}
+
         addClassButton.addEventListener('click', openAddClassModal);
 
      addClassForm.addEventListener("submit", async (e) => {
@@ -685,46 +735,12 @@ await populateTeacherSelect("edit-teacher");
   }
 });
 
-        // --- 3. Edit Class Modal Logic ---
-        function openEditClassModal(rowElement) {
-            const classId = rowElement.getAttribute('data-id');
-            const className = rowElement.getAttribute('data-class-name');
-            const teacher = rowElement.getAttribute('data-teacher');
-            
-            // Populate the modal fields
-            editClassIdInput.value = classId;
-            editClassNameInput.value = className;
-            editTeacherSelect.value = (teacher === '(Unassigned)' ? 'Unassigned' : teacher);
-            editClassTitle.textContent = className;
-            
-            editClassModal.style.display = 'flex';
-        }
-
+     
         function closeEditClassModal() {
             closeModal(editClassModal);
         }
 
-        editClassForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const classroomId = document.getElementById("edit-class-id").value; // ✅ get ID from hidden input
-  const newTeacherId = document.getElementById("edit-teacher").value;
-
-  try {
-    await updateDoc(doc(db, "classrooms", classroomId), {
-      teacherId: newTeacherId === "unassigned" ? null : newTeacherId
-    });
-
-    alert("Class updated successfully!");
-    closeModal(editClassModal);
-    loadClassesTable(); // ✅ reload table so changes show
-  } catch (err) {
-    console.error("Error updating teacher:", err);
-    alert("Failed to update class. See console for details.");
-  }
-});
-
-
+  
         // --- 4. Archived Classes Modal Logic (NEW) ---
         
         function closeArchivedClassesModal() {

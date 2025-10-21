@@ -21,7 +21,14 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li class="login-btn"><a href="main/html/login.html">Login</a></li>
-                <li class="signup-btn"><a href="main/html/signup.html">Sign Up</a></li>
+<li class="signup-btn">
+  <a href="#">Sign Up ▾</a>
+  <div class="signup-dropdown">
+    <a href="main/html/signup_p.html">As a Parent</a>
+    <a href="main/html/signup_t.html">As a Teacher</a>
+  </div>
+</li>
+
             </ul>
         </nav>
     </div>
@@ -149,4 +156,21 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
+<script>
+  const signupBtn = document.querySelector('.signup-btn');
+  const signupLink = document.getElementById('signupToggle');
+
+  signupLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    signupBtn.classList.toggle('show');
+  });
+
+  // Hide dropdown if clicked outside
+  document.addEventListener('click', (e) => {
+    if (!signupBtn.contains(e.target)) {
+      signupBtn.classList.remove('show');
+    }
+  });
+</script>
+
 </html>

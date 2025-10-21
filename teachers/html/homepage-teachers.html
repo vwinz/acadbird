@@ -91,14 +91,26 @@
         ></a>
         <p class="modal-title">Add New Class:</p>
         <div class="modal-input-group">
-          <label for="new-class-name">Name:</label>
-          <input
-            type="text"
-            id="new-class-name"
-            class="modal-input"
-            placeholder="e.g., Kinder Violet"
-          />
-        </div>
+  <label for="new-class-name">Name:</label>
+  <input
+    type="text"
+    id="new-class-name"
+    class="modal-input"
+    placeholder="e.g., Kinder Violet"
+  />
+</div>
+
+        <div class="modal-input-group">
+  <label for="new-class-students">No. of Students:</label>
+  <input
+    type="number"
+    id="new-class-students"
+    class="modal-input"
+    placeholder="e.g., 25"
+    min="1"
+  />
+</div>
+
         <div class="modal-buttons">
           <a href="#" class="btn btn-yes" id="add-class-btn">Add</a>
           <a href="#" class="btn btn-no" onclick="hideModal('new-class-modal')"
@@ -192,6 +204,8 @@ const classGrid = document.getElementById('class-grid');
 const newClassLink = document.getElementById('new-class-link');
 const newClassNameInput = document.getElementById('new-class-name');
 const addClassBtn = document.getElementById('add-class-btn');
+const newClassStudentsInput = document.getElementById('new-class-students');
+
 const teacherNameHeader = document.getElementById('teacher-name-header');
 const teacherNameProfile = document.getElementById('teacher-name');
 const teacherRoleProfile = document.getElementById('teacher-role');
@@ -383,31 +397,38 @@ newClassLink.addEventListener('click', e => {
     showModal(newClassModal);
 });
 
-// 2. Add new class
 addClassBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    const name = newClassNameInput.value.trim();
+  e.preventDefault();
 
-    if (!name || !currentTeacherUid) {
-        return alert('Please wait for the application to load before adding a class.');
-    }
+  const name = newClassNameInput.value.trim();
+  const studentCount = parseInt(newClassStudentsInput.value.trim(), 10);
 
-    const newClassData = {
-        teacherId: currentTeacherUid,
-        classroomName: name,
-        created_at: firebase.firestore.FieldValue.serverTimestamp(),
-        status: "active"
-    };
+  if (!name || !currentTeacherUid) {
+    return alert('Please wait for the application to load before adding a class.');
+  }
 
-    try {
-        await db.collection('classrooms').add(newClassData);
-        window.hideModal('new-class-modal');
-        newClassNameInput.value = '';
-        console.log(`Class "${name}" added successfully with status "active".`);
-    } catch (error) {
-        console.error("Error adding class:", error);
-        alert("Failed to add class. Check console for details.");
-    }
+  if (isNaN(studentCount) || studentCount <= 0) {
+    return alert('Please enter a valid number of students.');
+  }
+
+  const newClassData = {
+    teacherId: currentTeacherUid,
+    classroomName: name,
+    noOfStudents: studentCount, // ✅ added field
+    created_at: firebase.firestore.FieldValue.serverTimestamp(),
+    status: "active"
+  };
+
+  try {
+    await db.collection('classrooms').add(newClassData);
+    window.hideModal('new-class-modal');
+    newClassNameInput.value = '';
+    newClassStudentsInput.value = ''; // ✅ clear input after saving
+    console.log(`Class "${name}" added successfully with ${studentCount} students.`);
+  } catch (error) {
+    console.error("Error adding class:", error);
+    alert("Failed to add class. Check console for details.");
+  }
 });
 
 // 3. Edit, Archive, Delete listeners (Delegated event handling)
