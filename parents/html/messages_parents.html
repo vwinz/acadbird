@@ -124,7 +124,8 @@ import {
     addDoc,
     orderBy,
     serverTimestamp,
-    updateDoc
+    updateDoc,
+    writeBatch  // Add this import
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
@@ -159,6 +160,7 @@ const ChatService = {
     classroomIds: [],
     unsubscribeListeners: [],
     currentChatId: null,
+    unreadCounts: new Map(), // Track unread counts per chat
 
     async init() {
         return new Promise((resolve) => {
@@ -394,32 +396,49 @@ const ChatService = {
         }
     },
 
-    async setupChatListeners() {
-        // Clean up previous listeners
-        this.unsubscribeListeners.forEach(unsubscribe => unsubscribe());
-        this.unsubscribeListeners = [];
+    
+    // Update unread message count for a chat
+    updateUnreadCount(chatId, snapshot) {
+        let unreadCount = 0;
         
-        const participants = await this.getChatParticipants();
+        snapshot.forEach(doc => {
+            const message = doc.data();
+            // Count messages that are unread and not sent by current user
+            if (!message.read && message.senderId !== this.currentUser.uid) {
+                unreadCount++;
+            }
+        });
         
-        // Set up listeners for each chat
-        for (const participant of participants) {
-            const chatId = await this.getOrCreateChatId(participant.id);
+        // Store the unread count
+        this.unreadCounts.set(chatId, unreadCount);
+        
+        // Update the badge in the sidebar
+        this.updateChatBadge(chatId, unreadCount);
+    },
+
+    // Update badge in sidebar for a specific chat
+    updateChatBadge(chatId, unreadCount) {
+        const chatItem = document.querySelector(`.chat-item[data-chat-id="${chatId}"]`);
+        if (chatItem) {
+            let badge = chatItem.querySelector('.unread-badge');
             
-            if (chatId) {
-                const messagesQuery = query(
-                    collection(db, 'chats', chatId, 'messages'),
-                    orderBy('timestamp', 'asc')
-                );
-                
-                const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
-                    this.updateChatUI(chatId, participant, snapshot);
-                });
-                
-                this.unsubscribeListeners.push(unsubscribe);
+            if (!badge) {
+                // Create badge if it doesn't exist
+                badge = document.createElement('div');
+                badge.className = 'unread-badge';
+                chatItem.appendChild(badge);
+            }
+            
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
             }
         }
     },
 
+  
     updateChatUI(chatId, participant, snapshot) {
         const chatBody = document.getElementById('chat-body');
         const activeChat = document.querySelector('.chat-item.active');
@@ -636,6 +655,7 @@ const ChatService = {
                       `Parent - ${chatData.studentName}'s parent`}
                 </div>
             </div>
+            <div class="unread-badge" style="display: none;">0</div>
         `;
         
         return chatItem;
@@ -659,63 +679,211 @@ const ChatService = {
             });
         });
     },
+// Update the markMessagesAsRead function to properly update Firestore
 
-    async switchToChat(chatId, participantName, participantType, studentName, classroomName) {
-        const chatName = document.getElementById('chat-name');
-        const chatStudent = document.getElementById('chat-student');
-        const chatBody = document.getElementById('chat-body');
-        const messageInput = document.getElementById('message-input');
+// Update the markMessagesAsRead function to avoid the composite index requirement
+async markMessagesAsRead(chatId) {
+    try {
+        console.log('Marking messages as read for chat:', chatId);
         
-        // Update header
-        chatName.textContent = participantName;
+        // Get ALL messages from this chat (we'll filter client-side)
+        const messagesQuery = query(
+            collection(db, 'chats', chatId, 'messages'),
+            orderBy('timestamp', 'asc')
+        );
         
-        if (participantType === 'teacher') {
-            chatStudent.textContent = `Teacher - ${classroomName}`;
-        } else {
-            chatStudent.textContent = `Parent - ${studentName}'s parent`;
+        const messagesSnapshot = await getDocs(messagesQuery);
+        
+        // Filter unread messages client-side
+        const unreadMessages = [];
+        messagesSnapshot.forEach(doc => {
+            const message = doc.data();
+            if (message.read === false && message.senderId !== this.currentUser.uid) {
+                unreadMessages.push(doc.ref);
+            }
+        });
+        
+        console.log(`Found ${unreadMessages.length} unread messages to mark as read`);
+        
+        if (unreadMessages.length === 0) {
+            console.log('No unread messages found');
+            return;
         }
         
-        messageInput.placeholder = `Message ${participantName}`;
+        // Use batch write to mark all unread messages as read
+        const batch = writeBatch(db);
         
-        // Clear and load messages
-        chatBody.innerHTML = 'Loading...';
-        this.currentChatId = chatId;
+        unreadMessages.forEach(messageRef => {
+            batch.update(messageRef, { 
+                read: true,
+                readAt: serverTimestamp()
+            });
+        });
         
-        try {
+        await batch.commit();
+        console.log('Successfully marked messages as read');
+        
+        // Reset unread count for this chat
+        this.unreadCounts.set(chatId, 0);
+        this.updateChatBadge(chatId, 0);
+        
+    } catch (error) {
+        console.error('Error marking messages as read:', error);
+        // Even if Firestore update fails, update the UI state
+        this.unreadCounts.set(chatId, 0);
+        this.updateChatBadge(chatId, 0);
+    }
+},
+
+// Also update the updateUnreadCount function to be more efficient
+updateUnreadCount(chatId, snapshot) {
+    let unreadCount = 0;
+    
+    snapshot.forEach(doc => {
+        const message = doc.data();
+        // Count messages that are unread and not sent by current user
+        if (message.read === false && message.senderId !== this.currentUser.uid) {
+            unreadCount++;
+        }
+    });
+    
+    console.log(`Chat ${chatId} has ${unreadCount} unread messages`);
+    
+    // Store the unread count
+    this.unreadCounts.set(chatId, unreadCount);
+    
+    // Update the badge in the sidebar
+    this.updateChatBadge(chatId, unreadCount);
+},
+
+// Update the setupChatListeners to properly initialize unread counts
+async setupChatListeners() {
+    // Clean up previous listeners
+    this.unsubscribeListeners.forEach(unsubscribe => unsubscribe());
+    this.unsubscribeListeners = [];
+    
+    const participants = await this.getChatParticipants();
+    
+    // Set up listeners for each chat
+    for (const participant of participants) {
+        const chatId = await this.getOrCreateChatId(participant.id);
+        
+        if (chatId) {
             const messagesQuery = query(
                 collection(db, 'chats', chatId, 'messages'),
                 orderBy('timestamp', 'asc')
             );
             
-            const messagesSnapshot = await getDocs(messagesQuery);
-            chatBody.innerHTML = '';
+            // First, get the current unread count
+            const initialSnapshot = await getDocs(messagesQuery);
+            this.updateUnreadCount(chatId, initialSnapshot);
             
-            if (messagesSnapshot.empty) {
-                chatBody.innerHTML = '<div class="no-messages">No messages yet. Start the conversation!</div>';
-            } else {
-                messagesSnapshot.forEach(doc => {
-                    const message = doc.data();
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = `message ${message.senderId === this.currentUser.uid ? 'sent' : 'received'}`;
-                    
-                    // Create message content WITHOUT sender name
-                    const messageContent = document.createElement('div');
-                    messageContent.className = 'message-content';
-                    messageContent.textContent = message.text;
-                    
-                    messageDiv.appendChild(messageContent);
-                    chatBody.appendChild(messageDiv);
-                });
-            }
+            // Then set up real-time listener
+            const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+                this.updateChatUI(chatId, participant, snapshot);
+                this.updateUnreadCount(chatId, snapshot);
+            });
             
-            chatBody.scrollTop = chatBody.scrollHeight;
-            
-        } catch (error) {
-            console.error('Error loading messages:', error);
-            chatBody.innerHTML = '<div class="error">Error loading messages</div>';
+            this.unsubscribeListeners.push(unsubscribe);
         }
     }
-};
+},
+// Add this debug function to check the current state
+async debugChatState(chatId) {
+    try {
+        const messagesQuery = query(
+            collection(db, 'chats', chatId, 'messages'),
+            orderBy('timestamp', 'asc')
+        );
+        
+        const messagesSnapshot = await getDocs(messagesQuery);
+        console.log(`=== DEBUG Chat ${chatId} ===`);
+        
+        let totalMessages = 0;
+        let unreadMessages = 0;
+        
+        messagesSnapshot.forEach(doc => {
+            totalMessages++;
+            const message = doc.data();
+            if (message.read === false && message.senderId !== this.currentUser.uid) {
+                unreadMessages++;
+                console.log(`UNREAD: ${message.text} from ${message.senderId}`);
+            } else {
+                console.log(`READ: ${message.text} from ${message.senderId} (read: ${message.read})`);
+            }
+        });
+        
+        console.log(`Total: ${totalMessages}, Unread: ${unreadMessages}`);
+        console.log('=== END DEBUG ===');
+        
+    } catch (error) {
+        console.error('Error debugging chat:', error);
+    }
+},
+
+// Update the switchToChat function to ensure messages are marked as read
+async switchToChat(chatId, participantName, participantType, studentName, classroomName) {
+    const chatName = document.getElementById('chat-name');
+    const chatStudent = document.getElementById('chat-student');
+    const chatBody = document.getElementById('chat-body');
+    const messageInput = document.getElementById('message-input');
+    
+    // Update header
+    chatName.textContent = participantName;
+    
+    if (participantType === 'teacher') {
+        chatStudent.textContent = `Teacher - ${classroomName}`;
+    } else {
+        chatStudent.textContent = `Parent - ${studentName}'s parent`;
+    }
+    
+    messageInput.placeholder = `Message ${participantName}`;
+    
+    // Clear and load messages
+    chatBody.innerHTML = 'Loading...';
+    this.currentChatId = chatId;
+    
+    try {
+        const messagesQuery = query(
+            collection(db, 'chats', chatId, 'messages'),
+            orderBy('timestamp', 'asc')
+        );
+        
+        const messagesSnapshot = await getDocs(messagesQuery);
+        chatBody.innerHTML = '';
+        
+        if (messagesSnapshot.empty) {
+            chatBody.innerHTML = '<div class="no-messages">No messages yet. Start the conversation!</div>';
+        } else {
+            messagesSnapshot.forEach(doc => {
+                const message = doc.data();
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${message.senderId === this.currentUser.uid ? 'sent' : 'received'}`;
+                
+                // Create message content WITHOUT sender name
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.textContent = message.text;
+                
+                messageDiv.appendChild(messageContent);
+                chatBody.appendChild(messageDiv);
+            });
+        }
+        
+        chatBody.scrollTop = chatBody.scrollHeight;
+        
+        // Mark messages as read when opening the chat
+        await this.markMessagesAsRead(chatId);
+        // In switchToChat function, add this line before marking as read:
+await this.debugChatState(chatId);
+        
+    } catch (error) {
+        console.error('Error loading messages:', error);
+        chatBody.innerHTML = '<div class="error">Error loading messages</div>';
+    }
+}
+  
+  };
 const BadgeService = {
     currentUser: null,
     studentIds: [],
@@ -1062,6 +1230,33 @@ document.addEventListener('DOMContentLoaded', () => {
         padding: 40px 20px;
         color: #666;
         font-style: italic;
+    }
+
+    /* Unread badge styles */
+    .unread-badge {
+        position: absolute;
+        top: 12px;
+        right: 15px;
+        background: #e74c3c;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .chat-item {
+        position: relative;
+    }
+
+    .chat-info {
+        flex: 1;
+        min-width: 0;
     }
 </style>
 </body>
