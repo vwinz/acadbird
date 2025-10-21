@@ -1,0 +1,283 @@
+/* =======================
+            Base Styles
+        ======================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html, body {
+            height: 100%; 
+            width: 100%; 
+            font-family: "Poppins", Arial, sans-serif; 
+            background-color: #dbe7f7; 
+            font-size: 16px; 
+            color: #333;
+        }
+        
+        /* =======================
+            Navbar & Header (Structural Re-use)
+        ======================= */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            background-color: #0a3b82;
+            color: white;
+            border-bottom: 1px solid #000;
+        }
+        
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 24px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            width: 70px;
+            height: 40px;
+            border-radius: 4px;
+        }
+
+        .logo-text-img {
+            height: 28px;
+            border-radius: 4px;
+        }
+        
+        .middle-logo {
+            width: 90px;
+            height: 40px;
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+        
+        .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .nav-icons .icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: white;
+        }
+
+        .account-menu {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .secondary-header {
+            background-color: #e7efff;
+            display: flex;
+            justify-content: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #000;
+        }
+
+        .secondary-header-container {
+            width: 100%; 
+            padding: 0 24px;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 22px;
+            align-items: center;
+            font-size: 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .nav-item {
+            color: #000;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item.active {
+            font-weight: 700;
+            color: #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .nav-item:hover {
+            background-color: #c9d7f8;
+        }
+
+        .separator {
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            margin: 0;
+            display: block;
+        }
+        
+        /* =======================
+            Main Content & Help Page Styles 
+        ======================= */
+        .main-content {
+            padding: 35px 45px;
+            min-height: calc(100vh - 100px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .help-container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .main-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0a3b82;
+            margin-bottom: 30px; /* Reduced margin since search bar is gone */
+            text-align: center;
+        }
+
+        /* =======================
+            Accordion/Collapsible Styles
+        ======================= */
+        .accordion-section {
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid #c9d7f8;
+        }
+
+        .accordion-header {
+            padding: 18px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0a3b82;
+            cursor: pointer;
+            border-bottom: 1px solid transparent;
+            transition: background-color 0.3s;
+        }
+
+        .accordion-header:hover {
+            background-color: #f0f4f9;
+        }
+
+        .accordion-header i {
+            margin-right: 15px;
+        }
+
+        .toggle-icon {
+            font-size: 1rem;
+            transition: transform 0.3s;
+        }
+        
+        .accordion-header.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            padding: 0 25px;
+        }
+        
+        .accordion-content.show {
+            max-height: 1000px; /* Large value to accommodate content */
+            padding: 15px 25px 25px 25px;
+        }
+
+        /* Nested Article Styles */
+        .article-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        .article-item {
+            border: 1px solid #e7efff;
+            background-color: #f9fbfd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .article-header {
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 500;
+            cursor: pointer;
+            color: #333;
+            transition: background-color 0.2s;
+        }
+        
+        .article-header:hover {
+            background-color: #eef3fb;
+        }
+
+        .article-header .article-toggle {
+            font-size: 0.75rem;
+            margin-left: 10px;
+            transition: transform 0.3s;
+        }
+
+        .article-header.active .article-toggle {
+            transform: rotate(90deg);
+        }
+
+        .article-body {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 15px;
+            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .article-body.show {
+            max-height: 500px; /* For article content */
+            padding: 15px;
+            background-color: #ffffff;
+        }
+        
+        /* Placeholder styling */
+        .placeholder {
+            color: #7f7f7f;
+            font-style: italic;
+            border-left: 3px solid #0a3b82;
+            padding-left: 10px;
+            margin: 5px 0;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            .main-title {
+                font-size: 1.8rem;
+            }
+        }

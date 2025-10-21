@@ -91,11 +91,11 @@
                             
                             <div class="filters-container">
                                 <select id="filter-status" class="filter-select">
-                                    <option value="">Filter by Status</option>
-                                    <option value="Active">Active</option>
-                                    <option value="Inactive">Inactive</option>
-                                    <option value="Archived">Archived</option>
-                                </select>
+    <option value="">Filter by Status</option>
+    <option value="Active">Active</option>
+    <option value="Inactive">Inactive</option>
+    <option value="Archived">Archived</option>
+</select>
                                 
                                 <button id="add-teacher-btn" class="add-teacher-btn">
                                     <i class="fas fa-user-plus"></i> Add Teacher
@@ -214,7 +214,7 @@
 
         <script type="module">
 import { 
-    getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, setDoc, updateDoc, serverTimestamp 
+    getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { 
     getAuth, createUserWithEmailAndPassword 
@@ -303,47 +303,201 @@ const auth = getAuth(app);
         teacherToDeleteId = null;
     }
 
-    // --- Metrics Update ---
-    async function updateMetrics() {
-        try {
-            // 🔹 Total Teachers: Count of users with role == "teacher"
-            const teachersQuery = query(collection(db, "users"), where("role", "==", "teacher"));
-            const teachersSnap = await getDocs(teachersQuery);
-            const totalTeachers = teachersSnap.size;
-            
-            // 🔹 Active Teachers: Teachers who have at least one classroom assigned
-            const classroomsSnap = await getDocs(collection(db, "classrooms"));
-            
-            // Get all teacher IDs that have classrooms assigned (excluding null/unassigned)
-            const teachersWithClassrooms = new Set();
-            classroomsSnap.forEach(classroomDoc => {
-                const classroom = classroomDoc.data();
-                if (classroom.teacherId && classroom.teacherId !== "unassigned") {
-                    teachersWithClassrooms.add(classroom.teacherId);
+  // Update the renderTeacherTable function to show ALL teachers initially
+async function renderTeacherTable() {
+    tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Loading teachers...</td></tr>';
+    
+    try {
+        // Fetch teachers from Firestore
+        const teachersQuery = query(collection(db, "users"), where("role", "==", "teacher"));
+        const teachersSnap = await getDocs(teachersQuery);
+        
+        console.log(`📊 Found ${teachersSnap.size} teachers in database`);
+        
+        // Fetch classrooms to determine which teachers have classes
+        const classroomsSnap = await getDocs(collection(db, "classrooms"));
+        
+        // Create a map of teacherId -> classroom names
+        const teacherClassroomsMap = new Map();
+        classroomsSnap.forEach(classroomDoc => {
+            const classroom = classroomDoc.data();
+            if (classroom.teacherId && classroom.teacherId !== "unassigned" && classroom.teacherId !== "") {
+                if (!teacherClassroomsMap.has(classroom.teacherId)) {
+                    teacherClassroomsMap.set(classroom.teacherId, []);
                 }
+                teacherClassroomsMap.get(classroom.teacherId).push(classroom.classroomName || "Unnamed Class");
+            }
+        });
+
+        tableBody.innerHTML = '';
+        currentTeachersData = [];
+        
+        if (teachersSnap.empty) {
+            console.log('❌ No teachers found in database');
+            tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No teachers found</td></tr>';
+        } else {
+            teachersSnap.forEach(docSnap => {
+                const teacher = docSnap.data();
+                const teacherId = docSnap.id;
+                
+                console.log(`👨‍🏫 Processing teacher:`, { id: teacherId, data: teacher });
+                
+                // Get teacher's name using the new structure
+                const teacherName = teacher.fullName || 
+                                  (teacher.firstName && teacher.lastName ? `${teacher.firstName} ${teacher.lastName}` : 
+                                  teacher.name || "Unknown Teacher");
+                
+                // Get teacher's email
+                const teacherEmail = teacher.email || "No email";
+                
+                // Get classes taught (from teacher's data or from classroom assignments)
+                const classesFromProfile = teacher.classesTaught || [];
+                const classesFromAssignments = teacherClassroomsMap.get(teacherId) || [];
+                const classesTaught = [...new Set([...classesFromProfile, ...classesFromAssignments])];
+                const classesDisplay = classesTaught.length > 0 ? classesTaught.join(', ') : 'None';
+                
+                // Determine status - prioritize the status from Firestore
+                let status = teacher.status;
+                if (!status) {
+                    status = classesTaught.length > 0 ? 'Active' : 'Available';
+                }
+                
+                const statusClass = status === 'Active' ? 'status-active' : 
+                                   status === 'Inactive' ? 'status-inactive' : 
+                                   status === 'Archived' ? 'status-archived' : 'status-available';
+
+                // Store teacher data for filtering
+                currentTeachersData.push({
+                    id: teacherId,
+                    name: teacherName,
+                    firstName: teacher.firstName,
+                    lastName: teacher.lastName,
+                    email: teacherEmail,
+                    classes: classesTaught,
+                    status: status
+                });
             });
-            
-            const activeTeachers = teachersWithClassrooms.size;
-            
-            // 🔹 Available for Classes: Teachers without classrooms assigned
-            const availableForClasses = totalTeachers - activeTeachers;
 
-            // Update the UI
-            document.getElementById('metric-active-teachers').textContent = activeTeachers;
-            document.getElementById('metric-total-teachers').textContent = totalTeachers;
-            document.getElementById('metric-unassigned-teachers').textContent = availableForClasses;
-
-        } catch (err) {
-            console.error("Error fetching metrics:", err);
-            // Fallback to showing 0 if there's an error
-            document.getElementById('metric-active-teachers').textContent = '0';
-            document.getElementById('metric-total-teachers').textContent = '0';
-            document.getElementById('metric-unassigned-teachers').textContent = '0';
+            // Apply initial filtering based on current filter status
+            await applyFiltersAndSearch();
         }
+        
+        // Update metrics
+        await updateMetrics();
+        
+    } catch (err) {
+        console.error("❌ Error loading teachers:", err);
+        tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-red-600">Error loading teachers: ' + err.message + '</td></tr>';
     }
+}
 
-    // --- Rendering Functions ---
- 
+// Update the applyFiltersAndSearch function to handle all filtering
+async function applyFiltersAndSearch() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filterValue = filterStatus.value;
+    
+    console.log(`🔍 Applying filters - Search: "${searchTerm}", Filter: "${filterValue}"`);
+    
+    try {
+        let filteredData = [...currentTeachersData];
+
+        // Apply search filter
+        if (searchTerm) {
+            filteredData = filteredData.filter(teacher => 
+                teacher.name.toLowerCase().includes(searchTerm) || 
+                teacher.email.toLowerCase().includes(searchTerm)
+            );
+        }
+        
+        // Apply status filter - if no filter is selected, show all NON-ARCHIVED teachers
+        if (filterValue) {
+            filteredData = filteredData.filter(teacher => teacher.status === filterValue);
+        } else {
+            // Default: show all teachers except archived ones
+            filteredData = filteredData.filter(teacher => teacher.status !== "Archived");
+        }
+        
+        console.log(`📊 Filtered to ${filteredData.length} teachers out of ${currentTeachersData.length} total`);
+        renderFilteredTable(filteredData);
+        
+    } catch (err) {
+        console.error("Error applying filters:", err);
+    }
+}
+
+// Update the renderFilteredTable function to handle the new button states
+
+// Update the metrics function to properly count archived teachers
+async function updateMetrics() {
+    try {
+        // 🔹 Total Teachers: Count of users with role == "teacher" (including archived)
+        const teachersQuery = query(collection(db, "users"), where("role", "==", "teacher"));
+        const teachersSnap = await getDocs(teachersQuery);
+        
+        let totalTeachers = 0;
+        let activeTeachers = 0;
+        let archivedTeachers = 0;
+        
+        teachersSnap.forEach(doc => {
+            const teacher = doc.data();
+            totalTeachers++;
+            if (teacher.status === "Archived") {
+                archivedTeachers++;
+            }
+        });
+        
+        // 🔹 Active Teachers: Teachers who have at least one classroom assigned and are not archived
+        const classroomsSnap = await getDocs(collection(db, "classrooms"));
+        
+        // Get all teacher IDs that have classrooms assigned (excluding null/unassigned)
+        const teachersWithClassrooms = new Set();
+        classroomsSnap.forEach(classroomDoc => {
+            const classroom = classroomDoc.data();
+            if (classroom.teacherId && classroom.teacherId !== "unassigned") {
+                teachersWithClassrooms.add(classroom.teacherId);
+            }
+        });
+        
+        // Count only non-archived teachers with classrooms
+        const teacherPromises = Array.from(teachersWithClassrooms).map(async (teacherId) => {
+            try {
+                const teacherDoc = await getDoc(doc(db, "users", teacherId));
+                if (teacherDoc.exists()) {
+                    const teacher = teacherDoc.data();
+                    return teacher.status !== "Archived";
+                }
+            } catch (err) {
+                console.error(`Error fetching teacher ${teacherId}:`, err);
+            }
+            return false;
+        });
+        
+        const activeStatuses = await Promise.all(teacherPromises);
+        activeTeachers = activeStatuses.filter(status => status).length;
+        
+        // 🔹 Available for Classes: Non-archived teachers without classrooms assigned
+        const nonArchivedTeachers = totalTeachers - archivedTeachers;
+        const availableForClasses = nonArchivedTeachers - activeTeachers;
+
+        console.log(`📊 Metrics - Total: ${totalTeachers}, Active: ${activeTeachers}, Archived: ${archivedTeachers}, Available: ${availableForClasses}`);
+
+        // Update the UI
+        document.getElementById('metric-active-teachers').textContent = activeTeachers;
+        document.getElementById('metric-total-teachers').textContent = totalTeachers;
+        document.getElementById('metric-unassigned-teachers').textContent = availableForClasses;
+
+    } catch (err) {
+        console.error("Error fetching metrics:", err);
+        // Fallback to showing 0 if there's an error
+        document.getElementById('metric-active-teachers').textContent = '0';
+        document.getElementById('metric-total-teachers').textContent = '0';
+        document.getElementById('metric-unassigned-teachers').textContent = '0';
+    }
+}
+
+// Add CSS for the archived status if not already present
+// Add this to your CSS file or in a style tag
+
 
 async function populateClassesMultiselect(container, assignedClasses = [], teacherId = '') {
     console.log('🔍 populateClassesMultiselect called with:', {
@@ -446,175 +600,9 @@ async function updateClassroomTeacher(classroomId, teacherId) {
     }
 }
 // Update the renderTeacherTable function to handle the new name structure
-async function renderTeacherTable() {
-    tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Loading teachers...</td></tr>';
-    
-    try {
-        // Fetch teachers from Firestore
-        const teachersQuery = query(collection(db, "users"), where("role", "==", "teacher"));
-        const teachersSnap = await getDocs(teachersQuery);
-        
-        // Fetch classrooms to determine which teachers have classes
-        const classroomsSnap = await getDocs(collection(db, "classrooms"));
-        
-        // Create a map of teacherId -> classroom names
-        const teacherClassroomsMap = new Map();
-        classroomsSnap.forEach(classroomDoc => {
-            const classroom = classroomDoc.data();
-            if (classroom.teacherId && classroom.teacherId !== "unassigned") {
-                if (!teacherClassroomsMap.has(classroom.teacherId)) {
-                    teacherClassroomsMap.set(classroom.teacherId, []);
-                }
-                teacherClassroomsMap.get(classroom.teacherId).push(classroom.classroomName || "Unnamed Class");
-            }
-        });
 
-        tableBody.innerHTML = '';
-        currentTeachersData = [];
-        
-        if (teachersSnap.empty) {
-            tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No teachers found</td></tr>';
-        } else {
-            teachersSnap.forEach(docSnap => {
-                const teacher = docSnap.data();
-                const teacherId = docSnap.id;
-                
-                // Get teacher's name using the new structure
-                const teacherName = teacher.fullName || 
-                                  (teacher.firstName && teacher.lastName ? `${teacher.firstName} ${teacher.lastName}` : 
-                                  teacher.name || "Unknown Teacher");
-                
-                // Get teacher's email
-                const teacherEmail = teacher.email || "No email";
-                
-                // Get classes taught (from teacher's data or from classroom assignments)
-                const classesFromProfile = teacher.classesTaught || [];
-                const classesFromAssignments = teacherClassroomsMap.get(teacherId) || [];
-                const classesTaught = [...new Set([...classesFromProfile, ...classesFromAssignments])];
-                const classesDisplay = classesTaught.length > 0 ? classesTaught.join(', ') : 'None';
-                
-                // Determine status
-                const status = teacher.status || (classesTaught.length > 0 ? 'Active' : 'Available');
-                const statusClass = status === 'Active' ? 'status-active' : 
-                                   status === 'Inactive' ? 'status-inactive' : 'status-archived';
 
-                // Store teacher data for filtering
-                currentTeachersData.push({
-                    id: teacherId,
-                    name: teacherName,
-                    firstName: teacher.firstName,
-                    lastName: teacher.lastName,
-                    email: teacherEmail,
-                    classes: classesTaught,
-                    status: status
-                });
-
-                const newRow = tableBody.insertRow();
-                newRow.setAttribute('data-id', teacherId);
-                
-                newRow.innerHTML = `
-                    <td>
-                        <a href="teacher_profile.html?id=${teacherId}" class="teacher-name-link" data-teacher-id="${teacherId}">
-    ${teacherName}
-</a>
-                    </td>
-                    <td>${teacherEmail}</td>
-                    <td class="text-sm italic">${classesDisplay}</td>
-                    <td><span class="${statusClass}">${status}</span></td>
-                    <td class="whitespace-nowrap">
-                        <button class="action-btn edit-btn" title="Edit Teacher">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn archive-btn" title="Archive Teacher">
-                            <i class="fas fa-archive"></i>
-                        </button>
-                        <button class="action-btn delete-btn" title="Delete Teacher">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-            });
-        }
-        
-        // Update pagination info
-        document.getElementById('pagination-total').textContent = teachersSnap.size;
-        
-        // Update metrics
-        await updateMetrics();
-        attachRowEventListeners();
-        
-    } catch (err) {
-        console.error("Error loading teachers:", err);
-        tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-red-600">Error loading teachers</td></tr>';
-    }
-}
-    // --- Filter and Search Functions ---
-    async function applyFiltersAndSearch() {
-        const searchTerm = searchInput.value.toLowerCase();
-        const filterValue = filterStatus.value;
-        
-        try {
-            // Use cached data for filtering
-            let filteredData = currentTeachersData;
-
-            if (searchTerm) {
-                filteredData = filteredData.filter(teacher => 
-                    teacher.name.toLowerCase().includes(searchTerm) || 
-                    teacher.email.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            if (filterValue) {
-                filteredData = filteredData.filter(teacher => teacher.status === filterValue);
-            }
-            
-            renderFilteredTable(filteredData);
-            
-        } catch (err) {
-            console.error("Error applying filters:", err);
-        }
-    }
-
-    function renderFilteredTable(filteredTeachers) {
-        tableBody.innerHTML = '';
-        
-        if (filteredTeachers.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No teachers found</td></tr>';
-        } else {
-            filteredTeachers.forEach(teacher => {
-                const classesDisplay = teacher.classes.length > 0 ? teacher.classes.join(', ') : 'None';
-                const statusClass = teacher.status === 'Active' ? 'status-active' : 'status-inactive';
-
-                const newRow = tableBody.insertRow();
-                newRow.setAttribute('data-id', teacher.id);
-                
-                newRow.innerHTML = `
-                    <td>
-                        <a href="teacher-profile.html?id=${teacher.id}" class="teacher-name-link" data-teacher-id="${teacher.id}">
-                            ${teacher.name}
-                        </a>
-                    </td>
-                    <td>${teacher.email}</td>
-                    <td class="text-sm italic">${classesDisplay}</td>
-                    <td><span class="${statusClass}">${teacher.status}</span></td>
-                    <td class="whitespace-nowrap">
-                        <button class="action-btn edit-btn" title="Edit Teacher">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn archive-btn" title="Archive Teacher">
-                            <i class="fas fa-archive"></i>
-                        </button>
-                        <button class="action-btn delete-btn" title="Delete Teacher">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-            });
-        }
-        
-        document.getElementById('pagination-total').textContent = filteredTeachers.length;
-        attachRowEventListeners();
-    }
+// --- Filter and Search Functions ---
 
     // --- Modal Functions ---
     // --- Modal Functions ---
@@ -815,117 +803,313 @@ async function handleTeacherFormSubmission(e) {
     }
 }
 
-    function openArchiveConfirmationModal(teacherId, teacherName) {
-        teacherToArchiveId = teacherId;
-        archiveTeacherNameSpan.textContent = teacherName;
-        openModal(archiveConfirmationModal);
-    }
 
-    function archiveTeacher(teacherId) {
-        // Note: This would need to update Firestore in a real implementation
-        const teacherIndex = teachersData.findIndex(t => t.id === teacherId);
-        if (teacherIndex !== -1) {
-            teachersData[teacherIndex].status = 'Archived';
-            alert(`Teacher "${teachersData[teacherIndex].name}" has been archived.`);
-            renderTeacherTable(); // Reload from Firestore
-        }
-        closeArchiveConfirmationModal();
-    }
-
+   
     function openDeleteConfirmationModal(teacherId, teacherName) {
         teacherToDeleteId = teacherId;
         deleteTeacherNameSpan.textContent = teacherName;
         openModal(deleteConfirmationModal);
     }
 
-    function deleteTeacher(teacherId) {
-        // Note: This would need to delete from Firestore in a real implementation
-        const teacherIndex = teachersData.findIndex(t => t.id === teacherId);
-        if (teacherIndex !== -1) {
-            const teacherName = teachersData[teacherIndex].name;
-            teachersData.splice(teacherIndex, 1);
-            alert(`Teacher "${teacherName}" has been deleted.`);
-            renderTeacherTable(); // Reload from Firestore
+
+
+
+    // Update the archiveTeacher function to work with Firestore
+async function archiveTeacher(teacherId) {
+    try {
+        // Update the teacher's status to "Archived" in Firestore
+        await updateDoc(doc(db, "users", teacherId), {
+            status: "Archived",
+            archivedAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+        });
+
+        // Also unassign this teacher from all classrooms
+        const classroomsQuery = query(
+            collection(db, "classrooms"), 
+            where("teacherId", "==", teacherId)
+        );
+        const classroomsSnap = await getDocs(classroomsQuery);
+        
+        const unassignPromises = [];
+        classroomsSnap.forEach(classroomDoc => {
+            unassignPromises.push(
+                updateDoc(doc(db, "classrooms", classroomDoc.id), {
+                    teacherId: "",
+                    status: "pending"
+                })
+            );
+        });
+
+        if (unassignPromises.length > 0) {
+            await Promise.all(unassignPromises);
         }
-        closeDeleteConfirmationModal();
-    }
 
-    // --- Event Listeners ---
-    function attachRowEventListeners() {
-        // Edit buttons
-        tableBody.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const row = e.target.closest('tr');
-                const teacherId = row.getAttribute('data-id');
-                const teacher = currentTeachersData.find(t => t.id === teacherId);
-                if (teacher) {
-                    openTeacherModal(teacher);
-                }
-            });
-        });
-
-        // Archive buttons
-        tableBody.querySelectorAll('.archive-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const row = e.target.closest('tr');
-                const teacherId = row.getAttribute('data-id');
-                const teacherName = row.cells[0].querySelector('.teacher-name-link').textContent;
-                openArchiveConfirmationModal(teacherId, teacherName);
-            });
-        });
+        alert("Teacher has been archived and unassigned from all classes.");
+        await renderTeacherTable(); // Reload the table
+        await updateMetrics(); // Update the metrics
         
-        // Delete buttons
-        tableBody.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const row = e.target.closest('tr');
-                const teacherId = row.getAttribute('data-id');
-                const teacherName = row.cells[0].querySelector('.teacher-name-link').textContent;
-                openDeleteConfirmationModal(teacherId, teacherName);
-            });
+    } catch (err) {
+        console.error("Error archiving teacher:", err);
+        alert("Failed to archive teacher. Please try again.");
+    }
+    closeArchiveConfirmationModal();
+}
+
+// Update the renderTeacherTable function to properly handle archived status
+// Update the renderTeacherTable function to properly fetch and display teachers
+// Update the openArchiveConfirmationModal to handle both archive and restore
+function openArchiveConfirmationModal(teacherId, teacherName, isArchived = false) {
+    teacherToArchiveId = teacherId;
+    archiveTeacherNameSpan.textContent = teacherName;
+    
+    const modalTitle = document.querySelector('#archive-confirmation-modal .modal-title');
+    const confirmBtn = document.getElementById('confirm-archive-btn');
+    const message = document.querySelector('#archive-confirmation-modal .confirmation-message');
+    
+    if (isArchived) {
+        // Restore mode
+        modalTitle.textContent = "Restore Teacher";
+        message.innerHTML = `Are you sure you want to restore <span id="archive-teacher-name" class="font-bold">${teacherName}</span>?`;
+        confirmBtn.textContent = "Restore Teacher";
+        confirmBtn.className = "btn btn-primary";
+    } else {
+        // Archive mode
+        modalTitle.textContent = "Archive Teacher";
+        message.innerHTML = `Are you sure you want to archive <span id="archive-teacher-name" class="font-bold">${teacherName}</span>?`;
+        confirmBtn.textContent = "Archive Teacher";
+        confirmBtn.className = "btn btn-warning";
+    }
+    
+    openModal(archiveConfirmationModal);
+}
+
+// Update the archive button click handler in attachRowEventListeners
+// Update the renderFilteredTable function to conditionally show delete button
+function renderFilteredTable(filteredTeachers) {
+    tableBody.innerHTML = '';
+    
+    if (filteredTeachers.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No teachers found matching your criteria</td></tr>';
+    } else {
+        filteredTeachers.forEach(teacher => {
+            const classesDisplay = teacher.classes.length > 0 ? teacher.classes.join(', ') : 'None';
+            const statusClass = teacher.status === 'Active' ? 'status-active' : 
+                               teacher.status === 'Inactive' ? 'status-inactive' : 
+                               teacher.status === 'Archived' ? 'status-archived' : 'status-available';
+
+            const newRow = tableBody.insertRow();
+            newRow.setAttribute('data-id', teacher.id);
+            
+            // Only show delete button for archived teachers
+            const deleteButtonHtml = teacher.status === 'Archived' ? 
+                `<button class="action-btn delete-btn" title="Delete Teacher">
+                    <i class="fas fa-trash"></i>
+                </button>` : '';
+
+            newRow.innerHTML = `
+                <td>
+                    <a href="teacher-profile.html?id=${teacher.id}" class="teacher-name-link" data-teacher-id="${teacher.id}">
+                        ${teacher.name}
+                    </a>
+                </td>
+                <td>${teacher.email}</td>
+                <td class="text-sm italic">${classesDisplay}</td>
+                <td><span class="${statusClass}">${teacher.status}</span></td>
+                <td class="whitespace-nowrap">
+                    <button class="action-btn edit-btn" title="Edit Teacher" ${teacher.status === 'Archived' ? 'disabled' : ''}>
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="action-btn archive-btn" title="${teacher.status === 'Archived' ? 'Restore Teacher' : 'Archive Teacher'}">
+                        <i class="fas ${teacher.status === 'Archived' ? 'fa-undo' : 'fa-archive'}"></i>
+                    </button>
+                    ${deleteButtonHtml}
+                </td>
+            `;
         });
     }
+    
+    document.getElementById('pagination-total').textContent = filteredTeachers.length;
+    attachRowEventListeners();
+}
 
-    function init() {
-        // Form submission handlers
-        teacherForm.addEventListener('submit', handleTeacherFormSubmission);
-        
-        // Archive confirmation button
-        confirmArchiveBtn.addEventListener('click', () => {
-            if (teacherToArchiveId) {
-                archiveTeacher(teacherToArchiveId);
+// Update the attachRowEventListeners function to handle the conditional delete buttons
+function attachRowEventListeners() {
+    // Edit buttons
+    tableBody.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const row = e.target.closest('tr');
+            const teacherId = row.getAttribute('data-id');
+            const teacher = currentTeachersData.find(t => t.id === teacherId);
+            if (teacher) {
+                openTeacherModal(teacher);
             }
         });
+    });
+
+    // Archive/Restore buttons
+    tableBody.querySelectorAll('.archive-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const row = e.target.closest('tr');
+            const teacherId = row.getAttribute('data-id');
+            const teacherName = row.cells[0].querySelector('.teacher-name-link').textContent;
+            const statusCell = row.cells[3];
+            const isArchived = statusCell.textContent.trim() === 'Archived';
+            
+            openArchiveConfirmationModal(teacherId, teacherName, isArchived);
+        });
+    });
+    
+    // Delete buttons (only present for archived teachers)
+    tableBody.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const row = e.target.closest('tr');
+            const teacherId = row.getAttribute('data-id');
+            const teacherName = row.cells[0].querySelector('.teacher-name-link').textContent;
+            openDeleteConfirmationModal(teacherId, teacherName);
+        });
+    });
+}
+
+// Update the deleteTeacher function to actually delete from Firestore
+async function deleteTeacher(teacherId) {
+    try {
+        // Delete teacher from Firestore
+        await deleteDoc(doc(db, "users", teacherId));
         
-        // Delete confirmation button
-        confirmDeleteBtn.addEventListener('click', () => {
-            if (teacherToDeleteId) {
-                deleteTeacher(teacherToDeleteId);
-            }
+        // Also delete the teacher from Firebase Authentication if needed
+        // Note: This requires admin privileges and the Firebase Admin SDK on the server side
+        // For now, we'll just delete from Firestore
+        
+        alert("Teacher has been permanently deleted.");
+        await renderTeacherTable(); // Reload the table
+        await updateMetrics(); // Update the metrics
+        
+    } catch (err) {
+        console.error("Error deleting teacher:", err);
+        alert("Failed to delete teacher. Please try again.");
+    }
+    closeDeleteConfirmationModal();
+}
+
+// Update the modal to reflect that deletion is permanent
+// Change the delete confirmation modal text to be more specific
+const deleteModalTitle = document.querySelector('#delete-confirmation-modal .modal-title');
+const deleteModalMessage = document.querySelector('#delete-confirmation-modal .confirmation-message');
+const deleteModalWarning = document.querySelector('#delete-confirmation-modal .confirmation-warning');
+
+// Update the modal content to be more specific about deletion
+deleteModalTitle.textContent = "Permanently Delete Teacher";
+deleteModalMessage.innerHTML = `Are you sure you want to permanently delete <span id="delete-teacher-name" class="font-bold"></span>?`;
+deleteModalWarning.textContent = "This action cannot be undone. The teacher will be permanently removed from the system.";
+
+// Update the CSS to ensure proper spacing when delete button is hidden
+const style = document.createElement('style');
+style.textContent = `
+    .status-archived {
+        background-color: #f3f4f6;
+        color: #6b7280;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border: 1px solid #d1d5db;
+    }
+    
+    .action-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .action-btn:disabled:hover {
+        background-color: transparent;
+    }
+    
+    /* Ensure consistent spacing in actions column */
+    .teachers-table td:last-child {
+        min-width: 120px;
+    }
+`;
+document.head.appendChild(style);
+// Update the confirmArchiveBtn event listener to handle both archive and restore
+confirmArchiveBtn.addEventListener('click', async () => {
+    if (teacherToArchiveId) {
+        const row = tableBody.querySelector(`tr[data-id="${teacherToArchiveId}"]`);
+        const statusCell = row.cells[3];
+        const isCurrentlyArchived = statusCell.textContent.trim() === 'Archived';
+        
+        if (isCurrentlyArchived) {
+            await restoreTeacher(teacherToArchiveId);
+        } else {
+            await archiveTeacher(teacherToArchiveId);
+        }
+    }
+});
+
+// Add restore teacher function
+async function restoreTeacher(teacherId) {
+    try {
+        // Update the teacher's status to "Active" in Firestore
+        await updateDoc(doc(db, "users", teacherId), {
+            status: "Active",
+            restoredAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
         });
 
-        // Add Teacher button listeners
-        document.getElementById('add-teacher-btn').addEventListener('click', () => openTeacherModal());
-        document.getElementById('quick-add-teacher').addEventListener('click', () => openTeacherModal());
-
-        // Modal close buttons
-        document.getElementById('close-teacher-modal').addEventListener('click', closeTeacherModal);
-        document.getElementById('close-archive-modal').addEventListener('click', closeArchiveConfirmationModal);
-        document.getElementById('close-delete-modal').addEventListener('click', closeDeleteConfirmationModal);
-        document.getElementById('cancel-teacher').addEventListener('click', closeTeacherModal);
-        document.getElementById('cancel-archive').addEventListener('click', closeArchiveConfirmationModal);
-        document.getElementById('cancel-delete').addEventListener('click', closeDeleteConfirmationModal);
-
-        // Search and Filter listeners
-        searchInput.addEventListener('input', applyFiltersAndSearch);
-        filterStatus.addEventListener('change', applyFiltersAndSearch);
+        alert("Teacher has been restored and is now active.");
+        await renderTeacherTable(); // Reload the table
+        await updateMetrics(); // Update the metrics
         
-        // Initial render with real data
-        renderTeacherTable();
+    } catch (err) {
+        console.error("Error restoring teacher:", err);
+        alert("Failed to restore teacher. Please try again.");
     }
+    closeArchiveConfirmationModal();
+}
 
+// Update the metrics function to exclude archived teachers from active counts
+ 
+   // Remove the duplicate event listeners and fix the archive confirmation
+function init() {
+    // Form submission handlers
+    teacherForm.addEventListener('submit', handleTeacherFormSubmission);
+    
+    // Archive confirmation button - REMOVE THIS DUPLICATE
+    // confirmArchiveBtn.addEventListener('click', () => {
+    //     if (teacherToArchiveId) {
+    //         archiveTeacher(teacherToArchiveId);
+    //     }
+    // });
+    
+    // Delete confirmation button - REMOVE THIS DUPLICATE
+    // confirmDeleteBtn.addEventListener('click', () => {
+    //     if (teacherToDeleteId) {
+    //         deleteTeacher(teacherToDeleteId);
+    //     }
+    // });
+
+    // Add Teacher button listeners
+    document.getElementById('add-teacher-btn').addEventListener('click', () => openTeacherModal());
+    document.getElementById('quick-add-teacher').addEventListener('click', () => openTeacherModal());
+
+    // Modal close buttons
+    document.getElementById('close-teacher-modal').addEventListener('click', closeTeacherModal);
+    document.getElementById('close-archive-modal').addEventListener('click', closeArchiveConfirmationModal);
+    document.getElementById('close-delete-modal').addEventListener('click', closeDeleteConfirmationModal);
+    document.getElementById('cancel-teacher').addEventListener('click', closeTeacherModal);
+    document.getElementById('cancel-archive').addEventListener('click', closeArchiveConfirmationModal);
+    document.getElementById('cancel-delete').addEventListener('click', closeDeleteConfirmationModal);
+
+    // Search and Filter listeners
+    searchInput.addEventListener('input', applyFiltersAndSearch);
+    filterStatus.addEventListener('change', applyFiltersAndSearch);
+    
+    // Initial render with real data
+    renderTeacherTable();
+}
     // Initialize the application
     document.addEventListener('DOMContentLoaded', init);
     </script>

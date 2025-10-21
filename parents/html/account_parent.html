@@ -7,6 +7,119 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="../style/account_parent.css">
+    <style>
+        /* Additional styles for save button */
+        .save-button-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .save-changes-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .save-changes-btn:hover {
+            background-color: #45a049;
+        }
+        
+        .save-changes-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .cancel-changes-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .cancel-changes-btn:hover {
+            background-color: #d32f2f;
+        }
+        
+        .save-message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .save-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .save-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .input-changed {
+            border-color: #4CAF50 !important;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3) !important;
+        }
+
+        /* Password strength indicator */
+        .password-strength {
+            margin-top: 5px;
+            height: 4px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .password-weak {
+            background-color: #f44336;
+            width: 25%;
+        }
+        
+        .password-medium {
+            background-color: #ff9800;
+            width: 50%;
+        }
+        
+        .password-strong {
+            background-color: #4CAF50;
+            width: 100%;
+        }
+        
+        .password-match {
+            color: #4CAF50;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .password-mismatch {
+            color: #f44336;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* Hidden class for view switching */
+        .hidden {
+            display: none !important;
+        }
+
+        .password-requirements {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -19,11 +132,11 @@
             <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
             <div class="nav-icons">
                  <div class="notification-wrapper">
-    <a href="notification_parent.html">
-        <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
-        <span class="notification-badge" id="notificationBadge">0</span>
-    </a>
-</div>
+                    <a href="notification_parent.html">
+                        <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
+                        <span class="notification-badge" id="notificationBadge">0</span>
+                    </a>
+                </div>
                 <a href="help_parent.html">
                     <img src="../../main/img/Help.png" alt="Help" class="icon" />
                 </a>
@@ -48,16 +161,14 @@
         </div>
 
         <div id="loading-overlay">
-
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
-</div>
+            <div class="loader-3">
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+                <div class="circle"></div>
+            </div>
+        </div>
 
         <div class="separator"></div>
 
@@ -90,6 +201,13 @@
                                             <input type="email" id="email" value="sampleemail@school.edu.ph">
                                     </div>
                                     <button class="text-button" id="change-password-btn">Change Password</button>
+                                    
+                                    <!-- Save Changes Button -->
+                                    <div class="save-button-container">
+                                        <button class="save-changes-btn" id="save-changes-btn" disabled>Save Changes</button>
+                                        <button class="cancel-changes-btn" id="cancel-changes-btn" style="display: none;">Cancel</button>
+                                    </div>
+                                    <div class="save-message" id="save-message"></div>
                                 </div>
                             </div>
                         </div>
@@ -133,25 +251,36 @@
             <div class="change-password-container hidden" id="password-view">
                 <div class="card password-card">
                     <div class="form-group">
-                        <label for="current-password">Current Password</label>
-                        <input type="password" id="current-password">
-                    </div>
-                    <div class="form-group">
                         <label for="new-password">New Password</label>
-                        <input type="password" id="new-password">
+                        <input type="password" id="new-password" placeholder="Enter your new password">
+                        <div class="password-strength" id="password-strength"></div>
+                        <div class="password-requirements">
+                            Password must be at least 6 characters long
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="confirm-password">Confirm New Password</label>
-                        <input type="password"id="confirm-password">
+                        <input type="password" id="confirm-password" placeholder="Confirm your new password">
+                        <div id="password-match-message"></div>
                     </div>
-                    <button class="action-button">Change Password</button>
+                    <div class="save-button-container">
+                        <button class="action-button" id="submit-password-btn">Change Password</button>
+                        <button class="cancel-changes-btn" id="cancel-password-btn">Cancel</button>
+                    </div>
+                    <div class="save-message" id="password-message"></div>
                 </div>
             </div>
         </div>
     </div>
    <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+    getAuth, 
+    onAuthStateChanged, 
+    updateProfile, 
+    updatePassword,
+    verifyBeforeUpdateEmail  // Changed from updateEmail
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
     getFirestore, 
     collection, 
@@ -160,11 +289,12 @@ import {
     getDocs,
     doc,
     getDoc,
+    updateDoc,
     onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // --- Firebase Config ---
-  const firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
     authDomain: "acadbird-379e3.firebaseapp.com",
     projectId: "acadbird-379e3",
@@ -172,8 +302,7 @@ import {
     messagingSenderId: "575491576951",
     appId: "1:575491576951:web:70f86aba1e33b871f8a272",
     measurementId: "G-N6Z672SXWJ"
-  };
-
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -184,132 +313,467 @@ const firstNameInput = document.getElementById('first-name');
 const lastNameInput = document.getElementById('last-name');
 const emailInput = document.getElementById('email');
 const avatarPlaceholder = document.querySelector('.avatar-placeholder');
+const saveChangesBtn = document.getElementById('save-changes-btn');
+const cancelChangesBtn = document.getElementById('cancel-changes-btn');
+const saveMessage = document.getElementById('save-message');
 
+// Password change elements
+const newPasswordInput = document.getElementById('new-password');
+const confirmPasswordInput = document.getElementById('confirm-password');
+const submitPasswordBtn = document.getElementById('submit-password-btn');
+const cancelPasswordBtn = document.getElementById('cancel-password-btn');
+const passwordMessage = document.getElementById('password-message');
+const passwordStrength = document.getElementById('password-strength');
+const passwordMatchMessage = document.getElementById('password-match-message');
 
 const loadingOverlay = document.getElementById("loading-overlay");
 
-   function showLoading() {
-  loadingOverlay.style.display = "flex";
+// Store original values for comparison
+let originalValues = {
+    firstName: "",
+    lastName: "",
+    email: ""
+};
+
+function showLoading() {
+    if (loadingOverlay) {
+        loadingOverlay.style.display = "flex";
+    }
 }
 
-// Hide overlay
 function hideLoading() {
-  loadingOverlay.style.display = "none";
+    if (loadingOverlay) {
+        loadingOverlay.style.display = "none";
+    }
 }
 
+// Function to check if form values have changed
+function checkFormChanges() {
+    const hasChanges = 
+        firstNameInput.value !== originalValues.firstName ||
+        lastNameInput.value !== originalValues.lastName ||
+        emailInput.value !== originalValues.email;
+    
+    // Enable/disable save button based on changes
+    if (saveChangesBtn) {
+        saveChangesBtn.disabled = !hasChanges;
+    }
+    if (cancelChangesBtn) {
+        cancelChangesBtn.style.display = hasChanges ? 'block' : 'none';
+    }
+    
+    // Add visual indicator for changed fields
+    if (firstNameInput) {
+        firstNameInput.classList.toggle('input-changed', firstNameInput.value !== originalValues.firstName);
+    }
+    if (lastNameInput) {
+        lastNameInput.classList.toggle('input-changed', lastNameInput.value !== originalValues.lastName);
+    }
+    if (emailInput) {
+        emailInput.classList.toggle('input-changed', emailInput.value !== originalValues.email);
+    }
+}
+
+// Function to save changes to Firestore and Firebase Auth
+// Function to save changes to Firestore and Firebase Auth
+async function saveProfileChanges() {
+    showLoading();
+    if (saveMessage) {
+        saveMessage.style.display = 'none';
+    }
+    
+    try {
+        const user = auth.currentUser;
+        if (!user) {
+            throw new Error("No user is signed in");
+        }
+        
+        const updatedData = {
+            firstName: firstNameInput.value.trim(),
+            lastName: lastNameInput.value.trim(),
+            email: emailInput.value.trim(),
+            updatedAt: new Date()
+        };
+        
+        // Update Firestore first
+        const userDocRef = doc(db, "users", user.uid);
+        await updateDoc(userDocRef, updatedData);
+        
+        // Update Firebase Auth profile (name only)
+        await updateProfile(user, {
+            displayName: `${updatedData.firstName} ${updatedData.lastName}`
+        });
+        
+        // Update email in Firebase Auth if changed - USING VERIFICATION METHOD
+        if (updatedData.email !== originalValues.email) {
+            // Use verifyBeforeUpdateEmail instead of updateEmail
+            await verifyBeforeUpdateEmail(user, updatedData.email);
+            
+            // Show message that verification email was sent
+            if (saveMessage) {
+                saveMessage.textContent = "Verification email sent! Please check your new email to confirm the change.";
+                saveMessage.className = "save-message save-success";
+                saveMessage.style.display = 'block';
+            }
+            
+            // Don't update original values yet since email isn't verified
+            originalValues.firstName = updatedData.firstName;
+            originalValues.lastName = updatedData.lastName;
+            // Keep original email until verified
+            
+        } else {
+            // No email change, update all original values
+            originalValues = { ...updatedData };
+            
+            // Show success message
+            if (saveMessage) {
+                saveMessage.textContent = "Profile updated successfully!";
+                saveMessage.className = "save-message save-success";
+                saveMessage.style.display = 'block';
+            }
+        }
+        
+        // Update UI
+        checkFormChanges();
+        
+        // Update avatar placeholder with new initials
+        if (avatarPlaceholder) {
+            avatarPlaceholder.textContent = updatedData.firstName ? updatedData.firstName[0].toUpperCase() : "O";
+        }
+        
+        // Hide message after 5 seconds (longer for verification message)
+        setTimeout(() => {
+            if (saveMessage) {
+                saveMessage.style.display = 'none';
+            }
+        }, 5000);
+        
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        
+        // Show error message
+        let errorMessage = "Error updating profile: ";
+        
+        switch (error.code) {
+            case 'auth/requires-recent-login':
+                errorMessage += "This operation requires recent authentication. Please log out and log in again.";
+                break;
+            case 'auth/email-already-in-use':
+                errorMessage += "This email is already in use by another account.";
+                break;
+            case 'auth/invalid-email':
+                errorMessage += "The email address is invalid.";
+                break;
+            default:
+                errorMessage += error.message;
+        }
+        
+        if (saveMessage) {
+            saveMessage.textContent = errorMessage;
+            saveMessage.className = "save-message save-error";
+            saveMessage.style.display = 'block';
+        }
+    } finally {
+        hideLoading();
+    }
+}
+// Function to cancel changes and revert to original values
+function cancelChanges() {
+    if (firstNameInput) firstNameInput.value = originalValues.firstName;
+    if (lastNameInput) lastNameInput.value = originalValues.lastName;
+    if (emailInput) emailInput.value = originalValues.email;
+    checkFormChanges();
+}
+
+// Password strength checker
+function checkPasswordStrength(password) {
+    let strength = 0;
+    
+    if (password.length >= 8) strength++;
+    if (password.match(/[a-z]+/)) strength++;
+    if (password.match(/[A-Z]+/)) strength++;
+    if (password.match(/[0-9]+/)) strength++;
+    if (password.match(/[!@#$%^&*(),.?":{}|<>]+/)) strength++;
+    
+    return strength;
+}
+
+function updatePasswordStrength() {
+    if (!newPasswordInput || !passwordStrength) return;
+    
+    const password = newPasswordInput.value;
+    const strength = checkPasswordStrength(password);
+    
+    passwordStrength.className = 'password-strength';
+    
+    if (password.length === 0) {
+        passwordStrength.style.display = 'none';
+        return;
+    }
+    
+    passwordStrength.style.display = 'block';
+    
+    if (strength <= 2) {
+        passwordStrength.className = 'password-strength password-weak';
+    } else if (strength <= 4) {
+        passwordStrength.className = 'password-strength password-medium';
+    } else {
+        passwordStrength.className = 'password-strength password-strong';
+    }
+}
+
+function checkPasswordMatch() {
+    if (!newPasswordInput || !confirmPasswordInput || !passwordMatchMessage) return;
+    
+    const newPassword = newPasswordInput.value;
+    const confirmPassword = confirmPasswordInput.value;
+    
+    if (confirmPassword.length === 0) {
+        passwordMatchMessage.textContent = '';
+        passwordMatchMessage.className = '';
+        return;
+    }
+    
+    if (newPassword === confirmPassword) {
+        passwordMatchMessage.textContent = '✓ Passwords match';
+        passwordMatchMessage.className = 'password-match';
+    } else {
+        passwordMatchMessage.textContent = '✗ Passwords do not match';
+        passwordMatchMessage.className = 'password-mismatch';
+    }
+}
+
+// Function to change password in Firebase Authentication
+async function changePassword() {
+    showLoading();
+    if (passwordMessage) {
+        passwordMessage.style.display = 'none';
+    }
+    
+    try {
+        const user = auth.currentUser;
+        if (!user) {
+            throw new Error("No user is signed in");
+        }
+        
+        const newPassword = newPasswordInput ? newPasswordInput.value : '';
+        const confirmPassword = confirmPasswordInput ? confirmPasswordInput.value : '';
+        
+        // Validation
+        if (!newPassword || !confirmPassword) {
+            throw new Error("Please fill in all password fields");
+        }
+        
+        if (newPassword !== confirmPassword) {
+            throw new Error("New passwords do not match");
+        }
+        
+        if (newPassword.length < 6) {
+            throw new Error("Password should be at least 6 characters long");
+        }
+        
+        // Update password in Firebase Authentication
+        await updatePassword(user, newPassword);
+        
+        // Clear password fields
+        if (newPasswordInput) newPasswordInput.value = '';
+        if (confirmPasswordInput) confirmPasswordInput.value = '';
+        if (passwordStrength) passwordStrength.style.display = 'none';
+        if (passwordMatchMessage) passwordMatchMessage.textContent = '';
+        
+        // Show success message
+        if (passwordMessage) {
+            passwordMessage.textContent = "Password updated successfully!";
+            passwordMessage.className = "save-message save-success";
+            passwordMessage.style.display = 'block';
+        }
+        
+        // Return to settings view after success
+        setTimeout(() => {
+            if (passwordMessage) {
+                passwordMessage.style.display = 'none';
+            }
+            showSettingsPage();
+        }, 3000);
+        
+    } catch (error) {
+        console.error("Error changing password:", error);
+        
+        // Show error message
+        let errorMessage = "Error changing password: ";
+        
+        switch (error.code) {
+            case 'auth/weak-password':
+                errorMessage += "Password is too weak. Please use a stronger password";
+                break;
+            case 'auth/requires-recent-login':
+                errorMessage += "This operation requires recent authentication. Please log out and log in again";
+                break;
+            default:
+                errorMessage += error.message;
+        }
+        
+        if (passwordMessage) {
+            passwordMessage.textContent = errorMessage;
+            passwordMessage.className = "save-message save-error";
+            passwordMessage.style.display = 'block';
+        }
+    } finally {
+        hideLoading();
+    }
+}
 
 // --- Load Current User ---
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
-     showLoading();
-    const uid = user.uid;
-    try {
-      const userDocRef = doc(db, "users", uid);
-      const userSnapshot = await getDoc(userDocRef);
+    if (user) {
+        showLoading();
+        const uid = user.uid;
+        try {
+            const userDocRef = doc(db, "users", uid);
+            const userSnapshot = await getDoc(userDocRef);
 
-      if (userSnapshot.exists()) {
-        const userData = userSnapshot.data();
+            if (userSnapshot.exists()) {
+                const userData = userSnapshot.data();
 
-        // Populate fields
-        firstNameInput.value = userData.firstName || "";
-        lastNameInput.value = userData.lastName || "";
-        emailInput.value = userData.email || "";
+                // Store original values
+                originalValues = {
+                    firstName: userData.firstName || "",
+                    lastName: userData.lastName || "",
+                    email: userData.email || ""
+                };
 
-        // Optional: Avatar
-        if (userData.avatarUrl) {
-          avatarPlaceholder.innerHTML = `<img src="${userData.avatarUrl}" alt="Avatar" class="avatar-img">`;
-        } else {
-          avatarPlaceholder.textContent = userData.firstName ? userData.firstName[0].toUpperCase() : "O";
+                // Populate fields
+                if (firstNameInput) firstNameInput.value = originalValues.firstName;
+                if (lastNameInput) lastNameInput.value = originalValues.lastName;
+                if (emailInput) emailInput.value = originalValues.email;
+
+                // Optional: Avatar
+                if (avatarPlaceholder) {
+                    if (userData.avatarUrl) {
+                        avatarPlaceholder.innerHTML = `<img src="${userData.avatarUrl}" alt="Avatar" class="avatar-img">`;
+                    } else {
+                        avatarPlaceholder.textContent = userData.firstName ? userData.firstName[0].toUpperCase() : "O";
+                    }
+                }
+
+                // Initialize form change tracking
+                checkFormChanges();
+                
+                // Add event listeners for input changes
+                if (firstNameInput) {
+                    firstNameInput.addEventListener('input', checkFormChanges);
+                }
+                if (lastNameInput) {
+                    lastNameInput.addEventListener('input', checkFormChanges);
+                }
+                if (emailInput) {
+                    emailInput.addEventListener('input', checkFormChanges);
+                }
+
+            } else {
+                console.log("User document not found!");
+            }
+        } catch (error) {
+            console.error("Error loading user data:", error);
+        } finally {
+            hideLoading();
         }
-
-      } else {
-        console.log("User document not found!");
-      }
-    } catch (error) {
-      console.error("Error loading user data:", error);
+    } else {
+        console.log("No user is signed in.");
+        // Optionally redirect to login page
     }
-  } else {
-    console.log("No user is signed in.");
-    // Optionally redirect to login page
-  }
 });
+
+// Add event listeners for save and cancel buttons
+if (saveChangesBtn) {
+    saveChangesBtn.addEventListener('click', saveProfileChanges);
+}
+if (cancelChangesBtn) {
+    cancelChangesBtn.addEventListener('click', cancelChanges);
+}
+
+// Password change event listeners
+if (newPasswordInput) {
+    newPasswordInput.addEventListener('input', updatePasswordStrength);
+    newPasswordInput.addEventListener('input', checkPasswordMatch);
+}
+if (confirmPasswordInput) {
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+}
+if (submitPasswordBtn) {
+    submitPasswordBtn.addEventListener('click', changePassword);
+}
 
 const logoutBtn = document.querySelector('.logout-btn-main');
 
 if (logoutBtn) {
-  logoutBtn.addEventListener('click', async () => {
-    try {
-      await auth.signOut();
-      console.log("User signed out successfully!");
-      // Redirect to login page
-      window.location.href = "../../main/html/login.html"; // <-- change this to your login page path
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  });
+    logoutBtn.addEventListener('click', async () => {
+        try {
+            await auth.signOut();
+            console.log("User signed out successfully!");
+            // Redirect to login page
+            window.location.href = "../../main/html/login.html";
+        } catch (error) {
+            console.error("Error signing out:", error);
+        }
+    });
 }
 
-        document.addEventListener('DOMContentLoaded', function () {
-            // --- Element Selections ---
-            const accountMenu = document.querySelector('.account-menu');
-            const dropdown = document.querySelector('.dropdown-content');
-            const settingsView = document.getElementById('settings-view');
-            const passwordView = document.getElementById('password-view');
-            
-            // Buttons for switching views
-            const goToPasswordBtn = document.getElementById('change-password-btn');
-            const submitPasswordBtn = document.querySelector('#password-view .action-button');
+document.addEventListener('DOMContentLoaded', function () {
+    // --- Element Selections ---
+    const accountMenu = document.querySelector('.account-menu');
+    const settingsView = document.getElementById('settings-view');
+    const passwordView = document.getElementById('password-view');
+    
+    // Buttons for switching views
+    const goToPasswordBtn = document.getElementById('change-password-btn');
+    const cancelPasswordBtn = document.getElementById('cancel-password-btn');
 
-            // --- Functions ---
-            function showSettingsPage() {
-                // Hide password view and show settings view
-                passwordView.classList.add('hidden');
-                settingsView.classList.remove('hidden');
-            }
-
-            function showPasswordPage() {
-                // Hide settings view and show password view
-                settingsView.classList.add('hidden');
-                passwordView.classList.remove('hidden');
-            }
-
-            // --- Event Listeners ---
-
-            // 1. Toggle Dropdown Menu
-            accountMenu.addEventListener('click', function (event) {
-                event.stopPropagation();
-                dropdown.classList.toggle('show');
-            });
-
-            // 2. Close dropdown if clicked outside
-            window.addEventListener('click', function () {
-                if (dropdown.classList.contains('show')) {
-                    dropdown.classList.remove('show');
-                }
-            });
-
-            // 3. Switch to Change Password view
-            if (goToPasswordBtn) {
-                goToPasswordBtn.addEventListener('click', showPasswordPage);
-            }
-            
-            // 4. After submitting new password, return to settings
-            if (submitPasswordBtn) {
-                submitPasswordBtn.addEventListener('click', function() {
-                    // Here you would typically add logic to validate and save the new password.
-                    console.log("Password change submitted!");
-                    
-                    // Return to the main settings view
-                    showSettingsPage();
-                });
-            }
-
-            // Initialize the page with the correct header and view
-            showSettingsPage();
-
-        });
-
+    // --- Functions ---
+    function showSettingsPage() {
+        // Hide password view and show settings view
+        if (passwordView) passwordView.classList.add('hidden');
+        if (settingsView) settingsView.classList.remove('hidden');
         
+        // Clear password fields when leaving password view
+        if (newPasswordInput) newPasswordInput.value = '';
+        if (confirmPasswordInput) confirmPasswordInput.value = '';
+        if (passwordStrength) passwordStrength.style.display = 'none';
+        if (passwordMatchMessage) passwordMatchMessage.textContent = '';
+        if (passwordMessage) passwordMessage.style.display = 'none';
+    }
+
+    function showPasswordPage() {
+        // Hide settings view and show password view
+        if (settingsView) settingsView.classList.add('hidden');
+        if (passwordView) passwordView.classList.remove('hidden');
+    }
+
+    // --- Event Listeners ---
+
+    // 1. Toggle Dropdown Menu (only if dropdown exists)
+    if (accountMenu) {
+        accountMenu.addEventListener('click', function (event) {
+            event.stopPropagation();
+            // Remove dropdown toggle since dropdown doesn't exist in HTML
+            console.log("Account menu clicked - dropdown functionality removed");
+        });
+    }
+
+    // 2. Switch to Change Password view
+    if (goToPasswordBtn) {
+        goToPasswordBtn.addEventListener('click', showPasswordPage);
+    }
+    
+    // 3. Cancel password change
+    if (cancelPasswordBtn) {
+        cancelPasswordBtn.addEventListener('click', showSettingsPage);
+    }
+
+    // Initialize the page with the correct header and view
+    showSettingsPage();
+});
+
 // Badge Service
 const BadgeService = {
     currentUser: null,
@@ -419,40 +883,39 @@ const BadgeService = {
             }
             
             // Count unread resources
-           // Count unread resources (only public topics)
-const classroomIds = await this.getClassroomIds();
-for (const classroomId of classroomIds) {
-    const topicContentQuery = query(
-        collection(db, 'topicContent'),
-        where('classroomID', '==', classroomId)
-    );
+            const classroomIds = await this.getClassroomIds();
+            for (const classroomId of classroomIds) {
+                const topicContentQuery = query(
+                    collection(db, 'topicContent'),
+                    where('classroomID', '==', classroomId)
+                );
 
-    const topicContentSnapshot = await getDocs(topicContentQuery);
+                const topicContentSnapshot = await getDocs(topicContentQuery);
 
-    for (const topicContentDoc of topicContentSnapshot.docs) {
-        const topicContentData = topicContentDoc.data();
-        const topicId = topicContentData.topicID;
+                for (const topicContentDoc of topicContentSnapshot.docs) {
+                    const topicContentData = topicContentDoc.data();
+                    const topicId = topicContentData.topicID;
 
-        // Fetch topic doc
-        const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
-        if (!topicDocSnap.exists()) continue;
-        const topicData = topicDocSnap.data();
+                    // Fetch topic doc
+                    const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
+                    if (!topicDocSnap.exists()) continue;
+                    const topicData = topicDocSnap.data();
 
-        // Only count if topic is public
-        if (topicData.status !== "public") continue;
+                    // Only count if topic is public
+                    if (topicData.status !== "public") continue;
 
-        const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
-        if (!isRead) unreadCount++;
-    }
-}
+                    const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
+                    if (!isRead) unreadCount++;
+                }
+            }
 
-            
             return unreadCount;
         } catch (error) {
             console.error('Error counting unread notifications:', error);
             return 0;
         }
     },
+    
     async checkIfRead(itemId, type) {
         if (!itemId) return false;
         
@@ -484,13 +947,13 @@ for (const classroomId of classroomIds) {
 
 // Initialize badge service
 document.addEventListener('DOMContentLoaded', async function() {
-    showLoading(); // ✅ Show overlay while badges load
+    showLoading();
     try {
         await BadgeService.init();
     } catch (error) {
         console.error("Error initializing BadgeService:", error);
     } finally {
-        hideLoading(); // ✅ Hide overlay after initialization
+        hideLoading();
     }
 });
     </script>

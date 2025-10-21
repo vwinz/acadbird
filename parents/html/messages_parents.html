@@ -70,61 +70,26 @@
             <button class="new-message"><i class="fas fa-plus"></i> New message</button>
             <div class="sidebar-title">MOST RECENT</div>
             <ul class="chat-list">
-              <li class="chat-item active" data-name="Mark Santiago’s Parent" data-student="Kianna Santiago">
-                <div class="avatar"></div>
-                <div class="chat-info">
-                  <div class="chat-name">Mark Santiago’s Parent</div>
-                  <div class="chat-sub">Kianna Santiago</div>
-                </div>
-              </li>
-              <li class="chat-item" data-name="Christine Rivera’s Parent" data-student="Lloyd Rivera">
-                <div class="avatar"></div>
-                <div class="chat-info">
-                  <div class="chat-name">Christine Rivera’s Parent</div>
-                  <div class="chat-sub">Lloyd Rivera</div>
-                </div>
-              </li>
-              <li class="chat-item" data-name="Princess Luna’s Parent" data-student="Agnes Luna">
-                <div class="avatar"></div>
-                <div class="chat-info">
-                  <div class="chat-name">Princess Luna’s Parent</div>
-                  <div class="chat-sub">Agnes Luna</div>
-                </div>
-              </li>
-              <!-- New Teachers -->
-              <li class="chat-item" data-name="Ms. Juana C. Obia" data-student="">
-                <div class="avatar"></div>
-                <div class="chat-info">
-                  <div class="chat-name">Ms. Juana C. Obia</div>
-                  <div class="chat-sub">Teacher</div>
-                </div>
-              </li>
-              <li class="chat-item" data-name="Mr. Carlos Dela Cruz" data-student="">
-                <div class="avatar"></div>
-                <div class="chat-info">
-                  <div class="chat-name">Mr. Carlos Dela Cruz</div>
-                  <div class="chat-sub">Teacher</div>
-                </div>
-              </li>
-              <li class="chat-item" data-name="Ms. Teresa Villanueva" data-student="">
-                <div class="avatar"></div>
-                <div class="chat-info">
-                  <div class="chat-name">Ms. Teresa Villanueva</div>
-                  <div class="chat-sub">Teacher</div>
-                </div>
-              </li>
+              <!-- Dynamic content will be loaded here -->
+              <div class="loading-chats">Loading conversations...</div>
             </ul>
           </div>
 
           <div class="chat-window">
             <div class="chat-header">
-              <span id="chat-name">Mark Santiago’s Parent</span>
-              <span id="chat-student">(Kianna Santiago)</span>
+              <span id="chat-name">Select a conversation</span>
+              <span id="chat-student">Choose a contact to start messaging</span>
             </div>
-            <div class="chat-body" id="chat-body"></div>
+            <div class="chat-body" id="chat-body">
+              <div class="welcome-message">
+                <i class="fas fa-comments"></i>
+                <h3>Welcome to Messages</h3>
+                <p>Select a contact from the sidebar to start a conversation.</p>
+              </div>
+            </div>
             <div class="chat-input">
               <i class="fas fa-paperclip attach"></i>
-              <input type="text" id="message-input" placeholder="Message Mark Santiago’s Parent">
+              <input type="text" id="message-input" placeholder="Select a conversation to message">
               <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
             </div>
           </div>
@@ -139,17 +104,13 @@
       <span class="close-btn">&times;</span>
       <h3>Select a Recipient</h3>
       <ul class="recipient-list">
-        <li data-name="Mark Santiago’s Parent" data-student="Kianna Santiago">Mark Santiago’s Parent (Kianna Santiago)</li>
-        <li data-name="Christine Rivera’s Parent" data-student="Lloyd Rivera">Christine Rivera’s Parent (Lloyd Rivera)</li>
-        <li data-name="Princess Luna’s Parent" data-student="Agnes Luna">Princess Luna’s Parent (Agnes Luna)</li>
-        <!-- Teachers in modal -->
-        <li data-name="Ms. Juana C. Obia" data-student="">Ms. Juana C. Obia (Teacher)</li>
-        <li data-name="Mr. Carlos Dela Cruz" data-student="">Mr. Carlos Dela Cruz (Teacher)</li>
-        <li data-name="Ms. Teresa Villanueva" data-student="">Ms. Teresa Villanueva (Teacher)</li>
+        <!-- Dynamic content will be loaded here -->
+        <div class="loading-recipients">Loading recipients...</div>
       </ul>
     </div>
   </div>
-<script type="module">
+
+  <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
     getFirestore, 
@@ -159,7 +120,11 @@ import {
     getDocs,
     doc,
     getDoc,
-    onSnapshot
+    onSnapshot,
+    addDoc,
+    orderBy,
+    serverTimestamp,
+    updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
@@ -179,17 +144,578 @@ const auth = getAuth(app);
 
 const loadingOverlay = document.getElementById("loading-overlay");
 
-   function showLoading() {
+function showLoading() {
   loadingOverlay.style.display = "flex";
 }
 
-// Hide overlay
 function hideLoading() {
   loadingOverlay.style.display = "none";
 }
 
+// Chat Service - Updated to match your database structure
+const ChatService = {
+    currentUser: null,
+    studentIds: [],
+    classroomIds: [],
+    unsubscribeListeners: [],
+    currentChatId: null,
 
-// Badge Service
+    async init() {
+        return new Promise((resolve) => {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    this.currentUser = user;
+                    await this.loadStudentIds();
+                    await this.loadClassroomIds();
+                    await this.loadChatList();
+                    await this.setupChatListeners();
+                    resolve();
+                } else {
+                    resolve();
+                }
+            });
+        });
+    },
+
+    async loadStudentIds() {
+        try {
+            const studentsQuery = query(
+                collection(db, 'students'),
+                where('parentId', '==', this.currentUser.uid)
+            );
+            
+            const querySnapshot = await getDocs(studentsQuery);
+            this.studentIds = querySnapshot.docs.map(doc => doc.id);
+            console.log('Loaded student IDs:', this.studentIds);
+        } catch (error) {
+            console.error('Error loading student IDs:', error);
+            this.studentIds = [];
+        }
+    },
+
+    async loadClassroomIds() {
+        this.classroomIds = new Set();
+        
+        try {
+            for (const studentId of this.studentIds) {
+                const studentDoc = await getDoc(doc(db, 'students', studentId));
+                if (studentDoc.exists()) {
+                    const studentData = studentDoc.data();
+                    if (studentData.classroomId) {
+                        this.classroomIds.add(studentData.classroomId);
+                    }
+                }
+            }
+            this.classroomIds = Array.from(this.classroomIds);
+            console.log('Loaded classroom IDs:', this.classroomIds);
+        } catch (error) {
+            console.error('Error fetching classroom IDs:', error);
+            this.classroomIds = [];
+        }
+    },
+
+    async getChatParticipants() {
+        const participants = [];
+        
+        try {
+            console.log('Getting chat participants...');
+            
+            // Get teachers from classrooms
+            for (const classroomId of this.classroomIds) {
+                console.log('Processing classroom:', classroomId);
+                const classroomDoc = await getDoc(doc(db, 'classrooms', classroomId));
+                if (classroomDoc.exists()) {
+                    const classroomData = classroomDoc.data();
+                    console.log('Classroom data:', classroomData);
+                    
+                    // Get teacher info
+                    if (classroomData.teacherId) {
+                        console.log('Found teacher ID:', classroomData.teacherId);
+                        const teacherDoc = await getDoc(doc(db, 'users', classroomData.teacherId));
+                        if (teacherDoc.exists()) {
+                            const teacherData = teacherDoc.data();
+                            console.log('Teacher data:', teacherData);
+                            
+                            // Only add if user is a teacher
+                            if (teacherData.role === 'teacher') {
+                                participants.push({
+                                    id: classroomData.teacherId,
+                                    name: `${teacherData.firstName} ${teacherData.lastName}`.trim() || 'Teacher',
+                                    type: 'teacher',
+                                    classroomId: classroomId,
+                                    classroomName: classroomData.classroomName || 'Classroom'
+                                });
+                            }
+                        } else {
+                            console.log('Teacher document not found for ID:', classroomData.teacherId);
+                        }
+                    }
+                } else {
+                    console.log('Classroom document not found for ID:', classroomId);
+                }
+            }
+
+            // Get other parents from the same classrooms
+            for (const classroomId of this.classroomIds) {
+                console.log('Looking for parents in classroom:', classroomId);
+                const studentsQuery = query(
+                    collection(db, 'students'),
+                    where('classroomId', '==', classroomId)
+                );
+                
+                const studentsSnapshot = await getDocs(studentsQuery);
+                console.log(`Found ${studentsSnapshot.size} students in classroom`);
+                
+                for (const studentDoc of studentsSnapshot.docs) {
+                    const studentData = studentDoc.data();
+                    console.log('Student data:', studentData);
+                    
+                    let parentId = studentData.parentId;
+                    
+                    // Get parent info (excluding current parent)
+                    if (parentId && parentId !== this.currentUser.uid) {
+                        console.log('Found parent ID:', parentId);
+                        const parentDoc = await getDoc(doc(db, 'users', parentId));
+                        if (parentDoc.exists()) {
+                            const parentData = parentDoc.data();
+                            console.log('Parent data:', parentData);
+                            
+                            // Only add if user is actually a parent
+                            if (parentData.role === 'parent') {
+                                // Check if parent already added
+                                const existingParent = participants.find(p => 
+                                    p.id === parentId && p.type === 'parent'
+                                );
+                                
+                                if (!existingParent) {
+                                    participants.push({
+                                        id: parentId,
+                                        name: `${parentData.firstName} ${parentData.lastName}`.trim() || 'Parent',
+                                        type: 'parent',
+                                        studentName: `${studentData.firstName} ${studentData.lastName}`.trim() || 'Student',
+                                        classroomId: classroomId,
+                                        classroomName: studentData.classroomName || 'Classroom'
+                                    });
+                                }
+                            }
+                        } else {
+                            console.log('Parent document not found for ID:', parentId);
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error loading chat participants:', error);
+        }
+        
+        console.log('Final participants list:', participants);
+        return participants;
+    },
+
+    async getOrCreateChatId(participantId) {
+        try {
+            // Check if chat already exists using your database structure
+            // Look for chats where current user is parentId and participant is teacherId, or vice versa
+            const chatsAsParentQuery = query(
+                collection(db, 'chats'),
+                where('parentId', '==', this.currentUser.uid),
+                where('teacherId', '==', participantId)
+            );
+            
+            const chatsAsTeacherQuery = query(
+                collection(db, 'chats'),
+                where('teacherId', '==', this.currentUser.uid),
+                where('parentId', '==', participantId)
+            );
+            
+            const [chatsAsParentSnapshot, chatsAsTeacherSnapshot] = await Promise.all([
+                getDocs(chatsAsParentQuery),
+                getDocs(chatsAsTeacherQuery)
+            ]);
+            
+            // Check if chat exists where current user is parent
+            if (!chatsAsParentSnapshot.empty) {
+                console.log('Found existing chat as parent:', chatsAsParentSnapshot.docs[0].id);
+                return chatsAsParentSnapshot.docs[0].id;
+            }
+            
+            // Check if chat exists where current user is teacher
+            if (!chatsAsTeacherSnapshot.empty) {
+                console.log('Found existing chat as teacher:', chatsAsTeacherSnapshot.docs[0].id);
+                return chatsAsTeacherSnapshot.docs[0].id;
+            }
+            
+            // Create new chat - determine if current user is parent or teacher
+            const participantDoc = await getDoc(doc(db, 'users', participantId));
+            let chatData = {};
+            
+            if (participantDoc.exists()) {
+                const participantData = participantDoc.data();
+                
+                if (participantData.role === 'teacher') {
+                    // Current user is parent, participant is teacher
+                    chatData = {
+                        parentId: this.currentUser.uid,
+                        teacherId: participantId,
+                        classroomId: this.classroomIds[0] || '', // Use first classroom
+                        createdAt: serverTimestamp(),
+                        lastMessage: '',
+                        lastMessageTime: serverTimestamp()
+                    };
+                } else if (participantData.role === 'parent') {
+                    // Current user is ???, participant is parent
+                    // For parent-to-parent chats, we need to decide on a structure
+                    // For now, let's use parentId1 and parentId2
+                    const userDoc = await getDoc(doc(db, 'users', this.currentUser.uid));
+                    const userData = userDoc.data();
+                    
+                    if (userData.role === 'parent') {
+                        chatData = {
+                            parentId1: this.currentUser.uid,
+                            parentId2: participantId,
+                            classroomId: this.classroomIds[0] || '',
+                            createdAt: serverTimestamp(),
+                            lastMessage: '',
+                            lastMessageTime: serverTimestamp(),
+                            type: 'parent-parent'
+                        };
+                    }
+                }
+            }
+            
+            console.log('Creating new chat with participant:', participantId);
+            const chatRef = await addDoc(collection(db, 'chats'), chatData);
+            console.log('Created new chat:', chatRef.id);
+            return chatRef.id;
+            
+        } catch (error) {
+            console.error('Error getting/creating chat:', error);
+            return null;
+        }
+    },
+
+    async setupChatListeners() {
+        // Clean up previous listeners
+        this.unsubscribeListeners.forEach(unsubscribe => unsubscribe());
+        this.unsubscribeListeners = [];
+        
+        const participants = await this.getChatParticipants();
+        
+        // Set up listeners for each chat
+        for (const participant of participants) {
+            const chatId = await this.getOrCreateChatId(participant.id);
+            
+            if (chatId) {
+                const messagesQuery = query(
+                    collection(db, 'chats', chatId, 'messages'),
+                    orderBy('timestamp', 'asc')
+                );
+                
+                const unsubscribe = onSnapshot(messagesQuery, (snapshot) => {
+                    this.updateChatUI(chatId, participant, snapshot);
+                });
+                
+                this.unsubscribeListeners.push(unsubscribe);
+            }
+        }
+    },
+
+    updateChatUI(chatId, participant, snapshot) {
+        const chatBody = document.getElementById('chat-body');
+        const activeChat = document.querySelector('.chat-item.active');
+        
+        // Only update if this is the active chat
+        if (activeChat && activeChat.dataset.chatId === chatId) {
+            chatBody.innerHTML = '';
+            
+            snapshot.forEach(doc => {
+                const message = doc.data();
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${message.senderId === this.currentUser.uid ? 'sent' : 'received'}`;
+                
+                // Create message content WITHOUT sender name
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.textContent = message.text;
+                
+                messageDiv.appendChild(messageContent);
+                chatBody.appendChild(messageDiv);
+            });
+            
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+    },
+
+    async sendMessage(chatId, messageText) {
+        try {
+            if (!messageText.trim()) return;
+            
+            // Get current user's name for the message
+            const userDoc = await getDoc(doc(db, 'users', this.currentUser.uid));
+            const userData = userDoc.exists() ? userDoc.data() : {};
+            const senderName = `${userData.firstName} ${userData.lastName}`.trim() || 'User';
+            
+            const messageData = {
+                text: messageText.trim(),
+                senderId: this.currentUser.uid,
+                senderName: senderName,
+                timestamp: serverTimestamp(),
+                read: false
+            };
+            
+            // Add message to subcollection
+            await addDoc(collection(db, 'chats', chatId, 'messages'), messageData);
+            
+            // Update chat last message
+            await updateDoc(doc(db, 'chats', chatId), {
+                lastMessage: messageText.trim(),
+                lastMessageTime: serverTimestamp()
+            });
+            
+        } catch (error) {
+            console.error('Error sending message:', error);
+        }
+    },
+
+    async loadExistingChats() {
+        try {
+            const existingChats = [];
+            
+            // Get chats where current user is parent
+            const parentChatsQuery = query(
+                collection(db, 'chats'),
+                where('parentId', '==', this.currentUser.uid)
+            );
+            
+            const parentChatsSnapshot = await getDocs(parentChatsQuery);
+            
+            for (const chatDoc of parentChatsSnapshot.docs) {
+                const chatData = chatDoc.data();
+                if (chatData.teacherId) {
+                    // This is a parent-teacher chat
+                    const teacherDoc = await getDoc(doc(db, 'users', chatData.teacherId));
+                    if (teacherDoc.exists()) {
+                        const teacherData = teacherDoc.data();
+                        existingChats.push({
+                            chatId: chatDoc.id,
+                            participantId: chatData.teacherId,
+                            name: `${teacherData.firstName} ${teacherData.lastName}`.trim(),
+                            type: 'teacher',
+                            classroomId: chatData.classroomId,
+                            classroomName: 'Classroom' // You might want to fetch the actual classroom name
+                        });
+                    }
+                }
+            }
+            
+            // Get chats where current user is teacher (if applicable)
+            const teacherChatsQuery = query(
+                collection(db, 'chats'),
+                where('teacherId', '==', this.currentUser.uid)
+            );
+            
+            const teacherChatsSnapshot = await getDocs(teacherChatsQuery);
+            
+            for (const chatDoc of teacherChatsSnapshot.docs) {
+                const chatData = chatDoc.data();
+                if (chatData.parentId) {
+                    // This is a teacher-parent chat
+                    const parentDoc = await getDoc(doc(db, 'users', chatData.parentId));
+                    if (parentDoc.exists()) {
+                        const parentData = parentDoc.data();
+                        // Find the student for this parent
+                        const studentsQuery = query(
+                            collection(db, 'students'),
+                            where('parentId', '==', chatData.parentId)
+                        );
+                        const studentsSnapshot = await getDocs(studentsQuery);
+                        let studentName = 'Student';
+                        if (!studentsSnapshot.empty) {
+                            const studentData = studentsSnapshot.docs[0].data();
+                            studentName = `${studentData.firstName} ${studentData.lastName}`.trim();
+                        }
+                        
+                        existingChats.push({
+                            chatId: chatDoc.id,
+                            participantId: chatData.parentId,
+                            name: `${parentData.firstName} ${parentData.lastName}`.trim(),
+                            type: 'parent',
+                            studentName: studentName,
+                            classroomId: chatData.classroomId,
+                            classroomName: 'Classroom'
+                        });
+                    }
+                }
+            }
+            
+            return existingChats;
+        } catch (error) {
+            console.error('Error loading existing chats:', error);
+            return [];
+        }
+    },
+
+    async loadChatList() {
+        // Load both existing chats and potential participants
+        const [existingChats, participants] = await Promise.all([
+            this.loadExistingChats(),
+            this.getChatParticipants()
+        ]);
+        
+        const chatList = document.querySelector('.chat-list');
+        
+        console.log('Existing chats:', existingChats);
+        console.log('Potential participants:', participants);
+        
+        chatList.innerHTML = '';
+        
+        // Add existing chats first
+        for (const chat of existingChats) {
+            const chatItem = this.createChatItem(chat);
+            chatList.appendChild(chatItem);
+        }
+        
+        // Add potential participants that don't have existing chats
+        for (const participant of participants) {
+            const existingChat = existingChats.find(chat => chat.participantId === participant.id);
+            if (!existingChat) {
+                const chatId = await this.getOrCreateChatId(participant.id);
+                if (chatId) {
+                    const chatItem = this.createChatItem({
+                        chatId: chatId,
+                        participantId: participant.id,
+                        name: participant.name,
+                        type: participant.type,
+                        studentName: participant.studentName,
+                        classroomName: participant.classroomName
+                    });
+                    chatList.appendChild(chatItem);
+                }
+            }
+        }
+        
+        if (chatList.children.length === 0) {
+            chatList.innerHTML = '<div class="no-chats">No chat participants found</div>';
+            return;
+        }
+        
+        // Add click event listeners
+        this.attachChatItemListeners();
+        
+        // Auto-select first chat if available
+        const firstChat = chatList.querySelector('.chat-item');
+        if (firstChat) {
+            firstChat.classList.add('active');
+            this.switchToChat(
+                firstChat.dataset.chatId,
+                firstChat.dataset.name,
+                firstChat.dataset.type,
+                firstChat.dataset.studentName,
+                firstChat.dataset.classroomName
+            );
+        }
+    },
+
+    createChatItem(chatData) {
+        const chatItem = document.createElement('li');
+        chatItem.className = 'chat-item';
+        chatItem.dataset.chatId = chatData.chatId;
+        chatItem.dataset.participantId = chatData.participantId;
+        chatItem.dataset.name = chatData.name;
+        chatItem.dataset.type = chatData.type;
+        chatItem.dataset.studentName = chatData.studentName || '';
+        chatItem.dataset.classroomName = chatData.classroomName || '';
+        
+        chatItem.innerHTML = `
+            <div class="avatar"></div>
+            <div class="chat-info">
+                <div class="chat-name">${chatData.name}</div>
+                <div class="chat-sub">
+                    ${chatData.type === 'teacher' ? 
+                      `Teacher - ${chatData.classroomName}` : 
+                      `Parent - ${chatData.studentName}'s parent`}
+                </div>
+            </div>
+        `;
+        
+        return chatItem;
+    },
+
+    attachChatItemListeners() {
+        const chatItems = document.querySelectorAll('.chat-item');
+        
+        chatItems.forEach(item => {
+            item.addEventListener('click', () => {
+                chatItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                const chatId = item.dataset.chatId;
+                const participantName = item.dataset.name;
+                const participantType = item.dataset.type;
+                const studentName = item.dataset.studentName;
+                const classroomName = item.dataset.classroomName;
+                
+                this.switchToChat(chatId, participantName, participantType, studentName, classroomName);
+            });
+        });
+    },
+
+    async switchToChat(chatId, participantName, participantType, studentName, classroomName) {
+        const chatName = document.getElementById('chat-name');
+        const chatStudent = document.getElementById('chat-student');
+        const chatBody = document.getElementById('chat-body');
+        const messageInput = document.getElementById('message-input');
+        
+        // Update header
+        chatName.textContent = participantName;
+        
+        if (participantType === 'teacher') {
+            chatStudent.textContent = `Teacher - ${classroomName}`;
+        } else {
+            chatStudent.textContent = `Parent - ${studentName}'s parent`;
+        }
+        
+        messageInput.placeholder = `Message ${participantName}`;
+        
+        // Clear and load messages
+        chatBody.innerHTML = 'Loading...';
+        this.currentChatId = chatId;
+        
+        try {
+            const messagesQuery = query(
+                collection(db, 'chats', chatId, 'messages'),
+                orderBy('timestamp', 'asc')
+            );
+            
+            const messagesSnapshot = await getDocs(messagesQuery);
+            chatBody.innerHTML = '';
+            
+            if (messagesSnapshot.empty) {
+                chatBody.innerHTML = '<div class="no-messages">No messages yet. Start the conversation!</div>';
+            } else {
+                messagesSnapshot.forEach(doc => {
+                    const message = doc.data();
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `message ${message.senderId === this.currentUser.uid ? 'sent' : 'received'}`;
+                    
+                    // Create message content WITHOUT sender name
+                    const messageContent = document.createElement('div');
+                    messageContent.className = 'message-content';
+                    messageContent.textContent = message.text;
+                    
+                    messageDiv.appendChild(messageContent);
+                    chatBody.appendChild(messageDiv);
+                });
+            }
+            
+            chatBody.scrollTop = chatBody.scrollHeight;
+            
+        } catch (error) {
+            console.error('Error loading messages:', error);
+            chatBody.innerHTML = '<div class="error">Error loading messages</div>';
+        }
+    }
+};
 const BadgeService = {
     currentUser: null,
     studentIds: [],
@@ -210,20 +736,6 @@ const BadgeService = {
         });
     },
 
-    async loadStudentIds() {
-        try {
-            const studentsQuery = query(
-                collection(db, 'students'),
-                where('parentId', '==', this.currentUser.uid)
-            );
-            
-            const querySnapshot = await getDocs(studentsQuery);
-            this.studentIds = querySnapshot.docs.map(doc => doc.id);
-        } catch (error) {
-            console.error('Error loading student IDs:', error);
-            this.studentIds = [];
-        }
-    },
 
     async setupRealTimeListener() {
         if (this.studentIds.length === 0) return;
@@ -254,6 +766,48 @@ const BadgeService = {
         });
     },
 
+   
+  async loadStudentIds() {
+    try {
+        const studentsQuery = query(
+            collection(db, 'students'),
+            where('parentId', '==', this.currentUser.uid)
+        );
+        
+        const querySnapshot = await getDocs(studentsQuery);
+        this.studentIds = querySnapshot.docs.map(doc => doc.id);
+        console.log('Loaded student IDs:', this.studentIds);
+        
+        // If no students found with direct parentId match, try alternative approach
+        if (this.studentIds.length === 0) {
+            console.log('No students found with direct parentId match, trying alternative...');
+            
+            // Get current parent's name
+            const parentDoc = await getDoc(doc(db, 'users', this.currentUser.uid));
+            if (parentDoc.exists()) {
+                const parentData = parentDoc.data();
+                const parentName = `${parentData.firstName} ${parentData.lastName}`.trim();
+                
+                if (parentName) {
+                    // Look for students with matching parentName
+                    const allStudentsQuery = query(collection(db, 'students'));
+                    const allStudentsSnapshot = await getDocs(allStudentsQuery);
+                    
+                    const matchingStudents = allStudentsSnapshot.docs.filter(doc => {
+                        const studentData = doc.data();
+                        return studentData.parentName === parentName;
+                    });
+                    
+                    this.studentIds = matchingStudents.map(doc => doc.id);
+                    console.log('Found students by parentName:', this.studentIds);
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error loading student IDs:', error);
+        this.studentIds = [];
+    }
+},
     async getClassroomIds() {
         const classroomIds = new Set();
         
@@ -267,13 +821,13 @@ const BadgeService = {
                     }
                 }
             }
+            console.log('BadgeService - Loaded classroom IDs:', Array.from(classroomIds));
         } catch (error) {
-            console.error('Error fetching classroom IDs:', error);
+            console.error('Error fetching classroom IDs in BadgeService:', error);
         }
         
         return Array.from(classroomIds);
     },
-
     async getUnreadCount() {
         if (!this.currentUser || this.studentIds.length === 0) {
             return 0;
@@ -298,40 +852,39 @@ const BadgeService = {
             }
             
             // Count unread resources
-           // Count unread resources (only public topics)
-const classroomIds = await this.getClassroomIds();
-for (const classroomId of classroomIds) {
-    const topicContentQuery = query(
-        collection(db, 'topicContent'),
-        where('classroomID', '==', classroomId)
-    );
+            const classroomIds = await this.getClassroomIds();
+            for (const classroomId of classroomIds) {
+                const topicContentQuery = query(
+                    collection(db, 'topicContent'),
+                    where('classroomID', '==', classroomId)
+                );
 
-    const topicContentSnapshot = await getDocs(topicContentQuery);
+                const topicContentSnapshot = await getDocs(topicContentQuery);
 
-    for (const topicContentDoc of topicContentSnapshot.docs) {
-        const topicContentData = topicContentDoc.data();
-        const topicId = topicContentData.topicID;
+                for (const topicContentDoc of topicContentSnapshot.docs) {
+                    const topicContentData = topicContentDoc.data();
+                    const topicId = topicContentData.topicID;
 
-        // Fetch topic doc
-        const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
-        if (!topicDocSnap.exists()) continue;
-        const topicData = topicDocSnap.data();
+                    // Fetch topic doc
+                    const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
+                    if (!topicDocSnap.exists()) continue;
+                    const topicData = topicDocSnap.data();
 
-        // Only count if topic is public
-        if (topicData.status !== "public") continue;
+                    // Only count if topic is public
+                    if (topicData.status !== "public") continue;
 
-        const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
-        if (!isRead) unreadCount++;
-    }
-}
+                    const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
+                    if (!isRead) unreadCount++;
+                }
+            }
 
-            
             return unreadCount;
         } catch (error) {
             console.error('Error counting unread notifications:', error);
             return 0;
         }
     },
+
     async checkIfRead(itemId, type) {
         if (!itemId) return false;
         
@@ -361,115 +914,155 @@ for (const classroomId of classroomIds) {
     }
 };
 
-// Initialize badge service
+// Initialize everything
 document.addEventListener('DOMContentLoaded', async function() {
-    await BadgeService.init();
-});
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const chatItems = document.querySelectorAll('.chat-item');
-      const chatName = document.getElementById('chat-name');
-      const chatStudent = document.getElementById('chat-student');
-      const chatBody = document.getElementById('chat-body');
-      const messageInput = document.getElementById('message-input');
-      const sendBtn = document.getElementById('send-btn');
-
-      const newMessageBtn = document.querySelector('.new-message');
-      const newMessageModal = document.getElementById('new-message-modal');
-      const modalCloseBtn = document.querySelector('.close-btn');
-      const recipientList = document.querySelectorAll('.recipient-list li');
-
-      const chatHistory = {};
-
-      function switchChat(name, student) {
-        chatName.textContent = name;
-        chatStudent.textContent = student ? `(${student})` : "";
-        messageInput.placeholder = `Message ${name}`;
-        chatBody.innerHTML = '';
-        const key = `${name}-${student}`;
-        if (!chatHistory[key]) chatHistory[key] = [];
-        chatHistory[key].forEach(msg => {
-          const div = document.createElement('div');
-          div.className = 'message ' + msg.type;
-          div.textContent = msg.text;
-          chatBody.appendChild(div);
-        });
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }
-
-      chatItems.forEach(item => {
-        item.addEventListener('click', () => {
-          chatItems.forEach(i => i.classList.remove('active'));
-          item.classList.add('active');
-          switchChat(item.dataset.name, item.dataset.student);
-        });
-      });
-
-      function sendMessage() {
-        const msg = messageInput.value.trim();
-        if (!msg) return;
-        const key = `${chatName.textContent}-${chatStudent.textContent.replace(/[()]/g, '')}`;
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message sent';
-        messageDiv.textContent = msg;
-        chatBody.appendChild(messageDiv);
-        chatBody.scrollTop = chatBody.scrollHeight;
-        chatHistory[key].push({ type: 'sent', text: msg });
-        messageInput.value = '';
-        setTimeout(() => {
-          const reply = document.createElement('div');
-          reply.className = 'message received';
-          reply.textContent = 'Received: ' + msg;
-          chatBody.appendChild(reply);
-          chatBody.scrollTop = chatBody.scrollHeight;
-          chatHistory[key].push({ type: 'received', text: 'Received: ' + msg });
-        }, 1000);
-      }
-
-      sendBtn.addEventListener('click', sendMessage);
-      messageInput.addEventListener('keydown', e => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
-
-      newMessageBtn.addEventListener('click', () => {
-        newMessageModal.style.display = 'block';
-      });
-      modalCloseBtn.addEventListener('click', () => {
-        newMessageModal.style.display = 'none';
-      });
-      window.addEventListener('click', e => {
-        if (e.target === newMessageModal) newMessageModal.style.display = 'none';
-      });
-      recipientList.forEach(item => {
-        item.addEventListener('click', () => {
-          chatItems.forEach(i => {
-            if (i.dataset.name === item.dataset.name) {
-              i.classList.add('active');
-            } else {
-              i.classList.remove('active');
-            }
-          });
-          switchChat(item.dataset.name, item.dataset.student);
-          newMessageModal.style.display = 'none';
-        });
-      });
-    });
-    document.addEventListener('DOMContentLoaded', async function() {
-    showLoading(); // ✅ Show overlay immediately
+    showLoading();
 
     try {
         await BadgeService.init();
-        // Optionally, you can also fetch chats here if they come from Firebase
+        await ChatService.init();
+        
+        // Setup send message functionality
+        const sendBtn = document.getElementById('send-btn');
+        const messageInput = document.getElementById('message-input');
+        
+        sendBtn.addEventListener('click', () => {
+            if (ChatService.currentChatId && messageInput.value.trim()) {
+                ChatService.sendMessage(ChatService.currentChatId, messageInput.value);
+                messageInput.value = '';
+            }
+        });
+        
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && ChatService.currentChatId && messageInput.value.trim()) {
+                ChatService.sendMessage(ChatService.currentChatId, messageInput.value);
+                messageInput.value = '';
+            }
+        });
+        
     } catch (error) {
-        console.error("Error initializing badge service:", error);
+        console.error("Error initializing:", error);
     } finally {
-        hideLoading(); // ✅ Hide overlay after all async tasks complete
+        hideLoading();
     }
 });
 
-  </script>
+// New Message Modal functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const newMessageBtn = document.querySelector('.new-message');
+    const newMessageModal = document.getElementById('new-message-modal');
+    const modalCloseBtn = document.querySelector('.close-btn');
+    const recipientList = document.querySelector('.recipient-list');
+
+    newMessageBtn.addEventListener('click', async () => {
+        newMessageModal.style.display = 'block';
+        
+        // Load participants for modal
+        const participants = await ChatService.getChatParticipants();
+        recipientList.innerHTML = '';
+        
+        if (participants.length === 0) {
+            recipientList.innerHTML = '<div class="no-recipients">No recipients available</div>';
+            return;
+        }
+        
+        participants.forEach(participant => {
+            const li = document.createElement('li');
+            li.dataset.participantId = participant.id;
+            li.dataset.name = participant.name;
+            li.dataset.type = participant.type;
+            li.dataset.studentName = participant.studentName || '';
+            li.dataset.classroomName = participant.classroomName || '';
+            
+            li.innerHTML = `
+                <span class="recipient-name">${participant.name}</span>
+                <span class="recipient-info">
+                    ${participant.type === 'teacher' ? 
+                      `Teacher - ${participant.classroomName}` : 
+                      `Parent - ${participant.studentName}'s parent`}
+                </span>
+            `;
+            
+            recipientList.appendChild(li);
+        });
+
+        // Add click listeners to modal recipients
+        recipientList.querySelectorAll('li').forEach(item => {
+            item.addEventListener('click', async () => {
+                const participantId = item.dataset.participantId;
+                const participantName = item.dataset.name;
+                const participantType = item.dataset.type;
+                const studentName = item.dataset.studentName;
+                const classroomName = item.dataset.classroomName;
+                
+                const chatId = await ChatService.getOrCreateChatId(participantId);
+                
+                // Find and click the corresponding chat item
+                const chatItem = document.querySelector(`.chat-item[data-participant-id="${participantId}"]`);
+                if (chatItem) {
+                    chatItem.click();
+                } else {
+                    // If chat item doesn't exist yet, reload chat list
+                    await ChatService.loadChatList();
+                    const newChatItem = document.querySelector(`.chat-item[data-participant-id="${participantId}"]`);
+                    if (newChatItem) newChatItem.click();
+                }
+                
+                newMessageModal.style.display = 'none';
+            });
+        });
+    });
+
+    modalCloseBtn.addEventListener('click', () => {
+        newMessageModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target === newMessageModal) {
+            newMessageModal.style.display = 'none';
+        }
+    });
+});
+</script>
+
+<style>
+    /* Additional styles for loading states */
+    .loading-chats, .loading-recipients {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+        font-style: italic;
+    }
+
+    .no-chats, .no-recipients {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+    }
+
+    .welcome-message {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    .welcome-message i {
+        font-size: 3rem;
+        color: #3498db;
+        margin-bottom: 15px;
+    }
+
+    .welcome-message h3 {
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .no-messages {
+        text-align: center;
+        padding: 40px 20px;
+        color: #666;
+        font-style: italic;
+    }
+</style>
 </body>
 </html>

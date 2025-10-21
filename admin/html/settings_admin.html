@@ -6,544 +6,7 @@
     <title>AcadBird Admin - Settings</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <style>
-        /* =======================
-            Base Styles
-        ======================= */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
-        html, body {
-            height: 100%; 
-            width: 100%; 
-            font-family: "Poppins", Arial, sans-serif; 
-            background-color: #dbe7f7; 
-            font-size: 16px; 
-            color: #000;
-        }
-        
-        /* =======================
-            Navbar
-        ======================= */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            background-color: #0a3b82;
-            color: white;
-            border-bottom: 1px solid #000;
-        }
-        
-        .navbar-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 0 24px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-img {
-            width: 70px;
-            height: 40px;
-            border-radius: 4px;
-        }
-
-        .logo-text-img {
-            height: 28px;
-            border-radius: 4px;
-        }
-        
-        .middle-logo {
-            width: 90px;
-            height: 40px;
-            margin: 0 auto;
-            border-radius: 4px;
-        }
-        
-        .back-icon {
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: white;
-        }
-
-        .nav-icons {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-
-        .nav-icons .icon {
-            width: 30px; 
-            height: 25px; 
-            font-size: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-        }
-
-        .account-menu {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .account-menu .dropdown-icon {
-            width: 12px;
-            height: 14px;
-            cursor: pointer;
-            font-size: 0.75rem;
-            color: white;
-        }
-
-        /* =======================
-            Secondary Header (Navigation)
-        ======================= */
-        .secondary-header {
-            background-color: #e7efff;
-            display: flex;
-            justify-content: center;
-            padding: 12px 0;
-            position: static;
-            top: 44px;
-            z-index: 999;
-            border-bottom: 1px solid #000;
-        }
-
-        .secondary-header-container {
-            width: 100%; 
-            padding: 0 24px;
-            overflow-x: auto;
-            display: flex;
-            justify-content: center;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 22px;
-            align-items: center;
-            font-size: 16px;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        .nav-item {
-            color: #000;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 5px 10px;
-            border-radius: 3px;
-            transition: background-color 0.3s;
-        }
-
-        .nav-item.active {
-            font-weight: 700;
-            color: #000;
-            border-bottom: 2px solid #000;
-        }
-
-        .nav-item:hover {
-            background-color: #c9d7f8;
-        }
-
-        /* =======================
-            Separator Line
-        ======================= */
-        .separator {
-            width: 100%;
-            height: 1px;
-            background-color: #000;
-            margin: 0;
-            color:#000;
-            display: block;
-        }
-        
-        /* =======================
-            Main Content
-        ======================= */
-        .main-content {
-            padding: 35px 45px;
-            background-color: transparent;
-            position: relative;
-            z-index: 0;
-            overflow: auto;
-            min-height: calc(100vh - 100px);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 30px;
-        }
-        
-        @media (max-width: 1024px) {
-            .main-content {
-                flex-direction: column;
-                padding: 20px;
-            }
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            width: 100%;
-            max-width: 300px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .admin-card {
-            background-color: #0a3b82;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            color: white;
-            border: 1px solid #000;
-        }
-        
-        .admin-card h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            padding-bottom: 8px;
-        }
-        
-        .admin-card span {
-            font-weight: 500;
-            font-size: 1.125rem;
-            padding: 8px 12px;
-            display: block;
-        }
-
-        /* Main Content Area */
-        .content-area {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .settings-card {
-            background-color: white;
-            padding: 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            border: 1px solid #000;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .settings-card h2 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: #0a3b82;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 8px;
-        }
-
-        /* Settings Section Styles */
-        .settings-section {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .settings-section:last-child {
-            border-bottom: none;
-        }
-
-        .settings-section h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #0a3b82;
-            margin-bottom: 16px;
-        }
-
-        .settings-group {
-            margin-bottom: 20px;
-        }
-
-        .settings-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #374151;
-        }
-
-        .settings-group input, .settings-group select, .settings-group textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-family: "Poppins", Arial, sans-serif;
-        }
-
-        .settings-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-        }
-
-        .checkbox-group label {
-            margin-bottom: 0;
-            cursor: pointer;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn-primary {
-            background-color: #0a3b82;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #082a5f;
-        }
-
-        .btn-secondary {
-            background-color: #e5e7eb;
-            color: #374151;
-        }
-
-        .btn-secondary:hover {
-            background-color: #d1d5db;
-        }
-
-        /* Notification Styles */
-        .notification-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 16px;
-            border-radius: 8px;
-            background-color: #f9fafb;
-            margin-bottom: 12px;
-            transition: background-color 0.2s;
-        }
-
-        .notification-item:hover {
-            background-color: #f3f4f6;
-        }
-
-        .notification-item.unread {
-            background-color: #e7efff;
-            border-left: 4px solid #0a3b82;
-        }
-
-        .notification-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.125rem;
-        }
-
-        .notification-icon.info {
-            background-color: #60a5fa;
-        }
-
-        .notification-icon.warning {
-            background-color: #fbbf24;
-        }
-
-        .notification-icon.alert {
-            background-color: #ef4444;
-        }
-
-        .notification-icon.success {
-            background-color: #34d399;
-        }
-
-        .notification-content {
-            flex: 1;
-        }
-
-        .notification-title {
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: #111827;
-        }
-
-        .notification-message {
-            color: #6b7280;
-            font-size: 0.875rem;
-            margin-bottom: 6px;
-        }
-
-        .notification-time {
-            color: #9ca3af;
-            font-size: 0.75rem;
-        }
-
-        .notification-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .notification-action {
-            background: none;
-            border: none;
-            color: #6b7280;
-            cursor: pointer;
-            font-size: 0.875rem;
-        }
-
-        .notification-action:hover {
-            color: #374151;
-        }
-
-        /* Help Styles */
-        .help-section {
-            margin-bottom: 30px;
-        }
-
-        .help-section h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #0a3b82;
-            margin-bottom: 16px;
-        }
-
-        .faq-item {
-            margin-bottom: 16px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 16px;
-            background-color: #f9fafb;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .faq-question:hover {
-            background-color: #f3f4f6;
-        }
-
-        .faq-answer {
-            padding: 16px;
-            background-color: white;
-            border-top: 1px solid #e5e7eb;
-            display: none;
-        }
-
-        .faq-item.active .faq-answer {
-            display: block;
-        }
-
-        .contact-card {
-            background-color: #f9fafb;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-        }
-
-        .contact-card h4 {
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #0a3b82;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .contact-item i {
-            color: #0a3b82;
-            width: 20px;
-        }
-
-        /* Toggle Switch */
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 24px;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 24px;
-        }
-
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 16px;
-            width: 16px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .toggle-slider {
-            background-color: #0a3b82;
-        }
-
-        input:checked + .toggle-slider:before {
-            transform: translateX(26px);
-        }
-    </style>
+    <link rel="stylesheet" href="../style/settings_admin.css" />
 </head>
 <body>
     <div class="page-wrapper">
@@ -551,10 +14,10 @@
         <div class="navbar">
             <div class="navbar-container">
                 <div class="logo">
-                    <img src="AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-                    <img src="AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+                    <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
+                    <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
                 </div>
-                <img src="sunhill.png" alt="AcadBird" class="middle-logo" />
+                <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
                 <div class="nav-icons">
                     <a href="notification_admin.html" title="Notifications">
                         <i class="fas fa-bell icon"></i>
@@ -590,9 +53,9 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <div class="admin-card">
-                    <h2>Admin 1</h2>
+                    <h2 id="sidebar-admin-name">Admin 1</h2>
                     <div>
-                        <span>Sunhill Academy</span>
+                        <span id="sidebar-school-name">Sunhill Academy</span>
                     </div>
                 </div>
 
@@ -622,20 +85,20 @@
                         
                         <div class="settings-group">
                             <label for="admin-name">Admin Name</label>
-                            <input type="text" id="admin-name" value="Admin 1">
+                            <input type="text" id="admin-name" placeholder="Loading...">
                         </div>
                         
                         <div class="settings-group">
                             <label for="admin-email">Email Address</label>
-                            <input type="email" id="admin-email" value="admin@sunhill.edu">
+                            <input type="email" id="admin-email" placeholder="Loading...">
                         </div>
                         
                         <div class="settings-group">
                             <label for="school-name">School Name</label>
-                            <input type="text" id="school-name" value="Sunhill Academy">
+                            <input type="text" id="school-name" value="Sunhill Academy" readonly>
                         </div>
                         
-                        <button class="btn btn-primary">Save Changes</button>
+                        <button class="btn btn-primary" id="save-account-settings">Save Changes</button>
                     </div>
                     
                     <div class="settings-section">
@@ -680,7 +143,7 @@
                             <label for="two-factor">Enable two-factor authentication</label>
                         </div>
                         
-                        <button class="btn btn-primary">Update Security Settings</button>
+                        <button class="btn btn-primary" id="update-security">Update Security Settings</button>
                     </div>
                     
                     <div class="settings-section">
@@ -714,42 +177,229 @@
                             </select>
                         </div>
                     </div>
-                    
-                    <div class="settings-section">
-                        <h3>Data Management</h3>
-                        
-                        <div class="settings-group">
-                            <label>Automatic Backups</label>
-                            <div class="checkbox-group">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" checked>
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <label>Enable automatic daily backups</label>
-                            </div>
-                        </div>
-                        
-                        <div class="settings-group">
-                            <label for="backup-time">Backup Time</label>
-                            <input type="time" id="backup-time" value="02:00">
-                        </div>
-                        
-                        <div class="settings-group">
-                            <button class="btn btn-secondary">Download Data Export</button>
-                            <button class="btn btn-secondary" style="margin-left: 10px;">Restore from Backup</button>
-                        </div>
+          
+                      
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Toggle FAQ items
-        document.addEventListener('DOMContentLoaded', function() {
-            // This would be for the help page functionality
-            // For settings page, we don't need the FAQ toggling
-        });
+    <script type="module">
+        import { 
+            getFirestore, collection, getDocs, query, where, doc, getDoc, updateDoc, serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+            authDomain: "acadbird-379e3.firebaseapp.com",
+            projectId: "acadbird-379e3",
+            storageBucket: "acadbird-379e3.firebasestorage.app",
+            messagingSenderId: "575491576951",
+            appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+            measurementId: "G-N6Z672SXWJ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // DOM Elements
+        const adminNameInput = document.getElementById('admin-name');
+        const adminEmailInput = document.getElementById('admin-email');
+        const schoolNameInput = document.getElementById('school-name');
+        const sidebarAdminName = document.getElementById('sidebar-admin-name');
+        const sidebarSchoolName = document.getElementById('sidebar-school-name');
+        const saveAccountSettingsBtn = document.getElementById('save-account-settings');
+
+        // Fetch admin data from Firestore
+        async function fetchAdminData() {
+            try {
+                console.log('🔍 Fetching admin data...');
+                
+                // Query for admin users (assuming role is "admin")
+                const adminQuery = query(collection(db, "users"), where("role", "==", "admin"));
+                const adminSnap = await getDocs(adminQuery);
+                
+                if (adminSnap.empty) {
+                    console.log('❌ No admin user found');
+                    // Set default values
+                    setDefaultAdminData();
+                    return;
+                }
+
+                // Get the first admin user (assuming there's only one admin)
+                const adminDoc = adminSnap.docs[0];
+                const adminData = adminDoc.data();
+                const adminId = adminDoc.id;
+                
+                console.log('✅ Admin data found:', adminData);
+
+                // Populate the form fields
+                adminNameInput.value = adminData.fullName || adminData.name || 'Admin 1';
+                adminEmailInput.value = adminData.email || 'admin@sunhill.edu';
+                schoolNameInput.value = 'Sunhill Academy'; // Static value as requested
+                
+                // Update sidebar
+                sidebarAdminName.textContent = adminData.fullName || adminData.name || 'Admin 1';
+                sidebarSchoolName.textContent = 'Sunhill Academy';
+
+            } catch (error) {
+                console.error('❌ Error fetching admin data:', error);
+                // Set default values on error
+                setDefaultAdminData();
+            }
+        }
+
+        // Set default admin data if fetch fails
+        function setDefaultAdminData() {
+            adminNameInput.value = 'Admin 1';
+            adminEmailInput.value = 'admin@sunhill.edu';
+            schoolNameInput.value = 'Sunhill Academy';
+            sidebarAdminName.textContent = 'Admin 1';
+            sidebarSchoolName.textContent = 'Sunhill Academy';
+        }
+
+        // Add logout functionality
+function setupLogout() {
+    // Create logout button
+    const logoutButton = document.createElement('button');
+    logoutButton.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+    logoutButton.className = 'btn btn-secondary';
+    logoutButton.style.marginTop = '20px';
+    logoutButton.style.width = '100%';
+    
+    // Add click event listener
+    logoutButton.addEventListener('click', handleLogout);
+    
+    // Find a good place to add the logout button - you can modify this selector
+    const settingsCard = document.querySelector('.settings-card');
+    if (settingsCard) {
+        settingsCard.appendChild(logoutButton);
+    }
+}
+
+// Handle logout process
+function handleLogout() {
+    if (confirm('Are you sure you want to logout?')) {
+        // Clear any local storage or session data if needed
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Redirect to login page
+        window.location.href = '../../main/html/login.html';
+    }
+}
+
+// Then call setupLogout() in your initSettings() function:
+function initSettings() {
+    console.log('🚀 Initializing settings page...');
+    
+    // Fetch admin data when page loads
+    fetchAdminData();
+    
+    // Add event listeners
+    saveAccountSettingsBtn.addEventListener('click', saveAccountSettings);
+    
+    // Add enter key support for form submission
+    adminNameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') saveAccountSettings();
+    });
+    
+    adminEmailInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') saveAccountSettings();
+    });
+    
+    // Setup logout button
+    setupLogout();
+}
+// Alternative: Add logout to sidebar
+function setupSidebarLogout() {
+    const sidebar = document.querySelector('.sidebar');
+    const logoutLink = document.createElement('a');
+    logoutLink.href = '#';
+    logoutLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+    logoutLink.style.color = 'white';
+    logoutLink.style.textDecoration = 'none';
+    logoutLink.style.padding = '8px 12px';
+    logoutLink.style.borderRadius = '4px';
+    logoutLink.style.transition = 'background-color 0.3s';
+    logoutLink.style.display = 'block';
+    logoutLink.style.marginTop = '10px';
+    
+    logoutLink.onmouseover = function() {
+        this.style.backgroundColor = 'rgba(255,255,255,0.1)';
+    };
+    logoutLink.onmouseout = function() {
+        this.style.backgroundColor = 'transparent';
+    };
+    
+    logoutLink.addEventListener('click', handleLogout);
+    
+    // Add to the existing quick links card or create new section
+    const quickLinksCard = document.querySelector('.admin-card:last-child');
+    if (quickLinksCard) {
+        const linksContainer = quickLinksCard.querySelector('div');
+        if (linksContainer) {
+            linksContainer.appendChild(logoutLink);
+        }
+    }
+}
+        // Save account settings
+        async function saveAccountSettings() {
+            const adminName = adminNameInput.value.trim();
+            const adminEmail = adminEmailInput.value.trim();
+            
+            if (!adminName || !adminEmail) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(adminEmail)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            try {
+                console.log('💾 Saving account settings...');
+                
+                // Find the admin user to update
+                const adminQuery = query(collection(db, "users"), where("role", "==", "admin"));
+                const adminSnap = await getDocs(adminQuery);
+                
+                if (adminSnap.empty) {
+                    alert('No admin user found to update.');
+                    return;
+                }
+
+                const adminDoc = adminSnap.docs[0];
+                const adminId = adminDoc.id;
+
+                // Update admin data in Firestore
+                await updateDoc(doc(db, "users", adminId), {
+                    fullName: adminName,
+                    email: adminEmail,
+                    updatedAt: serverTimestamp()
+                });
+
+                // Update sidebar
+                sidebarAdminName.textContent = adminName;
+                
+                alert('✅ Account settings saved successfully!');
+                
+            } catch (error) {
+                console.error('❌ Error saving account settings:', error);
+                alert('Failed to save account settings. Please try again.');
+            }
+        }
+
+        // Initialize the settings page
+
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initSettings);
     </script>
 </body>
 </html>
