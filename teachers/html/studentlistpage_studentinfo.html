@@ -431,6 +431,9 @@ async function loadStudent() {
     parentCodeCard.querySelector("p").innerHTML =
       `<strong>Parent:</strong> ${student.parentName || "—"}`;
 
+    // Update connection status based on student status
+    updateConnectionStatus(student);
+
     if (student.classroomId) {
       const classroomRef = doc(db, "classrooms", student.classroomId);
       const classroomSnap = await getDoc(classroomRef);
@@ -510,6 +513,22 @@ function updateProgressBar(activities) {
         progressBar.className = 'progress-bar progress-low';
         progressLevel.textContent = 'Low Performance';
         progressLevel.style.color = '#c62828';
+    }
+}
+
+function updateConnectionStatus(student) {
+    const connectedElement = document.querySelector('.connected');
+    if (connectedElement) {
+        if (student.status === 'active') {
+            connectedElement.textContent = 'Connected';
+            connectedElement.style.color = '#27ae60'; // Green color for connected
+        } else if (student.status === 'pending') {
+            connectedElement.textContent = 'Not Connected';
+            connectedElement.style.color = '#e74c3c'; // Red color for not connected
+        } else {
+            connectedElement.textContent = 'Unknown';
+            connectedElement.style.color = '#95a5a6'; // Gray for unknown status
+        }
     }
 }
 

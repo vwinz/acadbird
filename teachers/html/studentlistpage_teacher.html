@@ -184,7 +184,7 @@
   <!-- Firebase App (the core Firebase SDK) -->
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-  import { 
+import { 
     getFirestore, 
     collection, 
     query, 
@@ -192,8 +192,9 @@
     getDocs, 
     addDoc, 
     doc, 
-    getDoc 
-  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+    getDoc,
+    updateDoc  // Add this import
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
   // ----------------------
   // Firebase Initialization
@@ -252,6 +253,77 @@ async function getTeacherClassrooms(teacherId) {
         console.error("Error getting teacher classrooms:", error);
         return {};
     }
+}
+
+async function getClassroomCapacity(classroomId) {
+    try {
+        const classRef = doc(db, "classrooms", classroomId);
+        const classSnap = await getDoc(classRef);
+        
+        if (classSnap.exists()) {
+            const data = classSnap.data();
+            return {
+                maxStudents: data.maxStudents || 30, // Default to 30 if not set
+                currentStudents: data.currentStudents || 0
+            };
+        }
+        return { maxStudents: 30, currentStudents: 0 }; // Default values
+    } catch (error) {
+        console.error("Error getting classroom capacity:", error);
+        return { maxStudents: 30, currentStudents: 0 };
+    }
+}
+
+// ----------------------
+// Check if Classroom has Capacity
+// ----------------------
+async function canAddStudent(classroomId) {
+    const capacity = await getClassroomCapacity(classroomId);
+    return capacity.currentStudents < capacity.maxStudents;
+}
+
+// ----------------------
+// Update Classroom Student Count
+// ----------------------
+async function updateClassroomStudentCount(classroomId, increment = true) {
+    try {
+        const classRef = doc(db, "classrooms", classroomId);
+        const classSnap = await getDoc(classRef);
+        
+        if (classSnap.exists()) {
+            const data = classSnap.data();
+            const currentCount = data.currentStudents || 0;
+            const newCount = increment ? currentCount + 1 : Math.max(0, currentCount - 1);
+            
+            await updateDoc(classRef, {
+                currentStudents: newCount
+            });
+            
+            console.log(`✅ Classroom student count updated to: ${newCount}`);
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error("Error updating classroom student count:", error);
+        return false;
+    }
+}
+
+async function handleAddStudentClick(classroomId) {
+    const canAdd = await canAddStudent(classroomId);
+    
+    if (!canAdd) {
+        const capacity = await getClassroomCapacity(classroomId);
+        alert(`Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`);
+        return false;
+    }
+    
+    // Show the add student modal
+    modalTitle.textContent = "Add Student";
+    formSubmitBtn.textContent = "Add Student";
+    studentForm.reset();
+    addEditModal.style.display = 'flex';
+    return true;
 }
 
 async function getReadNotifications(teacherId) {
@@ -398,6 +470,8 @@ onAuthStateChanged(auth, async (user) => {
     studentCountEl.textContent = `${students.length} Students`;
   }
 
+
+
 function createStudentCard(student, studentGrid, addStudentCard) {
   // Create card
   const card = document.createElement("div");
@@ -462,26 +536,34 @@ function createStudentCard(student, studentGrid, addStudentCard) {
   // ----------------------
   // Load Classroom
   // ----------------------
-  async function loadClassroom(classroomId, classroomNameEl, classroomGradeEl) {
+async function loadClassroom(classroomId, classroomNameEl, classroomGradeEl) {
     const storedClassName = localStorage.getItem('selectedClassName');
     classroomNameEl.textContent = storedClassName || "Classroom";
 
     if (!classroomId) return;
 
     try {
-      const classRef = doc(db, "classrooms", classroomId);
-      const classSnap = await getDoc(classRef);
+        const classRef = doc(db, "classrooms", classroomId);
+        const classSnap = await getDoc(classRef);
 
-      if (classSnap.exists()) {
-        const data = classSnap.data();
-        classroomNameEl.textContent = data.classroomName || storedClassName || "Classroom";
-        classroomGradeEl.textContent = data.grade || "";
-      }
+        if (classSnap.exists()) {
+            const data = classSnap.data();
+            classroomNameEl.textContent = data.classroomName || storedClassName || "Classroom";
+            classroomGradeEl.textContent = data.grade || "";
+            
+            // Update student count display with capacity info
+            const capacity = await getClassroomCapacity(classroomId);
+            const studentCountEl = document.getElementById('student-count');
+            if (studentCountEl) {
+                studentCountEl.textContent = `${capacity.currentStudents}/${capacity.maxStudents} Students`;
+            }
+        }
     } catch (err) {
-      console.error("Failed to load classroom:", err);
-      classroomNameEl.textContent = storedClassName || "Classroom (offline)";
+        console.error("Failed to load classroom:", err);
+        classroomNameEl.textContent = storedClassName || "Classroom (offline)";
     }
-  }
+}
+
 
   // ----------------------
 // Load Students (from Firestore)
@@ -634,189 +716,219 @@ async function getParentEmail(parentId) {
   // ----------------------
   // Main Init
   // ----------------------
-  document.addEventListener('DOMContentLoaded', async () => {
-    console.log("🚀 DOM Content Loaded - Initializing student list page");
-    
-    // Update notification badge when page loads
-    try {
-        await updateNotificationBadge();
-    } catch (error) {
-        console.error("Error initializing notification badge:", error);
-    }
+  // ----------------------
+// Main Init
+// ----------------------
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log("🚀 DOM Content Loaded - Initializing student list page");
+  
+  // Update notification badge when page loads
+  try {
+      await updateNotificationBadge();
+  } catch (error) {
+      console.error("Error initializing notification badge:", error);
+  }
 
-    showLoading();
-    let classroomId = new URLSearchParams(window.location.search).get('classroomId');
+  showLoading();
+  let classroomId = new URLSearchParams(window.location.search).get('classroomId');
 
-    const classroomNameEl = document.querySelector('.section-title');
-    const classroomGradeEl = document.querySelector('.section-subtitle');
-    const studentGrid = document.getElementById('student-grid');
+  const classroomNameEl = document.querySelector('.section-title');
+  const classroomGradeEl = document.querySelector('.section-subtitle');
+  const studentGrid = document.getElementById('student-grid');
 
-    const studentCountEl = document.getElementById('student-count');
-    const addEditModal = document.getElementById('add-edit-modal');
-    const modalTitle = document.getElementById('modal-title');
-    const studentForm = document.getElementById('student-form');
-    const formSubmitBtn = document.getElementById('form-submit-btn');
-    const addStudentCard = document.getElementById('add-student-card');
+  const studentCountEl = document.getElementById('student-count');
+  const addEditModal = document.getElementById('add-edit-modal');
+  const modalTitle = document.getElementById('modal-title');
+  const studentForm = document.getElementById('student-form');
+  const formSubmitBtn = document.getElementById('form-submit-btn');
+  const addStudentCard = document.getElementById('add-student-card');
 
-    if (!addStudentCard || !studentForm || !formSubmitBtn || !addEditModal || !modalTitle) return;
+  if (!addStudentCard || !studentForm || !formSubmitBtn || !addEditModal || !modalTitle) return;
 
-    if (!classroomId) {
-        classroomId = localStorage.getItem('selectedClassId');
-    }
-    
-    // Load parents and classroom first
-    try {
-        // 🔽 Fetch all needed data
-        await loadParents();
-        attachParentAutocomplete();
-        await loadClassroom(classroomId, classroomNameEl, classroomGradeEl);
-        await loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
-    } catch (err) {
-        console.error("Error during initialization:", err);
-    } finally {
-        hideLoading(); // 👈 hide after everything loads
-    }
+  if (!classroomId) {
+      classroomId = localStorage.getItem('selectedClassId');
+  }
 
-    // Rest of your existing code...
-    document.getElementById("status-filter").addEventListener("change", () => {
-        renderStudents(studentGrid, addStudentCard, studentCountEl);
-    });
-
-    // Add student modal
-    addStudentCard.addEventListener('click', () => {
+  // ----------------------
+  // Move handleAddStudentClick inside DOMContentLoaded
+  // ----------------------
+  async function handleAddStudentClick(classroomId) {
+      const canAdd = await canAddStudent(classroomId);
+      
+      if (!canAdd) {
+          const capacity = await getClassroomCapacity(classroomId);
+          alert(`Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`);
+          return false;
+      }
+      
+      // Show the add student modal
       modalTitle.textContent = "Add Student";
       formSubmitBtn.textContent = "Add Student";
       studentForm.reset();
       addEditModal.style.display = 'flex';
-    });
-
-    document.querySelectorAll('.modal .close-button, .btn-cancel').forEach(btn => {
-      btn.addEventListener('click', () => { addEditModal.style.display = 'none'; });
-    });
-
-    // Submit student form
-  // Submit student form
-  // Submit student form
-// Submit student form
-studentForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const parentInput = document.getElementById("parents-name");
-  const parentName = parentInput.value.trim();
-  const firstName = document.getElementById('first-name').value.trim();
-  const lastName = document.getElementById('last-name').value.trim();
-  const gender = document.getElementById('gender').value;
-const age = Number(document.getElementById('age').value);
-
-  const codeModal = document.getElementById("code-modal");
-  const codeOkBtn = document.getElementById("code-ok-btn");
-  const codeCloseBtn = codeModal.querySelector(".close-button");
-
-  // Validate
-  if (!parentName || !firstName || !lastName || !gender || !age) {
-    alert("Please fill in all required fields.");
-    return;
+      return true;
   }
-
-  // Match parent
-  const parent = parentUsers.find(p => p.name === parentName);
-  if (!parent) { 
-    alert("Parent not found. Please select from suggestions."); 
-    return; 
-  }
-
+  
+  // MOVE THE EVENT LISTENER HERE, INSIDE THE DOMContentLoaded
+  addStudentCard.addEventListener('click', async () => {
+    await handleAddStudentClick(classroomId);
+  });
+  
+  // Load parents and classroom first
   try {
-    showLoading(); // Show loading while processing
+      // 🔽 Fetch all needed data
+      await loadParents();
+      attachParentAutocomplete();
+      await loadClassroom(classroomId, classroomNameEl, classroomGradeEl);
+      await loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
+  } catch (err) {
+      console.error("Error during initialization:", err);
+  } finally {
+      hideLoading(); // 👈 hide after everything loads
+  }
 
-    // 🔑 Generate unique 6-digit alphanumeric code
-    const studentCode = generateRandomCode(6);
-    const studentFullName = `${firstName} ${lastName}`;
+  // Rest of your existing code...
+  document.getElementById("status-filter").addEventListener("change", () => {
+      renderStudents(studentGrid, addStudentCard, studentCountEl);
+  });
 
-    // Get parent email
-    const parentEmail = await getParentEmail(parent.id);
+  document.querySelectorAll('.modal .close-button, .btn-cancel').forEach(btn => {
+    btn.addEventListener('click', () => { addEditModal.style.display = 'none'; });
+  });
+
+  // Submit student form
+  studentForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const parentInput = document.getElementById("parents-name");
+    const parentName = parentInput.value.trim();
+    const firstName = document.getElementById('first-name').value.trim();
+    const lastName = document.getElementById('last-name').value.trim();
+    const gender = document.getElementById('gender').value;
+    const age = Number(document.getElementById('age').value);
+
+    const codeModal = document.getElementById("code-modal");
+    const codeOkBtn = document.getElementById("code-ok-btn");
+    const codeCloseBtn = codeModal.querySelector(".close-button");
     
-    // Student object with classroomId + code
-    const studentData = { 
-      firstName, 
-      lastName, 
-      gender, 
-      age, 
-      parentId: parent.id,     
-      parentName: parent.name, 
-      classroomId: classroomId || null,
-      status: "pending",               
-      studentCode: studentCode,        // ✅ save code
-      createdAt: new Date()
-    };
-
-    // Save to Firestore "students" collection
-    const docRef = await addDoc(collection(db, "students"), studentData);
-
-    // Send verification email to parent
-    if (parentEmail) {
-        const emailSent = await sendVerificationEmail(
-            parentEmail, 
-            studentFullName, 
-            studentCode, 
-            parent.name
-        );
-        
-        if (!emailSent) {
-            console.warn("⚠️ Student added but email notification failed");
-        }
-    } else {
-        console.warn("⚠️ Student added but no parent email found");
+    // Check capacity again before proceeding
+    const canAdd = await canAddStudent(classroomId);
+    if (!canAdd) {
+        const capacity = await getClassroomCapacity(classroomId);
+        alert(`Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`);
+        addEditModal.style.display = 'none';
+        return;
     }
 
-    // Code modal handlers
-codeOkBtn.addEventListener("click", () => {
-  codeModal.style.display = "none";
-  // Optional: Refresh the student list
-  loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
-});
+    // Validate
+    if (!parentName || !firstName || !lastName || !gender || !age) {
+      alert("Please fill in all required fields.");
+      return;
+    }
 
-codeCloseBtn.addEventListener("click", () => {
-  codeModal.style.display = "none";
-  // Optional: Refresh the student list
-  loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
-});
-    // Add locally
-    const newStudent = { id: docRef.id, ...studentData };
-    students.push(newStudent);
+    // Match parent
+    const parent = parentUsers.find(p => p.name === parentName);
+    if (!parent) { 
+      alert("Parent not found. Please select from suggestions."); 
+      return; 
+    }
 
-    // Create card in UI
-    createStudentCard(newStudent, studentGrid, addStudentCard);
-    updateStudentCount(studentCountEl);
+    try {
+      showLoading(); // Show loading while processing
 
-    // Close add/edit modal
-    addEditModal.style.display = 'none';
-    studentForm.reset();
-    parentInput.value = "";
+      // 🔑 Generate unique 6-digit alphanumeric code
+      const studentCode = generateRandomCode(6);
+      const studentFullName = `${firstName} ${lastName}`;
 
-    // ✅ Show generated code in the code modal
-    document.getElementById("generated-code").textContent = studentCode;
-    
-    // Update modal message based on email status
-    const modalMessage = parentEmail ? 
-        `The verification code has been sent to ${parentEmail} and is shown below:` :
-        "Please share this verification code with the parent manually:";
-    
-    // You might want to update the modal text to show this message
-    document.querySelector("#code-modal p").textContent = modalMessage;
-    
-    document.getElementById("code-modal").style.display = 'flex';
+      // Get parent email
+      const parentEmail = await getParentEmail(parent.id);
+      
+      // Student object with classroomId + code
+      const studentData = { 
+        firstName, 
+        lastName, 
+        gender, 
+        age, 
+        parentId: parent.id,     
+        parentName: parent.name, 
+        classroomId: classroomId || null,
+        status: "pending",               
+        studentCode: studentCode,        // ✅ save code
+        createdAt: new Date()
+      };
 
-    console.log("✅ Student added with ID:", docRef.id, "code:", studentCode);
+      // Save to Firestore "students" collection
+      const docRef = await addDoc(collection(db, "students"), studentData);
 
-  } catch (err) {
-    console.error("❌ Error adding student:", err);
-    alert("Failed to add student.");
-  } finally {
-    hideLoading(); // Hide loading regardless of outcome
-  }
-});
+      // Update classroom student count
+      await updateClassroomStudentCount(classroomId, true);
 
+      // Send verification email to parent
+      if (parentEmail) {
+          const emailSent = await sendVerificationEmail(
+              parentEmail, 
+              studentFullName, 
+              studentCode, 
+              parent.name
+          );
+          
+          if (!emailSent) {
+              console.warn("⚠️ Student added but email notification failed");
+          }
+      } else {
+          console.warn("⚠️ Student added but no parent email found");
+      }
+
+      // Code modal handlers
+      codeOkBtn.addEventListener("click", () => {
+        codeModal.style.display = "none";
+        // Refresh the student list
+        loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
+      });
+
+      codeCloseBtn.addEventListener("click", () => {
+        codeModal.style.display = "none";
+        // Refresh the student list
+        loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
+      });
+
+      // Add locally
+      const newStudent = { id: docRef.id, ...studentData };
+      students.push(newStudent);
+
+      // Create card in UI
+      createStudentCard(newStudent, studentGrid, addStudentCard);
+      updateStudentCount(studentCountEl);
+
+      // Close add/edit modal
+      addEditModal.style.display = 'none';
+      studentForm.reset();
+      parentInput.value = "";
+
+      // ✅ Show generated code in the code modal
+      document.getElementById("generated-code").textContent = studentCode;
+      
+      // Update modal message based on email status
+      const modalMessage = parentEmail ? 
+          `The verification code has been sent to ${parentEmail} and is shown below:` :
+          "Please share this verification code with the parent manually:";
+      
+      // Update the modal text to show this message
+      document.querySelector("#code-modal p").textContent = modalMessage;
+      
+      document.getElementById("code-modal").style.display = 'flex';
+
+      console.log("✅ Student added with ID:", docRef.id, "code:", studentCode);
+
+    } catch (err) {
+      console.error("❌ Error adding student:", err);
+      alert("Failed to add student.");
+    } finally {
+      hideLoading(); // Hide loading regardless of outcome
+    }
   });
+});
+
   </script>
 
       </div>

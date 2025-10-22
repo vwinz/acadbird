@@ -31,6 +31,56 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
     <link rel="stylesheet" href="settings_teacher.css" />
+    <style>
+        .save-cancel-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            align-items: center;
+        }
+
+        .save-changes-btn, .cancel-changes-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .save-changes-btn {
+            background: linear-gradient(135deg, #FFD700, #FF8C00) !important; /* Full color on hover */
+           border: 2px solid #000000 !important;
+            color: white;
+        }
+
+.save-changes-btn:hover:not(.disabled) {
+    background: linear-gradient(135deg, #FFD700, #FF8C00) !important; /* Full color on hover */
+    border: 2px solid #000000 !important;
+    transform: translateY(-1px);
+}
+        .cancel-changes-btn {
+            background-color: #cc1111;
+            color: white;
+        }
+
+        .cancel-changes-btn:hover:not(.disabled) {
+            background-color: #fb2004;
+            transform: translateY(-1px);
+        }
+
+        .disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .disabled:hover {
+            background-color: inherit !important;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -97,6 +147,10 @@
                                         <input type="email" id="email" value="sampleemail@school.edu.ph">
                                     </div>
                                     <button class="text-button" id="change-password-btn">Change Password</button>
+                                    <div class="save-cancel-buttons">
+                                        <button class="save-changes-btn disabled" id="save-changes-btn">Save Changes</button>
+                                        <button class="cancel-changes-btn disabled" id="cancel-changes-btn">Cancel</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -144,6 +198,8 @@
     // Buttons for switching views
     const goToPasswordBtn = document.getElementById('change-password-btn');
     const submitPasswordBtn = document.querySelector('#password-view .action-button'); // The submit button in the password view
+    const saveChangesBtn = document.getElementById('save-changes-btn');
+    const cancelChangesBtn = document.getElementById('cancel-changes-btn');
 
     // Logout Button Selections (RE-ADDED)
     const dropdownLogoutLink = document.getElementById('logout-link');
@@ -152,9 +208,13 @@
     // Profile Form Fields (RE-ADDED)
     const firstNameInput = document.getElementById('first-name');
     const lastNameInput = document.getElementById('last-name');
-    const usernameInput = document.getElementById('username');
     const emailInput = document.getElementById('email'); 
     const avatarPlaceholder = document.querySelector('.avatar-placeholder');
+
+    // Track original values to detect changes
+    let originalFirstName = '';
+    let originalLastName = '';
+    let originalEmail = '';
 
     // --- Utility Functions ---
 
@@ -179,7 +239,11 @@
                 // Populate the form fields
                 firstNameInput.value = data.firstName || '';
                 lastNameInput.value = data.lastName || '';
-             
+                
+                // Store original values
+                originalFirstName = data.firstName || '';
+                originalLastName = data.lastName || '';
+                originalEmail = auth.currentUser.email || '';
                 
                 // Update avatar placeholder 
                 if (data.firstName) {
@@ -189,6 +253,9 @@
                 }
 
                 console.log("Profile data loaded from Firestore successfully.");
+                
+                // Hide save/cancel buttons initially
+                updateSaveCancelButtons(false);
             } else {
                 console.warn("No user data found in Firestore for UID:", uid);
             }
@@ -197,6 +264,137 @@
         }
     }
 
+    /**
+     * Check if form values have changed from original values
+     */
+    function hasFormChanged() {
+        const currentFirstName = firstNameInput.value.trim();
+        const currentLastName = lastNameInput.value.trim();
+        const currentEmail = emailInput.value.trim();
+        
+        return currentFirstName !== originalFirstName || 
+               currentLastName !== originalLastName || 
+               currentEmail !== originalEmail;
+    }
+
+    /**
+     * Update save and cancel buttons visibility and state
+     */
+   /**
+ * Update save and cancel buttons visibility and state
+ */
+/**
+ * Update save and cancel buttons visibility and state
+ */
+/**
+ * Update save and cancel buttons visibility and state
+ */
+function updateSaveCancelButtons(hasChanges) {
+    if (hasChanges) {
+        saveChangesBtn.classList.remove('disabled');
+        cancelChangesBtn.classList.remove('disabled');
+        // Add login button style (faded gradient yellow-orange with black border)
+        saveChangesBtn.style.background = 'linear-gradient(135deg, rgba(255, 215, 0, 0.8), rgba(255, 140, 0, 0.8))';
+        saveChangesBtn.style.border = '2px solid #000000';
+        saveChangesBtn.style.color = '#000000';
+    } else {
+        saveChangesBtn.classList.add('disabled');
+        cancelChangesBtn.classList.add('disabled');
+        // Reset to original style when disabled
+        saveChangesBtn.style.background = '#3498db';
+        saveChangesBtn.style.border = 'none';
+        saveChangesBtn.style.color = 'white';
+    }
+}
+
+    /**
+     * Reset form to original values
+     */
+    function resetForm() {
+        firstNameInput.value = originalFirstName;
+        lastNameInput.value = originalLastName;
+        emailInput.value = originalEmail;
+        
+        // Update avatar placeholder
+        if (originalFirstName) {
+            avatarPlaceholder.textContent = originalFirstName.charAt(0).toUpperCase();
+        } else {
+            avatarPlaceholder.textContent = 'A';
+        }
+        
+        updateSaveCancelButtons(false);
+    }
+
+    /**
+     * Save profile changes to Firestore
+     */
+    async function saveProfileChanges() {
+        if (typeof db === 'undefined') {
+            console.error("Firestore 'db' object is not defined. Cannot save profile data.");
+            return;
+        }
+
+        const user = auth.currentUser;
+        if (!user) {
+            console.error("No user logged in. Cannot save profile.");
+            return;
+        }
+
+        const newFirstName = firstNameInput.value.trim();
+        const newLastName = lastNameInput.value.trim();
+        const newEmail = emailInput.value.trim();
+
+        // Basic validation
+        if (!newFirstName || !newLastName || !newEmail) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (!newEmail.includes('@')) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+
+        try {
+            // Update Firestore
+            await db.collection("users").doc(user.uid).update({
+                firstName: newFirstName,
+                lastName: newLastName,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            // Update email in Firebase Auth if changed
+            if (newEmail !== originalEmail) {
+                await user.updateEmail(newEmail);
+                console.log("Email updated in Firebase Auth");
+            }
+
+            // Update original values
+            originalFirstName = newFirstName;
+            originalLastName = newLastName;
+            originalEmail = newEmail;
+
+            // Update avatar placeholder
+            avatarPlaceholder.textContent = newFirstName.charAt(0).toUpperCase();
+
+            // Hide save/cancel buttons
+            updateSaveCancelButtons(false);
+
+            // Show success message
+            alert("Profile updated successfully!");
+
+            console.log("Profile data saved to Firestore successfully.");
+
+        } catch (error) {
+            console.error("Error saving profile data:", error);
+            
+            if (error.code === 'auth/requires-recent-login') {
+                alert("For security reasons, please log in again to change your email.");
+            } else {
+                alert("Failed to save changes: " + error.message);
+            }
+        }
+    }
 
     function showSettingsPage() {
         // Hide password view and show settings view
@@ -286,7 +484,42 @@
         });
     }
 
-    // 5. Logout Button Event Listeners (RE-ADDED)
+    // 5. Save Changes button
+    if (saveChangesBtn) {
+        saveChangesBtn.addEventListener('click', function() {
+            if (!saveChangesBtn.classList.contains('disabled')) {
+                saveProfileChanges();
+            }
+        });
+    }
+
+    // 6. Cancel Changes button
+    if (cancelChangesBtn) {
+        cancelChangesBtn.addEventListener('click', function() {
+            if (!cancelChangesBtn.classList.contains('disabled')) {
+                resetForm();
+            }
+        });
+    }
+
+    // 7. Form input change listeners
+    if (firstNameInput) {
+        firstNameInput.addEventListener('input', function() {
+            updateSaveCancelButtons(hasFormChanged());
+        });
+    }
+    if (lastNameInput) {
+        lastNameInput.addEventListener('input', function() {
+            updateSaveCancelButtons(hasFormChanged());
+        });
+    }
+    if (emailInput) {
+        emailInput.addEventListener('input', function() {
+            updateSaveCancelButtons(hasFormChanged());
+        });
+    }
+
+    // 8. Logout Button Event Listeners (RE-ADDED)
     if (dropdownLogoutLink) {
         dropdownLogoutLink.addEventListener('click', handleLogout);
     }
@@ -294,7 +527,7 @@
         mainLogoutButton.addEventListener('click', handleLogout);
     }
     
-    // 6. Authentication Check (Core logic for security and data loading) (RE-ADDED)
+    // 9. Authentication Check (Core logic for security and data loading) (RE-ADDED)
     if (typeof auth !== 'undefined') {
         auth.onAuthStateChanged((user) => {
             if (!user) {
@@ -306,6 +539,7 @@
                 
                 // 1. Set email field from Firebase Auth object
                 emailInput.value = user.email; 
+                originalEmail = user.email;
                 
                 // 2. Fetch and load additional profile data from Firestore
                 loadUserProfile(user.uid);
