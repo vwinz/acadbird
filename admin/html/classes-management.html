@@ -57,9 +57,10 @@
                 </div>
                 <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
                 <div class="nav-icons">
-                    <a href="notification_admin.html" target="_blank" title="Notifications">
-                        <i class="fas fa-bell icon"></i>
-                    </a>
+                    <a href="notification_admin.html" target="_blank" title="Notifications" class="notification-badge-container">
+    <i class="fas fa-bell icon"></i>
+    <span class="notification-bell-badge" id="notification-bell-badge" style="display: none;">0</span>
+</a>
                     <a href="help_admin.html" target="_blank" title="Help">
                         <i class="fas fa-question-circle icon"></i>
                     </a>
@@ -71,6 +72,17 @@
                 </div>
             </div>
         </div>
+
+        <div id="loading-overlay">
+
+<div class="loader-3">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+</div>
         
         <div class="secondary-header">
            <div class="w-full px-6 overflow-x-auto flex justify-center">
@@ -329,30 +341,46 @@ import {
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const loadingOverlay = document.getElementById("loading-overlay");
 
-  async function loadMetrics() {
-    try {
-      // 🔹 Active Classes
-      const activeSnap = await getDocs(
-        query(collection(db, "classrooms"), where("status", "==", "active"))
-      );
-      document.getElementById("metric-active-classes").textContent = activeSnap.size;
+   function showLoading() {
+  loadingOverlay.style.display = "flex";
+}
 
-      // 🔹 Unassigned Classroom (pending)
-      const pendingSnap = await getDocs(
-        query(collection(db, "classrooms"), where("status", "==", "pending"))
-      );
-      document.getElementById("metric-teachers-pendingclassroom").textContent = pendingSnap.size;
+// Hide overlay
+function hideLoading() {
+  loadingOverlay.style.display = "none";
+}
 
-      // 🔹 Total Students
-      const studentSnap = await getDocs(collection(db, "students"));
-      document.getElementById("metric-total-students").textContent = studentSnap.size;
 
-    } catch (err) {
-      console.error("Error fetching metrics:", err);
-    }
+
+ async function loadMetrics() {
+  try {
+    showLoading(); // ADD THIS LINE
+    
+    // 🔹 Active Classes
+    const activeSnap = await getDocs(
+      query(collection(db, "classrooms"), where("status", "==", "active"))
+    );
+    document.getElementById("metric-active-classes").textContent = activeSnap.size;
+
+    // 🔹 Unassigned Classroom (pending)
+    const pendingSnap = await getDocs(
+      query(collection(db, "classrooms"), where("status", "==", "pending"))
+    );
+    document.getElementById("metric-teachers-pendingclassroom").textContent = pendingSnap.size;
+
+    // 🔹 Total Students
+    const studentSnap = await getDocs(collection(db, "students"));
+    document.getElementById("metric-total-students").textContent = studentSnap.size;
+
+    hideLoading(); // ADD THIS LINE
+    
+  } catch (err) {
+    hideLoading(); // ADD THIS LINE even on error
+    console.error("Error fetching metrics:", err);
   }
-
+}
 
   async function populateEditTeacherSelect(currentTeacherId) {
   const select = document.getElementById("edit-teacher");
@@ -413,11 +441,12 @@ async function getTeacherName(teacherId) {
 }
 
 // 🔹 Load Classes Table
-// 🔹 Load Classes Table
 async function loadClassesTable() {
   tableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4">Loading...</td></tr>`;
 
   try {
+    showLoading(); // ADD THIS LINE
+    
     const classSnap = await getDocs(collection(db, "classrooms"));
     tableBody.innerHTML = "";
 
@@ -475,21 +504,20 @@ async function loadClassesTable() {
         `;
       }
 
-      // In your loadClassesTable() function, update the table row generation:
-row.innerHTML = `
-  <td class="class-name-cell">
-    <a href="class-details.html?id=${classId}" 
-       class="text-acad-navy font-semibold hover:underline">
-       ${className}
-    </a>
-  </td>
-  <td class="teacher-cell">${teacherName}</td>
-  <td>${studentCount} / ${maxStudents}</td>
-  <td class="status-cell"><span class="font-medium ${statusClass}">${status}</span></td>
-  <td class="whitespace-nowrap">
-    ${actionButtons}
-  </td>
-`;
+      row.innerHTML = `
+        <td class="class-name-cell">
+          <a href="class-details.html?id=${classId}" 
+             class="text-acad-navy font-semibold hover:underline">
+             ${className}
+          </a>
+        </td>
+        <td class="teacher-cell">${teacherName}</td>
+        <td>${studentCount} / ${maxStudents}</td>
+        <td class="status-cell"><span class="font-medium ${statusClass}">${status}</span></td>
+        <td class="whitespace-nowrap">
+          ${actionButtons}
+        </td>
+      `;
 
       // Hide archived classes by default
       if (status === 'archived') {
@@ -502,11 +530,16 @@ row.innerHTML = `
     if (classSnap.empty) {
       tableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-gray-500">No classes found.</td></tr>`;
     }
+    
+    hideLoading(); // ADD THIS LINE
+    
   } catch (err) {
+    hideLoading(); // ADD THIS LINE even on error
     console.error("Error loading classes:", err);
     tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-red-600">Error loading classes</td></tr>`;
   }
 }
+
 const filterTeacher = document.getElementById("filter-teacher");
 const filterStatus = document.getElementById("filter-status");
 
@@ -586,13 +619,13 @@ async function populateTeacherSelect(selectElementId) {
 
 
 // Run on page load
-loadClassesTable();
+
 await populateTeacherFilter();
 await populateTeacherSelect("new-teacher");
 await populateTeacherSelect("edit-teacher");
 
   // Run on load
-  loadMetrics();
+
         // DOM Elements
      
         const searchInput = document.getElementById('search-input');
@@ -661,6 +694,8 @@ editClassForm.addEventListener("submit", async (e) => {
   const newTeacherId = document.getElementById("edit-teacher").value;
 
   try {
+    showLoading(); // ADD THIS LINE
+    
     // Create update object with only the fields that changed
     const updateData = {
       classroomName: className
@@ -679,12 +714,15 @@ editClassForm.addEventListener("submit", async (e) => {
     alert("Class updated successfully!");
     closeModal(editClassModal);
     loadClassesTable();
+    
+    hideLoading(); // ADD THIS LINE
+    
   } catch (err) {
+    hideLoading(); // ADD THIS LINE even on error
     console.error("Error updating class:", err);
     alert("Failed to update class. See console for details.");
   }
 });
-
 // Update the function that opens the edit modal
 function openEditClassModal(rowElement) {
     const classId = rowElement.getAttribute('data-id');
@@ -818,95 +856,99 @@ function openEditClassModal(rowElement) {
     }
 }
 
-    document.addEventListener('click', async (e) => {
-    const button = e.target.closest('.edit-btn, .archive-btn, .assign-btn, .restore-btn, .delete-btn');
-    if (!button) return;
+   document.addEventListener('click', async (e) => {
+  const button = e.target.closest('.edit-btn, .archive-btn, .assign-btn, .restore-btn, .delete-btn');
+  if (!button) return;
 
-    const action = button.title;
-    const classId = button.getAttribute('data-class-id');
-    const row = document.querySelector(`tr[data-id="${classId}"]`);
+  const action = button.title;
+  const classId = button.getAttribute('data-class-id');
+  const row = document.querySelector(`tr[data-id="${classId}"]`);
 
-    if (action === 'Edit Class' || action === 'Assign Teacher') {
-        if(row) openEditClassModal(row);
-        return;
-    }
+  if (action === 'Edit Class' || action === 'Assign Teacher') {
+    if(row) openEditClassModal(row);
+    return;
+  }
 
-    if (confirm(`Are you sure you want to perform "${action}" on class ID ${classId}?`)) {
-        try {
-            let message = `Successfully performed "${action}" on Class ID ${classId}.`;
-            let oldStatus = row ? row.getAttribute('data-status') : null;
-            let newStatus = oldStatus;
-            
-            if (action === 'Archive Class') {
-                // Update Firestore to set status to "archived"
-                await updateDoc(doc(db, "classrooms", classId), {
-                    status: "archived"
-                });
-                newStatus = 'archived';
-                message = `Class ID ${classId} has been moved to the Archive.`;
-            } else if (action === 'Restore Class') {
-                // Update Firestore to set status to "active"
-                await updateDoc(doc(db, "classrooms", classId), {
-                    status: "active"
-                });
-                newStatus = 'active'; 
-                message = `Class ID ${classId} has been Restored and is now Active.`;
-            } else if (action === 'Delete Class' || action === 'Permanent Delete') {
-                // For permanent delete, remove from Firestore
-                // Note: You need to import deleteDoc first
-                await deleteDoc(doc(db, "classrooms", classId));
-                if (row) row.remove();
-                // Also remove from the archived modal list if it was deleted there
-                const archivedItem = archivedListContainer.querySelector(`div[data-id="${classId}"]`);
-                if (archivedItem) archivedItem.remove();
-                message = `Successfully permanently deleted Class ID ${classId}.`;
-            }
-            
-            // Update the main table row visualization and data attributes
-            if (row && newStatus !== oldStatus) {
-                row.setAttribute('data-status', newStatus);
-                const statusSpan = row.querySelector('.status-cell span');
-                statusSpan.textContent = newStatus;
-                statusSpan.className = `font-medium text-status-${newStatus.toLowerCase().replace(/\s/g, '-')}`;
-                
-                if (newStatus === 'archived') {
-                    // Ensure the row is hidden when archived, as per the filter logic
-                    row.style.display = 'none';
-                    row.classList.add('opacity-70');
-                } else {
-                    row.classList.remove('opacity-70');
-                    row.style.display = "";
-                    row.classList.remove('bg-yellow-50/50');
-                    // Update status class for active classes
-                    if (newStatus === 'active') {
-                        statusSpan.className = 'font-medium text-status-active';
-                    }
-                }
-
-                updateRowActions(row, newStatus, classId);
-            }
-            
-            alert(message);
-            
-            // Reload metrics to reflect changes
-            loadMetrics();
-            
-            // If the action was taken from the archived modal, refresh its view
-            if (archivedClassesModal.style.display === 'flex') {
-                openArchivedClassesModal(); // Re-populate list to reflect changes
-            }
-
-            // Re-sort and filter main table
-            sortTable(currentSortKey, sortDirection);
-            applyFiltersAndSearch();
-
-        } catch (err) {
-            console.error("Error performing action:", err);
-            alert(`Failed to perform "${action}". Please try again.`);
+  if (confirm(`Are you sure you want to perform "${action}" on class ID ${classId}?`)) {
+    try {
+      showLoading(); // ADD THIS LINE
+      
+      let message = `Successfully performed "${action}" on Class ID ${classId}.`;
+      let oldStatus = row ? row.getAttribute('data-status') : null;
+      let newStatus = oldStatus;
+      
+      if (action === 'Archive Class') {
+        // Update Firestore to set status to "archived"
+        await updateDoc(doc(db, "classrooms", classId), {
+          status: "archived"
+        });
+        newStatus = 'archived';
+        message = `Class ID ${classId} has been moved to the Archive.`;
+      } else if (action === 'Restore Class') {
+        // Update Firestore to set status to "active"
+        await updateDoc(doc(db, "classrooms", classId), {
+          status: "active"
+        });
+        newStatus = 'active'; 
+        message = `Class ID ${classId} has been Restored and is now Active.`;
+      } else if (action === 'Delete Class' || action === 'Permanent Delete') {
+        // For permanent delete, remove from Firestore
+        await deleteDoc(doc(db, "classrooms", classId));
+        if (row) row.remove();
+        // Also remove from the archived modal list if it was deleted there
+        const archivedItem = archivedListContainer.querySelector(`div[data-id="${classId}"]`);
+        if (archivedItem) archivedItem.remove();
+        message = `Successfully permanently deleted Class ID ${classId}.`;
+      }
+      
+      // Update the main table row visualization and data attributes
+      if (row && newStatus !== oldStatus) {
+        row.setAttribute('data-status', newStatus);
+        const statusSpan = row.querySelector('.status-cell span');
+        statusSpan.textContent = newStatus;
+        statusSpan.className = `font-medium text-status-${newStatus.toLowerCase().replace(/\s/g, '-')}`;
+        
+        if (newStatus === 'archived') {
+          // Ensure the row is hidden when archived, as per the filter logic
+          row.style.display = 'none';
+          row.classList.add('opacity-70');
+        } else {
+          row.classList.remove('opacity-70');
+          row.style.display = "";
+          row.classList.remove('bg-yellow-50/50');
+          // Update status class for active classes
+          if (newStatus === 'active') {
+            statusSpan.className = 'font-medium text-status-active';
+          }
         }
+
+        updateRowActions(row, newStatus, classId);
+      }
+      
+      alert(message);
+      
+      // Reload metrics to reflect changes
+      loadMetrics();
+      
+      // If the action was taken from the archived modal, refresh its view
+      if (archivedClassesModal.style.display === 'flex') {
+        openArchivedClassesModal(); // Re-populate list to reflect changes
+      }
+
+      // Re-sort and filter main table
+      sortTable(currentSortKey, sortDirection);
+      applyFiltersAndSearch();
+      
+      hideLoading(); // ADD THIS LINE
+
+    } catch (err) {
+      hideLoading(); // ADD THIS LINE even on error
+      console.error("Error performing action:", err);
+      alert(`Failed to perform "${action}". Please try again.`);
     }
-});
-        // =======================
+  }
+});  
+// =======================
         // Filtering & Sorting Functions
         // =======================
       function applyFiltersAndSearch() {
@@ -1015,6 +1057,71 @@ filterStatus.addEventListener('change', applyFiltersAndSearch);
         // Initial sort and filter application
         sortTable(currentSortKey, sortDirection);
         applyFiltersAndSearch();
+
+        // Fetch unread notifications count for the badge
+async function getUnreadNotificationsCount() {
+    try {
+        const notificationsSnapshot = await getDocs(collection(db, "notification_admin"));
+        let unreadCount = 0;
+        
+        notificationsSnapshot.forEach(doc => {
+            const notification = doc.data();
+            if (notification.status === 'unread') {
+                unreadCount++;
+            }
+        });
+        
+        updateNotificationBellBadge(unreadCount);
+        return unreadCount;
+    } catch (error) {
+        console.error("Error fetching notifications count:", error);
+        return 0;
+    }
+}
+
+// Update the notification bell badge
+function updateNotificationBellBadge(unreadCount) {
+    const notificationBellBadge = document.getElementById('notification-bell-badge');
+    
+    if (!notificationBellBadge) return;
+    
+    if (unreadCount > 0) {
+        notificationBellBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+        notificationBellBadge.style.display = 'flex';
+        
+        // Add pulse animation for new notifications
+        if (unreadCount > 0) {
+            notificationBellBadge.style.animation = 'pulse 2s infinite';
+        }
+    } else {
+        notificationBellBadge.style.display = 'none';
+    }
+}
+
+// Add this to your initialization function
+async function initializePage() {
+  try {
+    showLoading(); // ADD THIS LINE
+    
+    // Your existing initialization code
+    loadMetrics();
+    loadClassesTable();
+    await populateTeacherFilter();
+    await populateTeacherSelect("new-teacher");
+    await populateTeacherSelect("edit-teacher");
+    
+    // Add notification badge
+    getUnreadNotificationsCount();
+    
+    hideLoading(); // ADD THIS LINE
+    
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    console.error("Error initializing page:", error);
+  }
+}
+        initializePage();
+
     </script>
 </body>
 </html>

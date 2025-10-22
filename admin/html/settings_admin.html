@@ -19,9 +19,10 @@
                 </div>
                 <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
                 <div class="nav-icons">
-                    <a href="notification_admin.html" title="Notifications">
-                        <i class="fas fa-bell icon"></i>
-                    </a>
+                    <a href="notification_admin.html" title="Notifications" class="notification-badge-container">
+    <i class="fas fa-bell icon"></i>
+    <span class="notification-bell-badge" id="notification-bell-badge" style="display: none;">0</span>
+</a>
                     <a href="help_admin.html" title="Help">
                         <i class="fas fa-question-circle icon"></i>
                     </a>
@@ -32,6 +33,17 @@
                 </div>
             </div>
         </div>
+
+        <div id="loading-overlay">
+
+<div class="loader-3">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+</div>
         
         <!-- Secondary Header -->
         <div class="secondary-header">
@@ -126,6 +138,17 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+const loadingOverlay = document.getElementById("loading-overlay");
+
+   function showLoading() {
+  loadingOverlay.style.display = "flex";
+}
+
+// Hide overlay
+function hideLoading() {
+  loadingOverlay.style.display = "none";
+}
+
 
         // DOM Elements
         const adminNameInput = document.getElementById('admin-name');
@@ -138,6 +161,7 @@
         // Fetch admin data from Firestore
         async function fetchAdminData() {
             try {
+                showLoading(); // Add this line
                 console.log('🔍 Fetching admin data...');
                 
                 // Query for admin users (assuming role is "admin")
@@ -171,6 +195,7 @@
                 console.error('❌ Error fetching admin data:', error);
                 // Set default values on error
                 setDefaultAdminData();
+                hideLoading(); // Add this line in error case too
             }
         }
 
@@ -214,7 +239,6 @@ function handleLogout() {
     }
 }
 
-// Then call setupLogout() in your initSettings() function:
 function initSettings() {
     console.log('🚀 Initializing settings page...');
     
@@ -235,7 +259,11 @@ function initSettings() {
     
     // Setup logout button
     setupLogout();
+    
+    // Add notification badge - ADD THIS LINE
+    getUnreadNotificationsCount();
 }
+
 // Alternative: Add logout to sidebar
 function setupSidebarLogout() {
     const sidebar = document.querySelector('.sidebar');
@@ -270,6 +298,7 @@ function setupSidebarLogout() {
 }
         // Save account settings
         async function saveAccountSettings() {
+            showLoading(); 
             const adminName = adminNameInput.value.trim();
             const adminEmail = adminEmailInput.value.trim();
             
@@ -311,12 +340,57 @@ function setupSidebarLogout() {
                 sidebarAdminName.textContent = adminName;
                 
                 alert('✅ Account settings saved successfully!');
+                 hideLoading(); // Add this line
                 
             } catch (error) {
                 console.error('❌ Error saving account settings:', error);
                 alert('Failed to save account settings. Please try again.');
+                 hideLoading(); 
             }
         }
+
+        // Fetch unread notifications count for the badge
+async function getUnreadNotificationsCount() {
+    try {
+          showLoading(); // Add this line
+        const notificationsSnapshot = await getDocs(collection(db, "notification_admin"));
+        let unreadCount = 0;
+        
+        notificationsSnapshot.forEach(doc => {
+            const notification = doc.data();
+            if (notification.status === 'unread') {
+                unreadCount++;
+            }
+        });
+        
+        updateNotificationBellBadge(unreadCount);
+           hideLoading();
+        return unreadCount;
+    } catch (error) {
+        console.error('Error fetching notifications count:', error);
+        return 0;
+           hideLoading();
+    }
+}
+
+// Update the notification bell badge
+function updateNotificationBellBadge(unreadCount) {
+    const notificationBellBadge = document.getElementById('notification-bell-badge');
+    
+    if (!notificationBellBadge) return;
+    
+    if (unreadCount > 0) {
+        notificationBellBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+        notificationBellBadge.style.display = 'flex';
+        
+        // Add pulse animation for new notifications
+        if (unreadCount > 0) {
+            notificationBellBadge.style.animation = 'pulse 2s infinite';
+        }
+    } else {
+        notificationBellBadge.style.display = 'none';
+    }
+}
 
         // Initialize the settings page
 

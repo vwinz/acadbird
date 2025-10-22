@@ -18,9 +18,10 @@
                 </div>
                 <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
                 <div class="nav-icons">
-                    <a href="notification_admin.html" target="_blank" title="Notifications">
-                        <i class="fas fa-bell icon"></i>
-                    </a>
+                    <a href="notification_admin.html" target="_blank" title="Notifications" class="notification-badge-container">
+    <i class="fas fa-bell icon"></i>
+    <span class="notification-bell-badge" id="notification-bell-badge" style="display: none;">0</span>
+</a>
                     <a href="help_admin.html" target="_blank" title="Help">
                         <i class="fas fa-question-circle icon"></i>
                     </a>
@@ -32,6 +33,17 @@
                 </div>
             </div>
         </div>
+
+        <div id="loading-overlay">
+
+<div class="loader-3">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+</div>
         
         <div class="secondary-header">
            <div>
@@ -233,56 +245,94 @@ import {
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
+  const loadingOverlay = document.getElementById("loading-overlay");
 
-  // Fetch Classes Count from "classroom" collection
-  async function getClassesCount() {
+   function showLoading() {
+  loadingOverlay.style.display = "flex";
+}
+
+// Hide overlay
+function hideLoading() {
+  loadingOverlay.style.display = "none";
+}
+
+
+// Fetch Classes Count from "classroom" collection
+async function getClassesCount() {
+  try {
+    showLoading(); // ADD THIS LINE
     const snapshot = await getDocs(collection(db, "classrooms"));
     document.getElementById("classesCount").innerText = snapshot.size;
+    hideLoading(); // ADD THIS LINE
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    console.error("Error fetching classes count:", error);
   }
+}
 
-  // Fetch Parents Count from "users" collection
-  async function getParentsCount() {
+// Fetch Parents Count from "users" collection
+async function getParentsCount() {
+  try {
+    showLoading(); // ADD THIS LINE
     const q = query(collection(db, "users"), where("role", "==", "parent"));
     const snapshot = await getDocs(q);
     document.getElementById("parentsCount").innerText = snapshot.size;
+    hideLoading(); // ADD THIS LINE
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    console.error("Error fetching parents count:", error);
   }
+}
 
-  // Fetch Teachers Count from "users" collection
-  async function getTeachersCount() {
+// Fetch Teachers Count from "users" collection
+async function getTeachersCount() {
+  try {
+    showLoading(); // ADD THIS LINE
     const q = query(collection(db, "users"), where("role", "==", "teacher"));
     const snapshot = await getDocs(q);
     document.getElementById("teachersCount").innerText = snapshot.size;
+    hideLoading(); // ADD THIS LINE
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    console.error("Error fetching teachers count:", error);
   }
-
-  // Fetch role counts (Parents, Teachers, Admin)
-async function getUserRoleDistribution() {
-  const usersSnapshot = await getDocs(collection(db, "users"));
-  let parents = 0, teachers = 0, admins = 0;
-
-  usersSnapshot.forEach(doc => {
-    const role = doc.data().role;
-    if (role === "parent") parents++;
-    else if (role === "teacher") teachers++;
-    else if (role === "admin") admins++;
-  });
-
-  const total = parents + teachers + admins;
-  if (total === 0) return;
-
-  const parentPercent = ((parents / total) * 100).toFixed(1);
-  const teacherAdminPercent = (((teachers + admins) / total) * 100).toFixed(1);
-
-  // Update chart dynamically
-  document.querySelector(".chart-slice").style.background =
-    `conic-gradient(#fbbd23 0% ${parentPercent}%, #115e59 ${parentPercent}% 100%)`;
-
-  // Update legend labels
-  document.querySelector(".legend-dot-yellow").nextElementSibling.textContent =
-    `Parents (${parentPercent}%)`;
-  document.querySelector(".legend-dot-teal").nextElementSibling.textContent =
-    `Teachers/Admin (${teacherAdminPercent}%)`;
 }
+async function getUserRoleDistribution() {
+  try {
+    showLoading(); // ADD THIS LINE
+    const usersSnapshot = await getDocs(collection(db, "users"));
+    let parents = 0, teachers = 0, admins = 0;
 
+    usersSnapshot.forEach(doc => {
+      const role = doc.data().role;
+      if (role === "parent") parents++;
+      else if (role === "teacher") teachers++;
+      else if (role === "admin") admins++;
+    });
+
+    const total = parents + teachers + admins;
+    if (total === 0) return;
+
+    const parentPercent = ((parents / total) * 100).toFixed(1);
+    const teacherAdminPercent = (((teachers + admins) / total) * 100).toFixed(1);
+
+    // Update chart dynamically
+    document.querySelector(".chart-slice").style.background =
+      `conic-gradient(#fbbd23 0% ${parentPercent}%, #115e59 ${parentPercent}% 100%)`;
+
+    // Update legend labels
+    document.querySelector(".legend-dot-yellow").nextElementSibling.textContent =
+      `Parents (${parentPercent}%)`;
+    document.querySelector(".legend-dot-teal").nextElementSibling.textContent =
+      `Teachers/Admin (${teacherAdminPercent}%)`;
+    
+    hideLoading(); // ADD THIS LINE
+    
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    console.error("Error fetching user role distribution:", error);
+  }
+}
 async function getClassroomNames() {
     const snapshot = await getDocs(collection(db, "classrooms"));
     let map = {};
@@ -292,127 +342,146 @@ async function getClassroomNames() {
     return map;
   }
 
-  // === Fetch activities last 7 days ===
-async function getMostActiveClasses() {
-  const sevenDaysAgo = Timestamp.fromDate(
-    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-  );
-
-  const q = query(collection(db, "activity"), where("created_at", ">", sevenDaysAgo));
-  const snapshot = await getDocs(q);
-
-  // Keep track of unique activityNo per classroom
-  let classActivities = {};
-
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    const classId = data.classroomID;
-    const activityNo = data.activityNo;
-
-    if (!classActivities[classId]) {
-      classActivities[classId] = new Set();
-    }
-    classActivities[classId].add(activityNo); // ensures uniqueness
-  });
-
-  // Convert to array with counts = size of Set
-  let result = Object.entries(classActivities).map(([id, set]) => ({
-    classroomID: id,
-    classroomName: "", // will map later
-    count: set.size
-  }));
-
-  // Get classroom names
-  const classMap = await getClassroomNames();
-  result.forEach(item => {
-    item.classroomName = classMap[item.classroomID] || item.classroomID;
-  });
-
-  // Sort by activity count
-  result.sort((a, b) => b.count - a.count);
-
-  // Render to DOM
-  const listEl = document.querySelector(".class-activity-list");
-  listEl.innerHTML = "";
-
-  result.forEach(item => {
-    const div = document.createElement("div");
-    div.classList.add("class-activity-item");
-    div.innerHTML = `
-      <div class="class-name-group">
-        <i class="fas fa-book"></i>
-        <span>${item.classroomName}</span>
-      </div>
-      <div class="class-bar-group">
-        <div class="class-bar" style="width:${item.count * 20}px;"></div>
-        <span class="class-count">${item.count}</span>
-      </div>
-    `;
-    listEl.appendChild(div);
-  });
-}
-
-// Fetch Logs Posted This Week with filtering (counting unique activityNo)
-async function getLogsThisWeek(weekOffset = 0) {
-  const now = new Date();
-  const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
-  
-  // Calculate start of week (Monday)
-  const startOfWeek = new Date(now);
-  startOfWeek.setDate(now.getDate() - currentDay + (currentDay === 0 ? -6 : 1));
-  startOfWeek.setHours(0, 0, 0, 0);
-  
-  // Apply week offset
-  startOfWeek.setDate(startOfWeek.getDate() + (weekOffset * 7));
-  
-  // End of week (Sunday)
-  const endOfWeek = new Date(startOfWeek);
-  endOfWeek.setDate(startOfWeek.getDate() + 6);
-  endOfWeek.setHours(23, 59, 59, 999);
-
-  const startTimestamp = Timestamp.fromDate(startOfWeek);
-  const endTimestamp = Timestamp.fromDate(endOfWeek);
-
-  const q = query(
-    collection(db, "activity"), 
-    where("created_at", ">=", startTimestamp),
-    where("created_at", "<=", endTimestamp)
-  );
-  
-  const snapshot = await getDocs(q);
-
-  // Group by day of week and track unique activityNo
-  const dayCounts = {
-    'Mon': new Set(),
-    'Tue': new Set(),
-    'Wed': new Set(),
-    'Thu': new Set(),
-    'Fri': new Set()
-  };
-
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    const activityDate = data.created_at.toDate();
-    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const dayName = dayNames[activityDate.getDay()];
+ async function getMostActiveClasses() {
+  try {
+    showLoading(); // ADD THIS LINE
     
-    // Only count weekdays Mon-Fri and track unique activityNo
-    if (dayCounts.hasOwnProperty(dayName) && data.activityNo) {
-      dayCounts[dayName].add(data.activityNo);
-    }
-  });
+    const sevenDaysAgo = Timestamp.fromDate(
+      new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    );
 
-  // Convert Sets to counts
-  const dayCountsResult = {
-    'Mon': dayCounts['Mon'].size,
-    'Tue': dayCounts['Tue'].size,
-    'Wed': dayCounts['Wed'].size,
-    'Thu': dayCounts['Thu'].size,
-    'Fri': dayCounts['Fri'].size
-  };
+    const q = query(collection(db, "activity"), where("created_at", ">", sevenDaysAgo));
+    const snapshot = await getDocs(q);
 
-  // Update the DOM
-  updateLogsChart(dayCountsResult, startOfWeek);
+    // Keep track of unique activityNo per classroom
+    let classActivities = {};
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const classId = data.classroomID;
+      const activityNo = data.activityNo;
+
+      if (!classActivities[classId]) {
+        classActivities[classId] = new Set();
+      }
+      classActivities[classId].add(activityNo); // ensures uniqueness
+    });
+
+    // Convert to array with counts = size of Set
+    let result = Object.entries(classActivities).map(([id, set]) => ({
+      classroomID: id,
+      classroomName: "", // will map later
+      count: set.size
+    }));
+
+    // Get classroom names
+    const classMap = await getClassroomNames();
+    result.forEach(item => {
+      item.classroomName = classMap[item.classroomID] || item.classroomID;
+    });
+
+    // Sort by activity count
+    result.sort((a, b) => b.count - a.count);
+
+    // Render to DOM
+    const listEl = document.querySelector(".class-activity-list");
+    listEl.innerHTML = "";
+
+    result.forEach(item => {
+      const div = document.createElement("div");
+      div.classList.add("class-activity-item");
+      div.innerHTML = `
+        <div class="class-name-group">
+          <i class="fas fa-book"></i>
+          <span>${item.classroomName}</span>
+        </div>
+        <div class="class-bar-group">
+          <div class="class-bar" style="width:${item.count * 20}px;"></div>
+          <span class="class-count">${item.count}</span>
+        </div>
+      `;
+      listEl.appendChild(div);
+    });
+    
+    hideLoading(); // ADD THIS LINE
+    
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    console.error("Error fetching most active classes:", error);
+  }
+}
+// Fetch Logs Posted This Week with filtering (counting unique activityNo)
+
+async function getLogsThisWeek(weekOffset = 0) {
+  try {
+    showLoading(); // ADD THIS LINE
+    
+    const now = new Date();
+    const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    
+    // Calculate start of week (Monday)
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - currentDay + (currentDay === 0 ? -6 : 1));
+    startOfWeek.setHours(0, 0, 0, 0);
+    
+    // Apply week offset
+    startOfWeek.setDate(startOfWeek.getDate() + (weekOffset * 7));
+    
+    // End of week (Sunday)
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    const startTimestamp = Timestamp.fromDate(startOfWeek);
+    const endTimestamp = Timestamp.fromDate(endOfWeek);
+
+    const q = query(
+      collection(db, "activity"), 
+      where("created_at", ">=", startTimestamp),
+      where("created_at", "<=", endTimestamp)
+    );
+    
+    const snapshot = await getDocs(q);
+
+    // Group by day of week and track unique activityNo
+    const dayCounts = {
+      'Mon': new Set(),
+      'Tue': new Set(),
+      'Wed': new Set(),
+      'Thu': new Set(),
+      'Fri': new Set()
+    };
+
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const activityDate = data.created_at.toDate();
+      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const dayName = dayNames[activityDate.getDay()];
+      
+      // Only count weekdays Mon-Fri and track unique activityNo
+      if (dayCounts.hasOwnProperty(dayName) && data.activityNo) {
+        dayCounts[dayName].add(data.activityNo);
+      }
+    });
+
+    // Convert Sets to counts
+    const dayCountsResult = {
+      'Mon': dayCounts['Mon'].size,
+      'Tue': dayCounts['Tue'].size,
+      'Wed': dayCounts['Wed'].size,
+      'Thu': dayCounts['Thu'].size,
+      'Fri': dayCounts['Fri'].size
+    };
+
+    // Update the DOM
+    updateLogsChart(dayCountsResult, startOfWeek);
+    
+    hideLoading(); // ADD THIS LINE
+    
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    console.error("Error fetching logs this week:", error);
+  }
 }
 
 function updateLogsChart(dayCounts, weekStart) {
@@ -498,22 +567,32 @@ function createWeekFilter() {
 
 // Fetch total uploaded resources from "topicContent" collection
 async function getResourcesUsed() {
-  const snapshot = await getDocs(collection(db, "topicContent"));
-  const totalResources = snapshot.size;
+  try {
+    showLoading(); // ADD THIS LINE
+    const snapshot = await getDocs(collection(db, "topicContent"));
+    const totalResources = snapshot.size;
 
-  // Update the DOM
-  const resourcesCard = document.querySelector('.resources-card p:first-of-type');
-  if (resourcesCard) {
-    resourcesCard.textContent = totalResources;
+    // Update the DOM
+    const resourcesCard = document.querySelector('.resources-card p:first-of-type');
+    if (resourcesCard) {
+      resourcesCard.textContent = totalResources;
+    }
+    
+    hideLoading(); // ADD THIS LINE
+    
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    console.error("Error fetching resources used:", error);
   }
 }
-
 // ===== CALENDAR FUNCTIONS =====
 let currentMonth = new Date().getMonth();
 let currentYear = new Date().getFullYear();
 
 async function fetchCalendarEvents() {
   try {
+    showLoading(); // ADD THIS LINE
+    
     // Get all calendar events and filter by month/year
     const q = query(collection(db, "calendar"), orderBy("date"));
     const snapshot = await getDocs(q);
@@ -536,11 +615,13 @@ async function fetchCalendarEvents() {
     console.log('📅 Calendar events for current month:', events);
     renderCalendar(events, currentMonth, currentYear);
     
+    hideLoading(); // ADD THIS LINE
+    
   } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
     console.error('❌ Error fetching calendar events:', error);
   }
 }
-
 function renderCalendar(events, month, year) {
   const calendarGrid = document.querySelector('.calendar-grid');
   if (!calendarGrid) return;
@@ -841,33 +922,84 @@ style.textContent = `
 document.head.appendChild(style);
 
 
-// Initialize everything
-async function initializeDashboard() {
-  // Run all data fetching functions
-  getClassesCount();
-  getParentsCount();
-  getTeachersCount();
-  getUserRoleDistribution();
-  getMostActiveClasses();
-  getResourcesUsed();
-  
-  // Initialize logs functionality
-  createWeekFilter();
-  getLogsThisWeek(0);
-  
-  // Initialize calendar
-  fetchCalendarEvents();
-  initializeCalendarNavigation();
-  // Prevent calendar widget redirect
-const calendarWidget = document.querySelector('.calendar-widget');
-if (calendarWidget) {
-    calendarWidget.addEventListener('click', function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-    });
-}
+// Fetch unread notifications count for the badge
+async function getUnreadNotificationsCount() {
+    try {
+        const notificationsSnapshot = await getDocs(collection(db, "notification_admin"));
+        let unreadCount = 0;
+        
+        notificationsSnapshot.forEach(doc => {
+            const notification = doc.data();
+            if (notification.status === 'unread') {
+                unreadCount++;
+            }
+        });
+        
+        updateNotificationBellBadge(unreadCount);
+        return unreadCount;
+    } catch (error) {
+        console.error("Error fetching notifications count:", error);
+        return 0;
+    }
 }
 
+// Update the notification bell badge
+function updateNotificationBellBadge(unreadCount) {
+    const notificationBellBadge = document.getElementById('notification-bell-badge');
+    
+    if (!notificationBellBadge) return;
+    
+    if (unreadCount > 0) {
+        notificationBellBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+        notificationBellBadge.style.display = 'flex';
+        
+        // Add pulse animation for new notifications
+        if (unreadCount > 0) {
+            notificationBellBadge.style.animation = 'pulse 2s infinite';
+        }
+    } else {
+        notificationBellBadge.style.display = 'none';
+    }
+}
+
+// Add this to your initializeDashboard function
+async function initializeDashboard() {
+  try {
+    showLoading(); // ADD THIS LINE
+    
+    // Run all data fetching functions
+    getClassesCount();
+    getParentsCount();
+    getTeachersCount();
+    getUserRoleDistribution();
+    getMostActiveClasses();
+    getResourcesUsed();
+    getUnreadNotificationsCount();
+    
+    // Initialize logs functionality
+    createWeekFilter();
+    getLogsThisWeek(0);
+    
+    // Initialize calendar
+    fetchCalendarEvents();
+    initializeCalendarNavigation();
+    
+    // Prevent calendar widget redirect
+    const calendarWidget = document.querySelector('.calendar-widget');
+    if (calendarWidget) {
+        calendarWidget.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+    }
+    
+    hideLoading(); // ADD THIS LINE
+    
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    console.error("Error initializing dashboard:", error);
+  }
+}
 // Run when DOM is loaded
 document.addEventListener('DOMContentLoaded', initializeDashboard);
 

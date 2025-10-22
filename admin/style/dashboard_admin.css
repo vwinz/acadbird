@@ -853,3 +853,141 @@
 .btn-close:hover {
     background: #4b5563;
 }
+
+/* Notification badge styles */
+.notification-badge-container {
+    position: relative;
+    display: inline-block;
+}
+
+.notification-bell-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff4757;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #2c3e50;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Make the bell icon container position relative */
+.nav-icons a[title="Notifications"] {
+    position: relative;
+}
+
+/*loading screen*/
+        #loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2); /* dim screen */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+.loader-3 {
+  width: 10em;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.circle {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+}
+
+.circle:nth-child(1) {
+  background-color: #90be6d;
+}
+
+.circle:nth-child(2) {
+  background-color: #f9c74f;
+}
+
+.circle:nth-child(3) {
+  background-color: #f8961e;
+}
+
+.circle:nth-child(4) {
+  background-color: #f3722c;
+}
+
+.circle:nth-child(5) {
+  background-color: #f94346;
+}
+
+.circle::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: animateLoader38 2s ease-out infinite;
+}
+
+.circle:nth-child(1)::before {
+  background-color: #90be6d;
+}
+
+.circle:nth-child(2)::before {
+  background-color: #f9c74f;
+  animation-delay: 0.2s;
+}
+
+.circle:nth-child(3)::before {
+  background-color: #f8961e;
+  animation-delay: 0.4s;
+}
+
+.circle:nth-child(4)::before {
+  background-color: #f3722c;
+  animation-delay: 0.6s;
+}
+
+.circle:nth-child(5)::before {
+  background-color: #f94346;
+  animation-delay: 0.8s;
+}
+
+@keyframes animateLoader38 {
+  0% {
+    transform: scale(1);
+  }
+
+  50%,
+  75% {
+    transform: scale(2.5);
+  }
+
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+

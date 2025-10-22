@@ -33,6 +33,17 @@
                 </div>
             </div>
         </div>
+
+        <div id="loading-overlay">
+
+<div class="loader-3">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+</div>
         
         <!-- Secondary Header -->
         <div class="secondary-header">
@@ -212,6 +223,18 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const loadingOverlay = document.getElementById("loading-overlay");
+
+   function showLoading() {
+  loadingOverlay.style.display = "flex";
+}
+
+// Hide overlay
+function hideLoading() {
+  loadingOverlay.style.display = "none";
+}
+
+
 
         // =========================================================================================
         // CORE FUNCTIONS
@@ -250,6 +273,7 @@
         // --- Data Fetching Functions ---
         async function fetchTeacherData(teacherId) {
             try {
+                showLoading();
                 console.log('🔍 Fetching teacher data for ID:', teacherId);
                 const teacherDoc = await getDoc(doc(db, "users", teacherId));
                 
@@ -259,6 +283,7 @@
 
                 const teacherData = teacherDoc.data();
                 console.log('📋 Teacher data:', teacherData);
+                   hideLoading(); // Add this line
                 return {
                     id: teacherId,
                     ...teacherData
@@ -266,6 +291,7 @@
             } catch (err) {
                 console.error('❌ Error fetching teacher data:', err);
                 throw err;
+                   hideLoading(); // Add this line
             }
         }
 
@@ -289,6 +315,7 @@
 
       async function fetchTeacherClassrooms(teacherId) {
     try {
+         showLoading(); // Add this line
         const classroomsQuery = query(
             collection(db, "classrooms"), 
             where("teacherId", "==", teacherId)
@@ -319,11 +346,13 @@
                 section: classroom.section
             });
         }
-        
+         hideLoading(); // Add this line
         return teacherClassrooms;
     } catch (err) {
         console.error('❌ Error fetching teacher classrooms:', err);
+         hideLoading(); // Add this line
         return [];
+        
     }
 }
         // --- Format Date Functions ---
@@ -550,6 +579,7 @@ async function handleEditTeacherFormSubmission(e) {
     }
 
     try {
+         showLoading(); // Add this line
         // Combine first name and last name for fullName
         const fullName = `${firstName} ${lastName}`;
         
@@ -575,10 +605,12 @@ async function handleEditTeacherFormSubmission(e) {
         // Reload teacher data
         currentTeacherData = await fetchTeacherData(currentTeacherId);
         await renderTeacherProfile();
+           hideLoading(); // Add this line in error case too
         
     } catch (err) {
         console.error('❌ Error updating teacher:', err);
         alert('Failed to update teacher profile. Please try again.');
+           hideLoading(); // Add this line in error case too
     }
 }
 
@@ -626,6 +658,7 @@ async function handleEditTeacherFormSubmission(e) {
         async function archiveTeacher() {
             if (confirm(`Are you sure you want to archive ${currentTeacherData.fullName}?`)) {
                 try {
+                      showLoading(); // Add this line
                     await updateDoc(doc(db, "users", currentTeacherId), {
                         status: 'Archived',
                         updatedAt: serverTimestamp()
@@ -647,10 +680,12 @@ async function handleEditTeacherFormSubmission(e) {
                     alert(`Teacher "${currentTeacherData.fullName}" has been archived.`);
                     currentTeacherData = await fetchTeacherData(currentTeacherId);
                     await renderTeacherProfile();
+                        hideLoading(); // Add this line
                     
                 } catch (err) {
                     console.error('❌ Error archiving teacher:', err);
                     alert('Failed to archive teacher. Please try again.');
+                        hideLoading(); // Add this line
                 }
             }
         }
@@ -659,6 +694,7 @@ async function handleEditTeacherFormSubmission(e) {
 
         // --- Initialization Function ---
         async function init() {
+              showLoading(); 
             // Get teacher ID from URL
             currentTeacherId = getTeacherIdFromURL();
             
@@ -672,11 +708,13 @@ async function handleEditTeacherFormSubmission(e) {
                 // Load teacher data
                 currentTeacherData = await fetchTeacherData(currentTeacherId);
                 await renderTeacherProfile();
+                 hideLoading(); 
                 
             } catch (err) {
                 console.error('❌ Error initializing teacher profile:', err);
                 document.getElementById('profile-name').textContent = 'Error Loading Teacher';
                 document.getElementById('profile-email').textContent = 'Could not load teacher data. Please try again.';
+                 hideLoading(); 
             }
 
             // Form submission handlers

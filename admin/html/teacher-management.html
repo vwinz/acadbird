@@ -19,9 +19,10 @@
                     </div>
                 <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
                     <div class="nav-icons">
-                        <a href="notification_admin.html" title="Notifications">
-                            <i class="fas fa-bell icon"></i>
-                        </a>
+                        <a href="notification_admin.html" title="Notifications" class="notification-badge-container">
+    <i class="fas fa-bell icon"></i>
+    <span class="notification-bell-badge" id="notification-bell-badge" style="display: none;">0</span>
+</a>
                         <a href="help_admin.html" title="Help">
                             <i class="fas fa-question-circle icon"></i>
                         </a>
@@ -33,6 +34,17 @@
                     </div>
                 </div>
             </div>
+
+            <div id="loading-overlay">
+
+<div class="loader-3">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+</div>
             
             <!-- Secondary Header -->
             <div class="secondary-header">
@@ -235,6 +247,18 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 const auth = getAuth(app);
+const loadingOverlay = document.getElementById("loading-overlay");
+
+   function showLoading() {
+  loadingOverlay.style.display = "flex";
+}
+
+// Hide overlay
+function hideLoading() {
+  loadingOverlay.style.display = "none";
+}
+
+
     // =========================================================================================
     // DATA STRUCTURES
     // =========================================================================================
@@ -305,6 +329,7 @@ const auth = getAuth(app);
 
   // Update the renderTeacherTable function to show ALL teachers initially
 async function renderTeacherTable() {
+    showLoading();
     tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Loading teachers...</td></tr>';
     
     try {
@@ -384,10 +409,12 @@ async function renderTeacherTable() {
         
         // Update metrics
         await updateMetrics();
+        hideLoading();
         
     } catch (err) {
         console.error("❌ Error loading teachers:", err);
         tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-red-600">Error loading teachers: ' + err.message + '</td></tr>';
+        hideLoading();
     }
 }
 
@@ -505,7 +532,7 @@ async function populateClassesMultiselect(container, assignedClasses = [], teach
         assignedClasses: assignedClasses,
         teacherId: teacherId
     });
-    
+    showLoading();
     container.innerHTML = '<div class="loading-text">Loading classes...</div>';
 
     try {
@@ -517,6 +544,7 @@ async function populateClassesMultiselect(container, assignedClasses = [], teach
         if (classroomsSnap.empty) {
             console.log('❌ No classrooms available in database');
             container.innerHTML = '<div class="no-classes-text">No classrooms available</div>';
+            hideLoading();  
             return;
         }
 
@@ -581,10 +609,11 @@ async function populateClassesMultiselect(container, assignedClasses = [], teach
         } else {
             console.log(`✅ Loaded ${availableCount} available classrooms into multiselect`);
         }
-
+        hideLoading();
     } catch (err) {
         console.error("❌ Error loading classes:", err);
         container.innerHTML = '<div class="error-text">Error loading classes</div>';
+        hideLoading();
     }
 }
 // When assigning classes to teachers, update the classroom documents
@@ -649,6 +678,7 @@ function openTeacherModal(teacherData = null) {
     openModal(teacherModal);
 }
 async function handleTeacherFormSubmission(e) {
+   
     e.preventDefault();
     console.log('📝 Teacher form submitted');
     
@@ -682,6 +712,7 @@ async function handleTeacherFormSubmission(e) {
     }
 
     try {
+         showLoading();
         // Check if email already exists in Firestore (only for new teachers, not for edits)
         if (!isEditMode) {
             const emailCheckQuery = query(collection(db, "users"), where("email", "==", email));
@@ -689,6 +720,7 @@ async function handleTeacherFormSubmission(e) {
             
             if (!emailCheckSnap.empty) {
                 alert("A teacher with this email already exists.");
+                hideLoading();
                 return;
             }
         }
@@ -786,10 +818,11 @@ async function handleTeacherFormSubmission(e) {
         
         closeTeacherModal();
         await renderTeacherTable();
+        hideLoading();
         
     } catch (err) {
         console.error("Error saving teacher:", err);
-        
+         hideLoading();
         // Handle specific authentication errors
         if (err.code === 'auth/email-already-in-use') {
             alert("This email is already registered in the system.");
@@ -817,6 +850,7 @@ async function handleTeacherFormSubmission(e) {
     // Update the archiveTeacher function to work with Firestore
 async function archiveTeacher(teacherId) {
     try {
+        showLoading();  
         // Update the teacher's status to "Archived" in Firestore
         await updateDoc(doc(db, "users", teacherId), {
             status: "Archived",
@@ -848,10 +882,12 @@ async function archiveTeacher(teacherId) {
         alert("Teacher has been archived and unassigned from all classes.");
         await renderTeacherTable(); // Reload the table
         await updateMetrics(); // Update the metrics
+         hideLoading();
         
     } catch (err) {
         console.error("Error archiving teacher:", err);
         alert("Failed to archive teacher. Please try again.");
+         hideLoading();
     }
     closeArchiveConfirmationModal();
 }
@@ -977,6 +1013,7 @@ function attachRowEventListeners() {
 // Update the deleteTeacher function to actually delete from Firestore
 async function deleteTeacher(teacherId) {
     try {
+        showLoading();
         // Delete teacher from Firestore
         await deleteDoc(doc(db, "users", teacherId));
         
@@ -987,10 +1024,12 @@ async function deleteTeacher(teacherId) {
         alert("Teacher has been permanently deleted.");
         await renderTeacherTable(); // Reload the table
         await updateMetrics(); // Update the metrics
+         hideLoading();
         
     } catch (err) {
         console.error("Error deleting teacher:", err);
         alert("Failed to delete teacher. Please try again.");
+         hideLoading();
     }
     closeDeleteConfirmationModal();
 }
@@ -1052,6 +1091,7 @@ confirmArchiveBtn.addEventListener('click', async () => {
 // Add restore teacher function
 async function restoreTeacher(teacherId) {
     try {
+        showLoading();
         // Update the teacher's status to "Active" in Firestore
         await updateDoc(doc(db, "users", teacherId), {
             status: "Active",
@@ -1062,10 +1102,12 @@ async function restoreTeacher(teacherId) {
         alert("Teacher has been restored and is now active.");
         await renderTeacherTable(); // Reload the table
         await updateMetrics(); // Update the metrics
+         hideLoading();
         
     } catch (err) {
         console.error("Error restoring teacher:", err);
         alert("Failed to restore teacher. Please try again.");
+         hideLoading();
     }
     closeArchiveConfirmationModal();
 }
@@ -1073,24 +1115,54 @@ async function restoreTeacher(teacherId) {
 // Update the metrics function to exclude archived teachers from active counts
  
    // Remove the duplicate event listeners and fix the archive confirmation
-function init() {
-    // Form submission handlers
+// Fetch unread notifications count for the badge
+async function getUnreadNotificationsCount() {
+    try {
+        showLoading();
+        const notificationsSnapshot = await getDocs(collection(db, "notification_admin"));
+        let unreadCount = 0;
+        
+        notificationsSnapshot.forEach(doc => {
+            const notification = doc.data();
+            if (notification.status === 'unread') {
+                unreadCount++;
+            }
+        });
+        
+        updateNotificationBellBadge(unreadCount);
+        hideLoading();
+        return unreadCount;
+    } catch (error) {
+        console.error("Error fetching notifications count:", error);
+         hideLoading();
+        return 0;
+    }
+}
+
+// Update the notification bell badge
+function updateNotificationBellBadge(unreadCount) {
+    const notificationBellBadge = document.getElementById('notification-bell-badge');
+    
+    if (!notificationBellBadge) return;
+    
+    if (unreadCount > 0) {
+        notificationBellBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+        notificationBellBadge.style.display = 'flex';
+        
+        // Add pulse animation for new notifications
+        if (unreadCount > 0) {
+            notificationBellBadge.style.animation = 'pulse 2s infinite';
+        }
+    } else {
+        notificationBellBadge.style.display = 'none';
+    }
+}
+
+// Add this to your initialization function
+async function init() {
+    // Your existing initialization code
     teacherForm.addEventListener('submit', handleTeacherFormSubmission);
     
-    // Archive confirmation button - REMOVE THIS DUPLICATE
-    // confirmArchiveBtn.addEventListener('click', () => {
-    //     if (teacherToArchiveId) {
-    //         archiveTeacher(teacherToArchiveId);
-    //     }
-    // });
-    
-    // Delete confirmation button - REMOVE THIS DUPLICATE
-    // confirmDeleteBtn.addEventListener('click', () => {
-    //     if (teacherToDeleteId) {
-    //         deleteTeacher(teacherToDeleteId);
-    //     }
-    // });
-
     // Add Teacher button listeners
     document.getElementById('add-teacher-btn').addEventListener('click', () => openTeacherModal());
     document.getElementById('quick-add-teacher').addEventListener('click', () => openTeacherModal());
@@ -1109,8 +1181,10 @@ function init() {
     
     // Initial render with real data
     renderTeacherTable();
-}
-    // Initialize the application
+    
+    // Add notification badge - ADD THIS LINE
+    getUnreadNotificationsCount();
+}  // Initialize the application
     document.addEventListener('DOMContentLoaded', init);
     </script>
     </body>

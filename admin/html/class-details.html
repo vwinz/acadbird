@@ -143,6 +143,110 @@
             .main-content { padding: 20px; }
             .summary-info { flex-direction: column; }
             .student-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+
+            /*loading screen*/
+        #loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2); /* dim screen */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+.loader-3 {
+  width: 10em;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.circle {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+}
+
+.circle:nth-child(1) {
+  background-color: #90be6d;
+}
+
+.circle:nth-child(2) {
+  background-color: #f9c74f;
+}
+
+.circle:nth-child(3) {
+  background-color: #f8961e;
+}
+
+.circle:nth-child(4) {
+  background-color: #f3722c;
+}
+
+.circle:nth-child(5) {
+  background-color: #f94346;
+}
+
+.circle::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: animateLoader38 2s ease-out infinite;
+}
+
+.circle:nth-child(1)::before {
+  background-color: #90be6d;
+}
+
+.circle:nth-child(2)::before {
+  background-color: #f9c74f;
+  animation-delay: 0.2s;
+}
+
+.circle:nth-child(3)::before {
+  background-color: #f8961e;
+  animation-delay: 0.4s;
+}
+
+.circle:nth-child(4)::before {
+  background-color: #f3722c;
+  animation-delay: 0.6s;
+}
+
+.circle:nth-child(5)::before {
+  background-color: #f94346;
+  animation-delay: 0.8s;
+}
+
+@keyframes animateLoader38 {
+  0% {
+    transform: scale(1);
+  }
+
+  50%,
+  75% {
+    transform: scale(2.5);
+  }
+
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+
+
+
         }
     </style>
 </head>
@@ -166,6 +270,17 @@
                 </div>
             </div>
         </div>
+
+        <div id="loading-overlay">
+
+<div class="loader-3">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+</div>
+</div>
 
         <div class="secondary-header">
            <div class="w-full px-6 overflow-x-auto flex justify-center">
@@ -325,6 +440,18 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const loadingOverlay = document.getElementById("loading-overlay");
+
+   function showLoading() {
+  loadingOverlay.style.display = "flex";
+}
+
+// Hide overlay
+function hideLoading() {
+  loadingOverlay.style.display = "none";
+}
+
+
 
 // Get class ID from URL parameters
 function getClassIdFromURL() {
@@ -683,6 +810,8 @@ async function initializePage() {
   }
 
   try {
+    showLoading(); // ADD THIS LINE
+    
     // Show loading state
     document.getElementById('classTitle').textContent = "Loading class details...";
     
@@ -711,8 +840,11 @@ async function initializePage() {
     // Set up event listeners
     setupEventListeners();
     
+    hideLoading(); // ADD THIS LINE
+    
   } catch (error) {
     console.error("Error initializing page:", error);
+    hideLoading(); // ADD THIS LINE even on error
     alert("Error loading class details. Redirecting to classes management.");
     window.location.href = "classes-management.html";
   }
@@ -732,21 +864,26 @@ function setupEventListeners() {
   cancelAddStudentBtn.onclick = closeAddStudentModal;
 
   // Parent search functionality
-  const parentSearchInput = document.getElementById('parentSearch');
-  const parentDropdown = document.getElementById('parentDropdown');
-  
-  parentSearchInput.addEventListener('input', (e) => {
-    const searchTerm = e.target.value;
-    if (searchTerm.length >= 2) {
-      populateParentSearch(searchTerm);
-      parentDropdown.classList.remove('hidden');
-    } else if (searchTerm.length === 0) {
-      populateParentSearch('');
-      parentDropdown.classList.remove('hidden');
-    } else {
-      parentDropdown.classList.add('hidden');
-    }
-  });
+// Parent search functionality
+const parentSearchInput = document.getElementById('parentSearch');
+const parentDropdown = document.getElementById('parentDropdown');
+
+parentSearchInput.addEventListener('input', async (e) => {
+  const searchTerm = e.target.value;
+  if (searchTerm.length >= 2) {
+    showLoading(); // ADD THIS LINE
+    await populateParentSearch(searchTerm);
+    parentDropdown.classList.remove('hidden');
+    hideLoading(); // ADD THIS LINE
+  } else if (searchTerm.length === 0) {
+    showLoading(); // ADD THIS LINE
+    await populateParentSearch('');
+    parentDropdown.classList.remove('hidden');
+    hideLoading(); // ADD THIS LINE
+  } else {
+    parentDropdown.classList.add('hidden');
+  }
+});
 
   // Close parent dropdown when clicking outside
   document.addEventListener('click', (e) => {
@@ -765,21 +902,24 @@ function setupEventListeners() {
     }
   }
 
-  // Edit Class Form
-  editForm.addEventListener('submit', async function(e) {
-    e.preventDefault(); 
-    
-    const newName = document.getElementById('editClassName').value.trim();
-    const newCapacity = parseInt(document.getElementById('editClassCapacity').value);
-    
-    if (newName === "") {
-      alert("Class Name cannot be empty.");
-      return;
-    }
-    if (newCapacity < classData.students.length) {
-      alert(`Capacity cannot be less than the current number of students (${classData.students.length}).`);
-      return;
-    }
+// Edit Class Form
+editForm.addEventListener('submit', async function(e) {
+  e.preventDefault(); 
+  
+  const newName = document.getElementById('editClassName').value.trim();
+  const newCapacity = parseInt(document.getElementById('editClassCapacity').value);
+  
+  if (newName === "") {
+    alert("Class Name cannot be empty.");
+    return;
+  }
+  if (newCapacity < classData.students.length) {
+    alert(`Capacity cannot be less than the current number of students (${classData.students.length}).`);
+    return;
+  }
+  
+  try {
+    showLoading(); // ADD THIS LINE
     
     // Update in Firestore
     const success = await updateClassInFirestore({
@@ -797,37 +937,47 @@ function setupEventListeners() {
     } else {
       alert("Failed to update class. Please try again.");
     }
-  });
-  
-  // Add Student Form
-  addStudentForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
     
-    const firstName = document.getElementById('studentFirstName').value.trim();
-    const lastName = document.getElementById('studentLastName').value.trim();
-    const age = document.getElementById('studentAge').value;
-    const gender = document.getElementById('studentGender').value;
-    const parentId = document.getElementById('selectedParentId').value;
+    hideLoading(); // ADD THIS LINE
+    
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    alert("Failed to update class. Please try again.");
+  }
+});
+  // Add Student Form
+// Add Student Form
+addStudentForm.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const firstName = document.getElementById('studentFirstName').value.trim();
+  const lastName = document.getElementById('studentLastName').value.trim();
+  const age = document.getElementById('studentAge').value;
+  const gender = document.getElementById('studentGender').value;
+  const parentId = document.getElementById('selectedParentId').value;
 
-    if (classData.students.length >= classData.capacity) {
-      alert("Cannot enroll student: class is full.");
-      return;
-    }
+  if (classData.students.length >= classData.capacity) {
+    alert("Cannot enroll student: class is full.");
+    return;
+  }
 
-    if (!parentId) {
-      alert("Please select a parent for this student.");
-      return;
-    }
+  if (!parentId) {
+    alert("Please select a parent for this student.");
+    return;
+  }
 
-    if (!firstName || !lastName) {
-      alert("Please enter both first name and last name.");
-      return;
-    }
+  if (!firstName || !lastName) {
+    alert("Please enter both first name and last name.");
+    return;
+  }
 
-    if (!age || age < 3 || age > 18) {
-      alert("Please enter a valid age between 3 and 18.");
-      return;
-    }
+  if (!age || age < 3 || age > 18) {
+    alert("Please enter a valid age between 3 and 18.");
+    return;
+  }
+  
+  try {
+    showLoading(); // ADD THIS LINE
     
     // Add to Firestore
     const newStudent = {
@@ -850,8 +1000,14 @@ function setupEventListeners() {
     } else {
       alert("Failed to enroll student. Please try again.");
     }
-  });
-
+    
+    hideLoading(); // ADD THIS LINE
+    
+  } catch (error) {
+    hideLoading(); // ADD THIS LINE even on error
+    alert("Failed to enroll student. Please try again.");
+  }
+});
   // Other button actions
   document.getElementById('viewTeacherProfileBtn').addEventListener('click', () => {
     if (classData.teacher.name !== "Unassigned" && classData.teacher.name !== "Teacher not found") {
@@ -862,7 +1018,10 @@ function setupEventListeners() {
   });
 
   document.getElementById('archiveClassBtn').addEventListener('click', async () => {
-    if (confirm(`Are you sure you want to archive the class ${classData.name}?`)) {
+  if (confirm(`Are you sure you want to archive the class ${classData.name}?`)) {
+    try {
+      showLoading(); // ADD THIS LINE
+      
       const success = await archiveClass();
       if (success) {
         alert(`Class ${classData.name} has been archived!`);
@@ -870,8 +1029,15 @@ function setupEventListeners() {
       } else {
         alert("Failed to archive class. Please try again.");
       }
+      
+      hideLoading(); // ADD THIS LINE
+      
+    } catch (error) {
+      hideLoading(); // ADD THIS LINE even on error
+      alert("Failed to archive class. Please try again.");
     }
-  });
+  }
+});
 }
 
 // Initialize the page when DOM is loaded
