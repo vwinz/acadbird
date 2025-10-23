@@ -1,396 +1,442 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AcadBird Admin Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-<link rel="stylesheet" href="../style/dashboard_admin.css">
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../style/dashboard_admin.css" />
+  </head>
+  <body>
     <div class="page-wrapper">
-        <div class="navbar">
+      <div class="navbar">
+        <div>
+          <div class="logo">
+            <img
+              src="../../main/img/AcadBird - White no text.png"
+              alt="AcadBird Logo"
+              class="logo-img"
+            />
+            <img
+              src="../../main/img/AcadBird - White Text.png"
+              class="logo-text-img"
+              alt="AcadBird Text"
+            />
+          </div>
+          <img
+            src="../../main/img/sunhill.png"
+            alt="AcadBird"
+            class="middle-logo"
+          />
+          <div class="nav-icons">
+            <a
+              href="notification_admin.html"
+              target="_blank"
+              title="Notifications"
+              class="notification-badge-container"
+            >
+              <i class="fas fa-bell icon"></i>
+              <span
+                class="notification-bell-badge"
+                id="notification-bell-badge"
+                style="display: none"
+                >0</span
+              >
+            </a>
+            <a href="help_admin.html" target="_blank" title="Help">
+              <i class="fas fa-question-circle icon"></i>
+            </a>
+            <a href="settings_admin.html" target="_blank" title="Settings">
+              <div class="account-menu">
+                <i class="fas fa-user-circle icon"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div id="loading-overlay">
+        <div class="loader-3">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <div class="secondary-header">
+        <div>
+          <nav class="nav-menu">
+            <a href="dashboard_admin.html" class="nav-item active">Dashboard</a>
+            <a href="classes-management.html" class="nav-item"
+              >Class Management</a
+            >
+            <a href="teacher-management.html" class="nav-item"
+              >Teacher Management</a
+            >
+            <a href="calendar.html" class="nav-item">Calendar</a>
+            <a href="settings_admin.html" class="nav-item">Settings</a>
+          </nav>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="main-content">
+        <div class="left-panel">
+          <div class="card admin-card">
+            <h2>Admin 1</h2>
             <div>
-                <div class="logo">
-                    <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird Logo" class="logo-img" />
-                    <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
-                </div>
-                <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-                <div class="nav-icons">
-                    <a href="notification_admin.html" target="_blank" title="Notifications" class="notification-badge-container">
-    <i class="fas fa-bell icon"></i>
-    <span class="notification-bell-badge" id="notification-bell-badge" style="display: none;">0</span>
-</a>
-                    <a href="help_admin.html" target="_blank" title="Help">
-                        <i class="fas fa-question-circle icon"></i>
-                    </a>
-                    <a href="settings_admin.html" target="_blank" title="Settings">
-                        <div class="account-menu">
-                            <i class="fas fa-user-circle icon"></i>
-                        </div>
-                    </a>
-                </div>
+              <div>
+                <span>Sunhill</span>
+              </div>
             </div>
+          </div>
+
+          <h3 class="metric-title">Data Dashboard</h3>
+
+          <div class="metric-card metric-card-green">
+            <p id="classesCount">0</p>
+            <p>Classes</p>
+          </div>
+          <div class="metric-card metric-card-blue">
+            <p id="parentsCount">0</p>
+            <p>Parents</p>
+          </div>
+          <div class="metric-card metric-card-orange">
+            <p id="teachersCount">0</p>
+            <p>Teachers</p>
+          </div>
         </div>
 
-        <div id="loading-overlay">
+        <div class="right-panel">
+          <div style="display: flex; flex-direction: column; gap: 24px">
+            <a href="#" class="calendar-widget">
+              <span style="z-index: 10"></span>
 
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
-        
-        <div class="secondary-header">
-           <div>
-               <nav class="nav-menu">
-                    <a href="dashboard_admin.html" class="nav-item active">Dashboard</a>
-                    <a href="classes-management.html" class="nav-item">Class Management</a>
-                    <a href="teacher-management.html" class="nav-item">Teacher Management</a>
-                    <a href="calendar.html" class="nav-item">Calendar</a>
-                    <a href="settings_admin.html" class="nav-item">Settings</a>
-
-               </nav>
-           </div>
-        </div>
-        
-        <div class="separator"></div>
-
-        <div class="main-content">
-            
-            <div class="left-panel">
-
-                <div class="card admin-card">
-                    <h2>Admin 1</h2>
-                    <div>
-                        <div>
-                            <span>Sunhill</span>
-                        </div>
-                    </div>
-                </div>
-
-                    <h3 class="metric-title">Data Dashboard</h3>
-                    
-                    <div class="metric-card metric-card-green">
-  <p id="classesCount">0</p>
-  <p>Classes</p>
-</div>
-<div class="metric-card metric-card-blue">
-  <p id="parentsCount">0</p>
-  <p>Parents</p>
-</div>
-<div class="metric-card metric-card-orange">
-  <p id="teachersCount">0</p>
-  <p>Teachers</p>
-</div>
-
-                </a>
-
-                
-                
-                </div>
-
-            <div class="right-panel">
-
-                <div style="display: flex; flex-direction: column; gap: 24px;">
-
-                 <a href="#" class="calendar-widget">
-                        <span style="z-index: 10;"></span>
-
-                        <div class="calendar-header">
-                            <div>
-                                <span id="calendar-year">2025</span>
-                                <div>
-                                    <i class="fas fa-arrow-circle-left"></i>
-                                    <span id="calendar-month">March</span>
-                                    <i class="fas fa-arrow-circle-right"></i>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="calendar-grid">
-                            <div>Sun</div>
-                            <div>Mon</div>
-                            <div>Tue</div>
-                            <div>Wed</div>
-                            <div>Thu</div>
-                            <div>Fri</div>
-                            <div>Sat</div>
-                            <!-- Calendar days will be populated dynamically -->
-                        </div>
-                    </a>
-
-                    <div class="visualizations-grid">
-                        
-                        <div class="user-pie-chart-card">
-                            <h3>User Roles Distribution</h3>
-                            <div class="pie-chart-container">
-                                <div class="background"></div>
-                                <div class="chart-slice" style="background: conic-gradient(#fbbd23 0% 20%, #115e59 20% 100%);"></div>
-                                <div class="center-hole"></div>
-                            </div>
-                            <div class="pie-chart-legend">
-                                <div>
-                                    <div class="legend-item">
-                                        <span class="legend-dot legend-dot-yellow"></span>
-                                        <span>Parents (20%)</span>
-                                    </div>
-                                    <div class="legend-item">
-                                        <span class="legend-dot legend-dot-teal"></span>
-                                        <span>Teachers/Admin (80%)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="logs-bar-chart-card">
-                      <h3>Logs Posted This Week</h3>
-                      <!-- Dropdown will be inserted here by JavaScript -->
-                      <!-- Week display will be inserted here by JavaScript -->
-                      <div class="logs-list">
-                          <!-- Content will be dynamically generated -->
-                      </div>
+              <div class="calendar-header">
+                <div>
+                  <span id="calendar-year">2025</span>
+                  <div>
+                    <i class="fas fa-arrow-circle-left"></i>
+                    <span id="calendar-month">March</span>
+                    <i class="fas fa-arrow-circle-right"></i>
                   </div>
-                    </div>
                 </div>
+              </div>
 
-                <div class="bottom-row-grid">
-                    
-                    <div class="active-classes-card">
-                        <h3>Most Active Classes (Last 7 Days)</h3>
-                        <div class="class-activity-list">
-                            <div class="class-activity-item">
-                                <div class="class-name-group">
-                                    <i class="fas fa-book"></i>
-                                    <span>Grade 1 - Maple</span>
-                                </div>
-                                <div class="class-bar-group">
-                                    <div class="class-bar" style="width: 100px;"></div>
-                                    <span class="class-count">120</span>
-                                </div>
-                            </div>
-                            <div class="class-activity-item">
-                                <div class="class-name-group">
-                                    <i class="fas fa-book"></i>
-                                    <span>Kinder - Rose</span>
-                                </div>
-                                <div class="class-bar-group">
-                                    <div class="class-bar" style="width: 85px;"></div>
-                                    <span class="class-count">105</span>
-                                </div>
-                            </div>
-                            <div class="class-activity-item">
-                                <div class="class-name-group">
-                                    <i class="fas fa-book"></i>
-                                    <span>Grade 5 - Oak</span>
-                                </div>
-                                <div class="class-bar-group">
-                                    <div class="class-bar" style="width: 60px;"></div>
-                                    <span class="class-count">80</span>
-                                </div>
-                            </div>
-                            <div class="class-activity-item">
-                                <div class="class-name-group">
-                                    <i class="fas fa-book"></i>
-                                    <span>Grade 2 - Pine</span>
-                                </div>
-                                <div class="class-bar-group">
-                                    <div class="class-bar" style="width: 40px;"></div>
-                                    <span class="class-count">60</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              <div class="calendar-grid">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+                <!-- Calendar days will be populated dynamically -->
+              </div>
+            </a>
 
-                    <div class="resources-card">
-                        <div>
-                            <h3>Resources Used</h3>
-                            <p>350</p>
-                            <p>Total uploaded files this month</p>
-                        </div>
-                    </div>
-
+            <div class="visualizations-grid">
+              <div class="user-pie-chart-card">
+                <h3>User Roles Distribution</h3>
+                <div class="pie-chart-container">
+                  <div class="background"></div>
+                  <div
+                    class="chart-slice"
+                    style="
+                      background: conic-gradient(
+                        #fbbd23 0% 20%,
+                        #115e59 20% 100%
+                      );
+                    "
+                  ></div>
+                  <div class="center-hole"></div>
                 </div>
+                <div class="pie-chart-legend">
+                  <div>
+                    <div class="legend-item">
+                      <span class="legend-dot legend-dot-yellow"></span>
+                      <span>Parents (20%)</span>
+                    </div>
+                    <div class="legend-item">
+                      <span class="legend-dot legend-dot-teal"></span>
+                      <span>Teachers/Admin (80%)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              <div class="logs-bar-chart-card">
+                <h3>Logs Posted This Week</h3>
+                <!-- Dropdown will be inserted here by JavaScript -->
+                <!-- Week display will be inserted here by JavaScript -->
+                <div class="logs-list">
+                  <!-- Content will be dynamically generated -->
+                </div>
+              </div>
             </div>
+          </div>
+
+          <div class="bottom-row-grid">
+            <div class="active-classes-card">
+              <h3>Most Active Classes (Last 7 Days)</h3>
+              <div class="class-activity-list">
+                <div class="class-activity-item">
+                  <div class="class-name-group">
+                    <i class="fas fa-book"></i>
+                    <span>Grade 1 - Maple</span>
+                  </div>
+                  <div class="class-bar-group">
+                    <div class="class-bar" style="width: 100px"></div>
+                    <span class="class-count">120</span>
+                  </div>
+                </div>
+                <div class="class-activity-item">
+                  <div class="class-name-group">
+                    <i class="fas fa-book"></i>
+                    <span>Kinder - Rose</span>
+                  </div>
+                  <div class="class-bar-group">
+                    <div class="class-bar" style="width: 85px"></div>
+                    <span class="class-count">105</span>
+                  </div>
+                </div>
+                <div class="class-activity-item">
+                  <div class="class-name-group">
+                    <i class="fas fa-book"></i>
+                    <span>Grade 5 - Oak</span>
+                  </div>
+                  <div class="class-bar-group">
+                    <div class="class-bar" style="width: 60px"></div>
+                    <span class="class-count">80</span>
+                  </div>
+                </div>
+                <div class="class-activity-item">
+                  <div class="class-name-group">
+                    <i class="fas fa-book"></i>
+                    <span>Grade 2 - Pine</span>
+                  </div>
+                  <div class="class-bar-group">
+                    <div class="class-bar" style="width: 40px"></div>
+                    <span class="class-count">60</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="resources-card">
+              <div>
+                <h3>Resources Used</h3>
+                <p>350</p>
+                <p>Total uploaded files this month</p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <!-- Firebase SDKs -->
-<script type="module">
-  // Import Firebase SDK (v9+ modular style)
-import { 
-    initializeApp 
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    <script type="module">
+      // Import Firebase SDK (v9+ modular style)
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 
-import { 
-    getFirestore, collection, getDocs, query, where, Timestamp, orderBy, doc, getDoc
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        where,
+        Timestamp,
+        orderBy,
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-  // TODO: replace with your Firebase config
-   const firebaseConfig = {
-    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-    authDomain: "acadbird-379e3.firebaseapp.com",
-    projectId: "acadbird-379e3",
-    storageBucket: "acadbird-379e3.firebasestorage.app",
-    messagingSenderId: "575491576951",
-    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-    measurementId: "G-N6Z672SXWJ"
-  };
+      // TODO: replace with your Firebase config
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const loadingOverlay = document.getElementById("loading-overlay");
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const loadingOverlay = document.getElementById("loading-overlay");
 
-   function showLoading() {
-  loadingOverlay.style.display = "flex";
-}
-
-// Hide overlay
-function hideLoading() {
-  loadingOverlay.style.display = "none";
-}
-
-
-// Fetch Classes Count from "classroom" collection
-async function getClassesCount() {
-  try {
-    showLoading(); // ADD THIS LINE
-    const snapshot = await getDocs(collection(db, "classrooms"));
-    document.getElementById("classesCount").innerText = snapshot.size;
-    hideLoading(); // ADD THIS LINE
-  } catch (error) {
-    hideLoading(); // ADD THIS LINE even on error
-    console.error("Error fetching classes count:", error);
-  }
-}
-
-// Fetch Parents Count from "users" collection
-async function getParentsCount() {
-  try {
-    showLoading(); // ADD THIS LINE
-    const q = query(collection(db, "users"), where("role", "==", "parent"));
-    const snapshot = await getDocs(q);
-    document.getElementById("parentsCount").innerText = snapshot.size;
-    hideLoading(); // ADD THIS LINE
-  } catch (error) {
-    hideLoading(); // ADD THIS LINE even on error
-    console.error("Error fetching parents count:", error);
-  }
-}
-
-// Fetch Teachers Count from "users" collection
-async function getTeachersCount() {
-  try {
-    showLoading(); // ADD THIS LINE
-    const q = query(collection(db, "users"), where("role", "==", "teacher"));
-    const snapshot = await getDocs(q);
-    document.getElementById("teachersCount").innerText = snapshot.size;
-    hideLoading(); // ADD THIS LINE
-  } catch (error) {
-    hideLoading(); // ADD THIS LINE even on error
-    console.error("Error fetching teachers count:", error);
-  }
-}
-async function getUserRoleDistribution() {
-  try {
-    showLoading(); // ADD THIS LINE
-    const usersSnapshot = await getDocs(collection(db, "users"));
-    let parents = 0, teachers = 0, admins = 0;
-
-    usersSnapshot.forEach(doc => {
-      const role = doc.data().role;
-      if (role === "parent") parents++;
-      else if (role === "teacher") teachers++;
-      else if (role === "admin") admins++;
-    });
-
-    const total = parents + teachers + admins;
-    if (total === 0) return;
-
-    const parentPercent = ((parents / total) * 100).toFixed(1);
-    const teacherAdminPercent = (((teachers + admins) / total) * 100).toFixed(1);
-
-    // Update chart dynamically
-    document.querySelector(".chart-slice").style.background =
-      `conic-gradient(#fbbd23 0% ${parentPercent}%, #115e59 ${parentPercent}% 100%)`;
-
-    // Update legend labels
-    document.querySelector(".legend-dot-yellow").nextElementSibling.textContent =
-      `Parents (${parentPercent}%)`;
-    document.querySelector(".legend-dot-teal").nextElementSibling.textContent =
-      `Teachers/Admin (${teacherAdminPercent}%)`;
-    
-    hideLoading(); // ADD THIS LINE
-    
-  } catch (error) {
-    hideLoading(); // ADD THIS LINE even on error
-    console.error("Error fetching user role distribution:", error);
-  }
-}
-async function getClassroomNames() {
-    const snapshot = await getDocs(collection(db, "classrooms"));
-    let map = {};
-    snapshot.forEach(doc => {
-      map[doc.id] = doc.data().classroomName || "Unnamed Class";
-    });
-    return map;
-  }
-
- async function getMostActiveClasses() {
-  try {
-    showLoading(); // ADD THIS LINE
-    
-    const sevenDaysAgo = Timestamp.fromDate(
-      new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-    );
-
-    const q = query(collection(db, "activity"), where("created_at", ">", sevenDaysAgo));
-    const snapshot = await getDocs(q);
-
-    // Keep track of unique activityNo per classroom
-    let classActivities = {};
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      const classId = data.classroomID;
-      const activityNo = data.activityNo;
-
-      if (!classActivities[classId]) {
-        classActivities[classId] = new Set();
+      function showLoading() {
+        loadingOverlay.style.display = "flex";
       }
-      classActivities[classId].add(activityNo); // ensures uniqueness
-    });
 
-    // Convert to array with counts = size of Set
-    let result = Object.entries(classActivities).map(([id, set]) => ({
-      classroomID: id,
-      classroomName: "", // will map later
-      count: set.size
-    }));
+      // Hide overlay
+      function hideLoading() {
+        loadingOverlay.style.display = "none";
+      }
 
-    // Get classroom names
-    const classMap = await getClassroomNames();
-    result.forEach(item => {
-      item.classroomName = classMap[item.classroomID] || item.classroomID;
-    });
+      // Fetch Classes Count from "classroom" collection
+      async function getClassesCount() {
+        try {
+          showLoading(); // ADD THIS LINE
+          const snapshot = await getDocs(collection(db, "classrooms"));
+          document.getElementById("classesCount").innerText = snapshot.size;
+          hideLoading(); // ADD THIS LINE
+        } catch (error) {
+          hideLoading(); // ADD THIS LINE even on error
+          console.error("Error fetching classes count:", error);
+        }
+      }
 
-    // Sort by activity count
-    result.sort((a, b) => b.count - a.count);
+      // Fetch Parents Count from "users" collection
+      async function getParentsCount() {
+        try {
+          showLoading(); // ADD THIS LINE
+          const q = query(
+            collection(db, "users"),
+            where("role", "==", "parent"),
+          );
+          const snapshot = await getDocs(q);
+          document.getElementById("parentsCount").innerText = snapshot.size;
+          hideLoading(); // ADD THIS LINE
+        } catch (error) {
+          hideLoading(); // ADD THIS LINE even on error
+          console.error("Error fetching parents count:", error);
+        }
+      }
 
-    // Render to DOM
-    const listEl = document.querySelector(".class-activity-list");
-    listEl.innerHTML = "";
+      // Fetch Teachers Count from "users" collection
+      async function getTeachersCount() {
+        try {
+          showLoading(); // ADD THIS LINE
+          const q = query(
+            collection(db, "users"),
+            where("role", "==", "teacher"),
+          );
+          const snapshot = await getDocs(q);
+          document.getElementById("teachersCount").innerText = snapshot.size;
+          hideLoading(); // ADD THIS LINE
+        } catch (error) {
+          hideLoading(); // ADD THIS LINE even on error
+          console.error("Error fetching teachers count:", error);
+        }
+      }
+      async function getUserRoleDistribution() {
+        try {
+          showLoading(); // ADD THIS LINE
+          const usersSnapshot = await getDocs(collection(db, "users"));
+          let parents = 0,
+            teachers = 0,
+            admins = 0;
 
-    result.forEach(item => {
-      const div = document.createElement("div");
-      div.classList.add("class-activity-item");
-      div.innerHTML = `
+          usersSnapshot.forEach((doc) => {
+            const role = doc.data().role;
+            if (role === "parent") parents++;
+            else if (role === "teacher") teachers++;
+            else if (role === "admin") admins++;
+          });
+
+          const total = parents + teachers + admins;
+          if (total === 0) return;
+
+          const parentPercent = ((parents / total) * 100).toFixed(1);
+          const teacherAdminPercent = (
+            ((teachers + admins) / total) *
+            100
+          ).toFixed(1);
+
+          // Update chart dynamically
+          document.querySelector(".chart-slice").style.background =
+            `conic-gradient(#fbbd23 0% ${parentPercent}%, #115e59 ${parentPercent}% 100%)`;
+
+          // Update legend labels
+          document.querySelector(
+            ".legend-dot-yellow",
+          ).nextElementSibling.textContent = `Parents (${parentPercent}%)`;
+          document.querySelector(
+            ".legend-dot-teal",
+          ).nextElementSibling.textContent =
+            `Teachers/Admin (${teacherAdminPercent}%)`;
+
+          hideLoading(); // ADD THIS LINE
+        } catch (error) {
+          hideLoading(); // ADD THIS LINE even on error
+          console.error("Error fetching user role distribution:", error);
+        }
+      }
+      async function getClassroomNames() {
+        const snapshot = await getDocs(collection(db, "classrooms"));
+        let map = {};
+        snapshot.forEach((doc) => {
+          map[doc.id] = doc.data().classroomName || "Unnamed Class";
+        });
+        return map;
+      }
+
+      async function getMostActiveClasses() {
+        try {
+          showLoading(); // ADD THIS LINE
+
+          const sevenDaysAgo = Timestamp.fromDate(
+            new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+          );
+
+          const q = query(
+            collection(db, "activity"),
+            where("created_at", ">", sevenDaysAgo),
+          );
+          const snapshot = await getDocs(q);
+
+          // Keep track of unique activityNo per classroom
+          let classActivities = {};
+
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            const classId = data.classroomID;
+            const activityNo = data.activityNo;
+
+            if (!classActivities[classId]) {
+              classActivities[classId] = new Set();
+            }
+            classActivities[classId].add(activityNo); // ensures uniqueness
+          });
+
+          // Convert to array with counts = size of Set
+          let result = Object.entries(classActivities).map(([id, set]) => ({
+            classroomID: id,
+            classroomName: "", // will map later
+            count: set.size,
+          }));
+
+          // Get classroom names
+          const classMap = await getClassroomNames();
+          result.forEach((item) => {
+            item.classroomName = classMap[item.classroomID] || item.classroomID;
+          });
+
+          // Sort by activity count
+          result.sort((a, b) => b.count - a.count);
+
+          // Render to DOM
+          const listEl = document.querySelector(".class-activity-list");
+          listEl.innerHTML = "";
+
+          result.forEach((item) => {
+            const div = document.createElement("div");
+            div.classList.add("class-activity-item");
+            div.innerHTML = `
         <div class="class-name-group">
           <i class="fas fa-book"></i>
           <span>${item.classroomName}</span>
@@ -400,102 +446,103 @@ async function getClassroomNames() {
           <span class="class-count">${item.count}</span>
         </div>
       `;
-      listEl.appendChild(div);
-    });
-    
-    hideLoading(); // ADD THIS LINE
-    
-  } catch (error) {
-    hideLoading(); // ADD THIS LINE even on error
-    console.error("Error fetching most active classes:", error);
-  }
-}
-// Fetch Logs Posted This Week with filtering (counting unique activityNo)
+            listEl.appendChild(div);
+          });
 
-async function getLogsThisWeek(weekOffset = 0) {
-  try {
-    showLoading(); // ADD THIS LINE
-    
-    const now = new Date();
-    const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
-    
-    // Calculate start of week (Monday)
-    const startOfWeek = new Date(now);
-    startOfWeek.setDate(now.getDate() - currentDay + (currentDay === 0 ? -6 : 1));
-    startOfWeek.setHours(0, 0, 0, 0);
-    
-    // Apply week offset
-    startOfWeek.setDate(startOfWeek.getDate() + (weekOffset * 7));
-    
-    // End of week (Sunday)
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-    endOfWeek.setHours(23, 59, 59, 999);
-
-    const startTimestamp = Timestamp.fromDate(startOfWeek);
-    const endTimestamp = Timestamp.fromDate(endOfWeek);
-
-    const q = query(
-      collection(db, "activity"), 
-      where("created_at", ">=", startTimestamp),
-      where("created_at", "<=", endTimestamp)
-    );
-    
-    const snapshot = await getDocs(q);
-
-    // Group by day of week and track unique activityNo
-    const dayCounts = {
-      'Mon': new Set(),
-      'Tue': new Set(),
-      'Wed': new Set(),
-      'Thu': new Set(),
-      'Fri': new Set()
-    };
-
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      const activityDate = data.created_at.toDate();
-      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const dayName = dayNames[activityDate.getDay()];
-      
-      // Only count weekdays Mon-Fri and track unique activityNo
-      if (dayCounts.hasOwnProperty(dayName) && data.activityNo) {
-        dayCounts[dayName].add(data.activityNo);
+          hideLoading(); // ADD THIS LINE
+        } catch (error) {
+          hideLoading(); // ADD THIS LINE even on error
+          console.error("Error fetching most active classes:", error);
+        }
       }
-    });
+      // Fetch Logs Posted This Week with filtering (counting unique activityNo)
 
-    // Convert Sets to counts
-    const dayCountsResult = {
-      'Mon': dayCounts['Mon'].size,
-      'Tue': dayCounts['Tue'].size,
-      'Wed': dayCounts['Wed'].size,
-      'Thu': dayCounts['Thu'].size,
-      'Fri': dayCounts['Fri'].size
-    };
+      async function getLogsThisWeek(weekOffset = 0) {
+        try {
+          showLoading(); // ADD THIS LINE
 
-    // Update the DOM
-    updateLogsChart(dayCountsResult, startOfWeek);
-    
-    hideLoading(); // ADD THIS LINE
-    
-  } catch (error) {
-    hideLoading(); // ADD THIS LINE even on error
-    console.error("Error fetching logs this week:", error);
-  }
-}
+          const now = new Date();
+          const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
 
-function updateLogsChart(dayCounts, weekStart) {
-  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-  const logsList = document.querySelector('.logs-list');
-  
-  // Find max count for percentage calculation
-  const maxCount = Math.max(...Object.values(dayCounts));
-  
-  logsList.innerHTML = days.map(day => {
-    const count = dayCounts[day];
-    const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
-    
-    return `
+          // Calculate start of week (Monday)
+          const startOfWeek = new Date(now);
+          startOfWeek.setDate(
+            now.getDate() - currentDay + (currentDay === 0 ? -6 : 1),
+          );
+          startOfWeek.setHours(0, 0, 0, 0);
+
+          // Apply week offset
+          startOfWeek.setDate(startOfWeek.getDate() + weekOffset * 7);
+
+          // End of week (Sunday)
+          const endOfWeek = new Date(startOfWeek);
+          endOfWeek.setDate(startOfWeek.getDate() + 6);
+          endOfWeek.setHours(23, 59, 59, 999);
+
+          const startTimestamp = Timestamp.fromDate(startOfWeek);
+          const endTimestamp = Timestamp.fromDate(endOfWeek);
+
+          const q = query(
+            collection(db, "activity"),
+            where("created_at", ">=", startTimestamp),
+            where("created_at", "<=", endTimestamp),
+          );
+
+          const snapshot = await getDocs(q);
+
+          // Group by day of week and track unique activityNo
+          const dayCounts = {
+            Mon: new Set(),
+            Tue: new Set(),
+            Wed: new Set(),
+            Thu: new Set(),
+            Fri: new Set(),
+          };
+
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            const activityDate = data.created_at.toDate();
+            const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            const dayName = dayNames[activityDate.getDay()];
+
+            // Only count weekdays Mon-Fri and track unique activityNo
+            if (dayCounts.hasOwnProperty(dayName) && data.activityNo) {
+              dayCounts[dayName].add(data.activityNo);
+            }
+          });
+
+          // Convert Sets to counts
+          const dayCountsResult = {
+            Mon: dayCounts["Mon"].size,
+            Tue: dayCounts["Tue"].size,
+            Wed: dayCounts["Wed"].size,
+            Thu: dayCounts["Thu"].size,
+            Fri: dayCounts["Fri"].size,
+          };
+
+          // Update the DOM
+          updateLogsChart(dayCountsResult, startOfWeek);
+
+          hideLoading(); // ADD THIS LINE
+        } catch (error) {
+          hideLoading(); // ADD THIS LINE even on error
+          console.error("Error fetching logs this week:", error);
+        }
+      }
+
+      function updateLogsChart(dayCounts, weekStart) {
+        const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+        const logsList = document.querySelector(".logs-list");
+
+        // Find max count for percentage calculation
+        const maxCount = Math.max(...Object.values(dayCounts));
+
+        logsList.innerHTML = days
+          .map((day) => {
+            const count = dayCounts[day];
+            const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
+
+            return `
       <div class="log-item">
         <span>${day}</span>
         <div class="log-bar-container">
@@ -504,45 +551,47 @@ function updateLogsChart(dayCounts, weekStart) {
         </div>
       </div>
     `;
-  }).join('');
+          })
+          .join("");
 
-  // Update week display
-  updateWeekDisplay(weekStart);
-}
-function handleCalendarClick(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    
-    // Your existing calendar click handling logic here
-    // For example, if you want to open the full calendar view in a modal or same page
-    // instead of redirecting to a new page
-}
-function updateWeekDisplay(weekStart) {
-  const weekEnd = new Date(weekStart);
-  weekEnd.setDate(weekStart.getDate() + 6);
-  
-  const options = { month: 'short', 'day': 'numeric' };
-  const weekDisplay = document.querySelector('.week-display');
-  
-  if (!weekDisplay) {
-    // Create week display if it doesn't exist
-    const logsCard = document.querySelector('.logs-bar-chart-card h3');
-    const weekDisplayEl = document.createElement('div');
-    weekDisplayEl.className = 'week-display';
-    weekDisplayEl.style.cssText = 'font-size: 12px; color: #666; margin-top: 5px;';
-    logsCard.parentNode.insertBefore(weekDisplayEl, logsCard.nextSibling);
-  }
-  
-  document.querySelector('.week-display').textContent = 
-    `Week of ${weekStart.toLocaleDateString('en-US', options)} - ${weekEnd.toLocaleDateString('en-US', options)}`;
-}
+        // Update week display
+        updateWeekDisplay(weekStart);
+      }
+      function handleCalendarClick(event) {
+        event.preventDefault();
+        event.stopPropagation();
 
-// Create week filter dropdown
-function createWeekFilter() {
-  const logsHeader = document.querySelector('.logs-bar-chart-card h3');
-  const dropdown = document.createElement('select');
-  dropdown.className = 'week-filter';
-  dropdown.style.cssText = `
+        // Your existing calendar click handling logic here
+        // For example, if you want to open the full calendar view in a modal or same page
+        // instead of redirecting to a new page
+      }
+      function updateWeekDisplay(weekStart) {
+        const weekEnd = new Date(weekStart);
+        weekEnd.setDate(weekStart.getDate() + 6);
+
+        const options = { month: "short", day: "numeric" };
+        const weekDisplay = document.querySelector(".week-display");
+
+        if (!weekDisplay) {
+          // Create week display if it doesn't exist
+          const logsCard = document.querySelector(".logs-bar-chart-card h3");
+          const weekDisplayEl = document.createElement("div");
+          weekDisplayEl.className = "week-display";
+          weekDisplayEl.style.cssText =
+            "font-size: 12px; color: #666; margin-top: 5px;";
+          logsCard.parentNode.insertBefore(weekDisplayEl, logsCard.nextSibling);
+        }
+
+        document.querySelector(".week-display").textContent =
+          `Week of ${weekStart.toLocaleDateString("en-US", options)} - ${weekEnd.toLocaleDateString("en-US", options)}`;
+      }
+
+      // Create week filter dropdown
+      function createWeekFilter() {
+        const logsHeader = document.querySelector(".logs-bar-chart-card h3");
+        const dropdown = document.createElement("select");
+        dropdown.className = "week-filter";
+        dropdown.style.cssText = `
     margin-left: 10px;
     padding: 2px 8px;
     border: 1px solid #ddd;
@@ -550,273 +599,290 @@ function createWeekFilter() {
     background: white;
     font-size: 12px;
   `;
-  
-  dropdown.innerHTML = `
+
+        dropdown.innerHTML = `
     <option value="0">This Week</option>
     <option value="-1">Last Week</option>
     <option value="-2">2 Weeks Ago</option>
     <option value="-3">3 Weeks Ago</option>
   `;
-  
-  dropdown.addEventListener('change', (e) => {
-    getLogsThisWeek(parseInt(e.target.value));
-  });
-  
-  logsHeader.parentNode.insertBefore(dropdown, logsHeader.nextSibling);
-}
 
-// Fetch total uploaded resources from "topicContent" collection
-async function getResourcesUsed() {
-  try {
-    showLoading(); // ADD THIS LINE
-    const snapshot = await getDocs(collection(db, "topicContent"));
-    const totalResources = snapshot.size;
-
-    // Update the DOM
-    const resourcesCard = document.querySelector('.resources-card p:first-of-type');
-    if (resourcesCard) {
-      resourcesCard.textContent = totalResources;
-    }
-    
-    hideLoading(); // ADD THIS LINE
-    
-  } catch (error) {
-    hideLoading(); // ADD THIS LINE even on error
-    console.error("Error fetching resources used:", error);
-  }
-}
-// ===== CALENDAR FUNCTIONS =====
-let currentMonth = new Date().getMonth();
-let currentYear = new Date().getFullYear();
-
-async function fetchCalendarEvents() {
-  try {
-    showLoading(); // ADD THIS LINE
-    
-    // Get all calendar events and filter by month/year
-    const q = query(collection(db, "calendar"), orderBy("date"));
-    const snapshot = await getDocs(q);
-    const events = [];
-    
-    snapshot.forEach(doc => {
-      const eventData = doc.data();
-      const eventDate = new Date(eventData.date); // Convert string to Date object
-      
-      // Check if event is in current month/year
-      if (eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear) {
-        events.push({
-          id: doc.id,
-          ...eventData,
-          date: eventDate // Store as Date object for easier handling
+        dropdown.addEventListener("change", (e) => {
+          getLogsThisWeek(parseInt(e.target.value));
         });
+
+        logsHeader.parentNode.insertBefore(dropdown, logsHeader.nextSibling);
       }
-    });
-    
-    console.log('📅 Calendar events for current month:', events);
-    renderCalendar(events, currentMonth, currentYear);
-    
-    hideLoading(); // ADD THIS LINE
-    
-  } catch (error) {
-    hideLoading(); // ADD THIS LINE even on error
-    console.error('❌ Error fetching calendar events:', error);
-  }
-}
-function renderCalendar(events, month, year) {
-  const calendarGrid = document.querySelector('.calendar-grid');
-  if (!calendarGrid) return;
-  
-  // Clear existing calendar days but keep the header (first 7 elements)
-  const headerDays = Array.from(calendarGrid.children).slice(0, 7);
-  calendarGrid.innerHTML = '';
-  
-  // Re-add the header days
-  headerDays.forEach(day => calendarGrid.appendChild(day));
-  
-  // Update calendar header
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"];
-  
-  document.getElementById('calendar-month').textContent = monthNames[month];
-  document.getElementById('calendar-year').textContent = year;
-  
-  // Group events by day
-  const eventsByDay = {};
-  events.forEach(event => {
-    const day = event.date.getDate();
-    if (!eventsByDay[day]) {
-      eventsByDay[day] = [];
-    }
-    eventsByDay[day].push(event);
-  });
-  
-  // Generate calendar days
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month + 1, 0);
-  const daysInMonth = lastDay.getDate();
-  const startingDay = firstDay.getDay(); // 0 = Sunday, 1 = Monday, etc.
-  
-  // Add empty days for previous month
-  for (let i = 0; i < startingDay; i++) {
-    const emptyDay = document.createElement('div');
-    emptyDay.className = 'calendar-day prev-next-month';
-    emptyDay.textContent = '';
-    calendarGrid.appendChild(emptyDay);
-  }
-  
-  // Add current month days
-  const today = new Date();
-  const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
-  
-  for (let day = 1; day <= daysInMonth; day++) {
-    const dayElement = document.createElement('div');
-    dayElement.className = 'calendar-day';
-    
-    // Check if today
-    if (isCurrentMonth && day === today.getDate()) {
-      dayElement.classList.add('today');
-    }
-    
-    // Add day number
-    const dayNumber = document.createElement('div');
-    dayNumber.className = 'day-number';
-    dayNumber.textContent = day;
-    dayElement.appendChild(dayNumber);
-    
-    // Add events for this day
-    const dayEvents = eventsByDay[day] || [];
-    if (dayEvents.length > 0) {
-      const eventsList = document.createElement('div');
-      eventsList.className = 'events-list';
-      
-      dayEvents.forEach(event => {
-        const eventItem = document.createElement('div');
-        eventItem.className = `event-item ${event.type}`;
-        eventItem.textContent = event.title;
-        eventItem.title = `${event.title} - ${event.time || 'All day'}`;
-        eventItem.addEventListener('click', function(e) {
-          e.stopPropagation();
-          showEventDetails(event.id);
-        });
-        eventsList.appendChild(eventItem);
-      });
-      
-      dayElement.appendChild(eventsList);
-    }
-    
-    // Add click event to add new event
-    dayElement.addEventListener('click', function() {
-      openAddEventModal(day, month, year);
-    });
-    
-    calendarGrid.appendChild(dayElement);
-  }
-  
-  // Add empty days for next month to complete grid
-  const totalCells = 42; // 6 rows x 7 days
-  const remainingCells = totalCells - (startingDay + daysInMonth);
-  for (let i = 0; i < remainingCells; i++) {
-    const emptyDay = document.createElement('div');
-    emptyDay.className = 'calendar-day prev-next-month';
-    emptyDay.textContent = '';
-    calendarGrid.appendChild(emptyDay);
-  }
-}
-// Event type colors based on your CSS
-const EVENT_TYPE_COLORS = {
-  'staff': { background: '#fef08a', color: '#854d0e' },
-  'deadline': { background: '#fecaca', color: '#991b1b' },
-  'meeting': { background: '#bbf7d0', color: '#166534' },
-  'holiday': { background: '#ddd6fe', color: '#5b21b6' },
-  'event': { background: '#bfdbfe', color: '#1e40af' }, // Added for 'event' type
-  'other': { background: '#e5e7eb', color: '#374151' }  // Added for 'other' type
-};
 
-// Function to get event color (for tooltip dots if needed)
-function getEventColor(eventType) {
-  const colorMap = {
-    'staff': 'yellow',
-    'deadline': 'red', 
-    'meeting': 'green',
-    'holiday': 'purple',
-    'event': 'blue',
-    'other': 'gray'
-  };
-  
-  return colorMap[eventType?.toLowerCase()] || 'gray';
-}
+      // Fetch total uploaded resources from "topicContent" collection
+      async function getResourcesUsed() {
+        try {
+          showLoading(); // ADD THIS LINE
+          const snapshot = await getDocs(collection(db, "topicContent"));
+          const totalResources = snapshot.size;
 
-// Initialize calendar navigation
-function initializeCalendarNavigation() {
-  const prevBtn = document.querySelector('.fa-arrow-circle-left');
-  const nextBtn = document.querySelector('.fa-arrow-circle-right');
-  
-  if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
-      currentMonth--;
-      if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
-      }
-      navigateCalendar(currentMonth, currentYear);
-    });
-  }
-  
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      currentMonth++;
-      if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
-      }
-      navigateCalendar(currentMonth, currentYear);
-    });
-  }
-}
+          // Update the DOM
+          const resourcesCard = document.querySelector(
+            ".resources-card p:first-of-type",
+          );
+          if (resourcesCard) {
+            resourcesCard.textContent = totalResources;
+          }
 
-// Calendar navigation function
-function navigateCalendar(month, year) {
-    currentMonth = month;
-    currentYear = year;
-    fetchCalendarEvents();
-}
-
-// Function to show event details in modal
-function showEventDetails(eventId) {
-    // Find the event in the database and show details
-    getEventById(eventId).then(event => {
-        if (event) {
-            showEventModal(event);
+          hideLoading(); // ADD THIS LINE
+        } catch (error) {
+          hideLoading(); // ADD THIS LINE even on error
+          console.error("Error fetching resources used:", error);
         }
-    });
-}
+      }
+      // ===== CALENDAR FUNCTIONS =====
+      let currentMonth = new Date().getMonth();
+      let currentYear = new Date().getFullYear();
 
-// Function to get event by ID
-async function getEventById(eventId) {
-    try {
-        const docRef = doc(db, "calendar", eventId);
-        const docSnap = await getDoc(docRef);
-        
-        if (docSnap.exists()) {
+      async function fetchCalendarEvents() {
+        try {
+          showLoading(); // ADD THIS LINE
+
+          // Get all calendar events and filter by month/year
+          const q = query(collection(db, "calendar"), orderBy("date"));
+          const snapshot = await getDocs(q);
+          const events = [];
+
+          snapshot.forEach((doc) => {
+            const eventData = doc.data();
+            const eventDate = new Date(eventData.date); // Convert string to Date object
+
+            // Check if event is in current month/year
+            if (
+              eventDate.getMonth() === currentMonth &&
+              eventDate.getFullYear() === currentYear
+            ) {
+              events.push({
+                id: doc.id,
+                ...eventData,
+                date: eventDate, // Store as Date object for easier handling
+              });
+            }
+          });
+
+          console.log("📅 Calendar events for current month:", events);
+          renderCalendar(events, currentMonth, currentYear);
+
+          hideLoading(); // ADD THIS LINE
+        } catch (error) {
+          hideLoading(); // ADD THIS LINE even on error
+          console.error("❌ Error fetching calendar events:", error);
+        }
+      }
+      function renderCalendar(events, month, year) {
+        const calendarGrid = document.querySelector(".calendar-grid");
+        if (!calendarGrid) return;
+
+        // Clear existing calendar days but keep the header (first 7 elements)
+        const headerDays = Array.from(calendarGrid.children).slice(0, 7);
+        calendarGrid.innerHTML = "";
+
+        // Re-add the header days
+        headerDays.forEach((day) => calendarGrid.appendChild(day));
+
+        // Update calendar header
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+
+        document.getElementById("calendar-month").textContent =
+          monthNames[month];
+        document.getElementById("calendar-year").textContent = year;
+
+        // Group events by day
+        const eventsByDay = {};
+        events.forEach((event) => {
+          const day = event.date.getDate();
+          if (!eventsByDay[day]) {
+            eventsByDay[day] = [];
+          }
+          eventsByDay[day].push(event);
+        });
+
+        // Generate calendar days
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const daysInMonth = lastDay.getDate();
+        const startingDay = firstDay.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
+        // Add empty days for previous month
+        for (let i = 0; i < startingDay; i++) {
+          const emptyDay = document.createElement("div");
+          emptyDay.className = "calendar-day prev-next-month";
+          emptyDay.textContent = "";
+          calendarGrid.appendChild(emptyDay);
+        }
+
+        // Add current month days
+        const today = new Date();
+        const isCurrentMonth =
+          today.getMonth() === month && today.getFullYear() === year;
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayElement = document.createElement("div");
+          dayElement.className = "calendar-day";
+
+          // Check if today
+          if (isCurrentMonth && day === today.getDate()) {
+            dayElement.classList.add("today");
+          }
+
+          // Add day number
+          const dayNumber = document.createElement("div");
+          dayNumber.className = "day-number";
+          dayNumber.textContent = day;
+          dayElement.appendChild(dayNumber);
+
+          // Add events for this day
+          const dayEvents = eventsByDay[day] || [];
+          if (dayEvents.length > 0) {
+            const eventsList = document.createElement("div");
+            eventsList.className = "events-list";
+
+            dayEvents.forEach((event) => {
+              const eventItem = document.createElement("div");
+              eventItem.className = `event-item ${event.type}`;
+              eventItem.textContent = event.title;
+              eventItem.title = `${event.title} - ${event.time || "All day"}`;
+              eventItem.addEventListener("click", function (e) {
+                e.stopPropagation();
+                showEventDetails(event.id);
+              });
+              eventsList.appendChild(eventItem);
+            });
+
+            dayElement.appendChild(eventsList);
+          }
+
+          // Add click event to add new event
+          dayElement.addEventListener("click", function () {
+            openAddEventModal(day, month, year);
+          });
+
+          calendarGrid.appendChild(dayElement);
+        }
+
+        // Add empty days for next month to complete grid
+        const totalCells = 42; // 6 rows x 7 days
+        const remainingCells = totalCells - (startingDay + daysInMonth);
+        for (let i = 0; i < remainingCells; i++) {
+          const emptyDay = document.createElement("div");
+          emptyDay.className = "calendar-day prev-next-month";
+          emptyDay.textContent = "";
+          calendarGrid.appendChild(emptyDay);
+        }
+      }
+      // Event type colors based on your CSS
+      const EVENT_TYPE_COLORS = {
+        staff: { background: "#fef08a", color: "#854d0e" },
+        deadline: { background: "#fecaca", color: "#991b1b" },
+        meeting: { background: "#bbf7d0", color: "#166534" },
+        holiday: { background: "#ddd6fe", color: "#5b21b6" },
+        event: { background: "#bfdbfe", color: "#1e40af" }, // Added for 'event' type
+        other: { background: "#e5e7eb", color: "#374151" }, // Added for 'other' type
+      };
+
+      // Function to get event color (for tooltip dots if needed)
+      function getEventColor(eventType) {
+        const colorMap = {
+          staff: "yellow",
+          deadline: "red",
+          meeting: "green",
+          holiday: "purple",
+          event: "blue",
+          other: "gray",
+        };
+
+        return colorMap[eventType?.toLowerCase()] || "gray";
+      }
+
+      // Initialize calendar navigation
+      function initializeCalendarNavigation() {
+        const prevBtn = document.querySelector(".fa-arrow-circle-left");
+        const nextBtn = document.querySelector(".fa-arrow-circle-right");
+
+        if (prevBtn) {
+          prevBtn.addEventListener("click", () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+              currentMonth = 11;
+              currentYear--;
+            }
+            navigateCalendar(currentMonth, currentYear);
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener("click", () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+              currentMonth = 0;
+              currentYear++;
+            }
+            navigateCalendar(currentMonth, currentYear);
+          });
+        }
+      }
+
+      // Calendar navigation function
+      function navigateCalendar(month, year) {
+        currentMonth = month;
+        currentYear = year;
+        fetchCalendarEvents();
+      }
+
+      // Function to show event details in modal
+      function showEventDetails(eventId) {
+        // Find the event in the database and show details
+        getEventById(eventId).then((event) => {
+          if (event) {
+            showEventModal(event);
+          }
+        });
+      }
+
+      // Function to get event by ID
+      async function getEventById(eventId) {
+        try {
+          const docRef = doc(db, "calendar", eventId);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
             return {
-                id: docSnap.id,
-                ...docSnap.data()
+              id: docSnap.id,
+              ...docSnap.data(),
             };
-        } else {
+          } else {
             console.log("No such event found!");
             return null;
+          }
+        } catch (error) {
+          console.error("Error getting event:", error);
+          return null;
         }
-    } catch (error) {
-        console.error("Error getting event:", error);
-        return null;
-    }
-}
+      }
 
-// Function to show event modal
-// Function to show event modal
-function showEventModal(event) {
-    // Create modal HTML with only the required fields
-    const modalHTML = `
+      // Function to show event modal
+      // Function to show event modal
+      function showEventModal(event) {
+        // Create modal HTML with only the required fields
+        const modalHTML = `
         <div class="modal-overlay" id="eventModal">
             <div class="modal-content">
                 <div class="modal-header">
@@ -826,19 +892,19 @@ function showEventModal(event) {
                 <div class="modal-body">
                     <div class="event-detail">
                         <strong>Title:</strong>
-                        <span>${event.title || 'No title'}</span>
+                        <span>${event.title || "No title"}</span>
                     </div>
                     <div class="event-detail">
                         <strong>Type:</strong>
-                        <span class="event-type ${event.type || 'other'}">${event.type || 'Other'}</span>
+                        <span class="event-type ${event.type || "other"}">${event.type || "Other"}</span>
                     </div>
                     <div class="event-detail">
                         <strong>Time:</strong>
-                        <span>${event.time || 'All day'}</span>
+                        <span>${event.time || "All day"}</span>
                     </div>
                     <div class="event-detail">
                         <strong>Description:</strong>
-                        <p>${event.description || 'No description'}</p>
+                        <p>${event.description || "No description"}</p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -847,65 +913,65 @@ function showEventModal(event) {
             </div>
         </div>
     `;
-    
-    // Remove existing modal if any
-    const existingModal = document.getElementById('eventModal');
-    if (existingModal) {
-        existingModal.remove();
-    }
-    
-    // Add modal to body
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
-    
-    // Add event listeners for modal
-    const modal = document.getElementById('eventModal');
-    const closeBtn = modal.querySelector('.close-modal');
-    const closeButton = modal.querySelector('.btn-close');
-    
-    closeBtn.addEventListener('click', closeModal);
-    closeButton.addEventListener('click', closeModal);
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            closeModal();
+
+        // Remove existing modal if any
+        const existingModal = document.getElementById("eventModal");
+        if (existingModal) {
+          existingModal.remove();
         }
-    });
-}
-// Function to close modal
-function closeModal() {
-    const modal = document.getElementById('eventModal');
-    if (modal) {
-        modal.remove();
-    }
-}
 
-// Helper function to format date
-function formatDate(dateString) {
-    if (!dateString) return 'Unknown';
-    
-    try {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
+        // Add modal to body
+        document.body.insertAdjacentHTML("beforeend", modalHTML);
+
+        // Add event listeners for modal
+        const modal = document.getElementById("eventModal");
+        const closeBtn = modal.querySelector(".close-modal");
+        const closeButton = modal.querySelector(".btn-close");
+
+        closeBtn.addEventListener("click", closeModal);
+        closeButton.addEventListener("click", closeModal);
+        modal.addEventListener("click", function (e) {
+          if (e.target === modal) {
+            closeModal();
+          }
         });
-    } catch (error) {
-        return dateString;
-    }
-}
+      }
+      // Function to close modal
+      function closeModal() {
+        const modal = document.getElementById("eventModal");
+        if (modal) {
+          modal.remove();
+        }
+      }
 
-// Function to open add event modal (if needed)
-function openAddEventModal(day, month, year) {
-    const dateString = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-    console.log('Add event for date:', dateString);
-    // You can implement add event functionality here
-}
+      // Helper function to format date
+      function formatDate(dateString) {
+        if (!dateString) return "Unknown";
 
-// Add this CSS for the dropdown (you can add to your CSS file)
-const style = document.createElement('style');
-style.textContent = `
+        try {
+          const date = new Date(dateString);
+          return date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        } catch (error) {
+          return dateString;
+        }
+      }
+
+      // Function to open add event modal (if needed)
+      function openAddEventModal(day, month, year) {
+        const dateString = `${year}-${(month + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+        console.log("Add event for date:", dateString);
+        // You can implement add event functionality here
+      }
+
+      // Add this CSS for the dropdown (you can add to your CSS file)
+      const style = document.createElement("style");
+      style.textContent = `
   .week-filter {
     cursor: pointer;
   }
@@ -919,92 +985,94 @@ style.textContent = `
     margin-top: 5px;
   }
 `;
-document.head.appendChild(style);
+      document.head.appendChild(style);
 
+      // Fetch unread notifications count for the badge
+      async function getUnreadNotificationsCount() {
+        try {
+          const notificationsSnapshot = await getDocs(
+            collection(db, "notification_admin"),
+          );
+          let unreadCount = 0;
 
-// Fetch unread notifications count for the badge
-async function getUnreadNotificationsCount() {
-    try {
-        const notificationsSnapshot = await getDocs(collection(db, "notification_admin"));
-        let unreadCount = 0;
-        
-        notificationsSnapshot.forEach(doc => {
+          notificationsSnapshot.forEach((doc) => {
             const notification = doc.data();
-            if (notification.status === 'unread') {
-                unreadCount++;
+            if (notification.status === "unread") {
+              unreadCount++;
             }
-        });
-        
-        updateNotificationBellBadge(unreadCount);
-        return unreadCount;
-    } catch (error) {
-        console.error("Error fetching notifications count:", error);
-        return 0;
-    }
-}
+          });
 
-// Update the notification bell badge
-function updateNotificationBellBadge(unreadCount) {
-    const notificationBellBadge = document.getElementById('notification-bell-badge');
-    
-    if (!notificationBellBadge) return;
-    
-    if (unreadCount > 0) {
-        notificationBellBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-        notificationBellBadge.style.display = 'flex';
-        
-        // Add pulse animation for new notifications
-        if (unreadCount > 0) {
-            notificationBellBadge.style.animation = 'pulse 2s infinite';
+          updateNotificationBellBadge(unreadCount);
+          return unreadCount;
+        } catch (error) {
+          console.error("Error fetching notifications count:", error);
+          return 0;
         }
-    } else {
-        notificationBellBadge.style.display = 'none';
-    }
-}
+      }
 
-// Add this to your initializeDashboard function
-async function initializeDashboard() {
-  try {
-    showLoading(); // ADD THIS LINE
-    
-    // Run all data fetching functions
-    getClassesCount();
-    getParentsCount();
-    getTeachersCount();
-    getUserRoleDistribution();
-    getMostActiveClasses();
-    getResourcesUsed();
-    getUnreadNotificationsCount();
-    
-    // Initialize logs functionality
-    createWeekFilter();
-    getLogsThisWeek(0);
-    
-    // Initialize calendar
-    fetchCalendarEvents();
-    initializeCalendarNavigation();
-    
-    // Prevent calendar widget redirect
-    const calendarWidget = document.querySelector('.calendar-widget');
-    if (calendarWidget) {
-        calendarWidget.addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-        });
-    }
-    
-    hideLoading(); // ADD THIS LINE
-    
-  } catch (error) {
-    hideLoading(); // ADD THIS LINE even on error
-    console.error("Error initializing dashboard:", error);
-  }
-}
-// Run when DOM is loaded
-document.addEventListener('DOMContentLoaded', initializeDashboard);
+      // Update the notification bell badge
+      function updateNotificationBellBadge(unreadCount) {
+        const notificationBellBadge = document.getElementById(
+          "notification-bell-badge",
+        );
 
-// Add this to your initializeDashboard function or DOMContentLoaded event
+        if (!notificationBellBadge) return;
 
-</script>
-</body>
+        if (unreadCount > 0) {
+          notificationBellBadge.textContent =
+            unreadCount > 99 ? "99+" : unreadCount;
+          notificationBellBadge.style.display = "flex";
+
+          // Add pulse animation for new notifications
+          if (unreadCount > 0) {
+            notificationBellBadge.style.animation = "pulse 2s infinite";
+          }
+        } else {
+          notificationBellBadge.style.display = "none";
+        }
+      }
+
+      // Add this to your initializeDashboard function
+      async function initializeDashboard() {
+        try {
+          showLoading(); // ADD THIS LINE
+
+          // Run all data fetching functions
+          getClassesCount();
+          getParentsCount();
+          getTeachersCount();
+          getUserRoleDistribution();
+          getMostActiveClasses();
+          getResourcesUsed();
+          getUnreadNotificationsCount();
+
+          // Initialize logs functionality
+          createWeekFilter();
+          getLogsThisWeek(0);
+
+          // Initialize calendar
+          fetchCalendarEvents();
+          initializeCalendarNavigation();
+
+          // Prevent calendar widget redirect
+          const calendarWidget = document.querySelector(".calendar-widget");
+          if (calendarWidget) {
+            calendarWidget.addEventListener("click", function (event) {
+              event.preventDefault();
+              event.stopPropagation();
+            });
+          }
+
+          hideLoading(); // ADD THIS LINE
+        } catch (error) {
+          hideLoading(); // ADD THIS LINE even on error
+          console.error("Error initializing dashboard:", error);
+        }
+      }
+      // Run when DOM is loaded
+      document.addEventListener("DOMContentLoaded", initializeDashboard);
+
+      // Add this to your initializeDashboard function or DOMContentLoaded event
+    </script>
+  </body>
 </html>

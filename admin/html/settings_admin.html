@@ -1,402 +1,489 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AcadBird Admin - Settings</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <link rel="stylesheet" href="../style/settings_admin.css" />
-</head>
-<body>
+  </head>
+  <body>
     <div class="page-wrapper">
-        <!-- Navbar -->
-        <div class="navbar">
-            <div class="navbar-container">
-                <div class="logo">
-                    <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-                    <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
-                </div>
-                <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-                <div class="nav-icons">
-                    <a href="notification_admin.html" title="Notifications" class="notification-badge-container">
-    <i class="fas fa-bell icon"></i>
-    <span class="notification-bell-badge" id="notification-bell-badge" style="display: none;">0</span>
-</a>
-                    <a href="help_admin.html" title="Help">
-                        <i class="fas fa-question-circle icon"></i>
-                    </a>
-                    <a href="settings_admin.html" title="Settings">
-                        <div class="account-menu">
-                            <i class="fas fa-user-circle icon"></i>                        </div>
-                    </a>
-                </div>
+      <!-- Navbar -->
+      <div class="navbar">
+        <div class="navbar-container">
+          <div class="logo">
+            <img
+              src="../../main/img/AcadBird - White no text.png"
+              alt="AcadBird"
+              class="logo-img"
+            />
+            <img
+              src="../../main/img/AcadBird - White Text.png"
+              class="logo-text-img"
+              alt="AcadBird Text"
+            />
+          </div>
+          <img
+            src="../../main/img/sunhill.png"
+            alt="AcadBird"
+            class="middle-logo"
+          />
+          <div class="nav-icons">
+            <a
+              href="notification_admin.html"
+              title="Notifications"
+              class="notification-badge-container"
+            >
+              <i class="fas fa-bell icon"></i>
+              <span
+                class="notification-bell-badge"
+                id="notification-bell-badge"
+                style="display: none"
+                >0</span
+              >
+            </a>
+            <a href="help_admin.html" title="Help">
+              <i class="fas fa-question-circle icon"></i>
+            </a>
+            <a href="settings_admin.html" title="Settings">
+              <div class="account-menu">
+                <i class="fas fa-user-circle icon"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div id="loading-overlay">
+        <div class="loader-3">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <!-- Secondary Header -->
+      <div class="secondary-header">
+        <div class="secondary-header-container">
+          <nav class="nav-menu">
+            <a href="dashboard_admin.html" class="nav-item">Dashboard</a>
+            <a href="classes-management.html" class="nav-item"
+              >Class Management</a
+            >
+            <a href="teacher-management.html" class="nav-item"
+              >Teacher Management</a
+            >
+            <a href="calendar.html" class="nav-item">Calendar</a>
+            <a href="settings_admin.html" class="nav-item active">Settings</a>
+          </nav>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <div class="admin-card">
+            <h2 id="sidebar-admin-name">Admin 1</h2>
+            <div>
+              <span id="sidebar-school-name">Sunhill Academy</span>
             </div>
+          </div>
+
+          <div class="admin-card">
+            <h2>Quick Links</h2>
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <a
+                href="notification_admin.html"
+                style="
+                  color: white;
+                  text-decoration: none;
+                  padding: 8px 12px;
+                  border-radius: 4px;
+                  transition: background-color 0.3s;
+                "
+                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
+                onmouseout="this.style.backgroundColor='transparent'"
+              >
+                <i class="fas fa-bell"></i> Notifications
+              </a>
+              <a
+                href="help_admin.html"
+                style="
+                  color: white;
+                  text-decoration: none;
+                  padding: 8px 12px;
+                  border-radius: 4px;
+                  transition: background-color 0.3s;
+                "
+                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
+                onmouseout="this.style.backgroundColor='transparent'"
+              >
+                <i class="fas fa-question-circle"></i> Help & Support
+              </a>
+              <a
+                href="settings_admin.html"
+                style="
+                  color: white;
+                  text-decoration: none;
+                  padding: 8px 12px;
+                  border-radius: 4px;
+                  transition: background-color 0.3s;
+                "
+                onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'"
+                onmouseout="this.style.backgroundColor='transparent'"
+              >
+                <i class="fas fa-cog"></i> System Settings
+              </a>
+            </div>
+          </div>
         </div>
 
-        <div id="loading-overlay">
+        <!-- Content Area -->
+        <div class="content-area">
+          <div class="settings-card">
+            <h2><i class="fas fa-cog"></i> System Settings</h2>
 
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
-        
-        <!-- Secondary Header -->
-        <div class="secondary-header">
-           <div class="secondary-header-container">
-               <nav class="nav-menu">
-                    <a href="dashboard_admin.html" class="nav-item">Dashboard</a>
-                    <a href="classes-management.html" class="nav-item">Class Management</a> 
-                    <a href="teacher-management.html" class="nav-item">Teacher Management</a>
-                    <a href="calendar.html" class="nav-item">Calendar</a>
-                    <a href="settings_admin.html" class="nav-item active">Settings</a>
-               </nav>
-           </div>
-        </div>
-        
-        <div class="separator"></div>
+            <div class="settings-section">
+              <h3>Account Settings</h3>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <div class="admin-card">
-                    <h2 id="sidebar-admin-name">Admin 1</h2>
-                    <div>
-                        <span id="sidebar-school-name">Sunhill Academy</span>
-                    </div>
-                </div>
+              <div class="settings-group">
+                <label for="admin-name">Admin Name</label>
+                <input type="text" id="admin-name" placeholder="Loading..." />
+              </div>
 
-                <div class="admin-card">
-                    <h2>Quick Links</h2>
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <a href="notification_admin.html" style="color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
-                            <i class="fas fa-bell"></i> Notifications
-                        </a>
-                        <a href="help_admin.html" style="color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
-                            <i class="fas fa-question-circle"></i> Help & Support
-                        </a>
-                        <a href="settings_admin.html" style="color: white; text-decoration: none; padding: 8px 12px; border-radius: 4px; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor='rgba(255,255,255,0.1)'" onmouseout="this.style.backgroundColor='transparent'">
-                            <i class="fas fa-cog"></i> System Settings
-                        </a>
-                    </div>
-                </div>
+              <div class="settings-group">
+                <label for="admin-email">Email Address</label>
+                <input type="email" id="admin-email" placeholder="Loading..." />
+              </div>
+
+              <div class="settings-group">
+                <label for="school-name">School Name</label>
+                <input
+                  type="text"
+                  id="school-name"
+                  value="Sunhill Academy"
+                  readonly
+                />
+              </div>
+
+              <button class="btn btn-primary" id="save-account-settings">
+                Save Changes
+              </button>
             </div>
-
-            <!-- Content Area -->
-            <div class="content-area">
-                <div class="settings-card">
-                    <h2><i class="fas fa-cog"></i> System Settings</h2>
-                    
-                    <div class="settings-section">
-                        <h3>Account Settings</h3>
-                        
-                        <div class="settings-group">
-                            <label for="admin-name">Admin Name</label>
-                            <input type="text" id="admin-name" placeholder="Loading...">
-                        </div>
-                        
-                        <div class="settings-group">
-                            <label for="admin-email">Email Address</label>
-                            <input type="email" id="admin-email" placeholder="Loading...">
-                        </div>
-                        
-                        <div class="settings-group">
-                            <label for="school-name">School Name</label>
-                            <input type="text" id="school-name" value="Sunhill Academy" readonly>
-                        </div>
-                        
-                        <button class="btn btn-primary" id="save-account-settings">Save Changes</button>
-                    </div>
-                    
-
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <script type="module">
-        import { 
-            getFirestore, collection, getDocs, query, where, doc, getDoc, updateDoc, serverTimestamp 
-        } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        where,
+        doc,
+        getDoc,
+        updateDoc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-            authDomain: "acadbird-379e3.firebaseapp.com",
-            projectId: "acadbird-379e3",
-            storageBucket: "acadbird-379e3.firebasestorage.app",
-            messagingSenderId: "575491576951",
-            appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-            measurementId: "G-N6Z672SXWJ"
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const loadingOverlay = document.getElementById("loading-overlay");
+
+      function showLoading() {
+        loadingOverlay.style.display = "flex";
+      }
+
+      // Hide overlay
+      function hideLoading() {
+        loadingOverlay.style.display = "none";
+      }
+
+      // DOM Elements
+      const adminNameInput = document.getElementById("admin-name");
+      const adminEmailInput = document.getElementById("admin-email");
+      const schoolNameInput = document.getElementById("school-name");
+      const sidebarAdminName = document.getElementById("sidebar-admin-name");
+      const sidebarSchoolName = document.getElementById("sidebar-school-name");
+      const saveAccountSettingsBtn = document.getElementById(
+        "save-account-settings",
+      );
+
+      // Fetch admin data from Firestore
+      async function fetchAdminData() {
+        try {
+          showLoading(); // Add this line
+          console.log("🔍 Fetching admin data...");
+
+          // Query for admin users (assuming role is "admin")
+          const adminQuery = query(
+            collection(db, "users"),
+            where("role", "==", "admin"),
+          );
+          const adminSnap = await getDocs(adminQuery);
+
+          if (adminSnap.empty) {
+            console.log("❌ No admin user found");
+            // Set default values
+            setDefaultAdminData();
+            return;
+          }
+
+          // Get the first admin user (assuming there's only one admin)
+          const adminDoc = adminSnap.docs[0];
+          const adminData = adminDoc.data();
+          const adminId = adminDoc.id;
+
+          console.log("✅ Admin data found:", adminData);
+
+          // Populate the form fields
+          adminNameInput.value =
+            adminData.fullName || adminData.name || "Admin 1";
+          adminEmailInput.value = adminData.email || "admin@sunhill.edu";
+          schoolNameInput.value = "Sunhill Academy"; // Static value as requested
+
+          // Update sidebar
+          sidebarAdminName.textContent =
+            adminData.fullName || adminData.name || "Admin 1";
+          sidebarSchoolName.textContent = "Sunhill Academy";
+        } catch (error) {
+          console.error("❌ Error fetching admin data:", error);
+          // Set default values on error
+          setDefaultAdminData();
+          hideLoading(); // Add this line in error case too
+        }
+      }
+
+      // Set default admin data if fetch fails
+      function setDefaultAdminData() {
+        adminNameInput.value = "Admin 1";
+        adminEmailInput.value = "admin@sunhill.edu";
+        schoolNameInput.value = "Sunhill Academy";
+        sidebarAdminName.textContent = "Admin 1";
+        sidebarSchoolName.textContent = "Sunhill Academy";
+      }
+
+      // Add logout functionality
+      function setupLogout() {
+        // Create logout button
+        const logoutButton = document.createElement("button");
+        logoutButton.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+        logoutButton.className = "btn btn-secondary";
+        logoutButton.style.marginTop = "20px";
+        logoutButton.style.width = "100%";
+
+        // Add click event listener
+        logoutButton.addEventListener("click", handleLogout);
+
+        // Find a good place to add the logout button - you can modify this selector
+        const settingsCard = document.querySelector(".settings-card");
+        if (settingsCard) {
+          settingsCard.appendChild(logoutButton);
+        }
+      }
+
+      // Handle logout process
+      function handleLogout() {
+        if (confirm("Are you sure you want to logout?")) {
+          // Clear any local storage or session data if needed
+          localStorage.clear();
+          sessionStorage.clear();
+
+          // Redirect to login page
+          window.location.href = "../../main/html/login.html";
+        }
+      }
+
+      function initSettings() {
+        console.log("🚀 Initializing settings page...");
+
+        // Fetch admin data when page loads
+        fetchAdminData();
+
+        // Add event listeners
+        saveAccountSettingsBtn.addEventListener("click", saveAccountSettings);
+
+        // Add enter key support for form submission
+        adminNameInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") saveAccountSettings();
+        });
+
+        adminEmailInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") saveAccountSettings();
+        });
+
+        // Setup logout button
+        setupLogout();
+
+        // Add notification badge - ADD THIS LINE
+        getUnreadNotificationsCount();
+      }
+
+      // Alternative: Add logout to sidebar
+      function setupSidebarLogout() {
+        const sidebar = document.querySelector(".sidebar");
+        const logoutLink = document.createElement("a");
+        logoutLink.href = "#";
+        logoutLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+        logoutLink.style.color = "white";
+        logoutLink.style.textDecoration = "none";
+        logoutLink.style.padding = "8px 12px";
+        logoutLink.style.borderRadius = "4px";
+        logoutLink.style.transition = "background-color 0.3s";
+        logoutLink.style.display = "block";
+        logoutLink.style.marginTop = "10px";
+
+        logoutLink.onmouseover = function () {
+          this.style.backgroundColor = "rgba(255,255,255,0.1)";
+        };
+        logoutLink.onmouseout = function () {
+          this.style.backgroundColor = "transparent";
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-const loadingOverlay = document.getElementById("loading-overlay");
+        logoutLink.addEventListener("click", handleLogout);
 
-   function showLoading() {
-  loadingOverlay.style.display = "flex";
-}
-
-// Hide overlay
-function hideLoading() {
-  loadingOverlay.style.display = "none";
-}
-
-
-        // DOM Elements
-        const adminNameInput = document.getElementById('admin-name');
-        const adminEmailInput = document.getElementById('admin-email');
-        const schoolNameInput = document.getElementById('school-name');
-        const sidebarAdminName = document.getElementById('sidebar-admin-name');
-        const sidebarSchoolName = document.getElementById('sidebar-school-name');
-        const saveAccountSettingsBtn = document.getElementById('save-account-settings');
-
-        // Fetch admin data from Firestore
-        async function fetchAdminData() {
-            try {
-                showLoading(); // Add this line
-                console.log('🔍 Fetching admin data...');
-                
-                // Query for admin users (assuming role is "admin")
-                const adminQuery = query(collection(db, "users"), where("role", "==", "admin"));
-                const adminSnap = await getDocs(adminQuery);
-                
-                if (adminSnap.empty) {
-                    console.log('❌ No admin user found');
-                    // Set default values
-                    setDefaultAdminData();
-                    return;
-                }
-
-                // Get the first admin user (assuming there's only one admin)
-                const adminDoc = adminSnap.docs[0];
-                const adminData = adminDoc.data();
-                const adminId = adminDoc.id;
-                
-                console.log('✅ Admin data found:', adminData);
-
-                // Populate the form fields
-                adminNameInput.value = adminData.fullName || adminData.name || 'Admin 1';
-                adminEmailInput.value = adminData.email || 'admin@sunhill.edu';
-                schoolNameInput.value = 'Sunhill Academy'; // Static value as requested
-                
-                // Update sidebar
-                sidebarAdminName.textContent = adminData.fullName || adminData.name || 'Admin 1';
-                sidebarSchoolName.textContent = 'Sunhill Academy';
-
-            } catch (error) {
-                console.error('❌ Error fetching admin data:', error);
-                // Set default values on error
-                setDefaultAdminData();
-                hideLoading(); // Add this line in error case too
-            }
-        }
-
-        // Set default admin data if fetch fails
-        function setDefaultAdminData() {
-            adminNameInput.value = 'Admin 1';
-            adminEmailInput.value = 'admin@sunhill.edu';
-            schoolNameInput.value = 'Sunhill Academy';
-            sidebarAdminName.textContent = 'Admin 1';
-            sidebarSchoolName.textContent = 'Sunhill Academy';
-        }
-
-        // Add logout functionality
-function setupLogout() {
-    // Create logout button
-    const logoutButton = document.createElement('button');
-    logoutButton.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-    logoutButton.className = 'btn btn-secondary';
-    logoutButton.style.marginTop = '20px';
-    logoutButton.style.width = '100%';
-    
-    // Add click event listener
-    logoutButton.addEventListener('click', handleLogout);
-    
-    // Find a good place to add the logout button - you can modify this selector
-    const settingsCard = document.querySelector('.settings-card');
-    if (settingsCard) {
-        settingsCard.appendChild(logoutButton);
-    }
-}
-
-// Handle logout process
-function handleLogout() {
-    if (confirm('Are you sure you want to logout?')) {
-        // Clear any local storage or session data if needed
-        localStorage.clear();
-        sessionStorage.clear();
-        
-        // Redirect to login page
-        window.location.href = '../../main/html/login.html';
-    }
-}
-
-function initSettings() {
-    console.log('🚀 Initializing settings page...');
-    
-    // Fetch admin data when page loads
-    fetchAdminData();
-    
-    // Add event listeners
-    saveAccountSettingsBtn.addEventListener('click', saveAccountSettings);
-    
-    // Add enter key support for form submission
-    adminNameInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') saveAccountSettings();
-    });
-    
-    adminEmailInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') saveAccountSettings();
-    });
-    
-    // Setup logout button
-    setupLogout();
-    
-    // Add notification badge - ADD THIS LINE
-    getUnreadNotificationsCount();
-}
-
-// Alternative: Add logout to sidebar
-function setupSidebarLogout() {
-    const sidebar = document.querySelector('.sidebar');
-    const logoutLink = document.createElement('a');
-    logoutLink.href = '#';
-    logoutLink.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-    logoutLink.style.color = 'white';
-    logoutLink.style.textDecoration = 'none';
-    logoutLink.style.padding = '8px 12px';
-    logoutLink.style.borderRadius = '4px';
-    logoutLink.style.transition = 'background-color 0.3s';
-    logoutLink.style.display = 'block';
-    logoutLink.style.marginTop = '10px';
-    
-    logoutLink.onmouseover = function() {
-        this.style.backgroundColor = 'rgba(255,255,255,0.1)';
-    };
-    logoutLink.onmouseout = function() {
-        this.style.backgroundColor = 'transparent';
-    };
-    
-    logoutLink.addEventListener('click', handleLogout);
-    
-    // Add to the existing quick links card or create new section
-    const quickLinksCard = document.querySelector('.admin-card:last-child');
-    if (quickLinksCard) {
-        const linksContainer = quickLinksCard.querySelector('div');
-        if (linksContainer) {
+        // Add to the existing quick links card or create new section
+        const quickLinksCard = document.querySelector(".admin-card:last-child");
+        if (quickLinksCard) {
+          const linksContainer = quickLinksCard.querySelector("div");
+          if (linksContainer) {
             linksContainer.appendChild(logoutLink);
+          }
         }
-    }
-}
-        // Save account settings
-        async function saveAccountSettings() {
-            showLoading(); 
-            const adminName = adminNameInput.value.trim();
-            const adminEmail = adminEmailInput.value.trim();
-            
-            if (!adminName || !adminEmail) {
-                alert('Please fill in all required fields.');
-                return;
-            }
+      }
+      // Save account settings
+      async function saveAccountSettings() {
+        showLoading();
+        const adminName = adminNameInput.value.trim();
+        const adminEmail = adminEmailInput.value.trim();
 
-            // Email validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(adminEmail)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-
-            try {
-                console.log('💾 Saving account settings...');
-                
-                // Find the admin user to update
-                const adminQuery = query(collection(db, "users"), where("role", "==", "admin"));
-                const adminSnap = await getDocs(adminQuery);
-                
-                if (adminSnap.empty) {
-                    alert('No admin user found to update.');
-                    return;
-                }
-
-                const adminDoc = adminSnap.docs[0];
-                const adminId = adminDoc.id;
-
-                // Update admin data in Firestore
-                await updateDoc(doc(db, "users", adminId), {
-                    fullName: adminName,
-                    email: adminEmail,
-                    updatedAt: serverTimestamp()
-                });
-
-                // Update sidebar
-                sidebarAdminName.textContent = adminName;
-                
-                alert('✅ Account settings saved successfully!');
-                 hideLoading(); // Add this line
-                
-            } catch (error) {
-                console.error('❌ Error saving account settings:', error);
-                alert('Failed to save account settings. Please try again.');
-                 hideLoading(); 
-            }
+        if (!adminName || !adminEmail) {
+          alert("Please fill in all required fields.");
+          return;
         }
 
-        // Fetch unread notifications count for the badge
-async function getUnreadNotificationsCount() {
-    try {
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(adminEmail)) {
+          alert("Please enter a valid email address.");
+          return;
+        }
+
+        try {
+          console.log("💾 Saving account settings...");
+
+          // Find the admin user to update
+          const adminQuery = query(
+            collection(db, "users"),
+            where("role", "==", "admin"),
+          );
+          const adminSnap = await getDocs(adminQuery);
+
+          if (adminSnap.empty) {
+            alert("No admin user found to update.");
+            return;
+          }
+
+          const adminDoc = adminSnap.docs[0];
+          const adminId = adminDoc.id;
+
+          // Update admin data in Firestore
+          await updateDoc(doc(db, "users", adminId), {
+            fullName: adminName,
+            email: adminEmail,
+            updatedAt: serverTimestamp(),
+          });
+
+          // Update sidebar
+          sidebarAdminName.textContent = adminName;
+
+          alert("✅ Account settings saved successfully!");
+          hideLoading(); // Add this line
+        } catch (error) {
+          console.error("❌ Error saving account settings:", error);
+          alert("Failed to save account settings. Please try again.");
+          hideLoading();
+        }
+      }
+
+      // Fetch unread notifications count for the badge
+      async function getUnreadNotificationsCount() {
+        try {
           showLoading(); // Add this line
-        const notificationsSnapshot = await getDocs(collection(db, "notification_admin"));
-        let unreadCount = 0;
-        
-        notificationsSnapshot.forEach(doc => {
+          const notificationsSnapshot = await getDocs(
+            collection(db, "notification_admin"),
+          );
+          let unreadCount = 0;
+
+          notificationsSnapshot.forEach((doc) => {
             const notification = doc.data();
-            if (notification.status === 'unread') {
-                unreadCount++;
+            if (notification.status === "unread") {
+              unreadCount++;
             }
-        });
-        
-        updateNotificationBellBadge(unreadCount);
-           hideLoading();
-        return unreadCount;
-    } catch (error) {
-        console.error('Error fetching notifications count:', error);
-        return 0;
-           hideLoading();
-    }
-}
+          });
 
-// Update the notification bell badge
-function updateNotificationBellBadge(unreadCount) {
-    const notificationBellBadge = document.getElementById('notification-bell-badge');
-    
-    if (!notificationBellBadge) return;
-    
-    if (unreadCount > 0) {
-        notificationBellBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-        notificationBellBadge.style.display = 'flex';
-        
-        // Add pulse animation for new notifications
-        if (unreadCount > 0) {
-            notificationBellBadge.style.animation = 'pulse 2s infinite';
+          updateNotificationBellBadge(unreadCount);
+          hideLoading();
+          return unreadCount;
+        } catch (error) {
+          console.error("Error fetching notifications count:", error);
+          return 0;
+          hideLoading();
         }
-    } else {
-        notificationBellBadge.style.display = 'none';
-    }
-}
+      }
 
-        // Initialize the settings page
+      // Update the notification bell badge
+      function updateNotificationBellBadge(unreadCount) {
+        const notificationBellBadge = document.getElementById(
+          "notification-bell-badge",
+        );
 
+        if (!notificationBellBadge) return;
 
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initSettings);
+        if (unreadCount > 0) {
+          notificationBellBadge.textContent =
+            unreadCount > 99 ? "99+" : unreadCount;
+          notificationBellBadge.style.display = "flex";
+
+          // Add pulse animation for new notifications
+          if (unreadCount > 0) {
+            notificationBellBadge.style.animation = "pulse 2s infinite";
+          }
+        } else {
+          notificationBellBadge.style.display = "none";
+        }
+      }
+
+      // Initialize the settings page
+
+      // Initialize when DOM is loaded
+      document.addEventListener("DOMContentLoaded", initSettings);
     </script>
-</body>
+  </body>
 </html>

@@ -1,524 +1,568 @@
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>AcadBird Activity Log</title>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-        rel="stylesheet"
-      />
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      />
-      <link rel="stylesheet" href="../style/activitylog_parents.css">
-    </head>
-    <body>
-      <div class="container">
-        <nav class="navbar">
-          <div class="logo">
-          
-            <img
-              src="../../main/img/AcadBird - White no text.png"
-              class="logo-img"
-              alt="AcadBird Logo"
-            />
-            <img
-              src="../../main/img/AcadBird - White Text.png"
-              class="logo-text-img"
-              alt="AcadBird Text"
-            />
-            
-          </div>
-          <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-          <div class="nav-icons">
-            <div class="notification-wrapper">
-      <a href="notification_parent.html">
-          <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
-          <span class="notification-badge" id="notificationBadge">0</span>
-      </a>
-  </div>
-            <a href="help_parent.html" target="_blank">
-              <img src="../../main/img/Help.png" alt="Help" class="icon" />
-            </a>
-            <a href="account_parent.html" target="_blank">
-              <div class="account-menu">
-                <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
-              </div>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Activity Log</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../style/activitylog_parents.css" />
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            class="logo-img"
+            alt="AcadBird Logo"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
+        </div>
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
+        <div class="nav-icons">
+          <div class="notification-wrapper">
+            <a href="notification_parent.html">
+              <img
+                src="../../main/img/Notification.png"
+                alt="Notifications"
+                class="icon"
+              />
+              <span class="notification-badge" id="notificationBadge">0</span>
             </a>
           </div>
+          <a href="help_parent.html" target="_blank">
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          </a>
+          <a href="account_parent.html" target="_blank">
+            <div class="account-menu">
+              <img
+                src="../../main/img/account icon.png"
+                alt="User Account"
+                class="icon"
+              />
+            </div>
+          </a>
+        </div>
+      </nav>
+      <div class="secondary-header">
+        <nav class="nav-menu">
+          <a href="homepage_parents.html" class="nav-item">Home</a>
+          <a href="dashboard_parents.html" class="nav-item">Dashboard</a>
+          <a href="activitylog_parents.html" class="nav-item active"
+            >Activity Logs</a
+          >
+          <a href="resources_parents.html" class="nav-item">Resources</a>
+          <a href="messages_parents.html" class="nav-item">Messages</a>
+          <a href="account_parent.html" class="nav-item">Settings</a>
         </nav>
-        <div class="secondary-header">
-              <nav class="nav-menu">
-                  <a href="homepage_parents.html" class="nav-item">Home</a>
-                  <a href="dashboard_parents.html" class="nav-item">Dashboard</a>
-                  <a href="activitylog_parents.html" class="nav-item active">Activity Logs</a>
-                  <a href="resources_parents.html" class="nav-item ">Resources</a>
-                  <a href="messages_parents.html" class="nav-item">Messages</a>
-                  <a href="account_parent.html" class="nav-item">Settings</a>
-
-              </nav>
-          </div>
-        <div class="separator"></div>
-        <div class="content-wrapper">
-          <div class="main-content">
-            <div class="left-section">
-              <div class="post-feed" id="post-feed">
-                <div class="card post-feed-card">
-                  <div class="post-info">
-                    <div class="user-info">
-                      <i class="fas fa-user-circle post-avatar"></i>
-                      <div>
-                        <p class="user-name">Mrs. Juana C. Cruz</p>
-                        <p class="class-name">Kinder Lily</p>
-                      </div>
-                    </div>
-                    <span class="timestamp">3 hours ago</span>
-                  </div>
-                  <h3 class="post-title">Pizza Party Alert! 🎉</h3>
-                  <p class="post-text">Hi families!</p>
-                  <p class="post-text">
-                    We're excited to share that we'll be having a Pizza Party in
-                    our classroom this Friday to celebrate all the hard work and
-                    kindness our little learners have shown this month! ❤️🍕
-                  </p>
-                  <p class="post-text">Here are a few details:</p>
-                  <ul class="post-details">
-                    <li>
-                      <i class="fas fa-calendar-day"></i> When: Friday at 11:00
-                      AM
-                    </li>
-                    <li>
-                      <i class="fas fa-map-marker-alt"></i> Where: in our
-                      classroom
-                    </li>
-                    <li>
-                      <i class="fas fa-pizza-slice"></i> What to expect: yummy
-                      pizza, fun music, and lots of smiles!
-                    </li>
-                    <li>
-                      <i class="fas fa-lightbulb"></i> Why: Because we've been
-                      learning, sharing, and growing — and that deserves a
-                      celebration!
-                    </li>
-                  </ul>
-                  <p class="post-text">
-                    If your child has any food allergies or dietary restrictions,
-                    please let me know by Wednesday so we can make sure everyone
-                    feels included.
-                  </p>
-                  <p class="post-text">
-                    We can't wait to celebrate together! 😊💖
-                  </p>
-                  <p class="post-text">
-                    With joy,<br />Ms. Juana C. Cruz
-                  </p>
-                  <img
-                    src="pizza-party-image.png"
-                    alt="Pizza Party"
-                    class="post-image"
-                  />
-                  <div class="post-footer">
-                    <div class="post-details">
-                      <p class="event-info">
-                        <i class="fas fa-calendar-alt"></i> Event
-                      </p>
-                      <p class="event-info">
-                        <i class="fas fa-clock"></i> 11:00 - 2:00
-                      </p>
-                    </div>
-                    <div class="post-interaction">
-                      <button class="like-btn">
-                        <i class="fas fa-heart"></i>
-                        <span class="like-count">1</span>
-                      </button>
-                      <button class="comment-btn">
-                        <i class="fas fa-comment-dots"></i>
-                        <span class="comment-count">2</span>
-                      </button>
+      </div>
+      <div class="separator"></div>
+      <div class="content-wrapper">
+        <div class="main-content">
+          <div class="left-section">
+            <div class="post-feed" id="post-feed">
+              <div class="card post-feed-card">
+                <div class="post-info">
+                  <div class="user-info">
+                    <i class="fas fa-user-circle post-avatar"></i>
+                    <div>
+                      <p class="user-name">Mrs. Juana C. Cruz</p>
+                      <p class="class-name">Kinder Lily</p>
                     </div>
                   </div>
-                  <div class="comments-section">
-                    <div class="comment-input-container hidden">
-                      <input
-                        type="text"
-                        class="comment-input"
-                        placeholder="Write a comment..."
-                      />
-                      <button class="submit-comment-btn">Post</button>
-                    </div>
-                    <div class="comments-list">
-                      <div class="comment-item">
-                        <div class="comment-author">John Smith</div>
-                        <div class="comment-text">
-                          This sounds amazing! Thank you, Mrs. Cruz!
-                        </div>
-                        <div class="comment-timestamp">2 hours ago</div>
+                  <span class="timestamp">3 hours ago</span>
+                </div>
+                <h3 class="post-title">Pizza Party Alert! 🎉</h3>
+                <p class="post-text">Hi families!</p>
+                <p class="post-text">
+                  We're excited to share that we'll be having a Pizza Party in
+                  our classroom this Friday to celebrate all the hard work and
+                  kindness our little learners have shown this month! ❤️🍕
+                </p>
+                <p class="post-text">Here are a few details:</p>
+                <ul class="post-details">
+                  <li>
+                    <i class="fas fa-calendar-day"></i> When: Friday at 11:00 AM
+                  </li>
+                  <li>
+                    <i class="fas fa-map-marker-alt"></i> Where: in our
+                    classroom
+                  </li>
+                  <li>
+                    <i class="fas fa-pizza-slice"></i> What to expect: yummy
+                    pizza, fun music, and lots of smiles!
+                  </li>
+                  <li>
+                    <i class="fas fa-lightbulb"></i> Why: Because we've been
+                    learning, sharing, and growing — and that deserves a
+                    celebration!
+                  </li>
+                </ul>
+                <p class="post-text">
+                  If your child has any food allergies or dietary restrictions,
+                  please let me know by Wednesday so we can make sure everyone
+                  feels included.
+                </p>
+                <p class="post-text">
+                  We can't wait to celebrate together! 😊💖
+                </p>
+                <p class="post-text">With joy,<br />Ms. Juana C. Cruz</p>
+                <img
+                  src="pizza-party-image.png"
+                  alt="Pizza Party"
+                  class="post-image"
+                />
+                <div class="post-footer">
+                  <div class="post-details">
+                    <p class="event-info">
+                      <i class="fas fa-calendar-alt"></i> Event
+                    </p>
+                    <p class="event-info">
+                      <i class="fas fa-clock"></i> 11:00 - 2:00
+                    </p>
+                  </div>
+                  <div class="post-interaction">
+                    <button class="like-btn">
+                      <i class="fas fa-heart"></i>
+                      <span class="like-count">1</span>
+                    </button>
+                    <button class="comment-btn">
+                      <i class="fas fa-comment-dots"></i>
+                      <span class="comment-count">2</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="comments-section">
+                  <div class="comment-input-container hidden">
+                    <input
+                      type="text"
+                      class="comment-input"
+                      placeholder="Write a comment..."
+                    />
+                    <button class="submit-comment-btn">Post</button>
+                  </div>
+                  <div class="comments-list">
+                    <div class="comment-item">
+                      <div class="comment-author">John Smith</div>
+                      <div class="comment-text">
+                        This sounds amazing! Thank you, Mrs. Cruz!
                       </div>
+                      <div class="comment-timestamp">2 hours ago</div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="right-section">
-              <div class="card event-card">
-                <h4 class="card-title">Upcoming Events</h4>
-                <ul id="event-list">
-                  <li>
-                    <p class="event-item">
-                      Pizza Party<br />April 4, Friday<br />11:00 - 2:00
-                    </p>
-                  </li>
-                </ul>
-              </div>
-              <div class="card reminders-card">
-                <h4 class="card-title">Reminders</h4>
-                <ul id="reminder-list">
-                  <li>
-                    <p class="reminder-item">
-                      Bring coloring materials<br />When: April 2, 2025
-                    </p>
-                  </li>
-                </ul>
-              </div>
-              <div class="card tasks-card">
-                <h4 class="card-title">Tasks</h4>
-                <ul id="task-list">
-                  <li>
-                    <p class="task-item">No announced tasks</p>
-                  </li>
-                </ul>
-              </div>
+          </div>
+          <div class="right-section">
+            <div class="card event-card">
+              <h4 class="card-title">Upcoming Events</h4>
+              <ul id="event-list">
+                <li>
+                  <p class="event-item">
+                    Pizza Party<br />April 4, Friday<br />11:00 - 2:00
+                  </p>
+                </li>
+              </ul>
+            </div>
+            <div class="card reminders-card">
+              <h4 class="card-title">Reminders</h4>
+              <ul id="reminder-list">
+                <li>
+                  <p class="reminder-item">
+                    Bring coloring materials<br />When: April 2, 2025
+                  </p>
+                </li>
+              </ul>
+            </div>
+            <div class="card tasks-card">
+              <h4 class="card-title">Tasks</h4>
+              <ul id="task-list">
+                <li>
+                  <p class="task-item">No announced tasks</p>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
-  <div id="loading-overlay">
+    </div>
+    <div id="loading-overlay">
+      <div class="loader-3">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+    </div>
 
-  <div class="loader-3">
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-  </div>
-  </div>
-  </div>
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-  import { 
-    getFirestore, 
-    collection, 
-    query, 
-    orderBy, 
-    getDocs,
-    doc,
-    getDoc, 
-    where,
-    onSnapshot,
-    addDoc,
-    serverTimestamp,
-    deleteDoc
-  } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        orderBy,
+        getDocs,
+        doc,
+        getDoc,
+        where,
+        onSnapshot,
+        addDoc,
+        serverTimestamp,
+        deleteDoc,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
-  // ✅ Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-    authDomain: "acadbird-379e3.firebaseapp.com",
-    projectId: "acadbird-379e3",
-    storageBucket: "acadbird-379e3.firebasestorage.app",
-    messagingSenderId: "575491576951",
-    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-    measurementId: "G-N6Z672SXWJ"
-  };
+      // ✅ Firebase config
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
 
-  // ✅ Init Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
+      // ✅ Init Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
 
-  const loadingOverlay = document.getElementById("loading-overlay");
-  let currentUser = null;
-  let loggedInParentName = "Parent";
+      const loadingOverlay = document.getElementById("loading-overlay");
+      let currentUser = null;
+      let loggedInParentName = "Parent";
 
-  function showLoading() {
-    loadingOverlay.style.display = "flex";
-  }
+      function showLoading() {
+        loadingOverlay.style.display = "flex";
+      }
 
-  function hideLoading() {
-    loadingOverlay.style.display = "none";
-  }
+      function hideLoading() {
+        loadingOverlay.style.display = "none";
+      }
 
-  const currentClassroomID = localStorage.getItem("currentClassroomID");
-  if (!currentClassroomID) {
-    console.error("No classroom ID found. Make sure to select a student first.");
-  }
+      const currentClassroomID = localStorage.getItem("currentClassroomID");
+      if (!currentClassroomID) {
+        console.error(
+          "No classroom ID found. Make sure to select a student first.",
+        );
+      }
 
-  // Function to load likes for a post
-  async function loadLikesForPost(postId, likeCountSpan, likeBtn) {
-      try {
+      // Function to load likes for a post
+      async function loadLikesForPost(postId, likeCountSpan, likeBtn) {
+        try {
           const likesRef = collection(db, "likes");
           const q = query(likesRef, where("postId", "==", postId));
           const querySnapshot = await getDocs(q);
-          
+
           const likeCount = querySnapshot.size;
           likeCountSpan.textContent = likeCount;
-          
+
           // Check if current user has liked this post
           if (currentUser) {
-              const userLikeQuery = query(
-                  likesRef, 
-                  where("postId", "==", postId),
-                  where("userId", "==", currentUser.uid)
-              );
-              const userLikeSnapshot = await getDocs(userLikeQuery);
-              if (!userLikeSnapshot.empty) {
-                  // User has liked this post - make heart red
-                  const heartIcon = likeBtn.querySelector('i');
-                  heartIcon.classList.add('liked');
-                  heartIcon.style.color = '#ff4444';
-              } else {
-                  // User hasn't liked this post - make heart white
-                  const heartIcon = likeBtn.querySelector('i');
-                  heartIcon.classList.remove('liked');
-                  heartIcon.style.color = '#666';
-              }
+            const userLikeQuery = query(
+              likesRef,
+              where("postId", "==", postId),
+              where("userId", "==", currentUser.uid),
+            );
+            const userLikeSnapshot = await getDocs(userLikeQuery);
+            if (!userLikeSnapshot.empty) {
+              // User has liked this post - make heart red
+              const heartIcon = likeBtn.querySelector("i");
+              heartIcon.classList.add("liked");
+              heartIcon.style.color = "#ff4444";
+            } else {
+              // User hasn't liked this post - make heart white
+              const heartIcon = likeBtn.querySelector("i");
+              heartIcon.classList.remove("liked");
+              heartIcon.style.color = "#666";
+            }
           }
-      } catch (error) {
+        } catch (error) {
           console.error("Error loading likes:", error);
+        }
       }
-  }
 
-  // Function to load comments for a post
-  async function loadCommentsForPost(postId, commentsList, commentCountSpan) {
-      try {
+      // Function to load comments for a post
+      async function loadCommentsForPost(
+        postId,
+        commentsList,
+        commentCountSpan,
+      ) {
+        try {
           const commentsRef = collection(db, "comments");
           const q = query(
-              commentsRef, 
-              where("postId", "==", postId),
-              orderBy("createdAt", "asc")
+            commentsRef,
+            where("postId", "==", postId),
+            orderBy("createdAt", "asc"),
           );
           const querySnapshot = await getDocs(q);
-          
-          commentsList.innerHTML = '';
-          querySnapshot.forEach(doc => {
-              const commentData = doc.data();
-              const commentElement = createCommentElement(commentData);
-              commentsList.appendChild(commentElement);
+
+          commentsList.innerHTML = "";
+          querySnapshot.forEach((doc) => {
+            const commentData = doc.data();
+            const commentElement = createCommentElement(commentData);
+            commentsList.appendChild(commentElement);
           });
-          
+
           commentCountSpan.textContent = querySnapshot.size;
-      } catch (error) {
+        } catch (error) {
           console.error("Error loading comments:", error);
+        }
       }
-  }
 
-  // Function to create comment element
-  function createCommentElement(commentData) {
-      const commentElement = document.createElement('div');
-      commentElement.classList.add('comment-item');
-      commentElement.setAttribute('data-comment-id', commentData.commentId || commentData.id);
-      
-      const timestamp = commentData.createdAt?.toDate 
-          ? commentData.createdAt.toDate().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-          : 'Just now';
+      // Function to create comment element
+      function createCommentElement(commentData) {
+        const commentElement = document.createElement("div");
+        commentElement.classList.add("comment-item");
+        commentElement.setAttribute(
+          "data-comment-id",
+          commentData.commentId || commentData.id,
+        );
 
-      commentElement.innerHTML = `
-          <div class="comment-author">${commentData.userName || 'Unknown User'}</div>
+        const timestamp = commentData.createdAt?.toDate
+          ? commentData.createdAt.toDate().toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })
+          : "Just now";
+
+        commentElement.innerHTML = `
+          <div class="comment-author">${commentData.userName || "Unknown User"}</div>
           <div class="comment-text">${commentData.text}</div>
           <div class="comment-timestamp">${timestamp}</div>
           <button class="delete-comment-btn"><i class="fas fa-times-circle"></i></button>
       `;
-      
-      return commentElement;
-  }
 
-  // Function to setup real-time listeners for likes and comments
-  function setupRealtimeListeners(postId, likeCountSpan, likeBtn, commentsList, commentCountSpan) {
-      // Real-time listener for likes
-      const likesRef = collection(db, "likes");
-      const likesQuery = query(likesRef, where("postId", "==", postId));
-      
-      onSnapshot(likesQuery, (snapshot) => {
+        return commentElement;
+      }
+
+      // Function to setup real-time listeners for likes and comments
+      function setupRealtimeListeners(
+        postId,
+        likeCountSpan,
+        likeBtn,
+        commentsList,
+        commentCountSpan,
+      ) {
+        // Real-time listener for likes
+        const likesRef = collection(db, "likes");
+        const likesQuery = query(likesRef, where("postId", "==", postId));
+
+        onSnapshot(likesQuery, (snapshot) => {
           const likeCount = snapshot.size;
           likeCountSpan.textContent = likeCount;
-          
+
           // Check if current user has liked this post
           if (currentUser) {
-              const userLiked = snapshot.docs.some(doc => doc.data().userId === currentUser.uid);
-              const heartIcon = likeBtn.querySelector('i');
-              if (userLiked) {
-                  // User has liked this post - make heart red
-                  heartIcon.classList.add('liked');
-                  heartIcon.style.color = '#ff4444';
-              } else {
-                  // User hasn't liked this post - make heart white
-                  heartIcon.classList.remove('liked');
-                  heartIcon.style.color = '#666';
-              }
+            const userLiked = snapshot.docs.some(
+              (doc) => doc.data().userId === currentUser.uid,
+            );
+            const heartIcon = likeBtn.querySelector("i");
+            if (userLiked) {
+              // User has liked this post - make heart red
+              heartIcon.classList.add("liked");
+              heartIcon.style.color = "#ff4444";
+            } else {
+              // User hasn't liked this post - make heart white
+              heartIcon.classList.remove("liked");
+              heartIcon.style.color = "#666";
+            }
           }
-      });
+        });
 
-      // Real-time listener for comments
-      const commentsRef = collection(db, "comments");
-      const commentsQuery = query(
-          commentsRef, 
+        // Real-time listener for comments
+        const commentsRef = collection(db, "comments");
+        const commentsQuery = query(
+          commentsRef,
           where("postId", "==", postId),
-          orderBy("createdAt", "asc")
-      );
-      
-      onSnapshot(commentsQuery, (snapshot) => {
-          commentsList.innerHTML = '';
-          snapshot.forEach(doc => {
-              const commentData = doc.data();
-              const commentElement = createCommentElement(commentData);
-              commentsList.appendChild(commentElement);
+          orderBy("createdAt", "asc"),
+        );
+
+        onSnapshot(commentsQuery, (snapshot) => {
+          commentsList.innerHTML = "";
+          snapshot.forEach((doc) => {
+            const commentData = doc.data();
+            const commentElement = createCommentElement(commentData);
+            commentsList.appendChild(commentElement);
           });
           commentCountSpan.textContent = snapshot.size;
-      });
-  }
+        });
+      }
 
-  // Function to add interaction listeners
-  function addPostInteractionListeners(postElement, postId) {
-      const likeBtn = postElement.querySelector('.like-btn');
-      const likeCountSpan = postElement.querySelector('.like-count');
-      const commentBtn = postElement.querySelector('.comment-btn');
-      const commentsSection = postElement.querySelector('.comments-section');
-      const commentInputContainer = commentsSection.querySelector('.comment-input-container');
-      const commentsList = commentsSection.querySelector('.comments-list');
-      const commentInput = commentInputContainer.querySelector('.comment-input');
-      const submitCommentBtn = commentInputContainer.querySelector('.submit-comment-btn');
-      const commentCountSpan = postElement.querySelector('.comment-count');
+      // Function to add interaction listeners
+      function addPostInteractionListeners(postElement, postId) {
+        const likeBtn = postElement.querySelector(".like-btn");
+        const likeCountSpan = postElement.querySelector(".like-count");
+        const commentBtn = postElement.querySelector(".comment-btn");
+        const commentsSection = postElement.querySelector(".comments-section");
+        const commentInputContainer = commentsSection.querySelector(
+          ".comment-input-container",
+        );
+        const commentsList = commentsSection.querySelector(".comments-list");
+        const commentInput =
+          commentInputContainer.querySelector(".comment-input");
+        const submitCommentBtn = commentInputContainer.querySelector(
+          ".submit-comment-btn",
+        );
+        const commentCountSpan = postElement.querySelector(".comment-count");
 
-      // Load initial likes and comments
-      loadLikesForPost(postId, likeCountSpan, likeBtn);
-      loadCommentsForPost(postId, commentsList, commentCountSpan);
-      
-      // Setup real-time listeners
-      setupRealtimeListeners(postId, likeCountSpan, likeBtn, commentsList, commentCountSpan);
+        // Load initial likes and comments
+        loadLikesForPost(postId, likeCountSpan, likeBtn);
+        loadCommentsForPost(postId, commentsList, commentCountSpan);
 
-      // Like button functionality
-      likeBtn.addEventListener('click', async () => {
+        // Setup real-time listeners
+        setupRealtimeListeners(
+          postId,
+          likeCountSpan,
+          likeBtn,
+          commentsList,
+          commentCountSpan,
+        );
+
+        // Like button functionality
+        likeBtn.addEventListener("click", async () => {
           if (!currentUser) {
-              alert('Please sign in to like posts');
-              return;
+            alert("Please sign in to like posts");
+            return;
           }
 
           try {
-              const likesRef = collection(db, "likes");
-              const userLikeQuery = query(
-                  likesRef, 
-                  where("postId", "==", postId),
-                  where("userId", "==", currentUser.uid)
-              );
-              
-              const userLikeSnapshot = await getDocs(userLikeQuery);
-              const heartIcon = likeBtn.querySelector('i');
-              
-              if (userLikeSnapshot.empty) {
-                  // Add like
-                  await addDoc(likesRef, {
-                      postId: postId,
-                      userId: currentUser.uid,
-                      userName: loggedInParentName,
-                      createdAt: serverTimestamp()
-                  });
-                  // Heart will turn red via real-time listener
-              } else {
-                  // Remove like (unlike)
-                  const likeDoc = userLikeSnapshot.docs[0];
-                  await deleteDoc(doc(db, "likes", likeDoc.id));
-                  // Heart will turn white via real-time listener
-              }
-          } catch (error) {
-              console.error("Error toggling like:", error);
-          }
-      });
+            const likesRef = collection(db, "likes");
+            const userLikeQuery = query(
+              likesRef,
+              where("postId", "==", postId),
+              where("userId", "==", currentUser.uid),
+            );
 
-      // Toggle comment box
-      commentBtn.addEventListener('click', () => {
-          commentInputContainer.classList.toggle('hidden');
-          commentsSection.classList.toggle('hidden');
-          if (!commentInputContainer.classList.contains('hidden')) {
-              commentInput.focus();
-          }
-      });
+            const userLikeSnapshot = await getDocs(userLikeQuery);
+            const heartIcon = likeBtn.querySelector("i");
 
-      // Add comment
-      submitCommentBtn.addEventListener('click', async () => {
-          const commentText = commentInput.value.trim();
-          
-          if (!commentText) {
-              alert('Please enter a comment');
-              return;
-          }
-          
-          if (!currentUser) {
-              alert('Please sign in to comment');
-              return;
-          }
-
-          try {
-              const commentsRef = collection(db, "comments");
-              await addDoc(commentsRef, {
-                  postId: postId,
-                  userId: currentUser.uid,
-                  userName: loggedInParentName,
-                  text: commentText,
-                  createdAt: serverTimestamp()
+            if (userLikeSnapshot.empty) {
+              // Add like
+              await addDoc(likesRef, {
+                postId: postId,
+                userId: currentUser.uid,
+                userName: loggedInParentName,
+                createdAt: serverTimestamp(),
               });
-              
-              commentInput.value = '';
+              // Heart will turn red via real-time listener
+            } else {
+              // Remove like (unlike)
+              const likeDoc = userLikeSnapshot.docs[0];
+              await deleteDoc(doc(db, "likes", likeDoc.id));
+              // Heart will turn white via real-time listener
+            }
           } catch (error) {
-              console.error("Error adding comment:", error);
-              alert("Failed to add comment. Please try again.");
+            console.error("Error toggling like:", error);
           }
-      });
+        });
 
-      // Delete comment functionality
-      commentsList.addEventListener('click', async (event) => {
-          if (event.target.closest('.delete-comment-btn')) {
-              const commentItem = event.target.closest('.comment-item');
-              const commentId = commentItem.getAttribute('data-comment-id');
-              
-              try {
-                  // Find the comment document by matching the data
-                  const commentsRef = collection(db, "comments");
-                  const commentQuery = query(
-                      commentsRef, 
-                      where("postId", "==", postId),
-                      where("userId", "==", currentUser.uid)
-                  );
-                  
-                  const commentSnapshot = await getDocs(commentQuery);
-                  if (!commentSnapshot.empty) {
-                      const commentDoc = commentSnapshot.docs[0];
-                      await deleteDoc(doc(db, "comments", commentDoc.id));
-                  }
-              } catch (error) {
-                  console.error("Error deleting comment:", error);
+        // Toggle comment box
+        commentBtn.addEventListener("click", () => {
+          commentInputContainer.classList.toggle("hidden");
+          commentsSection.classList.toggle("hidden");
+          if (!commentInputContainer.classList.contains("hidden")) {
+            commentInput.focus();
+          }
+        });
+
+        // Add comment
+        submitCommentBtn.addEventListener("click", async () => {
+          const commentText = commentInput.value.trim();
+
+          if (!commentText) {
+            alert("Please enter a comment");
+            return;
+          }
+
+          if (!currentUser) {
+            alert("Please sign in to comment");
+            return;
+          }
+
+          try {
+            const commentsRef = collection(db, "comments");
+            await addDoc(commentsRef, {
+              postId: postId,
+              userId: currentUser.uid,
+              userName: loggedInParentName,
+              text: commentText,
+              createdAt: serverTimestamp(),
+            });
+
+            commentInput.value = "";
+          } catch (error) {
+            console.error("Error adding comment:", error);
+            alert("Failed to add comment. Please try again.");
+          }
+        });
+
+        // Delete comment functionality
+        commentsList.addEventListener("click", async (event) => {
+          if (event.target.closest(".delete-comment-btn")) {
+            const commentItem = event.target.closest(".comment-item");
+            const commentId = commentItem.getAttribute("data-comment-id");
+
+            try {
+              // Find the comment document by matching the data
+              const commentsRef = collection(db, "comments");
+              const commentQuery = query(
+                commentsRef,
+                where("postId", "==", postId),
+                where("userId", "==", currentUser.uid),
+              );
+
+              const commentSnapshot = await getDocs(commentQuery);
+              if (!commentSnapshot.empty) {
+                const commentDoc = commentSnapshot.docs[0];
+                await deleteDoc(doc(db, "comments", commentDoc.id));
               }
+            } catch (error) {
+              console.error("Error deleting comment:", error);
+            }
           }
-      });
-  }
+        });
+      }
 
-  // Function to render a single post
-  function renderPost(postData, postId) {
-    const postElement = document.createElement("div");
-    postElement.classList.add("card", "post-feed-card");
-    postElement.setAttribute('data-post-id', postId);
+      // Function to render a single post
+      function renderPost(postData, postId) {
+        const postElement = document.createElement("div");
+        postElement.classList.add("card", "post-feed-card");
+        postElement.setAttribute("data-post-id", postId);
 
-    // Format date for display
-    const formattedDate = postData.date ? new Date(postData.date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }) : '';
+        // Format date for display
+        const formattedDate = postData.date
+          ? new Date(postData.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })
+          : "";
 
-    postElement.innerHTML = `
+        postElement.innerHTML = `
       <div class="post-info">
         <div class="user-info">
           <i class="fas fa-user-circle post-avatar"></i>
@@ -563,404 +607,415 @@
       </div>
     `;
 
-    // Add listeners
-    addPostInteractionListeners(postElement, postId);
+        // Add listeners
+        addPostInteractionListeners(postElement, postId);
 
-    return postElement;
-  }
-
-  async function getClassroomName(classroomID) {
-    if (!classroomID) return "";
-    try {
-      const classroomRef = doc(db, "classrooms", classroomID);
-      const snap = await getDoc(classroomRef);
-      if (snap.exists()) {
-        const data = snap.data();
-        return data.classroomName || "";
+        return postElement;
       }
-    } catch (e) {
-      console.error("Error fetching classroom name:", e);
-    }
-    return "";
-  }
 
-  async function getTeacherName(teacherID) {
-    if (!teacherID) return "Unknown Teacher";
-    try {
-      const userRef = doc(db, "users", teacherID);
-      const snap = await getDoc(userRef);
-      if (snap.exists()) {
-        const data = snap.data();
-        return `${data.firstName || ""} ${data.lastName || ""}`.trim() || "Unknown Teacher";
+      async function getClassroomName(classroomID) {
+        if (!classroomID) return "";
+        try {
+          const classroomRef = doc(db, "classrooms", classroomID);
+          const snap = await getDoc(classroomRef);
+          if (snap.exists()) {
+            const data = snap.data();
+            return data.classroomName || "";
+          }
+        } catch (e) {
+          console.error("Error fetching classroom name:", e);
+        }
+        return "";
       }
-    } catch (e) {
-      console.error("Error fetching teacher name:", e);
-    }
-    return "Unknown Teacher";
-  }
 
-  // ✅ Fetch posts from Firestore
-  async function loadPosts() {
-    const postFeed = document.getElementById("post-feed");
-    postFeed.innerHTML = ""; 
+      async function getTeacherName(teacherID) {
+        if (!teacherID) return "Unknown Teacher";
+        try {
+          const userRef = doc(db, "users", teacherID);
+          const snap = await getDoc(userRef);
+          if (snap.exists()) {
+            const data = snap.data();
+            return (
+              `${data.firstName || ""} ${data.lastName || ""}`.trim() ||
+              "Unknown Teacher"
+            );
+          }
+        } catch (e) {
+          console.error("Error fetching teacher name:", e);
+        }
+        return "Unknown Teacher";
+      }
 
-    // ✅ Filter only posts for the current classroom
-    const q = query(
-      collection(db, "posts"), 
-      where("classroomID", "==", currentClassroomID), 
-      orderBy("created_at", "desc")
-    );
+      // ✅ Fetch posts from Firestore
+      async function loadPosts() {
+        const postFeed = document.getElementById("post-feed");
+        postFeed.innerHTML = "";
 
-    const querySnapshot = await getDocs(q);
+        // ✅ Filter only posts for the current classroom
+        const q = query(
+          collection(db, "posts"),
+          where("classroomID", "==", currentClassroomID),
+          orderBy("created_at", "desc"),
+        );
 
-    if (querySnapshot.empty) {
-      postFeed.innerHTML = `<div class="card post-feed-card"><p>No posts available for this class.</p></div>`;
-      return;
-    }
+        const querySnapshot = await getDocs(q);
 
-    for (const docSnap of querySnapshot.docs) {
-      const postData = docSnap.data();
+        if (querySnapshot.empty) {
+          postFeed.innerHTML = `<div class="card post-feed-card"><p>No posts available for this class.</p></div>`;
+          return;
+        }
 
-      // fetch teacher + classroom names
-      postData.teacherName = await getTeacherName(postData.teacherID);
-      postData.classroomName = await getClassroomName(postData.classroomID);
+        for (const docSnap of querySnapshot.docs) {
+          const postData = docSnap.data();
 
-      // Add timestamp for display
-      if (postData.created_at) {
-        const createdDate = postData.created_at.toDate();
-        const now = new Date();
-        const diffMs = now - createdDate;
-        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-        
-        if (diffHours < 1) {
-          postData.timestamp = 'Just now';
-        } else if (diffHours < 24) {
-          postData.timestamp = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-        } else {
-          const diffDays = Math.floor(diffHours / 24);
-          postData.timestamp = `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+          // fetch teacher + classroom names
+          postData.teacherName = await getTeacherName(postData.teacherID);
+          postData.classroomName = await getClassroomName(postData.classroomID);
+
+          // Add timestamp for display
+          if (postData.created_at) {
+            const createdDate = postData.created_at.toDate();
+            const now = new Date();
+            const diffMs = now - createdDate;
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+
+            if (diffHours < 1) {
+              postData.timestamp = "Just now";
+            } else if (diffHours < 24) {
+              postData.timestamp = `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
+            } else {
+              const diffDays = Math.floor(diffHours / 24);
+              postData.timestamp = `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+            }
+          }
+
+          const postElement = renderPost(postData, docSnap.id);
+          postFeed.appendChild(postElement);
         }
       }
 
-      const postElement = renderPost(postData, docSnap.id);
-      postFeed.appendChild(postElement);
-    }
-  }
+      // Load parent name
+      async function loadParentName() {
+        if (!currentUser) return;
 
-  // Load parent name
-  async function loadParentName() {
-    if (!currentUser) return;
-    
-    try {
-      const userRef = doc(db, "users", currentUser.uid);
-      const snap = await getDoc(userRef);
-      if (snap.exists()) {
-        const data = snap.data();
-        loggedInParentName = `${data.firstName || ""} ${data.lastName || ""}`.trim() || "Parent";
+        try {
+          const userRef = doc(db, "users", currentUser.uid);
+          const snap = await getDoc(userRef);
+          if (snap.exists()) {
+            const data = snap.data();
+            loggedInParentName =
+              `${data.firstName || ""} ${data.lastName || ""}`.trim() ||
+              "Parent";
+          }
+        } catch (e) {
+          console.error("Error fetching parent name:", e);
+        }
       }
-    } catch (e) {
-      console.error("Error fetching parent name:", e);
-    }
-  }
 
-  // Initialize the page
-  document.addEventListener("DOMContentLoaded", async () => {
-    showLoading();
-    
-    // Wait for authentication
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUser = user;
-        await loadParentName();
-        await loadPosts();
-        await loadEvents();
-        await loadReminders();
-        await loadTasks();
-        hideLoading();
-      } else {
-        hideLoading();
-        console.log("User not authenticated");
-      }
-    });
-  });
+      // Initialize the page
+      document.addEventListener("DOMContentLoaded", async () => {
+        showLoading();
 
-  // ✅ Load Upcoming Events
-  async function loadEvents() {
-    const eventList = document.getElementById("event-list");
-    eventList.innerHTML = ""; // clear old list
+        // Wait for authentication
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            currentUser = user;
+            await loadParentName();
+            await loadPosts();
+            await loadEvents();
+            await loadReminders();
+            await loadTasks();
+            hideLoading();
+          } else {
+            hideLoading();
+            console.log("User not authenticated");
+          }
+        });
+      });
 
-    if (!currentClassroomID) return;
+      // ✅ Load Upcoming Events
+      async function loadEvents() {
+        const eventList = document.getElementById("event-list");
+        eventList.innerHTML = ""; // clear old list
 
-    const q = query(
-      collection(db, "posts"),
-      where("classroomID", "==", currentClassroomID),
-      where("type", "==", "Event"),
-      orderBy("date", "desc")
-    );
+        if (!currentClassroomID) return;
 
-    const snapshot = await getDocs(q);
+        const q = query(
+          collection(db, "posts"),
+          where("classroomID", "==", currentClassroomID),
+          where("type", "==", "Event"),
+          orderBy("date", "desc"),
+        );
 
-    if (snapshot.empty) {
-      eventList.innerHTML = `<li><p class="event-item">No upcoming events</p></li>`;
-      return;
-    }
+        const snapshot = await getDocs(q);
 
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      const li = document.createElement("li");
-      li.innerHTML = `
+        if (snapshot.empty) {
+          eventList.innerHTML = `<li><p class="event-item">No upcoming events</p></li>`;
+          return;
+        }
+
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const li = document.createElement("li");
+          li.innerHTML = `
         <p class="event-item">
           📅 ${data.date || ""}<br>
           ${data.task || "No description"}
         </p>
       `;
-      eventList.appendChild(li);
-    });
-  }
+          eventList.appendChild(li);
+        });
+      }
 
-  // ✅ Load Reminders
-  async function loadReminders() {
-    const reminderList = document.getElementById("reminder-list");
-    reminderList.innerHTML = ""; 
+      // ✅ Load Reminders
+      async function loadReminders() {
+        const reminderList = document.getElementById("reminder-list");
+        reminderList.innerHTML = "";
 
-    if (!currentClassroomID) return;
+        if (!currentClassroomID) return;
 
-    const q = query(
-      collection(db, "posts"),
-      where("classroomID", "==", currentClassroomID),
-      where("type", "==", "Reminder"),
-      orderBy("date", "desc")
-    );
+        const q = query(
+          collection(db, "posts"),
+          where("classroomID", "==", currentClassroomID),
+          where("type", "==", "Reminder"),
+          orderBy("date", "desc"),
+        );
 
-    const snapshot = await getDocs(q);
+        const snapshot = await getDocs(q);
 
-    if (snapshot.empty) {
-      reminderList.innerHTML = `<li><p class="reminder-item">No reminders</p></li>`;
-      return;
-    }
+        if (snapshot.empty) {
+          reminderList.innerHTML = `<li><p class="reminder-item">No reminders</p></li>`;
+          return;
+        }
 
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      const li = document.createElement("li");
-      li.innerHTML = `
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const li = document.createElement("li");
+          li.innerHTML = `
         <p class="reminder-item">
           📝 ${data.task || "No description"}<br>
           📅 ${data.date || ""}
         </p>
       `;
-      reminderList.appendChild(li);
-    });
-  }
+          reminderList.appendChild(li);
+        });
+      }
 
-  // ✅ Load Tasks
-  async function loadTasks() {
-    const taskList = document.getElementById("task-list");
-    taskList.innerHTML = "";
+      // ✅ Load Tasks
+      async function loadTasks() {
+        const taskList = document.getElementById("task-list");
+        taskList.innerHTML = "";
 
-    if (!currentClassroomID) return;
+        if (!currentClassroomID) return;
 
-    const q = query(
-      collection(db, "posts"),
-      where("classroomID", "==", currentClassroomID),
-      where("type", "==", "Task")
-    );
+        const q = query(
+          collection(db, "posts"),
+          where("classroomID", "==", currentClassroomID),
+          where("type", "==", "Task"),
+        );
 
-    const snapshot = await getDocs(q);
+        const snapshot = await getDocs(q);
 
-    if (snapshot.empty) {
-      taskList.innerHTML = `<li><p class="task-item">No announced tasks</p></li>`;
-      return;
-    }
+        if (snapshot.empty) {
+          taskList.innerHTML = `<li><p class="task-item">No announced tasks</p></li>`;
+          return;
+        }
 
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
-      const li = document.createElement("li");
-      li.innerHTML = `
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const li = document.createElement("li");
+          li.innerHTML = `
         <p class="task-item">
           ✅ ${data.task || "Untitled Task"}<br>
           ${data.date || ""}
         </p>
       `;
-      taskList.appendChild(li);
-    });
-  }
+          taskList.appendChild(li);
+        });
+      }
 
-  // ... rest of your BadgeService code remains the same ...
-  const BadgeService = {
-      currentUser: null,
-      studentIds: [],
-      
-      async init() {
+      // ... rest of your BadgeService code remains the same ...
+      const BadgeService = {
+        currentUser: null,
+        studentIds: [],
+
+        async init() {
           return new Promise((resolve) => {
-              onAuthStateChanged(auth, async (user) => {
-                  if (user) {
-                      this.currentUser = user;
-                      await this.loadStudentIds();
-                      await this.setupRealTimeListener();
-                      await this.updateBadgeCount();
-                      resolve();
-                  } else {
-                      resolve();
-                  }
-              });
+            onAuthStateChanged(auth, async (user) => {
+              if (user) {
+                this.currentUser = user;
+                await this.loadStudentIds();
+                await this.setupRealTimeListener();
+                await this.updateBadgeCount();
+                resolve();
+              } else {
+                resolve();
+              }
+            });
           });
-      },
+        },
 
-      async loadStudentIds() {
+        async loadStudentIds() {
           try {
-              const studentsQuery = query(
-                  collection(db, 'students'),
-                  where('parentId', '==', this.currentUser.uid)
-              );
-              
-              const querySnapshot = await getDocs(studentsQuery);
-              this.studentIds = querySnapshot.docs.map(doc => doc.id);
-          } catch (error) {
-              console.error('Error loading student IDs:', error);
-              this.studentIds = [];
-          }
-      },
+            const studentsQuery = query(
+              collection(db, "students"),
+              where("parentId", "==", this.currentUser.uid),
+            );
 
-      async setupRealTimeListener() {
+            const querySnapshot = await getDocs(studentsQuery);
+            this.studentIds = querySnapshot.docs.map((doc) => doc.id);
+          } catch (error) {
+            console.error("Error loading student IDs:", error);
+            this.studentIds = [];
+          }
+        },
+
+        async setupRealTimeListener() {
           if (this.studentIds.length === 0) return;
 
           // Listen for new activities
-          this.studentIds.forEach(studentId => {
-              const activitiesQuery = query(
-                  collection(db, 'activity'),
-                  where('studentID', '==', studentId)
-              );
+          this.studentIds.forEach((studentId) => {
+            const activitiesQuery = query(
+              collection(db, "activity"),
+              where("studentID", "==", studentId),
+            );
 
-              onSnapshot(activitiesQuery, () => {
-                  this.updateBadgeCount();
-              });
+            onSnapshot(activitiesQuery, () => {
+              this.updateBadgeCount();
+            });
           });
 
           // Listen for new resources
           const classroomIds = await this.getClassroomIds();
-          classroomIds.forEach(classroomId => {
-              const topicContentQuery = query(
-                  collection(db, 'topicContent'),
-                  where('classroomID', '==', classroomId)
-              );
+          classroomIds.forEach((classroomId) => {
+            const topicContentQuery = query(
+              collection(db, "topicContent"),
+              where("classroomID", "==", classroomId),
+            );
 
-              onSnapshot(topicContentQuery, () => {
-                  this.updateBadgeCount();
-              });
+            onSnapshot(topicContentQuery, () => {
+              this.updateBadgeCount();
+            });
           });
-      },
+        },
 
-      async getClassroomIds() {
+        async getClassroomIds() {
           const classroomIds = new Set();
-          
+
           try {
-              for (const studentId of this.studentIds) {
-                  const studentDoc = await getDoc(doc(db, 'students', studentId));
-                  if (studentDoc.exists()) {
-                      const studentData = studentDoc.data();
-                      if (studentData.classroomId) {
-                          classroomIds.add(studentData.classroomId);
-                      }
-                  }
+            for (const studentId of this.studentIds) {
+              const studentDoc = await getDoc(doc(db, "students", studentId));
+              if (studentDoc.exists()) {
+                const studentData = studentDoc.data();
+                if (studentData.classroomId) {
+                  classroomIds.add(studentData.classroomId);
+                }
               }
+            }
           } catch (error) {
-              console.error('Error fetching classroom IDs:', error);
+            console.error("Error fetching classroom IDs:", error);
           }
-          
+
           return Array.from(classroomIds);
-      },
+        },
 
-      async getUnreadCount() {
+        async getUnreadCount() {
           if (!this.currentUser || this.studentIds.length === 0) {
-              return 0;
+            return 0;
           }
 
           try {
-              let unreadCount = 0;
-              
-              // Count unread activities
-              for (const studentId of this.studentIds) {
-                  const activitiesQuery = query(
-                      collection(db, 'activity'),
-                      where('studentID', '==', studentId)
-                  );
-                  
-                  const activitiesSnapshot = await getDocs(activitiesQuery);
-                  
-                  for (const activityDoc of activitiesSnapshot.docs) {
-                      const isRead = await this.checkIfRead(activityDoc.id, 'activity');
-                      if (!isRead) unreadCount++;
-                  }
-              }
-              
-              // Count unread resources (only public topics)
-              const classroomIds = await this.getClassroomIds();
-              for (const classroomId of classroomIds) {
-                  const topicContentQuery = query(
-                      collection(db, 'topicContent'),
-                      where('classroomID', '==', classroomId)
-                  );
+            let unreadCount = 0;
 
-                  const topicContentSnapshot = await getDocs(topicContentQuery);
-
-                  for (const topicContentDoc of topicContentSnapshot.docs) {
-                      const topicContentData = topicContentDoc.data();
-                      const topicId = topicContentData.topicID;
-
-                      // Fetch topic doc
-                      const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
-                      if (!topicDocSnap.exists()) continue;
-                      const topicData = topicDocSnap.data();
-
-                      // Only count if topic is public
-                      if (topicData.status !== "public") continue;
-
-                      const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
-                      if (!isRead) unreadCount++;
-                  }
-              }
-              
-              return unreadCount;
-          } catch (error) {
-              console.error('Error counting unread notifications:', error);
-              return 0;
-          }
-      },
-
-      async checkIfRead(itemId, type) {
-          if (!itemId) return false;
-          
-          try {
-              const fieldName = type === 'activity' ? 'activityId' : 'resourceId';
-              const notificationsQuery = query(
-                  collection(db, 'notification'),
-                  where(fieldName, '==', itemId),
-                  where('parentId', '==', this.currentUser.uid)
+            // Count unread activities
+            for (const studentId of this.studentIds) {
+              const activitiesQuery = query(
+                collection(db, "activity"),
+                where("studentID", "==", studentId),
               );
-              
-              const querySnapshot = await getDocs(notificationsQuery);
-              return !querySnapshot.empty;
+
+              const activitiesSnapshot = await getDocs(activitiesQuery);
+
+              for (const activityDoc of activitiesSnapshot.docs) {
+                const isRead = await this.checkIfRead(
+                  activityDoc.id,
+                  "activity",
+                );
+                if (!isRead) unreadCount++;
+              }
+            }
+
+            // Count unread resources (only public topics)
+            const classroomIds = await this.getClassroomIds();
+            for (const classroomId of classroomIds) {
+              const topicContentQuery = query(
+                collection(db, "topicContent"),
+                where("classroomID", "==", classroomId),
+              );
+
+              const topicContentSnapshot = await getDocs(topicContentQuery);
+
+              for (const topicContentDoc of topicContentSnapshot.docs) {
+                const topicContentData = topicContentDoc.data();
+                const topicId = topicContentData.topicID;
+
+                // Fetch topic doc
+                const topicDocSnap = await getDoc(doc(db, "topic", topicId));
+                if (!topicDocSnap.exists()) continue;
+                const topicData = topicDocSnap.data();
+
+                // Only count if topic is public
+                if (topicData.status !== "public") continue;
+
+                const isRead = await this.checkIfRead(
+                  topicContentDoc.id,
+                  "resource",
+                );
+                if (!isRead) unreadCount++;
+              }
+            }
+
+            return unreadCount;
           } catch (error) {
-              console.error('Error checking read status:', error);
-              return false;
+            console.error("Error counting unread notifications:", error);
+            return 0;
           }
-      },
+        },
 
-      async updateBadgeCount() {
-          const badge = document.getElementById('notificationBadge');
-          
+        async checkIfRead(itemId, type) {
+          if (!itemId) return false;
+
+          try {
+            const fieldName = type === "activity" ? "activityId" : "resourceId";
+            const notificationsQuery = query(
+              collection(db, "notification"),
+              where(fieldName, "==", itemId),
+              where("parentId", "==", this.currentUser.uid),
+            );
+
+            const querySnapshot = await getDocs(notificationsQuery);
+            return !querySnapshot.empty;
+          } catch (error) {
+            console.error("Error checking read status:", error);
+            return false;
+          }
+        },
+
+        async updateBadgeCount() {
+          const badge = document.getElementById("notificationBadge");
+
           if (badge) {
-              const count = await this.getUnreadCount();
-              badge.textContent = count;
-              badge.style.display = count > 0 ? 'inline' : 'none';
+            const count = await this.getUnreadCount();
+            badge.textContent = count;
+            badge.style.display = count > 0 ? "inline" : "none";
           }
-      }
-  };
+        },
+      };
 
-  // Initialize badge service
-  document.addEventListener('DOMContentLoaded', async function() {
-      await BadgeService.init();
-  });
-  </script>
-    </body>
-  </html>
+      // Initialize badge service
+      document.addEventListener("DOMContentLoaded", async function () {
+        await BadgeService.init();
+      });
+    </script>
+  </body>
+</html>

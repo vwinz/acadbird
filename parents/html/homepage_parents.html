@@ -1,420 +1,460 @@
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>AcadBird Dashboard</title>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-        rel="stylesheet"
-      />
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-      />
-      <link rel="stylesheet" href="../style/homepage_parents.css" />
-    </head>
-    <body>
-      <div class="container">
-        <div class="navbar">
-          <div class="logo">
-            <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-            <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
-          </div>
-
-          <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-          <div class="nav-icons">
-            <a href="notification_parent.html" target="_blank">
-              <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
-            </a>
-            <a href="help_parent.html" target="_blank">
-              <img src="../../main/img/Help.png" alt="Help" class="icon" />
-            </a>
-            <a href="account_parent.html" target="_blank">
-              <div class="account-menu">
-                <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
-              </div>
-            </a>
-          </div>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../style/homepage_parents.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="navbar">
+        <div class="logo">
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            alt="AcadBird"
+            class="logo-img"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
         </div>
 
-</div>
-        <div class="secondary-header">
-          <div class="secondary-header-content">
-        <div class="parent-name" id="parent-name">Loading...</div>
-
-          </div>
-        </div>
-        <div class="separator"></div>
-        
-        <div class="main-content">
-          <div class="content-panel left-panel">
-            <div class="classes-box">
-              <span class="section-title">Classes</span> 
-              <div class="class-list-container" id="class-list-container">
-                </div>
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
+        <div class="nav-icons">
+          <a href="notification_parent.html" target="_blank">
+            <img
+              src="../../main/img/Notification.png"
+              alt="Notifications"
+              class="icon"
+            />
+          </a>
+          <a href="help_parent.html" target="_blank">
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          </a>
+          <a href="account_parent.html" target="_blank">
+            <div class="account-menu">
+              <img
+                src="../../main/img/account icon.png"
+                alt="User Account"
+                class="icon"
+              />
             </div>
-          </div>
-          <div class="content-panel right-panel">
-            <div id="student-list-container"></div>
-          <div class="student-card add-card" id="add-student-card">
-
-              <div class="add-card-content">
-                <i class="fas fa-plus-circle"></i>
-                <p>Add Student</p>
-              </div>
-            </div>
-          </div>
+          </a>
         </div>
-
-         <!-- Modal -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Add a Child Through a Class Code:</h2>
-      <span class="close-btn" id="close-modal-btn">&times;</span>
-    </div>
-    <label for="classCode">Code:</label>
-    <input type="text" id="classCode" placeholder="Code" />
-    <div class="modal-buttons">
-      <button id="add-student-btn" class="btn-add">Add</button>
-      <button id="cancel-btn" class="btn-cancel">Cancel</button>
-    </div>
-  </div>
-</div>
-
       </div>
+    </div>
+    <div class="secondary-header">
+      <div class="secondary-header-content">
+        <div class="parent-name" id="parent-name">Loading...</div>
+      </div>
+    </div>
+    <div class="separator"></div>
 
-  <!-- Firebase SDK -->
+    <div class="main-content">
+      <div class="content-panel left-panel">
+        <div class="classes-box">
+          <span class="section-title">Classes</span>
+          <div class="class-list-container" id="class-list-container"></div>
+        </div>
+      </div>
+      <div class="content-panel right-panel">
+        <div id="student-list-container"></div>
+        <div class="student-card add-card" id="add-student-card">
+          <div class="add-card-content">
+            <i class="fas fa-plus-circle"></i>
+            <p>Add Student</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { 
-  getFirestore, 
-  collection, 
-  getDocs, 
-  getDoc,
-  query, 
-  where, 
-  doc, 
-  updateDoc 
-} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+    <!-- Modal -->
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add a Child Through a Class Code:</h2>
+          <span class="close-btn" id="close-modal-btn">&times;</span>
+        </div>
+        <label for="classCode">Code:</label>
+        <input type="text" id="classCode" placeholder="Code" />
+        <div class="modal-buttons">
+          <button id="add-student-btn" class="btn-add">Add</button>
+          <button id="cancel-btn" class="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
 
-// ✅ Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-  authDomain: "acadbird-379e3.firebaseapp.com",
-  projectId: "acadbird-379e3",
-  storageBucket: "acadbird-379e3.firebasestorage.app",
-  messagingSenderId: "575491576951",
-  appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-  measurementId: "G-N6Z672SXWJ"
-};
+    <!-- Firebase SDK -->
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        getDoc,
+        query,
+        where,
+        doc,
+        updateDoc,
+      } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-console.log("[Init] Firebase initialized", { projectId: firebaseConfig.projectId });
+      // ✅ Firebase config
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
 
-const studentListContainer = document.getElementById("student-list-container");
-const classListContainer = document.getElementById("class-list-container");
-const modal = document.getElementById("modal");
-const addStudentCard = document.getElementById("add-student-card");
-const parentNameEl = document.getElementById("parent-name");
-let studentsData = [];
-let activeStudentId = null;
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
 
-// 🟢 Auth listener
-onAuthStateChanged(auth, async (user) => {
-  console.log("[AuthStateChanged] Triggered. User =", user);
-
-  if (user) {
-    const parentId = user.uid;
-    console.log("[Auth] Logged in as:", parentId);
-
-    // Save for debugging, but don’t *use* it again
-    localStorage.setItem("DEBUG_parentId", parentId);
-
-    // 🟢 Fetch parent profile from Firestore
-    // 🟢 Fetch parent profile from "users" collection instead of "parents"
-try {
-  const userRef = doc(db, "users", parentId); // <-- document ID = auth.uid
-  const userSnap = await getDoc(userRef);
-
-  if (userSnap.exists()) {
-    const userData = userSnap.data();
-    console.log("[User Data]", userData);
-
-    const fullName = `${userData.firstName || ""} ${userData.lastName || ""}`.trim();
-    parentNameEl.textContent = fullName || "Unnamed Parent";
-  } else {
-    parentNameEl.textContent = "Parent User";
-  }
-} catch (err) {
-  console.error("❌ Error fetching user profile:", err);
-  parentNameEl.textContent = "Parent User";
-}
-
-
-    loadStudents(parentId);
-  } else {
-    console.warn("[Auth] No user is logged in.");
-    studentListContainer.innerHTML = `<p>Please log in to see your students.</p>`;
-    classListContainer.innerHTML = "";
-    parentNameEl.textContent = "Guest";
-  }
-});
-
-addStudentCard.addEventListener("click", () => {
-  console.log("[UI] Add student card clicked");
-  modal.style.display = "flex";
-});
-function openModal() {
-  console.log("[UI] Opening modal");
-  modal.style.display = "flex";  // make sure your CSS uses "flex" or "block"
-}
-
-function closeModal() {
-  console.log("[UI] Closing modal");
-  modal.style.display = "none";
-}
-
-// 🟢 Load students by parentId (only ACTIVE students)
-async function loadStudents(parentId) {
-  console.log("[loadStudents] called with parentId:", parentId);
-
-  try {
-    const q = query(collection(db, "students"), where("parentId", "==", parentId));
-    console.log("[loadStudents] Firestore query created");
-
-    const snapshot = await getDocs(q);
-    console.log(`[loadStudents] getDocs finished — snapshot.size = ${snapshot.size}`);
-
-    if (snapshot.empty) {
-      console.log("[loadStudents] snapshot is empty — no documents for this parentId");
-      studentListContainer.innerHTML = `<p style="padding:20px; color:#555; font-weight:600;">You are not in a classroom.</p>`;
-      classListContainer.innerHTML = "";
-      return;
-    }
-
-    snapshot.docs.forEach(docSnap => {
-      console.log("[loadStudents] raw doc:", { id: docSnap.id, data: docSnap.data() });
-    });
-
-    studentsData = snapshot.docs
-      .map(docSnap => {
-        const data = docSnap.data();
-        return { id: docSnap.id, ...data };
-      })
-      .filter(student => {
-        const isActive = student.status === "active";
-        if (!isActive) {
-          console.log(`[loadStudents] filtering out student ${student.id} (status='${student.status}')`);
-        }
-        return isActive;
+      console.log("[Init] Firebase initialized", {
+        projectId: firebaseConfig.projectId,
       });
 
-    console.log("[loadStudents] studentsData AFTER filter:", studentsData);
+      const studentListContainer = document.getElementById(
+        "student-list-container",
+      );
+      const classListContainer = document.getElementById(
+        "class-list-container",
+      );
+      const modal = document.getElementById("modal");
+      const addStudentCard = document.getElementById("add-student-card");
+      const parentNameEl = document.getElementById("parent-name");
+      let studentsData = [];
+      let activeStudentId = null;
 
-    if (studentsData.length === 0) {
-      console.log("[loadStudents] No active students after filtering");
-      studentListContainer.innerHTML = `<p style="padding:20px; color:#555; font-weight:600;">No active students available.</p>`;
-      classListContainer.innerHTML = "";
-      return;
-    }
+      // 🟢 Auth listener
+      onAuthStateChanged(auth, async (user) => {
+        console.log("[AuthStateChanged] Triggered. User =", user);
 
-    activeStudentId = studentsData[0].id;
-    console.log("[loadStudents] setting activeStudentId to:", activeStudentId);
+        if (user) {
+          const parentId = user.uid;
+          console.log("[Auth] Logged in as:", parentId);
 
-    renderStudentList();
+          // Save for debugging, but don’t *use* it again
+          localStorage.setItem("DEBUG_parentId", parentId);
 
-  } catch (err) {
-    console.error("❌ Error loading students:", err);
-    studentListContainer.innerHTML = `<p style="padding:20px; color:red;">Error loading students.</p>`;
-  }
-}
-
-// UI render helpers
-async function createClassCard(student) {
-  console.log("[createClassCard] student:", student);
-  const card = document.createElement("div");
-  card.id = "class-card-" + student.id;
-  card.className = "class-card active-class";
-
-  let classroomText = "Classroom: Unassigned";
-  let teacherText = "Unknown Teacher";
-
-  if (student.classroomId) {
-    try {
-      const classRef = doc(db, "classrooms", student.classroomId);
-      const classSnap = await getDoc(classRef);
-
-      if (classSnap.exists()) {
-        const classData = classSnap.data();
-        classroomText = `Classroom: ${classData.classroomName || "Unnamed"}`;
-
-        if (classData.teacherId) {
+          // 🟢 Fetch parent profile from Firestore
+          // 🟢 Fetch parent profile from "users" collection instead of "parents"
           try {
-            const teacherRef = doc(db, "users", classData.teacherId);
-            const teacherSnap = await getDoc(teacherRef);
+            const userRef = doc(db, "users", parentId); // <-- document ID = auth.uid
+            const userSnap = await getDoc(userRef);
 
-            if (teacherSnap.exists()) {
-              const teacherData = teacherSnap.data();
-              teacherText = `Teacher: ${teacherData.firstName || ""} ${teacherData.lastName || ""}`.trim();
+            if (userSnap.exists()) {
+              const userData = userSnap.data();
+              console.log("[User Data]", userData);
+
+              const fullName =
+                `${userData.firstName || ""} ${userData.lastName || ""}`.trim();
+              parentNameEl.textContent = fullName || "Unnamed Parent";
+            } else {
+              parentNameEl.textContent = "Parent User";
             }
           } catch (err) {
-            console.error("❌ Error fetching teacher data:", err);
+            console.error("❌ Error fetching user profile:", err);
+            parentNameEl.textContent = "Parent User";
           }
+
+          loadStudents(parentId);
+        } else {
+          console.warn("[Auth] No user is logged in.");
+          studentListContainer.innerHTML = `<p>Please log in to see your students.</p>`;
+          classListContainer.innerHTML = "";
+          parentNameEl.textContent = "Guest";
+        }
+      });
+
+      addStudentCard.addEventListener("click", () => {
+        console.log("[UI] Add student card clicked");
+        modal.style.display = "flex";
+      });
+      function openModal() {
+        console.log("[UI] Opening modal");
+        modal.style.display = "flex"; // make sure your CSS uses "flex" or "block"
+      }
+
+      function closeModal() {
+        console.log("[UI] Closing modal");
+        modal.style.display = "none";
+      }
+
+      // 🟢 Load students by parentId (only ACTIVE students)
+      async function loadStudents(parentId) {
+        console.log("[loadStudents] called with parentId:", parentId);
+
+        try {
+          const q = query(
+            collection(db, "students"),
+            where("parentId", "==", parentId),
+          );
+          console.log("[loadStudents] Firestore query created");
+
+          const snapshot = await getDocs(q);
+          console.log(
+            `[loadStudents] getDocs finished — snapshot.size = ${snapshot.size}`,
+          );
+
+          if (snapshot.empty) {
+            console.log(
+              "[loadStudents] snapshot is empty — no documents for this parentId",
+            );
+            studentListContainer.innerHTML = `<p style="padding:20px; color:#555; font-weight:600;">You are not in a classroom.</p>`;
+            classListContainer.innerHTML = "";
+            return;
+          }
+
+          snapshot.docs.forEach((docSnap) => {
+            console.log("[loadStudents] raw doc:", {
+              id: docSnap.id,
+              data: docSnap.data(),
+            });
+          });
+
+          studentsData = snapshot.docs
+            .map((docSnap) => {
+              const data = docSnap.data();
+              return { id: docSnap.id, ...data };
+            })
+            .filter((student) => {
+              const isActive = student.status === "active";
+              if (!isActive) {
+                console.log(
+                  `[loadStudents] filtering out student ${student.id} (status='${student.status}')`,
+                );
+              }
+              return isActive;
+            });
+
+          console.log(
+            "[loadStudents] studentsData AFTER filter:",
+            studentsData,
+          );
+
+          if (studentsData.length === 0) {
+            console.log("[loadStudents] No active students after filtering");
+            studentListContainer.innerHTML = `<p style="padding:20px; color:#555; font-weight:600;">No active students available.</p>`;
+            classListContainer.innerHTML = "";
+            return;
+          }
+
+          activeStudentId = studentsData[0].id;
+          console.log(
+            "[loadStudents] setting activeStudentId to:",
+            activeStudentId,
+          );
+
+          renderStudentList();
+        } catch (err) {
+          console.error("❌ Error loading students:", err);
+          studentListContainer.innerHTML = `<p style="padding:20px; color:red;">Error loading students.</p>`;
         }
       }
-    } catch (err) {
-      console.error("❌ Error fetching classroom:", err);
-    }
-  }
 
-  card.innerHTML = `
+      // UI render helpers
+      async function createClassCard(student) {
+        console.log("[createClassCard] student:", student);
+        const card = document.createElement("div");
+        card.id = "class-card-" + student.id;
+        card.className = "class-card active-class";
+
+        let classroomText = "Classroom: Unassigned";
+        let teacherText = "Unknown Teacher";
+
+        if (student.classroomId) {
+          try {
+            const classRef = doc(db, "classrooms", student.classroomId);
+            const classSnap = await getDoc(classRef);
+
+            if (classSnap.exists()) {
+              const classData = classSnap.data();
+              classroomText = `Classroom: ${classData.classroomName || "Unnamed"}`;
+
+              if (classData.teacherId) {
+                try {
+                  const teacherRef = doc(db, "users", classData.teacherId);
+                  const teacherSnap = await getDoc(teacherRef);
+
+                  if (teacherSnap.exists()) {
+                    const teacherData = teacherSnap.data();
+                    teacherText =
+                      `Teacher: ${teacherData.firstName || ""} ${teacherData.lastName || ""}`.trim();
+                  }
+                } catch (err) {
+                  console.error("❌ Error fetching teacher data:", err);
+                }
+              }
+            }
+          } catch (err) {
+            console.error("❌ Error fetching classroom:", err);
+          }
+        }
+
+        card.innerHTML = `
     <span class="child-name">${student.firstName} ${student.lastName}'s Class</span>
     <h3 style="margin:6px 0; font-size:1.05rem;">${classroomText}</h3>
     <p style="margin:0; font-size:0.95rem;">${teacherText}</p>
   `;
 
-  // ✅ Redirect on click
-  card.onclick = () => {
-    localStorage.setItem("selectedStudentId", student.id); // Optional: store the active student
-    window.location.href = "dashboard_parents.html";
-  };
+        // ✅ Redirect on click
+        card.onclick = () => {
+          localStorage.setItem("selectedStudentId", student.id); // Optional: store the active student
+          window.location.href = "dashboard_parents.html";
+        };
 
-  return card;
-}
+        return card;
+      }
 
+      function createStudentCard(student) {
+        console.log("[createStudentCard] student:", student);
+        const card = document.createElement("div");
+        card.id = student.id;
+        card.className = "student-card";
+        if (student.id === activeStudentId) card.classList.add("active");
 
-function createStudentCard(student) {
-  console.log("[createStudentCard] student:", student);
-  const card = document.createElement("div");
-  card.id = student.id;
-  card.className = "student-card";
-  if (student.id === activeStudentId) card.classList.add("active");
-
-  card.innerHTML = `
+        card.innerHTML = `
     <i class="fas fa-user-circle" style="font-size:36px; margin-bottom:8px;"></i>
     <h4 style="margin:6px 0;">${student.firstName} ${student.lastName}</h4>
     <p style="margin:4px 0; font-size:0.9rem;">Status: 
       <span style="color:${student.status === "active" ? "green" : "gray"}">${student.status}</span>
     </p>
   `;
-  card.onclick = () => selectStudent(student.id);
-  return card;
-}
+        card.onclick = () => selectStudent(student.id);
+        return card;
+      }
 
-async function renderClassList() {
-  console.log("[renderClassList] activeStudentId:", activeStudentId);
-  classListContainer.innerHTML = "";
-  const student = studentsData.find(s => s.id === activeStudentId);
-  console.log("[renderClassList] student found:", student);
-  if (student) {
-    const card = await createClassCard(student); // <- wait for async function
-    classListContainer.appendChild(card);
-  }
-}
+      async function renderClassList() {
+        console.log("[renderClassList] activeStudentId:", activeStudentId);
+        classListContainer.innerHTML = "";
+        const student = studentsData.find((s) => s.id === activeStudentId);
+        console.log("[renderClassList] student found:", student);
+        if (student) {
+          const card = await createClassCard(student); // <- wait for async function
+          classListContainer.appendChild(card);
+        }
+      }
 
+      async function renderStudentList() {
+        console.log("[renderStudentList] count =", studentsData.length);
+        studentListContainer.innerHTML = "";
+        studentsData.forEach((student) => {
+          studentListContainer.appendChild(createStudentCard(student));
+        });
+        await renderClassList(); // <- await here
+      }
 
-async function renderStudentList() {
-  console.log("[renderStudentList] count =", studentsData.length);
-  studentListContainer.innerHTML = "";
-  studentsData.forEach(student => {
-    studentListContainer.appendChild(createStudentCard(student));
-  });
-  await renderClassList(); // <- await here
-}
+      function selectStudent(studentId) {
+        console.log("[selectStudent] clicked:", studentId);
+        activeStudentId = studentId;
+        renderStudentList();
+      }
 
+      // 🟢 Add student
+      async function addStudent() {
+        const codeInput = document.getElementById("classCode");
+        const code = codeInput.value.trim().toUpperCase();
+        console.log("[addStudent] code entered:", code);
 
-function selectStudent(studentId) {
-  console.log("[selectStudent] clicked:", studentId);
-  activeStudentId = studentId;
-  renderStudentList();
-}
+        if (!code || code.length !== 6) {
+          alert("Please enter a valid 6-digit student code.");
+          return;
+        }
 
-// 🟢 Add student
-async function addStudent() {
-  const codeInput = document.getElementById("classCode");
-  const code = codeInput.value.trim().toUpperCase();
-  console.log("[addStudent] code entered:", code);
+        if (!auth.currentUser) {
+          alert("You must be logged in to add a student.");
+          return;
+        }
 
-  if (!code || code.length !== 6) {
-    alert("Please enter a valid 6-digit student code.");
-    return;
-  }
+        const parentId = auth.currentUser.uid;
+        console.log("[addStudent] parentId from auth:", parentId);
 
-  if (!auth.currentUser) {
-    alert("You must be logged in to add a student.");
-    return;
-  }
+        try {
+          const q = query(
+            collection(db, "students"),
+            where("parentId", "==", parentId),
+            where("studentCode", "==", code),
+          );
+          console.log("[addStudent] query:", q);
 
-  const parentId = auth.currentUser.uid;
-  console.log("[addStudent] parentId from auth:", parentId);
+          const snap = await getDocs(q);
+          console.log("[addStudent] snap.size =", snap.size);
 
-  try {
-    const q = query(
-      collection(db, "students"),
-      where("parentId", "==", parentId),
-      where("studentCode", "==", code)
-    );
-    console.log("[addStudent] query:", q);
+          if (snap.empty) {
+            alert("Invalid code or student not linked to your account.");
+            return;
+          }
 
-    const snap = await getDocs(q);
-    console.log("[addStudent] snap.size =", snap.size);
+          const studentDoc = snap.docs[0];
+          const studentRef = doc(db, "students", studentDoc.id);
+          console.log("[addStudent] studentRef to update:", studentRef.id);
 
-    if (snap.empty) {
-      alert("Invalid code or student not linked to your account.");
-      return;
-    }
+          await updateDoc(studentRef, { status: "active" });
+          console.log("[addStudent] student updated to active");
 
-    const studentDoc = snap.docs[0];
-    const studentRef = doc(db, "students", studentDoc.id);
-    console.log("[addStudent] studentRef to update:", studentRef.id);
+          alert("Student successfully activated!");
+          closeModal();
 
-    await updateDoc(studentRef, { status: "active" });
-    console.log("[addStudent] student updated to active");
+          loadStudents(parentId);
+        } catch (err) {
+          console.error("❌ Error activating student:", err);
+          alert("Failed to activate student. Try again.");
+        }
+      }
 
-    alert("Student successfully activated!");
-    closeModal();
+      // =====================
+      // Modal Functions
+      // =====================
 
-    loadStudents(parentId);
+      // =====================
+      // Attach Event Listeners
+      // =====================
+      document.addEventListener("DOMContentLoaded", () => {
+        // Replace with real parentId from auth/localStorage in production
 
-  } catch (err) {
-    console.error("❌ Error activating student:", err);
-    alert("Failed to activate student. Try again.");
-  }
-}
+        // 🔗 Hook modal buttons
+        document
+          .getElementById("add-student-btn")
+          .addEventListener("click", addStudent);
+        document
+          .getElementById("cancel-btn")
+          .addEventListener("click", closeModal);
+        document
+          .getElementById("close-modal-btn")
+          .addEventListener("click", closeModal);
 
-// =====================
-// Modal Functions
-// =====================
+        // Also hook the "Add Student" card to open modal
+        document
+          .getElementById("add-student-card")
+          .addEventListener("click", openModal);
+      });
 
-// =====================
-// Attach Event Listeners
-// =====================
-document.addEventListener("DOMContentLoaded", () => {
-  // Replace with real parentId from auth/localStorage in production
- 
-  // 🔗 Hook modal buttons
-  document.getElementById("add-student-btn").addEventListener("click", addStudent);
-  document.getElementById("cancel-btn").addEventListener("click", closeModal);
-  document.getElementById("close-modal-btn").addEventListener("click", closeModal);
-
-  // Also hook the "Add Student" card to open modal
-  document.getElementById("add-student-card").addEventListener("click", openModal);
-});
-
-
-// 🟢 Remove DOMContentLoaded fallback
-// All logic happens only in onAuthStateChanged now
-</script>
-
-
-
-
+      // 🟢 Remove DOMContentLoaded fallback
+      // All logic happens only in onAuthStateChanged now
+    </script>
   </body>
-  </html>
+</html>

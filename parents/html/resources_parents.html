@@ -1,125 +1,157 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AcadBird Resources</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="stylesheet" href="../style/resources_parents.css">
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../style/resources_parents.css" />
+  </head>
+  <body>
     <div class="container">
-        <nav class="navbar">
-            <div class="logo">
-                <img src="../../main/img/AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
-                <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
-            </div>
-            <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
+      <nav class="navbar">
+        <div class="logo">
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            class="logo-img"
+            alt="AcadBird Logo"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
+        </div>
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
 
-            <div class="nav-icons">
-         <div class="notification-wrapper">
-    <a href="notification_parent.html">
-        <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
-        <span class="notification-badge" id="notificationBadge">0</span>
-    </a>
-</div>
+        <div class="nav-icons">
+          <div class="notification-wrapper">
+            <a href="notification_parent.html">
+              <img
+                src="../../main/img/Notification.png"
+                alt="Notifications"
+                class="icon"
+              />
+              <span class="notification-badge" id="notificationBadge">0</span>
+            </a>
+          </div>
           <a href="help_parent.html">
             <img src="../../main/img/Help.png" alt="Help" class="icon" />
           </a>
           <a href="account_parent.html">
             <div class="account-menu">
-              <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
+              <img
+                src="../../main/img/account icon.png"
+                alt="User Account"
+                class="icon"
+              />
             </div>
           </a>
         </div>
         <div id="loading-overlay">
-
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
-        
-        </nav>
-        <div class="secondary-header">
-            <nav class="nav-menu">
-                <a href="homepage_parents.html" class="nav-item">Home</a>
-                <a href="dashboard_parents.html" class="nav-item">Dashboard</a>
-                <a href="activitylog_parents.html" class="nav-item">Activity Logs</a>
-                <a href="resources_parents.html" class="nav-item active">Resources</a>
-                <a href="messages_parents.html" class="nav-item">Messages</a>
-                <a href="account_parent.html" class="nav-item">Settings</a>
-
-            </nav>
+          <div class="loader-3">
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+            <div class="circle"></div>
+          </div>
         </div>
-        <div class="separator"></div>
-        <div class="main-content">
-  <div class="resources-section" id="resourcesSection">
-    <!-- Weeks, Topics, Contents will be injected here -->
-  </div>
-</div>
-
+      </nav>
+      <div class="secondary-header">
+        <nav class="nav-menu">
+          <a href="homepage_parents.html" class="nav-item">Home</a>
+          <a href="dashboard_parents.html" class="nav-item">Dashboard</a>
+          <a href="activitylog_parents.html" class="nav-item">Activity Logs</a>
+          <a href="resources_parents.html" class="nav-item active">Resources</a>
+          <a href="messages_parents.html" class="nav-item">Messages</a>
+          <a href="account_parent.html" class="nav-item">Settings</a>
+        </nav>
+      </div>
+      <div class="separator"></div>
+      <div class="main-content">
+        <div class="resources-section" id="resourcesSection">
+          <!-- Weeks, Topics, Contents will be injected here -->
+        </div>
+      </div>
     </div>
-  <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { 
-    getFirestore, collection, query, where, getDocs, doc, getDoc, onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        where,
+        getDocs,
+        doc,
+        getDoc,
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-    authDomain: "acadbird-379e3.firebaseapp.com",
-    projectId: "acadbird-379e3",
-    storageBucket: "acadbird-379e3.firebasestorage.app",
-    messagingSenderId: "575491576951",
-    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-    measurementId: "G-N6Z672SXWJ"   
-};
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
 
-const loadingOverlay = document.getElementById("loading-overlay");
+      const loadingOverlay = document.getElementById("loading-overlay");
 
-function showLoading() {
-    loadingOverlay.style.display = "flex";
-}
+      function showLoading() {
+        loadingOverlay.style.display = "flex";
+      }
 
-function hideLoading() {
-    loadingOverlay.style.display = "none";
-}
+      function hideLoading() {
+        loadingOverlay.style.display = "none";
+      }
 
-// Load resources for multiple classrooms
-// Load resources for multiple classrooms
-// Load resources for multiple classrooms
-async function loadResources(classroomIds) {
-    console.log("Classroom IDs:", classroomIds);
+      // Load resources for multiple classrooms
+      // Load resources for multiple classrooms
+      // Load resources for multiple classrooms
+      async function loadResources(classroomIds) {
+        console.log("Classroom IDs:", classroomIds);
 
-    const resourcesSection = document.getElementById("resourcesSection");
-    resourcesSection.innerHTML = "";
+        const resourcesSection = document.getElementById("resourcesSection");
+        resourcesSection.innerHTML = "";
 
-    let resourcesFound = false;
+        let resourcesFound = false;
 
-    for (const classroomID of classroomIds) {
-        console.log("Fetching weeks for classroom:", classroomID);
+        for (const classroomID of classroomIds) {
+          console.log("Fetching weeks for classroom:", classroomID);
 
-        // Fetch only public weeks
-        const weekQuery = query(
+          // Fetch only public weeks
+          const weekQuery = query(
             collection(db, "week"),
             where("classroomID", "==", classroomID),
-            where("status", "==", "public")
-        );
-        const weekSnap = await getDocs(weekQuery);
-        console.log("Public weeks found:", weekSnap.size);
+            where("status", "==", "public"),
+          );
+          const weekSnap = await getDocs(weekQuery);
+          console.log("Public weeks found:", weekSnap.size);
 
-        for (const weekDoc of weekSnap.docs) {
+          for (const weekDoc of weekSnap.docs) {
             const weekData = weekDoc.data();
             console.log("Week data:", weekData);
 
@@ -138,299 +170,308 @@ async function loadResources(classroomIds) {
 
             // Fetch public topics for this week
             const topicQuery = query(
-                collection(db, "topic"),
-                where("classroomID", "==", classroomID),
-                where("weekID", "==", weekDoc.id),
-                where("status", "==", "public")
+              collection(db, "topic"),
+              where("classroomID", "==", classroomID),
+              where("weekID", "==", weekDoc.id),
+              where("status", "==", "public"),
             );
             const topicSnap = await getDocs(topicQuery);
-            console.log(`Public topics found for week ${weekData.weekNo}:`, topicSnap.size);
+            console.log(
+              `Public topics found for week ${weekData.weekNo}:`,
+              topicSnap.size,
+            );
 
             for (const topicDoc of topicSnap.docs) {
-                const topicData = topicDoc.data();
-                console.log("Topic data:", topicData);
+              const topicData = topicDoc.data();
+              console.log("Topic data:", topicData);
 
-                const topicCard = document.createElement("div");
-                topicCard.classList.add("topic-card", "unlocked");
-                topicCard.innerHTML = `
+              const topicCard = document.createElement("div");
+              topicCard.classList.add("topic-card", "unlocked");
+              topicCard.innerHTML = `
                     <div class="topic-header">
                         <span class="topic-title">${topicData.topicName}</span>
                     </div>
                     <div class="topic-content"></div>
                 `;
-                const topicContentDiv = topicCard.querySelector(".topic-content");
+              const topicContentDiv = topicCard.querySelector(".topic-content");
 
-                // Fetch content for this topic
-                const contentQuery = query(
-                    collection(db, "topicContent"),
-                    where("classroomID", "==", classroomID),
-                    where("weekID", "==", weekDoc.id),
-                    where("topicID", "==", topicDoc.id)
-                );
-                const contentSnap = await getDocs(contentQuery);
-                console.log(`Content items found for topic ${topicData.topicName}:`, contentSnap.size);
+              // Fetch content for this topic
+              const contentQuery = query(
+                collection(db, "topicContent"),
+                where("classroomID", "==", classroomID),
+                where("weekID", "==", weekDoc.id),
+                where("topicID", "==", topicDoc.id),
+              );
+              const contentSnap = await getDocs(contentQuery);
+              console.log(
+                `Content items found for topic ${topicData.topicName}:`,
+                contentSnap.size,
+              );
 
-                for (const contentDoc of contentSnap.docs) {
-                    const contentData = contentDoc.data();
-                    console.log("Content data:", contentData);
+              for (const contentDoc of contentSnap.docs) {
+                const contentData = contentDoc.data();
+                console.log("Content data:", contentData);
 
-                    if (contentData.description) {
-                        topicContentDiv.innerHTML += `
+                if (contentData.description) {
+                  topicContentDiv.innerHTML += `
                             <div class="topic-item content-item-view">
                                 <i class="fas fa-book-open"></i>
                                 <span class="item-text">${contentData.description}</span>
                             </div>`;
-                    }
-                    if (contentData.file) {
-                        topicContentDiv.innerHTML += `
+                }
+                if (contentData.file) {
+                  topicContentDiv.innerHTML += `
                             <div class="topic-item file-item">
                                 <i class="fas fa-download"></i>
                                 <a href="${contentData.file}" target="_blank" class="download-link">
-                                    <span class="item-text">${contentData.file.split('/').pop()}</span>
+                                    <span class="item-text">${contentData.file.split("/").pop()}</span>
                                 </a>
                             </div>`;
-                    }
                 }
+              }
 
-                // Add topic card even if it has no content
-                weekContentDiv.appendChild(topicCard);
+              // Add topic card even if it has no content
+              weekContentDiv.appendChild(topicCard);
             }
 
             // Add week card even if it has no topics
             resourcesSection.appendChild(weekCard);
+          }
         }
-    }
 
-    if (!resourcesFound) {
-        console.log("No resources found!");
-        resourcesSection.innerHTML = `<p class="no-resources">No resources available.</p>`;
-    }
+        if (!resourcesFound) {
+          console.log("No resources found!");
+          resourcesSection.innerHTML = `<p class="no-resources">No resources available.</p>`;
+        }
 
-    initEventListeners();
-}
+        initEventListeners();
+      }
 
-function initEventListeners() {
-    document.querySelectorAll('.week-header').forEach(header => {
-        header.onclick = () => {
+      function initEventListeners() {
+        document.querySelectorAll(".week-header").forEach((header) => {
+          header.onclick = () => {
             const weekCard = header.parentElement;
             const weekContent = header.nextElementSibling;
-            weekContent.classList.toggle('active');
-            weekCard.classList.toggle('active');
-        };
-    });
-    document.querySelectorAll('.topic-header').forEach(header => {
-        header.onclick = () => {
+            weekContent.classList.toggle("active");
+            weekCard.classList.toggle("active");
+          };
+        });
+        document.querySelectorAll(".topic-header").forEach((header) => {
+          header.onclick = () => {
             const topicCard = header.parentElement;
             const topicContent = header.nextElementSibling;
-            if (topicContent) topicContent.classList.toggle('active');
-            topicCard.classList.toggle('active');
-        };
-    });
-}
-
-const BadgeService = {
-    currentUser: null,
-    studentIds: [],
-    
-    async init() {
-        return new Promise((resolve) => {
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    this.currentUser = user;
-                    await this.loadStudentIds();
-                    await this.setupRealTimeListener();
-                    await this.updateBadgeCount();
-                    resolve();
-                } else {
-                    resolve();
-                }
-            });
+            if (topicContent) topicContent.classList.toggle("active");
+            topicCard.classList.toggle("active");
+          };
         });
-    },
+      }
 
-    async loadStudentIds() {
-        try {
+      const BadgeService = {
+        currentUser: null,
+        studentIds: [],
+
+        async init() {
+          return new Promise((resolve) => {
+            onAuthStateChanged(auth, async (user) => {
+              if (user) {
+                this.currentUser = user;
+                await this.loadStudentIds();
+                await this.setupRealTimeListener();
+                await this.updateBadgeCount();
+                resolve();
+              } else {
+                resolve();
+              }
+            });
+          });
+        },
+
+        async loadStudentIds() {
+          try {
             const studentsQuery = query(
-                collection(db, 'students'),
-                where('parentId', '==', this.currentUser.uid)
+              collection(db, "students"),
+              where("parentId", "==", this.currentUser.uid),
             );
-            
+
             const querySnapshot = await getDocs(studentsQuery);
-            this.studentIds = querySnapshot.docs.map(doc => doc.id);
-        } catch (error) {
-            console.error('Error loading student IDs:', error);
+            this.studentIds = querySnapshot.docs.map((doc) => doc.id);
+          } catch (error) {
+            console.error("Error loading student IDs:", error);
             this.studentIds = [];
-        }
-    },
+          }
+        },
 
-    async setupRealTimeListener() {
-        if (this.studentIds.length === 0) return;
+        async setupRealTimeListener() {
+          if (this.studentIds.length === 0) return;
 
-        // Listen for new activities
-        this.studentIds.forEach(studentId => {
+          // Listen for new activities
+          this.studentIds.forEach((studentId) => {
             const activitiesQuery = query(
-                collection(db, 'activity'),
-                where('studentID', '==', studentId)
+              collection(db, "activity"),
+              where("studentID", "==", studentId),
             );
 
             onSnapshot(activitiesQuery, () => {
-                this.updateBadgeCount();
+              this.updateBadgeCount();
             });
-        });
+          });
 
-        // Listen for new resources
-        const classroomIds = await this.getClassroomIds();
-        classroomIds.forEach(classroomId => {
+          // Listen for new resources
+          const classroomIds = await this.getClassroomIds();
+          classroomIds.forEach((classroomId) => {
             const topicContentQuery = query(
-                collection(db, 'topicContent'),
-                where('classroomID', '==', classroomId)
+              collection(db, "topicContent"),
+              where("classroomID", "==", classroomId),
             );
 
             onSnapshot(topicContentQuery, () => {
-                this.updateBadgeCount();
+              this.updateBadgeCount();
             });
-        });
-    },
+          });
+        },
 
-    async getClassroomIds() {
-        const classroomIds = new Set();
-        
-        try {
+        async getClassroomIds() {
+          const classroomIds = new Set();
+
+          try {
             for (const studentId of this.studentIds) {
-                const studentDoc = await getDoc(doc(db, 'students', studentId));
-                if (studentDoc.exists()) {
-                    const studentData = studentDoc.data();
-                    if (studentData.classroomId) {
-                        classroomIds.add(studentData.classroomId);
-                    }
+              const studentDoc = await getDoc(doc(db, "students", studentId));
+              if (studentDoc.exists()) {
+                const studentData = studentDoc.data();
+                if (studentData.classroomId) {
+                  classroomIds.add(studentData.classroomId);
                 }
+              }
             }
-        } catch (error) {
-            console.error('Error fetching classroom IDs:', error);
-        }
-        
-        return Array.from(classroomIds);
-    },
+          } catch (error) {
+            console.error("Error fetching classroom IDs:", error);
+          }
 
-    async getUnreadCount() {
-        if (!this.currentUser || this.studentIds.length === 0) {
+          return Array.from(classroomIds);
+        },
+
+        async getUnreadCount() {
+          if (!this.currentUser || this.studentIds.length === 0) {
             return 0;
-        }
+          }
 
-        try {
+          try {
             let unreadCount = 0;
-            
+
             // Count unread activities
             for (const studentId of this.studentIds) {
-                const activitiesQuery = query(
-                    collection(db, 'activity'),
-                    where('studentID', '==', studentId)
+              const activitiesQuery = query(
+                collection(db, "activity"),
+                where("studentID", "==", studentId),
+              );
+
+              const activitiesSnapshot = await getDocs(activitiesQuery);
+
+              for (const activityDoc of activitiesSnapshot.docs) {
+                const isRead = await this.checkIfRead(
+                  activityDoc.id,
+                  "activity",
                 );
-                
-                const activitiesSnapshot = await getDocs(activitiesQuery);
-                
-                for (const activityDoc of activitiesSnapshot.docs) {
-                    const isRead = await this.checkIfRead(activityDoc.id, 'activity');
-                    if (!isRead) unreadCount++;
-                }
+                if (!isRead) unreadCount++;
+              }
             }
-            
+
             // Count unread resources
-           // Count unread resources (only public topics)
-const classroomIds = await this.getClassroomIds();
-for (const classroomId of classroomIds) {
-    const topicContentQuery = query(
-        collection(db, 'topicContent'),
-        where('classroomID', '==', classroomId)
-    );
+            // Count unread resources (only public topics)
+            const classroomIds = await this.getClassroomIds();
+            for (const classroomId of classroomIds) {
+              const topicContentQuery = query(
+                collection(db, "topicContent"),
+                where("classroomID", "==", classroomId),
+              );
 
-    const topicContentSnapshot = await getDocs(topicContentQuery);
+              const topicContentSnapshot = await getDocs(topicContentQuery);
 
-    for (const topicContentDoc of topicContentSnapshot.docs) {
-        const topicContentData = topicContentDoc.data();
-        const topicId = topicContentData.topicID;
+              for (const topicContentDoc of topicContentSnapshot.docs) {
+                const topicContentData = topicContentDoc.data();
+                const topicId = topicContentData.topicID;
 
-        // Fetch topic doc
-        const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
-        if (!topicDocSnap.exists()) continue;
-        const topicData = topicDocSnap.data();
+                // Fetch topic doc
+                const topicDocSnap = await getDoc(doc(db, "topic", topicId));
+                if (!topicDocSnap.exists()) continue;
+                const topicData = topicDocSnap.data();
 
-        // Only count if topic is public
-        if (topicData.status !== "public") continue;
+                // Only count if topic is public
+                if (topicData.status !== "public") continue;
 
-        const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
-        if (!isRead) unreadCount++;
-    }
-}
+                const isRead = await this.checkIfRead(
+                  topicContentDoc.id,
+                  "resource",
+                );
+                if (!isRead) unreadCount++;
+              }
+            }
 
-            
             return unreadCount;
-        } catch (error) {
-            console.error('Error counting unread notifications:', error);
+          } catch (error) {
+            console.error("Error counting unread notifications:", error);
             return 0;
-        }
-    },
-    async checkIfRead(itemId, type) {
-        if (!itemId) return false;
-        
-        try {
-            const fieldName = type === 'activity' ? 'activityId' : 'resourceId';
+          }
+        },
+        async checkIfRead(itemId, type) {
+          if (!itemId) return false;
+
+          try {
+            const fieldName = type === "activity" ? "activityId" : "resourceId";
             const notificationsQuery = query(
-                collection(db, 'notification'),
-                where(fieldName, '==', itemId),
-                where('parentId', '==', this.currentUser.uid)
+              collection(db, "notification"),
+              where(fieldName, "==", itemId),
+              where("parentId", "==", this.currentUser.uid),
             );
-            
+
             const querySnapshot = await getDocs(notificationsQuery);
             return !querySnapshot.empty;
-        } catch (error) {
-            console.error('Error checking read status:', error);
+          } catch (error) {
+            console.error("Error checking read status:", error);
             return false;
-        }
-    },
+          }
+        },
 
-    async updateBadgeCount() {
-        const badge = document.getElementById('notificationBadge');
-        if (badge) {
+        async updateBadgeCount() {
+          const badge = document.getElementById("notificationBadge");
+          if (badge) {
             const count = await this.getUnreadCount();
             badge.textContent = count;
-            badge.style.display = count > 0 ? 'inline' : 'none';
-        }
-    }
-};
+            badge.style.display = count > 0 ? "inline" : "none";
+          }
+        },
+      };
 
-// Initialize everything on page load
-document.addEventListener('DOMContentLoaded', async () => {
-    showLoading();
+      // Initialize everything on page load
+      document.addEventListener("DOMContentLoaded", async () => {
+        showLoading();
 
-    try {
-        onAuthStateChanged(auth, async (user) => {
+        try {
+          onAuthStateChanged(auth, async (user) => {
             if (!user) return hideLoading();
 
             // Get all classroom IDs for this parent
             const studentQuery = query(
-                collection(db, 'students'),
-                where('parentId', '==', user.uid)
+              collection(db, "students"),
+              where("parentId", "==", user.uid),
             );
             const studentSnap = await getDocs(studentQuery);
             const classroomIds = studentSnap.docs
-                .map(doc => doc.data().classroomId)
-                .filter(Boolean); // Remove undefined/null
+              .map((doc) => doc.data().classroomId)
+              .filter(Boolean); // Remove undefined/null
 
             if (classroomIds.length > 0) {
-                await loadResources(classroomIds);
+              await loadResources(classroomIds);
             }
 
             await BadgeService.init();
             hideLoading();
-        });
-    } catch (error) {
-        console.error("Error initializing page:", error);
-        hideLoading();
-    }
-});
-</script>
-
-
-</body>
+          });
+        } catch (error) {
+          console.error("Error initializing page:", error);
+          hideLoading();
+        }
+      });
+    </script>
+  </body>
 </html>

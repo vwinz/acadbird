@@ -1,936 +1,1066 @@
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>AcadBird Dashboard</title>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Dashboard</title>
 
-      <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-        rel="stylesheet"
-      />
-      <link
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-        rel="stylesheet"
-      />
-  <link rel="stylesheet" href="../style/studentlistpage_teacher.css" />
-  <!-- Add this with your other script imports -->
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-    </head>
-    <body>
-      <div class="container">
-        <nav class="navbar">
-          <div class="logo">
-            <img
-              src="../../main/img/AcadBird - White no text.png"
-              class="logo-img"
-              alt="AcadBird Logo"
-            />
-            <img
-              src="../../main/img/AcadBird - White Text.png"
-              class="logo-text-img"
-              alt="AcadBird Text"
-            />
-          </div>
-          <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-          <div class="nav-icons">
-              <a href="notification_teacher.html" target="_blank" class="notification-link">
-        <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
-        <span class="notification-badge" id="notification-badge">0</span>
-    </a>
-            <a href="help_teacher.html" target="_blank">
-              <img src="../../main/img/Help.png" alt="Help" class="icon" />
-            </a>
-            <a href="settings_teacher.html" target="_blank">
-              <div class="account-menu">
-                <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
-              </div>
-            </a>
-          </div>
-        </nav>
-
-        <div class="secondary-header">
-          <div class="nav-menu">
-            <a href="homepage-teachers.html" class="nav-item">Home</a>
-            <a href="homepage-classroom_teacher.html" class="nav-item"
-              >Classroom</a
-            >
-            <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
-            <a href="resources_teacher.html" class="nav-item">Resources</a>
-            <a href="messages_teacher.html" class="nav-item">Messages</a>
-            <a href="studentlistpage_teacher.html" class="nav-item active"
-              >Student List</a
-            >
-          </div>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style/studentlistpage_teacher.css" />
+    <!-- Add this with your other script imports -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            class="logo-img"
+            alt="AcadBird Logo"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
         </div>
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
+        <div class="nav-icons">
+          <a
+            href="notification_teacher.html"
+            target="_blank"
+            class="notification-link"
+          >
+            <img
+              src="../../main/img/Notification.png"
+              alt="Notifications"
+              class="icon"
+            />
+            <span class="notification-badge" id="notification-badge">0</span>
+          </a>
+          <a href="help_teacher.html" target="_blank">
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          </a>
+          <a href="settings_teacher.html" target="_blank">
+            <div class="account-menu">
+              <img
+                src="../../main/img/account icon.png"
+                alt="User Account"
+                class="icon"
+              />
+            </div>
+          </a>
+        </div>
+      </nav>
 
-        <div class="separator"></div>
+      <div class="secondary-header">
+        <div class="nav-menu">
+          <a href="homepage-teachers.html" class="nav-item">Home</a>
+          <a href="homepage-classroom_teacher.html" class="nav-item"
+            >Classroom</a
+          >
+          <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
+          <a href="resources_teacher.html" class="nav-item">Resources</a>
+          <a href="messages_teacher.html" class="nav-item">Messages</a>
+          <a href="studentlistpage_teacher.html" class="nav-item active"
+            >Student List</a
+          >
+        </div>
+      </div>
 
-        <div class="main-content">
-          <div class="content-wrapper">
-           <div class="student-section">
-  <div class="section-header">
-    <h2 class="section-title">Loading class...</h2>
-    <select id="status-filter" class="status-filter">
-      <option value="all">All Students</option>
-      <option value="active">Active</option>
-      <option value="pending">Pending</option>
-    </select>
-  </div>
-  <p class="section-subtitle">Kindergarten</p>
+      <div class="separator"></div>
 
-  <!-- ✅ grid wrapper -->
-  <div class="student-grid" id="student-grid">
-    <div class="add-student-card" id="add-student-card">
-      <i class="fas fa-plus-circle add-icon"></i>
-      <h3 class="student-name">Add Student</h3>
-    </div>
-  </div>
-</div>
+      <div class="main-content">
+        <div class="content-wrapper">
+          <div class="student-section">
+            <div class="section-header">
+              <h2 class="section-title">Loading class...</h2>
+              <select id="status-filter" class="status-filter">
+                <option value="all">All Students</option>
+                <option value="active">Active</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
+            <p class="section-subtitle">Kindergarten</p>
 
-<div id="loading-overlay">
-
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
-
-
-
-            <div class="sidebar">
-              <div class="sidebar-box">
-                <h3 id="student-count">5 Students</h3>
+            <!-- ✅ grid wrapper -->
+            <div class="student-grid" id="student-grid">
+              <div class="add-student-card" id="add-student-card">
+                <i class="fas fa-plus-circle add-icon"></i>
+                <h3 class="student-name">Add Student</h3>
               </div>
             </div>
           </div>
-        </div>
 
-        <div id="add-edit-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <h2 id="modal-title">Add Student</h2>
-      <form id="student-form">
-        <div class="form-group" style="position: relative;">
-    <label for="parents-name">Parent's Name:</label>
-    <input type="text" id="parents-name" name="parents-name" autocomplete="off" />
-    <div id="parent-suggestions" class="suggestions"></div>
-  </div>
+          <div id="loading-overlay">
+            <div class="loader-3">
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label for="first-name">First Name:</label>
-          <input type="text" id="first-name" name="first-name" required />
+          <div class="sidebar">
+            <div class="sidebar-box">
+              <h3 id="student-count">5 Students</h3>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label for="last-name">Last Name:</label>
-          <input type="text" id="last-name" name="last-name" required />
-        </div>
-        <div class="form-group">
-          <label for="gender">Gender:</label>
-          <select id="gender" name="gender" required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="age">Age:</label>
-          <input type="number" id="age" name="age" min="3" max="18" required />
-        </div>
-
-        <div class="form-actions">
-          <button type="button" class="btn btn-cancel">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="form-submit-btn">
-            Add Student
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-
-  <div id="code-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <h2>Student Code</h2>
-      <p>The code for the new student is:</p>
-      <h3 id="generated-code" style="text-align:center; font-size: 1.5rem; margin: 1em 0;"></h3>
-      <div class="form-actions">
-        <button type="button" class="btn btn-primary" id="code-ok-btn">OK</button>
       </div>
-    </div>
-  </div>
 
+      <div id="add-edit-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2 id="modal-title">Add Student</h2>
+          <form id="student-form">
+            <div class="form-group" style="position: relative">
+              <label for="parents-name">Parent's Name:</label>
+              <input
+                type="text"
+                id="parents-name"
+                name="parents-name"
+                autocomplete="off"
+              />
+              <div id="parent-suggestions" class="suggestions"></div>
+            </div>
 
-        <div id="delete-modal" class="modal">
-          <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h2>Confirm Deletion</h2>
-            <p>
-              Are you sure you want to delete <span id="student-name-to-delete"></span>?
-            </p>
+            <div class="form-group">
+              <label for="first-name">First Name:</label>
+              <input type="text" id="first-name" name="first-name" required />
+            </div>
+            <div class="form-group">
+              <label for="last-name">Last Name:</label>
+              <input type="text" id="last-name" name="last-name" required />
+            </div>
+            <div class="form-group">
+              <label for="gender">Gender:</label>
+              <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="age">Age:</label>
+              <input
+                type="number"
+                id="age"
+                name="age"
+                min="3"
+                max="18"
+                required
+              />
+            </div>
+
             <div class="form-actions">
               <button type="button" class="btn btn-cancel">Cancel</button>
-              <button type="button" class="btn btn-red" id="confirm-delete-btn">
-                Delete
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="form-submit-btn"
+              >
+                Add Student
               </button>
             </div>
+          </form>
+        </div>
+      </div>
+
+      <div id="code-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2>Student Code</h2>
+          <p>The code for the new student is:</p>
+          <h3
+            id="generated-code"
+            style="text-align: center; font-size: 1.5rem; margin: 1em 0"
+          ></h3>
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary" id="code-ok-btn">
+              OK
+            </button>
           </div>
         </div>
-  <!-- Firebase App (the core Firebase SDK) -->
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { 
-    getFirestore, 
-    collection, 
-    query, 
-    where, 
-    getDocs, 
-    addDoc, 
-    doc, 
-    getDoc,
-    updateDoc  // Add this import
-} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-  // ----------------------
-  // Firebase Initialization
-  // ----------------------
-  const firebaseConfig = {
-    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-    authDomain: "acadbird-379e3.firebaseapp.com",
-    projectId: "acadbird-379e3",
-    storageBucket: "acadbird-379e3.firebasestorage.app",
-    messagingSenderId: "575491576951",
-    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-    measurementId: "G-N6Z672SXWJ"
-  };
+      </div>
 
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-
-  const loadingOverlay = document.getElementById("loading-overlay");
-  // Add this after your Firebase config
-emailjs.init("Bf08qF9nwMnYPdI7s"); // Replace with your actual public key
-
-  // ----------------------
-  // Global Variables
-  // ----------------------
-  let parentUsers = [];
-  let students = [];
-  let currentNoteCell = null;
-
-
-                      function showLoading() {
-  loadingOverlay.style.display = "flex";
-}
-
-// Hide overlay
-function hideLoading() {
-  loadingOverlay.style.display = "none";
-}
-
-
-// Notification badge functionality
-async function getTeacherClassrooms(teacherId) {
-    try {
-        const classroomsRef = collection(db, "classrooms");
-        const q = query(classroomsRef, where("teacherId", "==", teacherId));
-        const snapshot = await getDocs(q);
-        
-        const teacherClassrooms = {};
-        snapshot.forEach(doc => {
-            teacherClassrooms[doc.id] = doc.data();
-        });
-        
-        return teacherClassrooms;
-    } catch (error) {
-        console.error("Error getting teacher classrooms:", error);
-        return {};
-    }
-}
-
-async function getClassroomCapacity(classroomId) {
-    try {
-        const classRef = doc(db, "classrooms", classroomId);
-        const classSnap = await getDoc(classRef);
-        
-        if (classSnap.exists()) {
-            const data = classSnap.data();
-            return {
-                maxStudents: data.maxStudents || 30, // Default to 30 if not set
-                currentStudents: data.currentStudents || 0
-            };
-        }
-        return { maxStudents: 30, currentStudents: 0 }; // Default values
-    } catch (error) {
-        console.error("Error getting classroom capacity:", error);
-        return { maxStudents: 30, currentStudents: 0 };
-    }
-}
-
-// ----------------------
-// Check if Classroom has Capacity
-// ----------------------
-async function canAddStudent(classroomId) {
-    const capacity = await getClassroomCapacity(classroomId);
-    return capacity.currentStudents < capacity.maxStudents;
-}
-
-// ----------------------
-// Update Classroom Student Count
-// ----------------------
-async function updateClassroomStudentCount(classroomId, increment = true) {
-    try {
-        const classRef = doc(db, "classrooms", classroomId);
-        const classSnap = await getDoc(classRef);
-        
-        if (classSnap.exists()) {
-            const data = classSnap.data();
-            const currentCount = data.currentStudents || 0;
-            const newCount = increment ? currentCount + 1 : Math.max(0, currentCount - 1);
-            
-            await updateDoc(classRef, {
-                currentStudents: newCount
-            });
-            
-            console.log(`✅ Classroom student count updated to: ${newCount}`);
-            return true;
-        }
-        return false;
-    } catch (error) {
-        console.error("Error updating classroom student count:", error);
-        return false;
-    }
-}
-
-async function handleAddStudentClick(classroomId) {
-    const canAdd = await canAddStudent(classroomId);
-    
-    if (!canAdd) {
-        const capacity = await getClassroomCapacity(classroomId);
-        alert(`Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`);
-        return false;
-    }
-    
-    // Show the add student modal
-    modalTitle.textContent = "Add Student";
-    formSubmitBtn.textContent = "Add Student";
-    studentForm.reset();
-    addEditModal.style.display = 'flex';
-    return true;
-}
-
-async function getReadNotifications(teacherId) {
-    try {
-        const notificationsRef = collection(db, "notification_teacher");
-        const q = query(
-            notificationsRef, 
-            where("teacherID", "==", teacherId),
-            where("status", "==", "read")
-        );
-        const snapshot = await getDocs(q);
-        const readNotifications = {};
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const key = `${data.type}_${data.notificationID}`;
-            readNotifications[key] = true;
-        });
-        return readNotifications;
-    } catch (error) {
-        console.error("Error getting read notifications:", error);
-        return {};
-    }
-}
-
-async function countUnreadNotifications(teacherId) {
-    try {
-        console.log("🔍 Counting unread notifications for teacher:", teacherId);
-        
-        // Get all calendar events
-        const calendarRef = collection(db, "calendar");
-        const calendarSnapshot = await getDocs(calendarRef);
-        console.log("📅 Total calendar events:", calendarSnapshot.size);
-        
-        // Get teacher's classrooms
-        const teacherClassrooms = await getTeacherClassrooms(teacherId);
-        const teacherClassroomIds = Object.keys(teacherClassrooms);
-        console.log("🏫 Teacher classroom IDs:", teacherClassroomIds);
-        
-        // Get all students with status "active" in teacher's classrooms
-        let studentsSnapshot;
-        if (teacherClassroomIds.length > 0) {
-            const studentsRef = collection(db, "students");
-            const studentsQuery = query(
-                studentsRef, 
-                where("status", "==", "active"),
-                where("classroomId", "in", teacherClassroomIds)
-            );
-            studentsSnapshot = await getDocs(studentsQuery);
-            console.log("👥 Active students in classrooms:", studentsSnapshot.size);
-        } else {
-            studentsSnapshot = { docs: [] };
-            console.log("❌ No classrooms found for teacher");
-        }
-        
-        // Get all read notifications
-        const readNotifications = await getReadNotifications(teacherId);
-        console.log("📖 Read notifications count:", Object.keys(readNotifications).length);
-        
-        // Count unread calendar notifications
-        let unreadCount = 0;
-        calendarSnapshot.forEach(doc => {
-            const key = `calendar_${doc.id}`;
-            if (!readNotifications[key]) {
-                unreadCount++;
-            }
-        });
-        console.log("📆 Unread calendar notifications:", unreadCount);
-        
-        // Count unread student join notifications
-        let studentUnreadCount = 0;
-        studentsSnapshot.forEach(doc => {
-            const key = `student_${doc.id}`;
-            if (!readNotifications[key]) {
-                studentUnreadCount++;
-            }
-        });
-        console.log("👤 Unread student notifications:", studentUnreadCount);
-        
-        unreadCount += studentUnreadCount;
-        console.log("🔢 Total unread notifications:", unreadCount);
-        
-        return unreadCount;
-    } catch (error) {
-        console.error("❌ Error counting unread notifications:", error);
-        return 0;
-    }
-}
-
-async function updateNotificationBadge() {
-    try {
-        const currentUser = auth.currentUser;
-        
-        if (!currentUser) {
-            console.log("❌ No current user found");
-            return;
-        }
-        
-        console.log("🔄 Updating notification badge for user:", currentUser.uid);
-        const unreadCount = await countUnreadNotifications(currentUser.uid);
-        const badge = document.getElementById('notification-badge');
-        
-        if (badge) {
-            badge.textContent = unreadCount;
-            
-            // Hide badge if count is 0
-            if (unreadCount === 0) {
-                badge.style.display = 'none';
-                console.log("✅ Badge hidden (no unread notifications)");
-            } else {
-                badge.style.display = 'flex';
-                console.log("✅ Badge shown with count:", unreadCount);
-            }
-        } else {
-            console.log("❌ Badge element not found!");
-        }
-    } catch (error) {
-        console.error("❌ Error updating notification badge:", error);
-    }
-}
-
-// Wait for auth state before updating badge
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        console.log("👤 User authenticated:", user.uid);
-        await updateNotificationBadge();
-    } else {
-        console.log("❌ User not authenticated");
-    }
-});
-
-  // ----------------------
-  // Helpers
-  // ----------------------
-  function generateRandomCode(length = 6) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let code = '';
-    for (let i = 0; i < length; i++) {
-      code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return code;
-  }
-
-  function updateStudentCount(studentCountEl) {
-    studentCountEl.textContent = `${students.length} Students`;
-  }
-
-
-
-function createStudentCard(student, studentGrid, addStudentCard) {
-  // Create card
-  const card = document.createElement("div");
-  card.classList.add("student-card");
-
-  // Store student ID for navigation
-  card.dataset.studentId = student.id;
-
-  // Student name
-  const nameEl = document.createElement("h3");
-  nameEl.textContent = `${student.firstName} ${student.lastName}`;
-
-  // Parent name
-  const parentEl = document.createElement("p");
-  parentEl.textContent = `Parent: ${student.parentName}`;
-
-  // Append children
-  card.appendChild(nameEl);
-  card.appendChild(parentEl);
-
-  // 👉 Add click event to go to student info page
-  card.addEventListener("click", () => {
-    window.location.href = `studentlistpage_studentinfo.html?studentId=${student.id}`;
-  });
-
-  // Insert before "Add Student" card
-  studentGrid.insertBefore(card, addStudentCard);
-}
-
-
-
-  function attachCardListeners(card) {
-    const editBtn = card.querySelector('.edit-icon');
-    const deleteBtn = card.querySelector('.delete-icon');
-    const nameEl = card.querySelector('.student-name');
-
-    editBtn?.addEventListener('click', () => { /* edit functionality */ });
-    deleteBtn?.addEventListener('click', () => { /* delete functionality */ });
-    nameEl?.addEventListener('click', () => {
-      window.location.href = card.dataset.url;
-    });
-  }
-
-  // ----------------------
-  // Load Parents
-  // ----------------------
-  async function loadParents() {
-    try {
-      const q = query(collection(db, "users"), where("role", "==", "parent"));
-      const snapshot = await getDocs(q);
-
-      parentUsers = snapshot.docs.map(doc => ({
-        id: doc.id,
-        name: `${doc.data().firstName} ${doc.data().lastName}`.trim()
-      }));
-      console.log("Loaded parents:", parentUsers);
-    } catch (error) {
-      console.error("Error loading parents:", error);
-    }
-  }
-
-  // ----------------------
-  // Load Classroom
-  // ----------------------
-async function loadClassroom(classroomId, classroomNameEl, classroomGradeEl) {
-    const storedClassName = localStorage.getItem('selectedClassName');
-    classroomNameEl.textContent = storedClassName || "Classroom";
-
-    if (!classroomId) return;
-
-    try {
-        const classRef = doc(db, "classrooms", classroomId);
-        const classSnap = await getDoc(classRef);
-
-        if (classSnap.exists()) {
-            const data = classSnap.data();
-            classroomNameEl.textContent = data.classroomName || storedClassName || "Classroom";
-            classroomGradeEl.textContent = data.grade || "";
-            
-            // Update student count display with capacity info
-            const capacity = await getClassroomCapacity(classroomId);
-            const studentCountEl = document.getElementById('student-count');
-            if (studentCountEl) {
-                studentCountEl.textContent = `${capacity.currentStudents}/${capacity.maxStudents} Students`;
-            }
-        }
-    } catch (err) {
-        console.error("Failed to load classroom:", err);
-        classroomNameEl.textContent = storedClassName || "Classroom (offline)";
-    }
-}
-
-
-  // ----------------------
-// Load Students (from Firestore)
-// ----------------------
-async function loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl) {
-  if (!classroomId) return;
-
-  try {
-    const q = query(
-      collection(db, "students"),
-      where("classroomId", "==", classroomId)
-    );
-    const snapshot = await getDocs(q);
-
-    students = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-    renderStudents(studentGrid, addStudentCard, studentCountEl);
-
-    console.log(`✅ Loaded ${students.length} students for classroom ${classroomId}`);
-  } catch (err) {
-    console.error("❌ Error loading students:", err);
-  }
-}
-
-function renderStudents(studentGrid, addStudentCard, studentCountEl) {
-  const filterValue = document.getElementById("status-filter").value;
-
-  // Clear old cards
-  studentGrid.querySelectorAll('.student-card').forEach(card => card.remove());
-
-  // Filter students
-  let filtered = students;
-  if (filterValue !== "all") {
-    filtered = students.filter(s => s.status === filterValue);
-  }
-
-  // Render cards
-  filtered.forEach(student => {
-    createStudentCard(student, studentGrid, addStudentCard);
-  });
-
-  studentCountEl.textContent = `${filtered.length} Students`;
-}
-
-
-
-  // ----------------------
-  // Parent Input Autocomplete
-  // ----------------------
-  function attachParentAutocomplete() {
-    const parentInput = document.getElementById("parents-name");
-    const parentSuggestions = document.getElementById("parent-suggestions");
-
-    parentInput.addEventListener("input", () => {
-      const query = parentInput.value.toLowerCase().trim();
-      parentSuggestions.innerHTML = "";
-
-      if (!query) {
-        parentSuggestions.style.display = "none";
-        return;
-      }
-
-      const matches = parentUsers.filter(p =>
-        p.name.toLowerCase().includes(query)
-      );
-      console.log("Matches found:", matches); // debug
-
-      matches.forEach(parent => {
-        const div = document.createElement("div");
-        div.className = "suggestion";
-        div.textContent = parent.name;
-
-        div.addEventListener("mousedown", () => {
-          parentInput.value = parent.name;
-          parentSuggestions.innerHTML = "";
-          parentSuggestions.style.display = "none";
-        });
-
-        parentSuggestions.appendChild(div);
-      });
-
-      parentSuggestions.style.display = matches.length ? "block" : "none";
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!parentInput.contains(e.target) && !parentSuggestions.contains(e.target)) {
-        parentSuggestions.innerHTML = "";
-        parentSuggestions.style.display = "none";
-      }
-    });
-  }
-
-  //email
-
-  // ----------------------
-// Email Sending Function
-// ----------------------
-async function sendVerificationEmail(parentEmail, studentName, studentCode, parentName) {
-    if (!parentEmail) {
-        console.log("❌ No parent email found, skipping email notification");
-        return false;
-    }
-
-    try {
-        const templateParams = {
-            to_email: parentEmail,
-            parent_name: parentName,
-            student_name: studentName,
-            verification_code: studentCode,
-            classroom_name: document.querySelector('.section-title').textContent || "Your Classroom",
-            date_sent: new Date().toLocaleDateString('en-US', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            })
+      <div id="delete-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2>Confirm Deletion</h2>
+          <p>
+            Are you sure you want to delete
+            <span id="student-name-to-delete"></span>?
+          </p>
+          <div class="form-actions">
+            <button type="button" class="btn btn-cancel">Cancel</button>
+            <button type="button" class="btn btn-red" id="confirm-delete-btn">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Firebase App (the core Firebase SDK) -->
+      <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+        import {
+          getFirestore,
+          collection,
+          query,
+          where,
+          getDocs,
+          addDoc,
+          doc,
+          getDoc,
+          updateDoc, // Add this import
+        } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+        import {
+          getAuth,
+          onAuthStateChanged,
+        } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+        // ----------------------
+        // Firebase Initialization
+        // ----------------------
+        const firebaseConfig = {
+          apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+          authDomain: "acadbird-379e3.firebaseapp.com",
+          projectId: "acadbird-379e3",
+          storageBucket: "acadbird-379e3.firebasestorage.app",
+          messagingSenderId: "575491576951",
+          appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+          measurementId: "G-N6Z672SXWJ",
         };
 
-        const response = await emailjs.send(
-            'service_yq2mtbi', // Replace with your service ID
-            'template_x8gixdr', // Replace with your template ID
-            templateParams
-        );
-        
-        console.log('✅ Verification email sent successfully to:', parentEmail);
-        return true;
-    } catch (error) {
-        console.error('❌ Failed to send verification email:', error);
-        return false;
-    }
-}
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
 
-// ----------------------
-// Get Parent Email
-// ----------------------
-async function getParentEmail(parentId) {
-    try {
-        const userRef = doc(db, "users", parentId);
-        const userSnap = await getDoc(userRef);
-        
-        if (userSnap.exists()) {
-            const userData = userSnap.data();
-            return userData.email || null;
+        const loadingOverlay = document.getElementById("loading-overlay");
+        // Add this after your Firebase config
+        emailjs.init("Bf08qF9nwMnYPdI7s"); // Replace with your actual public key
+
+        // ----------------------
+        // Global Variables
+        // ----------------------
+        let parentUsers = [];
+        let students = [];
+        let currentNoteCell = null;
+
+        function showLoading() {
+          loadingOverlay.style.display = "flex";
         }
-        return null;
-    } catch (error) {
-        console.error("Error fetching parent email:", error);
-        return null;
-    }
-}
-  // ----------------------
-  // Main Init
-  // ----------------------
-  // ----------------------
-// Main Init
-// ----------------------
-document.addEventListener('DOMContentLoaded', async () => {
-  console.log("🚀 DOM Content Loaded - Initializing student list page");
-  
-  // Update notification badge when page loads
-  try {
-      await updateNotificationBadge();
-  } catch (error) {
-      console.error("Error initializing notification badge:", error);
-  }
 
-  showLoading();
-  let classroomId = new URLSearchParams(window.location.search).get('classroomId');
+        // Hide overlay
+        function hideLoading() {
+          loadingOverlay.style.display = "none";
+        }
 
-  const classroomNameEl = document.querySelector('.section-title');
-  const classroomGradeEl = document.querySelector('.section-subtitle');
-  const studentGrid = document.getElementById('student-grid');
+        // Notification badge functionality
+        async function getTeacherClassrooms(teacherId) {
+          try {
+            const classroomsRef = collection(db, "classrooms");
+            const q = query(classroomsRef, where("teacherId", "==", teacherId));
+            const snapshot = await getDocs(q);
 
-  const studentCountEl = document.getElementById('student-count');
-  const addEditModal = document.getElementById('add-edit-modal');
-  const modalTitle = document.getElementById('modal-title');
-  const studentForm = document.getElementById('student-form');
-  const formSubmitBtn = document.getElementById('form-submit-btn');
-  const addStudentCard = document.getElementById('add-student-card');
+            const teacherClassrooms = {};
+            snapshot.forEach((doc) => {
+              teacherClassrooms[doc.id] = doc.data();
+            });
 
-  if (!addStudentCard || !studentForm || !formSubmitBtn || !addEditModal || !modalTitle) return;
-
-  if (!classroomId) {
-      classroomId = localStorage.getItem('selectedClassId');
-  }
-
-  // ----------------------
-  // Move handleAddStudentClick inside DOMContentLoaded
-  // ----------------------
-  async function handleAddStudentClick(classroomId) {
-      const canAdd = await canAddStudent(classroomId);
-      
-      if (!canAdd) {
-          const capacity = await getClassroomCapacity(classroomId);
-          alert(`Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`);
-          return false;
-      }
-      
-      // Show the add student modal
-      modalTitle.textContent = "Add Student";
-      formSubmitBtn.textContent = "Add Student";
-      studentForm.reset();
-      addEditModal.style.display = 'flex';
-      return true;
-  }
-  
-  // MOVE THE EVENT LISTENER HERE, INSIDE THE DOMContentLoaded
-  addStudentCard.addEventListener('click', async () => {
-    await handleAddStudentClick(classroomId);
-  });
-  
-  // Load parents and classroom first
-  try {
-      // 🔽 Fetch all needed data
-      await loadParents();
-      attachParentAutocomplete();
-      await loadClassroom(classroomId, classroomNameEl, classroomGradeEl);
-      await loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
-  } catch (err) {
-      console.error("Error during initialization:", err);
-  } finally {
-      hideLoading(); // 👈 hide after everything loads
-  }
-
-  // Rest of your existing code...
-  document.getElementById("status-filter").addEventListener("change", () => {
-      renderStudents(studentGrid, addStudentCard, studentCountEl);
-  });
-
-  document.querySelectorAll('.modal .close-button, .btn-cancel').forEach(btn => {
-    btn.addEventListener('click', () => { addEditModal.style.display = 'none'; });
-  });
-
-  // Submit student form
-  studentForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const parentInput = document.getElementById("parents-name");
-    const parentName = parentInput.value.trim();
-    const firstName = document.getElementById('first-name').value.trim();
-    const lastName = document.getElementById('last-name').value.trim();
-    const gender = document.getElementById('gender').value;
-    const age = Number(document.getElementById('age').value);
-
-    const codeModal = document.getElementById("code-modal");
-    const codeOkBtn = document.getElementById("code-ok-btn");
-    const codeCloseBtn = codeModal.querySelector(".close-button");
-    
-    // Check capacity again before proceeding
-    const canAdd = await canAddStudent(classroomId);
-    if (!canAdd) {
-        const capacity = await getClassroomCapacity(classroomId);
-        alert(`Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`);
-        addEditModal.style.display = 'none';
-        return;
-    }
-
-    // Validate
-    if (!parentName || !firstName || !lastName || !gender || !age) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-
-    // Match parent
-    const parent = parentUsers.find(p => p.name === parentName);
-    if (!parent) { 
-      alert("Parent not found. Please select from suggestions."); 
-      return; 
-    }
-
-    try {
-      showLoading(); // Show loading while processing
-
-      // 🔑 Generate unique 6-digit alphanumeric code
-      const studentCode = generateRandomCode(6);
-      const studentFullName = `${firstName} ${lastName}`;
-
-      // Get parent email
-      const parentEmail = await getParentEmail(parent.id);
-      
-      // Student object with classroomId + code
-      const studentData = { 
-        firstName, 
-        lastName, 
-        gender, 
-        age, 
-        parentId: parent.id,     
-        parentName: parent.name, 
-        classroomId: classroomId || null,
-        status: "pending",               
-        studentCode: studentCode,        // ✅ save code
-        createdAt: new Date()
-      };
-
-      // Save to Firestore "students" collection
-      const docRef = await addDoc(collection(db, "students"), studentData);
-
-      // Update classroom student count
-      await updateClassroomStudentCount(classroomId, true);
-
-      // Send verification email to parent
-      if (parentEmail) {
-          const emailSent = await sendVerificationEmail(
-              parentEmail, 
-              studentFullName, 
-              studentCode, 
-              parent.name
-          );
-          
-          if (!emailSent) {
-              console.warn("⚠️ Student added but email notification failed");
+            return teacherClassrooms;
+          } catch (error) {
+            console.error("Error getting teacher classrooms:", error);
+            return {};
           }
-      } else {
-          console.warn("⚠️ Student added but no parent email found");
-      }
+        }
 
-      // Code modal handlers
-      codeOkBtn.addEventListener("click", () => {
-        codeModal.style.display = "none";
-        // Refresh the student list
-        loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
-      });
+        async function getClassroomCapacity(classroomId) {
+          try {
+            const classRef = doc(db, "classrooms", classroomId);
+            const classSnap = await getDoc(classRef);
 
-      codeCloseBtn.addEventListener("click", () => {
-        codeModal.style.display = "none";
-        // Refresh the student list
-        loadStudents(classroomId, studentGrid, addStudentCard, studentCountEl);
-      });
+            if (classSnap.exists()) {
+              const data = classSnap.data();
+              return {
+                maxStudents: data.maxStudents || 30, // Default to 30 if not set
+                currentStudents: data.currentStudents || 0,
+              };
+            }
+            return { maxStudents: 30, currentStudents: 0 }; // Default values
+          } catch (error) {
+            console.error("Error getting classroom capacity:", error);
+            return { maxStudents: 30, currentStudents: 0 };
+          }
+        }
 
-      // Add locally
-      const newStudent = { id: docRef.id, ...studentData };
-      students.push(newStudent);
+        // ----------------------
+        // Check if Classroom has Capacity
+        // ----------------------
+        async function canAddStudent(classroomId) {
+          const capacity = await getClassroomCapacity(classroomId);
+          return capacity.currentStudents < capacity.maxStudents;
+        }
 
-      // Create card in UI
-      createStudentCard(newStudent, studentGrid, addStudentCard);
-      updateStudentCount(studentCountEl);
+        // ----------------------
+        // Update Classroom Student Count
+        // ----------------------
+        async function updateClassroomStudentCount(
+          classroomId,
+          increment = true,
+        ) {
+          try {
+            const classRef = doc(db, "classrooms", classroomId);
+            const classSnap = await getDoc(classRef);
 
-      // Close add/edit modal
-      addEditModal.style.display = 'none';
-      studentForm.reset();
-      parentInput.value = "";
+            if (classSnap.exists()) {
+              const data = classSnap.data();
+              const currentCount = data.currentStudents || 0;
+              const newCount = increment
+                ? currentCount + 1
+                : Math.max(0, currentCount - 1);
 
-      // ✅ Show generated code in the code modal
-      document.getElementById("generated-code").textContent = studentCode;
-      
-      // Update modal message based on email status
-      const modalMessage = parentEmail ? 
-          `The verification code has been sent to ${parentEmail} and is shown below:` :
-          "Please share this verification code with the parent manually:";
-      
-      // Update the modal text to show this message
-      document.querySelector("#code-modal p").textContent = modalMessage;
-      
-      document.getElementById("code-modal").style.display = 'flex';
+              await updateDoc(classRef, {
+                currentStudents: newCount,
+              });
 
-      console.log("✅ Student added with ID:", docRef.id, "code:", studentCode);
+              console.log(`✅ Classroom student count updated to: ${newCount}`);
+              return true;
+            }
+            return false;
+          } catch (error) {
+            console.error("Error updating classroom student count:", error);
+            return false;
+          }
+        }
 
-    } catch (err) {
-      console.error("❌ Error adding student:", err);
-      alert("Failed to add student.");
-    } finally {
-      hideLoading(); // Hide loading regardless of outcome
-    }
-  });
-});
+        async function handleAddStudentClick(classroomId) {
+          const canAdd = await canAddStudent(classroomId);
 
-  </script>
+          if (!canAdd) {
+            const capacity = await getClassroomCapacity(classroomId);
+            alert(
+              `Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`,
+            );
+            return false;
+          }
 
-      </div>
-    </body>
-  </html>
+          // Show the add student modal
+          modalTitle.textContent = "Add Student";
+          formSubmitBtn.textContent = "Add Student";
+          studentForm.reset();
+          addEditModal.style.display = "flex";
+          return true;
+        }
+
+        async function getReadNotifications(teacherId) {
+          try {
+            const notificationsRef = collection(db, "notification_teacher");
+            const q = query(
+              notificationsRef,
+              where("teacherID", "==", teacherId),
+              where("status", "==", "read"),
+            );
+            const snapshot = await getDocs(q);
+            const readNotifications = {};
+            snapshot.forEach((doc) => {
+              const data = doc.data();
+              const key = `${data.type}_${data.notificationID}`;
+              readNotifications[key] = true;
+            });
+            return readNotifications;
+          } catch (error) {
+            console.error("Error getting read notifications:", error);
+            return {};
+          }
+        }
+
+        async function countUnreadNotifications(teacherId) {
+          try {
+            console.log(
+              "🔍 Counting unread notifications for teacher:",
+              teacherId,
+            );
+
+            // Get all calendar events
+            const calendarRef = collection(db, "calendar");
+            const calendarSnapshot = await getDocs(calendarRef);
+            console.log("📅 Total calendar events:", calendarSnapshot.size);
+
+            // Get teacher's classrooms
+            const teacherClassrooms = await getTeacherClassrooms(teacherId);
+            const teacherClassroomIds = Object.keys(teacherClassrooms);
+            console.log("🏫 Teacher classroom IDs:", teacherClassroomIds);
+
+            // Get all students with status "active" in teacher's classrooms
+            let studentsSnapshot;
+            if (teacherClassroomIds.length > 0) {
+              const studentsRef = collection(db, "students");
+              const studentsQuery = query(
+                studentsRef,
+                where("status", "==", "active"),
+                where("classroomId", "in", teacherClassroomIds),
+              );
+              studentsSnapshot = await getDocs(studentsQuery);
+              console.log(
+                "👥 Active students in classrooms:",
+                studentsSnapshot.size,
+              );
+            } else {
+              studentsSnapshot = { docs: [] };
+              console.log("❌ No classrooms found for teacher");
+            }
+
+            // Get all read notifications
+            const readNotifications = await getReadNotifications(teacherId);
+            console.log(
+              "📖 Read notifications count:",
+              Object.keys(readNotifications).length,
+            );
+
+            // Count unread calendar notifications
+            let unreadCount = 0;
+            calendarSnapshot.forEach((doc) => {
+              const key = `calendar_${doc.id}`;
+              if (!readNotifications[key]) {
+                unreadCount++;
+              }
+            });
+            console.log("📆 Unread calendar notifications:", unreadCount);
+
+            // Count unread student join notifications
+            let studentUnreadCount = 0;
+            studentsSnapshot.forEach((doc) => {
+              const key = `student_${doc.id}`;
+              if (!readNotifications[key]) {
+                studentUnreadCount++;
+              }
+            });
+            console.log("👤 Unread student notifications:", studentUnreadCount);
+
+            unreadCount += studentUnreadCount;
+            console.log("🔢 Total unread notifications:", unreadCount);
+
+            return unreadCount;
+          } catch (error) {
+            console.error("❌ Error counting unread notifications:", error);
+            return 0;
+          }
+        }
+
+        async function updateNotificationBadge() {
+          try {
+            const currentUser = auth.currentUser;
+
+            if (!currentUser) {
+              console.log("❌ No current user found");
+              return;
+            }
+
+            console.log(
+              "🔄 Updating notification badge for user:",
+              currentUser.uid,
+            );
+            const unreadCount = await countUnreadNotifications(currentUser.uid);
+            const badge = document.getElementById("notification-badge");
+
+            if (badge) {
+              badge.textContent = unreadCount;
+
+              // Hide badge if count is 0
+              if (unreadCount === 0) {
+                badge.style.display = "none";
+                console.log("✅ Badge hidden (no unread notifications)");
+              } else {
+                badge.style.display = "flex";
+                console.log("✅ Badge shown with count:", unreadCount);
+              }
+            } else {
+              console.log("❌ Badge element not found!");
+            }
+          } catch (error) {
+            console.error("❌ Error updating notification badge:", error);
+          }
+        }
+
+        // Wait for auth state before updating badge
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            console.log("👤 User authenticated:", user.uid);
+            await updateNotificationBadge();
+          } else {
+            console.log("❌ User not authenticated");
+          }
+        });
+
+        // ----------------------
+        // Helpers
+        // ----------------------
+        function generateRandomCode(length = 6) {
+          const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+          let code = "";
+          for (let i = 0; i < length; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          return code;
+        }
+
+        function updateStudentCount(studentCountEl) {
+          studentCountEl.textContent = `${students.length} Students`;
+        }
+
+        function createStudentCard(student, studentGrid, addStudentCard) {
+          // Create card
+          const card = document.createElement("div");
+          card.classList.add("student-card");
+
+          // Store student ID for navigation
+          card.dataset.studentId = student.id;
+
+          // Student name
+          const nameEl = document.createElement("h3");
+          nameEl.textContent = `${student.firstName} ${student.lastName}`;
+
+          // Parent name
+          const parentEl = document.createElement("p");
+          parentEl.textContent = `Parent: ${student.parentName}`;
+
+          // Append children
+          card.appendChild(nameEl);
+          card.appendChild(parentEl);
+
+          // 👉 Add click event to go to student info page
+          card.addEventListener("click", () => {
+            window.location.href = `studentlistpage_studentinfo.html?studentId=${student.id}`;
+          });
+
+          // Insert before "Add Student" card
+          studentGrid.insertBefore(card, addStudentCard);
+        }
+
+        function attachCardListeners(card) {
+          const editBtn = card.querySelector(".edit-icon");
+          const deleteBtn = card.querySelector(".delete-icon");
+          const nameEl = card.querySelector(".student-name");
+
+          editBtn?.addEventListener("click", () => {
+            /* edit functionality */
+          });
+          deleteBtn?.addEventListener("click", () => {
+            /* delete functionality */
+          });
+          nameEl?.addEventListener("click", () => {
+            window.location.href = card.dataset.url;
+          });
+        }
+
+        // ----------------------
+        // Load Parents
+        // ----------------------
+        async function loadParents() {
+          try {
+            const q = query(
+              collection(db, "users"),
+              where("role", "==", "parent"),
+            );
+            const snapshot = await getDocs(q);
+
+            parentUsers = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              name: `${doc.data().firstName} ${doc.data().lastName}`.trim(),
+            }));
+            console.log("Loaded parents:", parentUsers);
+          } catch (error) {
+            console.error("Error loading parents:", error);
+          }
+        }
+
+        // ----------------------
+        // Load Classroom
+        // ----------------------
+        async function loadClassroom(
+          classroomId,
+          classroomNameEl,
+          classroomGradeEl,
+        ) {
+          const storedClassName = localStorage.getItem("selectedClassName");
+          classroomNameEl.textContent = storedClassName || "Classroom";
+
+          if (!classroomId) return;
+
+          try {
+            const classRef = doc(db, "classrooms", classroomId);
+            const classSnap = await getDoc(classRef);
+
+            if (classSnap.exists()) {
+              const data = classSnap.data();
+              classroomNameEl.textContent =
+                data.classroomName || storedClassName || "Classroom";
+              classroomGradeEl.textContent = data.grade || "";
+
+              // Update student count display with capacity info
+              const capacity = await getClassroomCapacity(classroomId);
+              const studentCountEl = document.getElementById("student-count");
+              if (studentCountEl) {
+                studentCountEl.textContent = `${capacity.currentStudents}/${capacity.maxStudents} Students`;
+              }
+            }
+          } catch (err) {
+            console.error("Failed to load classroom:", err);
+            classroomNameEl.textContent =
+              storedClassName || "Classroom (offline)";
+          }
+        }
+
+        // ----------------------
+        // Load Students (from Firestore)
+        // ----------------------
+        async function loadStudents(
+          classroomId,
+          studentGrid,
+          addStudentCard,
+          studentCountEl,
+        ) {
+          if (!classroomId) return;
+
+          try {
+            const q = query(
+              collection(db, "students"),
+              where("classroomId", "==", classroomId),
+            );
+            const snapshot = await getDocs(q);
+
+            students = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+
+            renderStudents(studentGrid, addStudentCard, studentCountEl);
+
+            console.log(
+              `✅ Loaded ${students.length} students for classroom ${classroomId}`,
+            );
+          } catch (err) {
+            console.error("❌ Error loading students:", err);
+          }
+        }
+
+        function renderStudents(studentGrid, addStudentCard, studentCountEl) {
+          const filterValue = document.getElementById("status-filter").value;
+
+          // Clear old cards
+          studentGrid
+            .querySelectorAll(".student-card")
+            .forEach((card) => card.remove());
+
+          // Filter students
+          let filtered = students;
+          if (filterValue !== "all") {
+            filtered = students.filter((s) => s.status === filterValue);
+          }
+
+          // Render cards
+          filtered.forEach((student) => {
+            createStudentCard(student, studentGrid, addStudentCard);
+          });
+
+          studentCountEl.textContent = `${filtered.length} Students`;
+        }
+
+        // ----------------------
+        // Parent Input Autocomplete
+        // ----------------------
+        function attachParentAutocomplete() {
+          const parentInput = document.getElementById("parents-name");
+          const parentSuggestions =
+            document.getElementById("parent-suggestions");
+
+          parentInput.addEventListener("input", () => {
+            const query = parentInput.value.toLowerCase().trim();
+            parentSuggestions.innerHTML = "";
+
+            if (!query) {
+              parentSuggestions.style.display = "none";
+              return;
+            }
+
+            const matches = parentUsers.filter((p) =>
+              p.name.toLowerCase().includes(query),
+            );
+            console.log("Matches found:", matches); // debug
+
+            matches.forEach((parent) => {
+              const div = document.createElement("div");
+              div.className = "suggestion";
+              div.textContent = parent.name;
+
+              div.addEventListener("mousedown", () => {
+                parentInput.value = parent.name;
+                parentSuggestions.innerHTML = "";
+                parentSuggestions.style.display = "none";
+              });
+
+              parentSuggestions.appendChild(div);
+            });
+
+            parentSuggestions.style.display = matches.length ? "block" : "none";
+          });
+
+          document.addEventListener("click", (e) => {
+            if (
+              !parentInput.contains(e.target) &&
+              !parentSuggestions.contains(e.target)
+            ) {
+              parentSuggestions.innerHTML = "";
+              parentSuggestions.style.display = "none";
+            }
+          });
+        }
+
+        //email
+
+        // ----------------------
+        // Email Sending Function
+        // ----------------------
+        async function sendVerificationEmail(
+          parentEmail,
+          studentName,
+          studentCode,
+          parentName,
+        ) {
+          if (!parentEmail) {
+            console.log(
+              "❌ No parent email found, skipping email notification",
+            );
+            return false;
+          }
+
+          try {
+            const templateParams = {
+              to_email: parentEmail,
+              parent_name: parentName,
+              student_name: studentName,
+              verification_code: studentCode,
+              classroom_name:
+                document.querySelector(".section-title").textContent ||
+                "Your Classroom",
+              date_sent: new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              }),
+            };
+
+            const response = await emailjs.send(
+              "service_yq2mtbi", // Replace with your service ID
+              "template_x8gixdr", // Replace with your template ID
+              templateParams,
+            );
+
+            console.log(
+              "✅ Verification email sent successfully to:",
+              parentEmail,
+            );
+            return true;
+          } catch (error) {
+            console.error("❌ Failed to send verification email:", error);
+            return false;
+          }
+        }
+
+        // ----------------------
+        // Get Parent Email
+        // ----------------------
+        async function getParentEmail(parentId) {
+          try {
+            const userRef = doc(db, "users", parentId);
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+              const userData = userSnap.data();
+              return userData.email || null;
+            }
+            return null;
+          } catch (error) {
+            console.error("Error fetching parent email:", error);
+            return null;
+          }
+        }
+        // ----------------------
+        // Main Init
+        // ----------------------
+        // ----------------------
+        // Main Init
+        // ----------------------
+        document.addEventListener("DOMContentLoaded", async () => {
+          console.log("🚀 DOM Content Loaded - Initializing student list page");
+
+          // Update notification badge when page loads
+          try {
+            await updateNotificationBadge();
+          } catch (error) {
+            console.error("Error initializing notification badge:", error);
+          }
+
+          showLoading();
+          let classroomId = new URLSearchParams(window.location.search).get(
+            "classroomId",
+          );
+
+          const classroomNameEl = document.querySelector(".section-title");
+          const classroomGradeEl = document.querySelector(".section-subtitle");
+          const studentGrid = document.getElementById("student-grid");
+
+          const studentCountEl = document.getElementById("student-count");
+          const addEditModal = document.getElementById("add-edit-modal");
+          const modalTitle = document.getElementById("modal-title");
+          const studentForm = document.getElementById("student-form");
+          const formSubmitBtn = document.getElementById("form-submit-btn");
+          const addStudentCard = document.getElementById("add-student-card");
+
+          if (
+            !addStudentCard ||
+            !studentForm ||
+            !formSubmitBtn ||
+            !addEditModal ||
+            !modalTitle
+          )
+            return;
+
+          if (!classroomId) {
+            classroomId = localStorage.getItem("selectedClassId");
+          }
+
+          // ----------------------
+          // Move handleAddStudentClick inside DOMContentLoaded
+          // ----------------------
+          async function handleAddStudentClick(classroomId) {
+            const canAdd = await canAddStudent(classroomId);
+
+            if (!canAdd) {
+              const capacity = await getClassroomCapacity(classroomId);
+              alert(
+                `Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`,
+              );
+              return false;
+            }
+
+            // Show the add student modal
+            modalTitle.textContent = "Add Student";
+            formSubmitBtn.textContent = "Add Student";
+            studentForm.reset();
+            addEditModal.style.display = "flex";
+            return true;
+          }
+
+          // MOVE THE EVENT LISTENER HERE, INSIDE THE DOMContentLoaded
+          addStudentCard.addEventListener("click", async () => {
+            await handleAddStudentClick(classroomId);
+          });
+
+          // Load parents and classroom first
+          try {
+            // 🔽 Fetch all needed data
+            await loadParents();
+            attachParentAutocomplete();
+            await loadClassroom(classroomId, classroomNameEl, classroomGradeEl);
+            await loadStudents(
+              classroomId,
+              studentGrid,
+              addStudentCard,
+              studentCountEl,
+            );
+          } catch (err) {
+            console.error("Error during initialization:", err);
+          } finally {
+            hideLoading(); // 👈 hide after everything loads
+          }
+
+          // Rest of your existing code...
+          document
+            .getElementById("status-filter")
+            .addEventListener("change", () => {
+              renderStudents(studentGrid, addStudentCard, studentCountEl);
+            });
+
+          document
+            .querySelectorAll(".modal .close-button, .btn-cancel")
+            .forEach((btn) => {
+              btn.addEventListener("click", () => {
+                addEditModal.style.display = "none";
+              });
+            });
+
+          // Submit student form
+          studentForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const parentInput = document.getElementById("parents-name");
+            const parentName = parentInput.value.trim();
+            const firstName = document
+              .getElementById("first-name")
+              .value.trim();
+            const lastName = document.getElementById("last-name").value.trim();
+            const gender = document.getElementById("gender").value;
+            const age = Number(document.getElementById("age").value);
+
+            const codeModal = document.getElementById("code-modal");
+            const codeOkBtn = document.getElementById("code-ok-btn");
+            const codeCloseBtn = codeModal.querySelector(".close-button");
+
+            // Check capacity again before proceeding
+            const canAdd = await canAddStudent(classroomId);
+            if (!canAdd) {
+              const capacity = await getClassroomCapacity(classroomId);
+              alert(
+                `Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`,
+              );
+              addEditModal.style.display = "none";
+              return;
+            }
+
+            // Validate
+            if (!parentName || !firstName || !lastName || !gender || !age) {
+              alert("Please fill in all required fields.");
+              return;
+            }
+
+            // Match parent
+            const parent = parentUsers.find((p) => p.name === parentName);
+            if (!parent) {
+              alert("Parent not found. Please select from suggestions.");
+              return;
+            }
+
+            try {
+              showLoading(); // Show loading while processing
+
+              // 🔑 Generate unique 6-digit alphanumeric code
+              const studentCode = generateRandomCode(6);
+              const studentFullName = `${firstName} ${lastName}`;
+
+              // Get parent email
+              const parentEmail = await getParentEmail(parent.id);
+
+              // Student object with classroomId + code
+              const studentData = {
+                firstName,
+                lastName,
+                gender,
+                age,
+                parentId: parent.id,
+                parentName: parent.name,
+                classroomId: classroomId || null,
+                status: "pending",
+                studentCode: studentCode, // ✅ save code
+                createdAt: new Date(),
+              };
+
+              // Save to Firestore "students" collection
+              const docRef = await addDoc(
+                collection(db, "students"),
+                studentData,
+              );
+
+              // Update classroom student count
+              await updateClassroomStudentCount(classroomId, true);
+
+              // Send verification email to parent
+              if (parentEmail) {
+                const emailSent = await sendVerificationEmail(
+                  parentEmail,
+                  studentFullName,
+                  studentCode,
+                  parent.name,
+                );
+
+                if (!emailSent) {
+                  console.warn(
+                    "⚠️ Student added but email notification failed",
+                  );
+                }
+              } else {
+                console.warn("⚠️ Student added but no parent email found");
+              }
+
+              // Code modal handlers
+              codeOkBtn.addEventListener("click", () => {
+                codeModal.style.display = "none";
+                // Refresh the student list
+                loadStudents(
+                  classroomId,
+                  studentGrid,
+                  addStudentCard,
+                  studentCountEl,
+                );
+              });
+
+              codeCloseBtn.addEventListener("click", () => {
+                codeModal.style.display = "none";
+                // Refresh the student list
+                loadStudents(
+                  classroomId,
+                  studentGrid,
+                  addStudentCard,
+                  studentCountEl,
+                );
+              });
+
+              // Add locally
+              const newStudent = { id: docRef.id, ...studentData };
+              students.push(newStudent);
+
+              // Create card in UI
+              createStudentCard(newStudent, studentGrid, addStudentCard);
+              updateStudentCount(studentCountEl);
+
+              // Close add/edit modal
+              addEditModal.style.display = "none";
+              studentForm.reset();
+              parentInput.value = "";
+
+              // ✅ Show generated code in the code modal
+              document.getElementById("generated-code").textContent =
+                studentCode;
+
+              // Update modal message based on email status
+              const modalMessage = parentEmail
+                ? `The verification code has been sent to ${parentEmail} and is shown below:`
+                : "Please share this verification code with the parent manually:";
+
+              // Update the modal text to show this message
+              document.querySelector("#code-modal p").textContent =
+                modalMessage;
+
+              document.getElementById("code-modal").style.display = "flex";
+
+              console.log(
+                "✅ Student added with ID:",
+                docRef.id,
+                "code:",
+                studentCode,
+              );
+            } catch (err) {
+              console.error("❌ Error adding student:", err);
+              alert("Failed to add student.");
+            } finally {
+              hideLoading(); // Hide loading regardless of outcome
+            }
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>

@@ -1,73 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AcadBird - Messages</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    
-    <link rel="stylesheet" href="../style/messages_teacher.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="../style/messages_teacher.css" />
 
     <style>
-    /* Additional styles for loading states */
-    .loading-chats, .loading-recipients {
+      /* Additional styles for loading states */
+      .loading-chats,
+      .loading-recipients {
         text-align: center;
         padding: 20px;
         color: #666;
         font-style: italic;
-    }
+      }
 
-    .error-message {
+      .error-message {
         text-align: center;
         padding: 20px;
         color: #e74c3c;
         background: #ffeaea;
         border-radius: 8px;
         margin: 10px;
-    }
+      }
 
-    .no-parents-message, .no-recipients {
+      .no-parents-message,
+      .no-recipients {
         text-align: center;
         padding: 40px 20px;
         color: #666;
-    }
+      }
 
-    .no-parents-message i, .no-recipients i {
+      .no-parents-message i,
+      .no-recipients i {
         font-size: 3rem;
         color: #bdc3c7;
         margin-bottom: 15px;
-    }
+      }
 
-    .no-parents-message h4, .no-recipients h4 {
+      .no-parents-message h4,
+      .no-recipients h4 {
         margin-bottom: 10px;
         color: #2c3e50;
-    }
+      }
 
-    .welcome-message {
+      .welcome-message {
         text-align: center;
         padding: 60px 20px;
         color: #666;
-    }
+      }
 
-    .welcome-icon {
+      .welcome-icon {
         font-size: 4rem;
         color: #3498db;
         margin-bottom: 20px;
-    }
+      }
 
-    .welcome-message h3 {
+      .welcome-message h3 {
         margin-bottom: 10px;
         color: #2c3e50;
-    }
+      }
 
-    .modal-body {
+      .modal-body {
         max-height: 400px;
         overflow-y: auto;
-    }
+      }
 
-    /* Unread badge styles */
-    .unread-badge {
+      /* Unread badge styles */
+      .unread-badge {
         position: absolute;
         top: 12px;
         right: 15px;
@@ -81,39 +91,39 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         z-index: 10;
-    }
+      }
 
-    .chat-item {
+      .chat-item {
         position: relative;
-    }
+      }
 
-    .chat-info {
+      .chat-info {
         flex: 1;
         min-width: 0;
-    }
+      }
 
-    .chat-preview {
+      .chat-preview {
         color: #666;
         font-size: 0.875rem;
         margin-top: 2px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
+      }
 
-    /* New sidebar styles */
-    .sidebar {
+      /* New sidebar styles */
+      .sidebar {
         background: #f8f9fa;
         border-right: 1px solid #e0e0e0;
         width: 350px;
         display: flex;
         flex-direction: column;
         height: 100%;
-    }
+      }
 
-    .new-message {
+      .new-message {
         background: #3498db;
         color: white;
         border: none;
@@ -127,13 +137,13 @@
         align-items: center;
         gap: 8px;
         transition: background 0.3s ease;
-    }
+      }
 
-    .new-message:hover {
+      .new-message:hover {
         background: #2980b9;
-    }
+      }
 
-    .sidebar-title {
+      .sidebar-title {
         font-size: 12px;
         font-weight: 600;
         color: #7f8c8d;
@@ -141,17 +151,17 @@
         letter-spacing: 0.5px;
         padding: 0 20px 10px 20px;
         margin-top: 10px;
-    }
+      }
 
-    .chat-list {
+      .chat-list {
         list-style: none;
         padding: 0;
         margin: 0;
         overflow-y: auto;
         flex: 1;
-    }
+      }
 
-    .chat-item {
+      .chat-item {
         display: flex;
         align-items: center;
         padding: 15px 20px;
@@ -159,18 +169,18 @@
         border-bottom: 1px solid #f0f0f0;
         transition: background 0.2s ease;
         position: relative;
-    }
+      }
 
-    .chat-item:hover {
+      .chat-item:hover {
         background: #e8f4fd;
-    }
+      }
 
-    .chat-item.active {
+      .chat-item.active {
         background: #e3f2fd;
         border-right: 3px solid #3498db;
-    }
+      }
 
-    .avatar {
+      .avatar {
         width: 45px;
         height: 45px;
         border-radius: 50%;
@@ -183,30 +193,30 @@
         font-size: 16px;
         margin-right: 15px;
         flex-shrink: 0;
-    }
+      }
 
-    .chat-info {
+      .chat-info {
         flex: 1;
         min-width: 0;
-    }
+      }
 
-    .chat-name {
+      .chat-name {
         font-weight: 600;
         color: #2c3e50;
         font-size: 14px;
         margin-bottom: 4px;
-    }
+      }
 
-    .chat-sub {
+      .chat-sub {
         font-size: 12px;
         color: #7f8c8d;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-    }
+      }
 
-    /* Modal styles */
-    .modal {
+      /* Modal styles */
+      .modal {
         display: none;
         position: fixed;
         z-index: 1000;
@@ -214,10 +224,10 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0,0,0,0.5);
-    }
+        background-color: rgba(0, 0, 0, 0.5);
+      }
 
-    .modal-content {
+      .modal-content {
         background-color: white;
         margin: 5% auto;
         padding: 0;
@@ -226,24 +236,24 @@
         max-width: 500px;
         max-height: 80vh;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
 
-    .modal-header {
+      .modal-header {
         padding: 20px;
         border-bottom: 1px solid #e0e0e0;
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
+      }
 
-    .modal-title {
+      .modal-title {
         font-weight: 600;
         color: #2c3e50;
         font-size: 18px;
-    }
+      }
 
-    .close-btn {
+      .close-btn {
         background: none;
         border: none;
         font-size: 24px;
@@ -255,34 +265,34 @@
         display: flex;
         align-items: center;
         justify-content: center;
-    }
+      }
 
-    .close-btn:hover {
+      .close-btn:hover {
         color: #2c3e50;
-    }
+      }
 
-    .recipient-list {
+      .recipient-list {
         list-style: none;
         padding: 0;
         margin: 0;
         max-height: 400px;
         overflow-y: auto;
-    }
+      }
 
-    .recipient-item {
+      .recipient-item {
         display: flex;
         align-items: center;
         padding: 15px 20px;
         cursor: pointer;
         border-bottom: 1px solid #f0f0f0;
         transition: background 0.2s ease;
-    }
+      }
 
-    .recipient-item:hover {
+      .recipient-item:hover {
         background: #e8f4fd;
-    }
+      }
 
-    .recipient-avatar {
+      .recipient-avatar {
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -295,79 +305,79 @@
         font-size: 14px;
         margin-right: 15px;
         flex-shrink: 0;
-    }
+      }
 
-    .recipient-info {
+      .recipient-info {
         flex: 1;
-    }
+      }
 
-    .recipient-name {
+      .recipient-name {
         font-weight: 600;
         color: #2c3e50;
         font-size: 14px;
         margin-bottom: 2px;
-    }
+      }
 
-    .recipient-student {
+      .recipient-student {
         font-size: 12px;
         color: #7f8c8d;
-    }
+      }
 
-    /* Message styles */
-    .message {
+      /* Message styles */
+      .message {
         max-width: 70%;
         padding: 12px 16px;
         margin: 8px 0;
         border-radius: 12px;
         position: relative;
         word-wrap: break-word;
-    }
+      }
 
-    .message.sent {
+      .message.sent {
         background: #3498db;
         color: white;
         margin-left: auto;
         border-bottom-right-radius: 4px;
-    }
+      }
 
-    .message.received {
+      .message.received {
         background: white;
         color: #2c3e50;
         border: 1px solid #e0e0e0;
         margin-right: auto;
         border-bottom-left-radius: 4px;
-    }
+      }
 
-    .message-time {
+      .message-time {
         font-size: 11px;
         opacity: 0.7;
         margin-top: 4px;
         text-align: right;
-    }
+      }
 
-    .chat-input-container {
+      .chat-input-container {
         display: flex;
         padding: 20px;
         background: white;
         border-top: 1px solid #e0e0e0;
         gap: 10px;
         align-items: center;
-    }
+      }
 
-    .chat-input {
+      .chat-input {
         flex: 1;
         padding: 12px 16px;
         border: 1px solid #e0e0e0;
         border-radius: 24px;
         outline: none;
         font-size: 14px;
-    }
+      }
 
-    .chat-input:focus {
+      .chat-input:focus {
         border-color: #3498db;
-    }
+      }
 
-    .send-btn {
+      .send-btn {
         background: #3498db;
         color: white;
         border: none;
@@ -379,288 +389,336 @@
         align-items: center;
         justify-content: center;
         transition: background 0.3s ease;
-    }
+      }
 
-    .send-btn:hover {
+      .send-btn:hover {
         background: #2980b9;
-    }
+      }
 
-    .attachment-btn {
+      .attachment-btn {
         background: none;
         border: none;
         color: #7f8c8d;
         cursor: pointer;
         font-size: 16px;
         padding: 8px;
-    }
+      }
 
-    .message-date {
+      .message-date {
         text-align: center;
         color: #7f8c8d;
         font-size: 12px;
         margin: 20px 0;
         padding: 5px 0;
-    }
-</style>
-</head>
-<body>
+      }
+    </style>
+  </head>
+  <body>
     <div class="page-wrapper">
-        <!-- Navbar -->
-        <div class="navbar">
-            <div class="navbar-container">
-                <div class="logo">
-                     <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-                    <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
-                </div>
-                <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-                <div class="nav-icons">
-                       <a href="notification_teacher.html" title="Notifications" class="notification-link">
-        <i class="fas fa-bell icon"></i>
-        <span class="notification-badge" id="notification-badge">0</span>
-    </a>
-                    <a href="help_teacher.html" title="Help">
-                        <i class="fas fa-question-circle icon"></i>
-                    </a>
-                    <a href="settings_teacher.html" title="Settings">
-                        <div class="account-menu">
-                            <i class="fas fa-user-circle icon"></i>
-                        </div>
-                    </a>
-                </div>
-            </div>
+      <!-- Navbar -->
+      <div class="navbar">
+        <div class="navbar-container">
+          <div class="logo">
+            <img
+              src="../../main/img/AcadBird - White no text.png"
+              alt="AcadBird"
+              class="logo-img"
+            />
+            <img
+              src="../../main/img/AcadBird - White Text.png"
+              class="logo-text-img"
+              alt="AcadBird Text"
+            />
+          </div>
+          <img
+            src="../../main/img/sunhill.png"
+            alt="AcadBird"
+            class="middle-logo"
+          />
+          <div class="nav-icons">
+            <a
+              href="notification_teacher.html"
+              title="Notifications"
+              class="notification-link"
+            >
+              <i class="fas fa-bell icon"></i>
+              <span class="notification-badge" id="notification-badge">0</span>
+            </a>
+            <a href="help_teacher.html" title="Help">
+              <i class="fas fa-question-circle icon"></i>
+            </a>
+            <a href="settings_teacher.html" title="Settings">
+              <div class="account-menu">
+                <i class="fas fa-user-circle icon"></i>
+              </div>
+            </a>
+          </div>
         </div>
-        
-        <!-- Secondary Header -->
-        <div class="secondary-header">
-           <div class="secondary-header-container">
-               <nav class="nav-menu">
-                    <a href="homepage-teachers.html" class="nav-item">Home</a>
-                    <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
-                    <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
-                    <a href="resources_teacher.html" class="nav-item">Resources</a>
-                    <a href="messages_teacher.html" class="nav-item active">Messages</a>
-                    <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
-               </nav>
-           </div>
-        </div>
-        
-        <div class="separator"></div>
+      </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="messages-container">
-                <!-- Sidebar - Updated to match parent version -->
-                <div class="sidebar">
-                    <button class="new-message" id="new-message-btn">
-                        <i class="fas fa-plus"></i> New message
-                    </button>
-                    <div class="sidebar-title">MOST RECENT</div>
-                    <ul class="chat-list" id="chat-list">
-                        <!-- Dynamic content will be loaded here -->
-                        <div class="loading-chats">Loading conversations...</div>
-                    </ul>
-                </div>
-
-                <!-- Chat Window -->
-                <div class="chat-window">
-                    <div class="chat-header">
-                        <div id="chat-user-name">Select a conversation</div>
-                        <div id="chat-user-student">Choose a contact to start messaging</div>
-                    </div>
-                    
-                    <div class="chat-body" id="chat-body">
-                        <div class="welcome-message">
-                            <div class="welcome-icon">
-                                <i class="fas fa-comments"></i>
-                            </div>
-                            <h3>Welcome to Messages</h3>
-                            <p>Select a parent from the sidebar to start a conversation, or create a new message.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="chat-input-container" style="display: none;" id="chat-input-container">
-                        <button class="attachment-btn" title="Attach file">
-                            <i class="fas fa-paperclip"></i>
-                        </button>
-                        <input type="text" class="chat-input" id="message-input" placeholder="Type a message...">
-                        <button class="send-btn" id="send-btn">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
+      <!-- Secondary Header -->
+      <div class="secondary-header">
+        <div class="secondary-header-container">
+          <nav class="nav-menu">
+            <a href="homepage-teachers.html" class="nav-item">Home</a>
+            <a href="homepage-classroom_teacher.html" class="nav-item"
+              >Classroom</a
+            >
+            <a href="activitylog_teacher.html" class="nav-item"
+              >Activity Logs</a
+            >
+            <a href="resources_teacher.html" class="nav-item">Resources</a>
+            <a href="messages_teacher.html" class="nav-item active">Messages</a>
+            <a href="studentlistpage_teacher.html" class="nav-item"
+              >Student List</a
+            >
+          </nav>
         </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="messages-container">
+          <!-- Sidebar - Updated to match parent version -->
+          <div class="sidebar">
+            <button class="new-message" id="new-message-btn">
+              <i class="fas fa-plus"></i> New message
+            </button>
+            <div class="sidebar-title">MOST RECENT</div>
+            <ul class="chat-list" id="chat-list">
+              <!-- Dynamic content will be loaded here -->
+              <div class="loading-chats">Loading conversations...</div>
+            </ul>
+          </div>
+
+          <!-- Chat Window -->
+          <div class="chat-window">
+            <div class="chat-header">
+              <div id="chat-user-name">Select a conversation</div>
+              <div id="chat-user-student">
+                Choose a contact to start messaging
+              </div>
+            </div>
+
+            <div class="chat-body" id="chat-body">
+              <div class="welcome-message">
+                <div class="welcome-icon">
+                  <i class="fas fa-comments"></i>
+                </div>
+                <h3>Welcome to Messages</h3>
+                <p>
+                  Select a parent from the sidebar to start a conversation, or
+                  create a new message.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="chat-input-container"
+              style="display: none"
+              id="chat-input-container"
+            >
+              <button class="attachment-btn" title="Attach file">
+                <i class="fas fa-paperclip"></i>
+              </button>
+              <input
+                type="text"
+                class="chat-input"
+                id="message-input"
+                placeholder="Type a message..."
+              />
+              <button class="send-btn" id="send-btn">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- New Message Modal -->
     <div id="new-message-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Select a Recipient</div>
-                <button class="close-btn">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="loading-recipients" id="loading-recipients">Loading parents...</div>
-                <ul class="recipient-list" id="recipient-list">
-                    <!-- Dynamic content will be loaded here -->
-                </ul>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title">Select a Recipient</div>
+          <button class="close-btn">&times;</button>
         </div>
+        <div class="modal-body">
+          <div class="loading-recipients" id="loading-recipients">
+            Loading parents...
+          </div>
+          <ul class="recipient-list" id="recipient-list">
+            <!-- Dynamic content will be loaded here -->
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- Add Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
-<script>
-    // Firebase Configuration
-    const firebaseConfig = {
+    <script>
+      // Firebase Configuration
+      const firebaseConfig = {
         apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
         authDomain: "acadbird-379e3.firebaseapp.com",
         projectId: "acadbird-379e3",
         storageBucket: "acadbird-379e3.appspot.com",
         messagingSenderId: "575491576951",
         appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-        measurementId: "G-N6Z672SXWJ"
-    };
+        measurementId: "G-N6Z672SXWJ",
+      };
 
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const auth = firebase.auth();
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const auth = firebase.auth();
 
-    // Global variables
-    let currentTeacher = null;
-    let currentClassroomId = null;
-    let currentChatId = null;
-    let unsubscribeMessages = null;
-    let unreadCounts = new Map();
+      // Global variables
+      let currentTeacher = null;
+      let currentClassroomId = null;
+      let currentChatId = null;
+      let unsubscribeMessages = null;
+      let unreadCounts = new Map();
 
-    // Initialize the messaging system
-    async function initializeMessagingSystem() {
+      // Initialize the messaging system
+      async function initializeMessagingSystem() {
         try {
-            console.log("🚀 Initializing messaging system...");
-            
-            // Update loading state
-            document.querySelector('.loading-chats').textContent = 'Loading parents...';
+          console.log("🚀 Initializing messaging system...");
 
-            // Load parents
-            const parents = await loadParents();
-            console.log("📋 Parents loaded:", parents);
-            
-            if (parents.length === 0) {
-                showNoParentsMessage();
-                return;
-            }
+          // Update loading state
+          document.querySelector(".loading-chats").textContent =
+            "Loading parents...";
 
-            // Populate sidebar with parents
-            populateChatList(parents);
-            
-            // Set up chat listeners for unread counts
-            await setupChatListeners(parents);
-            
-            // Set up event listeners
-            setupEventListeners();
+          // Load parents
+          const parents = await loadParents();
+          console.log("📋 Parents loaded:", parents);
 
-            console.log("✅ Messaging system initialized");
+          if (parents.length === 0) {
+            showNoParentsMessage();
+            return;
+          }
 
+          // Populate sidebar with parents
+          populateChatList(parents);
+
+          // Set up chat listeners for unread counts
+          await setupChatListeners(parents);
+
+          // Set up event listeners
+          setupEventListeners();
+
+          console.log("✅ Messaging system initialized");
         } catch (error) {
-            console.error("❌ Error initializing messaging system:", error);
-            throw error;
+          console.error("❌ Error initializing messaging system:", error);
+          throw error;
         }
-    }
+      }
 
-    // Get teacher's classroom
-    async function getTeacherClassroom() {
+      // Get teacher's classroom
+      async function getTeacherClassroom() {
         try {
-            console.log("🔍 Getting teacher's classroom...");
-            const snapshot = await db.collection('classrooms')
-                .where('teacherId', '==', currentTeacher.uid)
-                .limit(1)
-                .get();
+          console.log("🔍 Getting teacher's classroom...");
+          const snapshot = await db
+            .collection("classrooms")
+            .where("teacherId", "==", currentTeacher.uid)
+            .limit(1)
+            .get();
 
-            if (snapshot.empty) {
-                console.error("❌ No classroom found for teacher");
-                showErrorMessage("No classroom assigned to you yet.");
-                return;
-            }
+          if (snapshot.empty) {
+            console.error("❌ No classroom found for teacher");
+            showErrorMessage("No classroom assigned to you yet.");
+            return;
+          }
 
-            const classroomDoc = snapshot.docs[0];
-            currentClassroomId = classroomDoc.id;
-            console.log("🏫 Classroom found:", currentClassroomId);
-
+          const classroomDoc = snapshot.docs[0];
+          currentClassroomId = classroomDoc.id;
+          console.log("🏫 Classroom found:", currentClassroomId);
         } catch (error) {
-            console.error("❌ Error getting teacher classroom:", error);
-            throw error;
+          console.error("❌ Error getting teacher classroom:", error);
+          throw error;
         }
-    }
+      }
 
-    // Load parents from the same classroom
-    async function loadParents() {
+      // Load parents from the same classroom
+      async function loadParents() {
         try {
-            console.log("👥 Loading parents for classroom:", currentClassroomId);
-            
-            if (!currentClassroomId) {
-                console.error("❌ No classroom ID available");
-                return [];
-            }
-            
-            const parentsSnapshot = await db.collection('users')
-                .where('role', '==', 'parent')
-                .get();
+          console.log("👥 Loading parents for classroom:", currentClassroomId);
 
-            const parents = [];
-            
-            for (const parentDoc of parentsSnapshot.docs) {
-                const parentData = parentDoc.data();
-                console.log("👨‍👩‍👧‍👦 Checking parent:", parentData);
-                
-                // Check if parent has students in this classroom
-                const studentsSnapshot = await db.collection('students')
-                    .where('parentId', '==', parentDoc.id)
-                    .where('classroomId', '==', currentClassroomId)
-                    .get();
-
-                console.log(`📚 Found ${studentsSnapshot.size} students for parent ${parentDoc.id}`);
-                
-                if (!studentsSnapshot.empty) {
-                    const studentDoc = studentsSnapshot.docs[0];
-                    const studentData = studentDoc.data();
-                    
-                    // Build student name from firstName and lastName
-                    const studentName = `${studentData.firstName || ''} ${studentData.lastName || ''}`.trim();
-                    
-                    // Build parent name from firstName and lastName
-                    const parentName = `${parentData.firstName || ''} ${parentData.lastName || ''}`.trim();
-                    
-                    parents.push({
-                        id: parentDoc.id,
-                        name: parentName,
-                        studentName: studentName,
-                        studentId: studentDoc.id
-                    });
-                }
-            }
-
-            console.log("✅ Parents loaded:", parents.length);
-            return parents;
-
-        } catch (error) {
-            console.error("❌ Error loading parents:", error);
+          if (!currentClassroomId) {
+            console.error("❌ No classroom ID available");
             return [];
-        }
-    }
+          }
 
-    // Create chat item for sidebar
-    function createChatItem(parent) {
-        const chatItem = document.createElement('li');
-        chatItem.className = 'chat-item';
+          const parentsSnapshot = await db
+            .collection("users")
+            .where("role", "==", "parent")
+            .get();
+
+          const parents = [];
+
+          for (const parentDoc of parentsSnapshot.docs) {
+            const parentData = parentDoc.data();
+            console.log("👨‍👩‍👧‍👦 Checking parent:", parentData);
+
+            // Check if parent has students in this classroom
+            const studentsSnapshot = await db
+              .collection("students")
+              .where("parentId", "==", parentDoc.id)
+              .where("classroomId", "==", currentClassroomId)
+              .get();
+
+            console.log(
+              `📚 Found ${studentsSnapshot.size} students for parent ${parentDoc.id}`,
+            );
+
+            if (!studentsSnapshot.empty) {
+              const studentDoc = studentsSnapshot.docs[0];
+              const studentData = studentDoc.data();
+
+              // Build student name from firstName and lastName
+              const studentName =
+                `${studentData.firstName || ""} ${studentData.lastName || ""}`.trim();
+
+              // Build parent name from firstName and lastName
+              const parentName =
+                `${parentData.firstName || ""} ${parentData.lastName || ""}`.trim();
+
+              parents.push({
+                id: parentDoc.id,
+                name: parentName,
+                studentName: studentName,
+                studentId: studentDoc.id,
+              });
+            }
+          }
+
+          console.log("✅ Parents loaded:", parents.length);
+          return parents;
+        } catch (error) {
+          console.error("❌ Error loading parents:", error);
+          return [];
+        }
+      }
+
+      // Create chat item for sidebar
+      function createChatItem(parent) {
+        const chatItem = document.createElement("li");
+        chatItem.className = "chat-item";
         chatItem.dataset.parentId = parent.id;
         chatItem.dataset.parentName = parent.name;
         chatItem.dataset.studentName = parent.studentName;
 
-        const initials = parent.name.split(' ').map(n => n[0]).join('').toUpperCase() || 'P';
+        const initials =
+          parent.name
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .toUpperCase() || "P";
 
         chatItem.innerHTML = `
             <div class="avatar">${initials}</div>
@@ -672,37 +730,37 @@
         `;
 
         // Add click event
-        chatItem.addEventListener('click', () => openChat(parent));
+        chatItem.addEventListener("click", () => openChat(parent));
 
         return chatItem;
-    }
+      }
 
-    // Populate chat list in sidebar
-    function populateChatList(parents) {
-        const chatList = document.getElementById('chat-list');
-        chatList.innerHTML = '';
+      // Populate chat list in sidebar
+      function populateChatList(parents) {
+        const chatList = document.getElementById("chat-list");
+        chatList.innerHTML = "";
 
-        parents.forEach(parent => {
-            const chatItem = createChatItem(parent);
-            chatList.appendChild(chatItem);
+        parents.forEach((parent) => {
+          const chatItem = createChatItem(parent);
+          chatList.appendChild(chatItem);
         });
 
         // Auto-select first chat if available
-        const firstChat = chatList.querySelector('.chat-item');
+        const firstChat = chatList.querySelector(".chat-item");
         if (firstChat) {
-            firstChat.classList.add('active');
-            const parent = {
-                id: firstChat.dataset.parentId,
-                name: firstChat.dataset.parentName,
-                studentName: firstChat.dataset.studentName
-            };
-            openChat(parent);
+          firstChat.classList.add("active");
+          const parent = {
+            id: firstChat.dataset.parentId,
+            name: firstChat.dataset.parentName,
+            studentName: firstChat.dataset.studentName,
+          };
+          openChat(parent);
         }
-    }
+      }
 
-    // Show no parents message
-    function showNoParentsMessage() {
-        const chatList = document.getElementById('chat-list');
+      // Show no parents message
+      function showNoParentsMessage() {
+        const chatList = document.getElementById("chat-list");
         chatList.innerHTML = `
             <div class="no-parents-message">
                 <i class="fas fa-users"></i>
@@ -710,48 +768,55 @@
                 <p>There are no parents with students in your classroom yet.</p>
             </div>
         `;
-    }
+      }
 
-    // Show error message
-    function showErrorMessage(message) {
-        const chatList = document.getElementById('chat-list');
+      // Show error message
+      function showErrorMessage(message) {
+        const chatList = document.getElementById("chat-list");
         chatList.innerHTML = `<div class="error-message">${message}</div>`;
-    }
+      }
 
-    // Update chat header
-    function updateChatHeader(parent) {
-        document.getElementById('chat-user-name').textContent = parent.name;
-        document.getElementById('chat-user-student').textContent = `Parent of ${parent.studentName}`;
-    }
+      // Update chat header
+      function updateChatHeader(parent) {
+        document.getElementById("chat-user-name").textContent = parent.name;
+        document.getElementById("chat-user-student").textContent =
+          `Parent of ${parent.studentName}`;
+      }
 
-    // Load recipients for modal
-    async function loadRecipientsForModal() {
+      // Load recipients for modal
+      async function loadRecipientsForModal() {
         try {
-            const loadingElement = document.getElementById('loading-recipients');
-            const recipientList = document.getElementById('recipient-list');
-            
-            loadingElement.style.display = 'block';
-            recipientList.innerHTML = '';
+          const loadingElement = document.getElementById("loading-recipients");
+          const recipientList = document.getElementById("recipient-list");
 
-            const parents = await loadParents();
-            
-            loadingElement.style.display = 'none';
+          loadingElement.style.display = "block";
+          recipientList.innerHTML = "";
 
-            if (parents.length === 0) {
-                recipientList.innerHTML = '<div class="no-recipients">No parents available</div>';
-                return;
-            }
+          const parents = await loadParents();
 
-            parents.forEach(parent => {
-                const recipientItem = document.createElement('li');
-                recipientItem.className = 'recipient-item';
-                recipientItem.dataset.parentId = parent.id;
-                recipientItem.dataset.parentName = parent.name;
-                recipientItem.dataset.studentName = parent.studentName;
+          loadingElement.style.display = "none";
 
-                const initials = parent.name.split(' ').map(n => n[0]).join('').toUpperCase() || 'P';
+          if (parents.length === 0) {
+            recipientList.innerHTML =
+              '<div class="no-recipients">No parents available</div>';
+            return;
+          }
 
-                recipientItem.innerHTML = `
+          parents.forEach((parent) => {
+            const recipientItem = document.createElement("li");
+            recipientItem.className = "recipient-item";
+            recipientItem.dataset.parentId = parent.id;
+            recipientItem.dataset.parentName = parent.name;
+            recipientItem.dataset.studentName = parent.studentName;
+
+            const initials =
+              parent.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")
+                .toUpperCase() || "P";
+
+            recipientItem.innerHTML = `
                     <div class="recipient-avatar">${initials}</div>
                     <div class="recipient-info">
                         <div class="recipient-name">${parent.name}</div>
@@ -759,186 +824,197 @@
                     </div>
                 `;
 
-                recipientItem.addEventListener('click', () => {
-                    openChat(parent);
-                    document.getElementById('new-message-modal').style.display = 'none';
-                });
-                recipientList.appendChild(recipientItem);
+            recipientItem.addEventListener("click", () => {
+              openChat(parent);
+              document.getElementById("new-message-modal").style.display =
+                "none";
             });
-
+            recipientList.appendChild(recipientItem);
+          });
         } catch (error) {
-            console.error("❌ Error loading recipients:", error);
-            document.getElementById('loading-recipients').textContent = 'Error loading parents';
+          console.error("❌ Error loading recipients:", error);
+          document.getElementById("loading-recipients").textContent =
+            "Error loading parents";
         }
-    }
+      }
 
-    // Set up event listeners
-    function setupEventListeners() {
-        const sendBtn = document.getElementById('send-btn');
-        const messageInput = document.getElementById('message-input');
-        const newMessageBtn = document.getElementById('new-message-btn');
-        const newMessageModal = document.getElementById('new-message-modal');
-        const modalCloseBtn = document.querySelector('.close-btn');
+      // Set up event listeners
+      function setupEventListeners() {
+        const sendBtn = document.getElementById("send-btn");
+        const messageInput = document.getElementById("message-input");
+        const newMessageBtn = document.getElementById("new-message-btn");
+        const newMessageModal = document.getElementById("new-message-modal");
+        const modalCloseBtn = document.querySelector(".close-btn");
 
         // Send message events
-        sendBtn.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                sendMessage();
-            }
+        sendBtn.addEventListener("click", sendMessage);
+        messageInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            sendMessage();
+          }
         });
 
         // Modal events
-        newMessageBtn.addEventListener('click', () => {
-            loadRecipientsForModal();
-            newMessageModal.style.display = 'block';
+        newMessageBtn.addEventListener("click", () => {
+          loadRecipientsForModal();
+          newMessageModal.style.display = "block";
         });
-        
-        modalCloseBtn.addEventListener('click', () => {
-            newMessageModal.style.display = 'none';
-        });
-        
-        window.addEventListener('click', (e) => {
-            if (e.target === newMessageModal) {
-                newMessageModal.style.display = 'none';
-            }
-        });
-    }
 
-    // Chat functions
-    async function getOrCreateChat(parentId) {
+        modalCloseBtn.addEventListener("click", () => {
+          newMessageModal.style.display = "none";
+        });
+
+        window.addEventListener("click", (e) => {
+          if (e.target === newMessageModal) {
+            newMessageModal.style.display = "none";
+          }
+        });
+      }
+
+      // Chat functions
+      async function getOrCreateChat(parentId) {
         try {
-            // Try to find existing chat
-            const existingChat = await db.collection('chats')
-                .where('teacherId', '==', currentTeacher.uid)
-                .where('parentId', '==', parentId)
-                .limit(1)
-                .get();
+          // Try to find existing chat
+          const existingChat = await db
+            .collection("chats")
+            .where("teacherId", "==", currentTeacher.uid)
+            .where("parentId", "==", parentId)
+            .limit(1)
+            .get();
 
-            if (!existingChat.empty) {
-                console.log("✅ Found existing chat");
-                return existingChat.docs[0].id;
-            }
+          if (!existingChat.empty) {
+            console.log("✅ Found existing chat");
+            return existingChat.docs[0].id;
+          }
 
-            // Create new chat
-            const newChat = {
-                teacherId: currentTeacher.uid,
-                parentId: parentId,
-                classroomId: currentClassroomId,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                lastMessage: '',
-                lastMessageTime: firebase.firestore.FieldValue.serverTimestamp()
-            };
+          // Create new chat
+          const newChat = {
+            teacherId: currentTeacher.uid,
+            parentId: parentId,
+            classroomId: currentClassroomId,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            lastMessage: "",
+            lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+          };
 
-            const docRef = await db.collection('chats').add(newChat);
-            console.log("✅ Created new chat:", docRef.id);
-            
-            return docRef.id;
+          const docRef = await db.collection("chats").add(newChat);
+          console.log("✅ Created new chat:", docRef.id);
 
+          return docRef.id;
         } catch (error) {
-            console.error("❌ Error getting/creating chat:", error);
-            throw error;
+          console.error("❌ Error getting/creating chat:", error);
+          throw error;
         }
-    }
+      }
 
-    async function openChat(parent) {
+      async function openChat(parent) {
         try {
-            console.log("💬 Opening chat with:", parent.name);
+          console.log("💬 Opening chat with:", parent.name);
 
-            // Close previous real-time listener
-            if (unsubscribeMessages) {
-                unsubscribeMessages();
-            }
+          // Close previous real-time listener
+          if (unsubscribeMessages) {
+            unsubscribeMessages();
+          }
 
-            // Update UI
-            updateChatHeader(parent);
-            
-            // Clear active states
-            document.querySelectorAll('.chat-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            // Set current chat active
-            const chatItem = document.querySelector(`.chat-item[data-parent-id="${parent.id}"]`);
-            if (chatItem) {
-                chatItem.classList.add('active');
-            }
+          // Update UI
+          updateChatHeader(parent);
 
-            // Show chat interface
-            document.getElementById('chat-input-container').style.display = 'flex';
-            
-            const welcomeMessage = document.querySelector('.welcome-message');
-            if (welcomeMessage) {
-                welcomeMessage.style.display = 'none';
-            }
+          // Clear active states
+          document.querySelectorAll(".chat-item").forEach((item) => {
+            item.classList.remove("active");
+          });
 
-            // Get or create chat document
-            currentChatId = await getOrCreateChat(parent.id);
-            
-            // Show loading state
-            const chatBody = document.getElementById('chat-body');
-            chatBody.innerHTML = '<div class="message-date">Loading messages...</div>';
+          // Set current chat active
+          const chatItem = document.querySelector(
+            `.chat-item[data-parent-id="${parent.id}"]`,
+          );
+          if (chatItem) {
+            chatItem.classList.add("active");
+          }
 
-            // Set up real-time listener
-            setupMessageListener(currentChatId);
+          // Show chat interface
+          document.getElementById("chat-input-container").style.display =
+            "flex";
 
-            // Mark messages as read when opening the chat
-            await markMessagesAsRead(currentChatId);
+          const welcomeMessage = document.querySelector(".welcome-message");
+          if (welcomeMessage) {
+            welcomeMessage.style.display = "none";
+          }
 
-            // Close modal if open
-            document.getElementById('new-message-modal').style.display = 'none';
+          // Get or create chat document
+          currentChatId = await getOrCreateChat(parent.id);
 
+          // Show loading state
+          const chatBody = document.getElementById("chat-body");
+          chatBody.innerHTML =
+            '<div class="message-date">Loading messages...</div>';
+
+          // Set up real-time listener
+          setupMessageListener(currentChatId);
+
+          // Mark messages as read when opening the chat
+          await markMessagesAsRead(currentChatId);
+
+          // Close modal if open
+          document.getElementById("new-message-modal").style.display = "none";
         } catch (error) {
-            console.error("❌ Error opening chat:", error);
-            alert('Error opening chat. Please try again.');
+          console.error("❌ Error opening chat:", error);
+          alert("Error opening chat. Please try again.");
         }
-    }
+      }
 
-    function setupMessageListener(chatId) {
+      function setupMessageListener(chatId) {
         let initialLoad = true;
 
-        unsubscribeMessages = db.collection('chats')
-            .doc(chatId)
-            .collection('messages')
-            .orderBy('timestamp', 'asc')
-            .onSnapshot((snapshot) => {
-                const chatBody = document.getElementById('chat-body');
-                
-                // Clear chat body on initial load
-                if (initialLoad) {
-                    chatBody.innerHTML = '';
-                    initialLoad = false;
-                }
+        unsubscribeMessages = db
+          .collection("chats")
+          .doc(chatId)
+          .collection("messages")
+          .orderBy("timestamp", "asc")
+          .onSnapshot(
+            (snapshot) => {
+              const chatBody = document.getElementById("chat-body");
 
-                // If no messages
-                if (snapshot.empty && chatBody.innerHTML === '') {
-                    chatBody.innerHTML = '<div class="message-date">No messages yet. Start the conversation!</div>';
-                    return;
-                }
+              // Clear chat body on initial load
+              if (initialLoad) {
+                chatBody.innerHTML = "";
+                initialLoad = false;
+              }
 
-                // Process all messages (both existing and new)
-                snapshot.forEach(doc => {
-                    const message = doc.data();
-                    displayNewMessage(message);
-                });
+              // If no messages
+              if (snapshot.empty && chatBody.innerHTML === "") {
+                chatBody.innerHTML =
+                  '<div class="message-date">No messages yet. Start the conversation!</div>';
+                return;
+              }
 
-            }, (error) => {
-                console.error("❌ Error in message listener:", error);
-                const chatBody = document.getElementById('chat-body');
-                chatBody.innerHTML = '<div class="error-message">Error loading messages</div>';
-            });
-    }
+              // Process all messages (both existing and new)
+              snapshot.forEach((doc) => {
+                const message = doc.data();
+                displayNewMessage(message);
+              });
+            },
+            (error) => {
+              console.error("❌ Error in message listener:", error);
+              const chatBody = document.getElementById("chat-body");
+              chatBody.innerHTML =
+                '<div class="error-message">Error loading messages</div>';
+            },
+          );
+      }
 
-    function createMessageElement(message) {
-        const messageDiv = document.createElement('div');
+      function createMessageElement(message) {
+        const messageDiv = document.createElement("div");
         const isSent = message.senderId === currentTeacher.uid;
-        
-        messageDiv.className = `message ${isSent ? 'sent' : 'received'}`;
-        
-        const time = message.timestamp?.toDate().toLocaleTimeString([], { 
-            hour: '2-digit', minute: '2-digit' 
-        }) || 'Just now';
+
+        messageDiv.className = `message ${isSent ? "sent" : "received"}`;
+
+        const time =
+          message.timestamp?.toDate().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }) || "Just now";
 
         messageDiv.innerHTML = `
             ${message.text}
@@ -946,374 +1022,409 @@
         `;
 
         return messageDiv;
-    }
+      }
 
-    function displayNewMessage(message) {
-        const chatBody = document.getElementById('chat-body');
-        
+      function displayNewMessage(message) {
+        const chatBody = document.getElementById("chat-body");
+
         // Create a unique ID for the message to prevent duplicates
         const messageId = `msg-${message.timestamp?.toMillis() || Date.now()}-${message.senderId}`;
-        
+
         // Check if message already exists
         if (document.getElementById(messageId)) {
-            return; // Skip if already displayed
+          return; // Skip if already displayed
         }
 
         const messageDiv = createMessageElement(message);
         messageDiv.id = messageId;
         chatBody.appendChild(messageDiv);
         chatBody.scrollTop = chatBody.scrollHeight;
-    }
+      }
 
-    async function sendMessage() {
-        const messageInput = document.getElementById('message-input');
+      async function sendMessage() {
+        const messageInput = document.getElementById("message-input");
         const text = messageInput.value.trim();
 
         if (!text || !currentChatId) {
-            return;
+          return;
         }
 
         try {
-            const message = {
-                text: text,
-                senderId: currentTeacher.uid,
-                senderName: currentTeacher.displayName || 'Teacher',
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                read: false
-            };
+          const message = {
+            text: text,
+            senderId: currentTeacher.uid,
+            senderName: currentTeacher.displayName || "Teacher",
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            read: false,
+          };
 
-            // Add message to Firestore
-            await db.collection('chats')
-                .doc(currentChatId)
-                .collection('messages')
-                .add(message);
+          // Add message to Firestore
+          await db
+            .collection("chats")
+            .doc(currentChatId)
+            .collection("messages")
+            .add(message);
 
-            // Update last message in chat document
-            await db.collection('chats')
-                .doc(currentChatId)
-                .update({
-                    lastMessage: text,
-                    lastMessageTime: firebase.firestore.FieldValue.serverTimestamp()
-                });
+          // Update last message in chat document
+          await db.collection("chats").doc(currentChatId).update({
+            lastMessage: text,
+            lastMessageTime: firebase.firestore.FieldValue.serverTimestamp(),
+          });
 
-            // Clear input
-            messageInput.value = '';
+          // Clear input
+          messageInput.value = "";
 
-            console.log("✅ Message sent");
-
+          console.log("✅ Message sent");
         } catch (error) {
-            console.error("❌ Error sending message:", error);
-            alert('Error sending message. Please try again.');
+          console.error("❌ Error sending message:", error);
+          alert("Error sending message. Please try again.");
         }
-    }
+      }
 
-    // Unread message functions
-    async function setupChatListeners(parents) {
+      // Unread message functions
+      async function setupChatListeners(parents) {
         try {
-            console.log("🔔 Setting up chat listeners for unread messages");
-            
-            for (const parent of parents) {
-                try {
-                    const chatId = await getOrCreateChat(parent.id);
-                    
-                    if (chatId) {
-                        console.log(`📡 Setting up listener for parent: ${parent.name}, chat: ${chatId}`);
-                        
-                        // Set up real-time listener for this chat
-                        const unsubscribe = db.collection('chats')
-                            .doc(chatId)
-                            .collection('messages')
-                            .orderBy('timestamp', 'asc')
-                            .onSnapshot((snapshot) => {
-                                console.log(`📨 Snapshot received for ${parent.name}: ${snapshot.size} messages`);
-                                updateUnreadCount(chatId, snapshot, parent.id);
-                            }, (error) => {
-                                console.error("❌ Error in chat listener:", error);
-                            });
-                    }
-                } catch (error) {
-                    console.error(`❌ Error setting up listener for parent ${parent.name}:`, error);
-                }
+          console.log("🔔 Setting up chat listeners for unread messages");
+
+          for (const parent of parents) {
+            try {
+              const chatId = await getOrCreateChat(parent.id);
+
+              if (chatId) {
+                console.log(
+                  `📡 Setting up listener for parent: ${parent.name}, chat: ${chatId}`,
+                );
+
+                // Set up real-time listener for this chat
+                const unsubscribe = db
+                  .collection("chats")
+                  .doc(chatId)
+                  .collection("messages")
+                  .orderBy("timestamp", "asc")
+                  .onSnapshot(
+                    (snapshot) => {
+                      console.log(
+                        `📨 Snapshot received for ${parent.name}: ${snapshot.size} messages`,
+                      );
+                      updateUnreadCount(chatId, snapshot, parent.id);
+                    },
+                    (error) => {
+                      console.error("❌ Error in chat listener:", error);
+                    },
+                  );
+              }
+            } catch (error) {
+              console.error(
+                `❌ Error setting up listener for parent ${parent.name}:`,
+                error,
+              );
             }
+          }
         } catch (error) {
-            console.error("❌ Error setting up chat listeners:", error);
+          console.error("❌ Error setting up chat listeners:", error);
         }
-    }
+      }
 
-    function updateUnreadCount(chatId, snapshot, parentId) {
+      function updateUnreadCount(chatId, snapshot, parentId) {
         let unreadCount = 0;
-        
+
         console.log(`🔍 Checking unread messages for chat ${chatId}`);
-        
-        snapshot.forEach(doc => {
-            const message = doc.data();
-            
-            // Count messages that are unread and not sent by current user (teacher)
-            if (message.read === false && message.senderId !== currentTeacher.uid) {
-                unreadCount++;
-            }
+
+        snapshot.forEach((doc) => {
+          const message = doc.data();
+
+          // Count messages that are unread and not sent by current user (teacher)
+          if (
+            message.read === false &&
+            message.senderId !== currentTeacher.uid
+          ) {
+            unreadCount++;
+          }
         });
-        
-        console.log(`🎯 Chat ${chatId} has ${unreadCount} unread messages for parent ${parentId}`);
-        
+
+        console.log(
+          `🎯 Chat ${chatId} has ${unreadCount} unread messages for parent ${parentId}`,
+        );
+
         // Store the unread count
         unreadCounts.set(chatId, unreadCount);
-        
+
         // Update the badge in the sidebar
         updateChatBadge(parentId, unreadCount);
-    }
+      }
 
-    function updateChatBadge(parentId, unreadCount) {
-        const chatItem = document.querySelector(`.chat-item[data-parent-id="${parentId}"]`);
+      function updateChatBadge(parentId, unreadCount) {
+        const chatItem = document.querySelector(
+          `.chat-item[data-parent-id="${parentId}"]`,
+        );
         if (chatItem) {
-            let badge = chatItem.querySelector('.unread-badge');
-            
-            if (!badge) {
-                // Create badge if it doesn't exist
-                badge = document.createElement('div');
-                badge.className = 'unread-badge';
-                chatItem.appendChild(badge);
+          let badge = chatItem.querySelector(".unread-badge");
+
+          if (!badge) {
+            // Create badge if it doesn't exist
+            badge = document.createElement("div");
+            badge.className = "unread-badge";
+            chatItem.appendChild(badge);
+          }
+
+          if (unreadCount > 0) {
+            badge.textContent = unreadCount > 99 ? "99+" : unreadCount;
+            badge.style.display = "flex";
+          } else {
+            badge.style.display = "none";
+          }
+        }
+      }
+
+      async function markMessagesAsRead(chatId) {
+        try {
+          console.log("Marking messages as read for chat:", chatId);
+
+          // Get ALL messages from this chat (we'll filter client-side)
+          const messagesQuery = db
+            .collection("chats")
+            .doc(chatId)
+            .collection("messages")
+            .orderBy("timestamp", "asc");
+
+          const messagesSnapshot = await messagesQuery.get();
+
+          // Filter unread messages client-side
+          const unreadMessages = [];
+          messagesSnapshot.forEach((doc) => {
+            const message = doc.data();
+            if (
+              message.read === false &&
+              message.senderId !== currentTeacher.uid
+            ) {
+              unreadMessages.push(doc.ref);
             }
-            
-            if (unreadCount > 0) {
-                badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-                badge.style.display = 'flex';
+          });
+
+          console.log(
+            `Found ${unreadMessages.length} unread messages to mark as read`,
+          );
+
+          if (unreadMessages.length === 0) {
+            console.log("No unread messages found");
+            return;
+          }
+
+          // Use batch write to mark all unread messages as read
+          const batch = db.batch();
+
+          unreadMessages.forEach((messageRef) => {
+            batch.update(messageRef, {
+              read: true,
+              readAt: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+          });
+
+          await batch.commit();
+          console.log("Successfully marked messages as read");
+
+          // Reset unread count for this chat
+          unreadCounts.set(chatId, 0);
+
+          // Find the parent ID for this chat and update the badge
+          const chatItem = document.querySelector(".chat-item.active");
+          if (chatItem) {
+            const parentId = chatItem.dataset.parentId;
+            updateChatBadge(parentId, 0);
+          }
+        } catch (error) {
+          console.error("Error marking messages as read:", error);
+          // Even if Firestore update fails, update the UI state
+          unreadCounts.set(chatId, 0);
+          const chatItem = document.querySelector(".chat-item.active");
+          if (chatItem) {
+            const parentId = chatItem.dataset.parentId;
+            updateChatBadge(parentId, 0);
+          }
+        }
+      }
+
+      // Notification functions
+      async function getTeacherClassrooms(teacherId) {
+        try {
+          const snapshot = await db
+            .collection("classrooms")
+            .where("teacherId", "==", teacherId)
+            .get();
+
+          const teacherClassrooms = {};
+          snapshot.forEach((doc) => {
+            teacherClassrooms[doc.id] = doc.data();
+          });
+
+          return teacherClassrooms;
+        } catch (error) {
+          console.error("Error getting teacher classrooms:", error);
+          return {};
+        }
+      }
+
+      async function getReadNotifications(teacherId) {
+        try {
+          const snapshot = await db
+            .collection("notification_teacher")
+            .where("teacherID", "==", teacherId)
+            .where("status", "==", "read")
+            .get();
+
+          const readNotifications = {};
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            const key = `${data.type}_${data.notificationID}`;
+            readNotifications[key] = true;
+          });
+          return readNotifications;
+        } catch (error) {
+          console.error("Error getting read notifications:", error);
+          return {};
+        }
+      }
+
+      async function countUnreadNotifications(teacherId) {
+        try {
+          console.log(
+            "🔍 Counting unread notifications for teacher:",
+            teacherId,
+          );
+
+          // Get all calendar events
+          const calendarSnapshot = await db.collection("calendar").get();
+          console.log("📅 Total calendar events:", calendarSnapshot.size);
+
+          // Get teacher's classrooms
+          const teacherClassrooms = await getTeacherClassrooms(teacherId);
+          const teacherClassroomIds = Object.keys(teacherClassrooms);
+          console.log("🏫 Teacher classroom IDs:", teacherClassroomIds);
+
+          // Get all students with status "active" in teacher's classrooms
+          let studentsSnapshot;
+          if (teacherClassroomIds.length > 0) {
+            studentsSnapshot = await db
+              .collection("students")
+              .where("status", "==", "active")
+              .where("classroomId", "in", teacherClassroomIds)
+              .get();
+            console.log(
+              "👥 Active students in classrooms:",
+              studentsSnapshot.size,
+            );
+          } else {
+            studentsSnapshot = { docs: [] };
+            console.log("❌ No classrooms found for teacher");
+          }
+
+          // Get all read notifications
+          const readNotifications = await getReadNotifications(teacherId);
+          console.log(
+            "📖 Read notifications count:",
+            Object.keys(readNotifications).length,
+          );
+
+          // Count unread calendar notifications
+          let unreadCount = 0;
+          calendarSnapshot.forEach((doc) => {
+            const key = `calendar_${doc.id}`;
+            if (!readNotifications[key]) {
+              unreadCount++;
+            }
+          });
+          console.log("📆 Unread calendar notifications:", unreadCount);
+
+          // Count unread student join notifications
+          let studentUnreadCount = 0;
+          studentsSnapshot.forEach((doc) => {
+            const key = `student_${doc.id}`;
+            if (!readNotifications[key]) {
+              studentUnreadCount++;
+            }
+          });
+          console.log("👤 Unread student notifications:", studentUnreadCount);
+
+          unreadCount += studentUnreadCount;
+          console.log("🔢 Total unread notifications:", unreadCount);
+
+          return unreadCount;
+        } catch (error) {
+          console.error("❌ Error counting unread notifications:", error);
+          return 0;
+        }
+      }
+
+      async function updateNotificationBadge() {
+        try {
+          const currentUser = auth.currentUser;
+
+          if (!currentUser) {
+            console.log("❌ No current user found");
+            return;
+          }
+
+          console.log(
+            "🔄 Updating notification badge for user:",
+            currentUser.uid,
+          );
+          const unreadCount = await countUnreadNotifications(currentUser.uid);
+          const badge = document.getElementById("notification-badge");
+
+          if (badge) {
+            badge.textContent = unreadCount;
+
+            // Hide badge if count is 0
+            if (unreadCount === 0) {
+              badge.style.display = "none";
+              console.log("✅ Badge hidden (no unread notifications)");
             } else {
-                badge.style.display = 'none';
+              badge.style.display = "flex";
+              console.log("✅ Badge shown with count:", unreadCount);
             }
-        }
-    }
-
-    async function markMessagesAsRead(chatId) {
-        try {
-            console.log('Marking messages as read for chat:', chatId);
-            
-            // Get ALL messages from this chat (we'll filter client-side)
-            const messagesQuery = db.collection('chats')
-                .doc(chatId)
-                .collection('messages')
-                .orderBy('timestamp', 'asc');
-            
-            const messagesSnapshot = await messagesQuery.get();
-            
-            // Filter unread messages client-side
-            const unreadMessages = [];
-            messagesSnapshot.forEach(doc => {
-                const message = doc.data();
-                if (message.read === false && message.senderId !== currentTeacher.uid) {
-                    unreadMessages.push(doc.ref);
-                }
-            });
-            
-            console.log(`Found ${unreadMessages.length} unread messages to mark as read`);
-            
-            if (unreadMessages.length === 0) {
-                console.log('No unread messages found');
-                return;
-            }
-            
-            // Use batch write to mark all unread messages as read
-            const batch = db.batch();
-            
-            unreadMessages.forEach(messageRef => {
-                batch.update(messageRef, { 
-                    read: true,
-                    readAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            });
-            
-            await batch.commit();
-            console.log('Successfully marked messages as read');
-            
-            // Reset unread count for this chat
-            unreadCounts.set(chatId, 0);
-            
-            // Find the parent ID for this chat and update the badge
-            const chatItem = document.querySelector('.chat-item.active');
-            if (chatItem) {
-                const parentId = chatItem.dataset.parentId;
-                updateChatBadge(parentId, 0);
-            }
-            
+          } else {
+            console.log("❌ Badge element not found!");
+          }
         } catch (error) {
-            console.error('Error marking messages as read:', error);
-            // Even if Firestore update fails, update the UI state
-            unreadCounts.set(chatId, 0);
-            const chatItem = document.querySelector('.chat-item.active');
-            if (chatItem) {
-                const parentId = chatItem.dataset.parentId;
-                updateChatBadge(parentId, 0);
-            }
+          console.error("❌ Error updating notification badge:", error);
         }
-    }
+      }
 
-    // Notification functions
-    async function getTeacherClassrooms(teacherId) {
-        try {
-            const snapshot = await db.collection('classrooms')
-                .where('teacherId', '==', teacherId)
-                .get();
-            
-            const teacherClassrooms = {};
-            snapshot.forEach(doc => {
-                teacherClassrooms[doc.id] = doc.data();
-            });
-            
-            return teacherClassrooms;
-        } catch (error) {
-            console.error("Error getting teacher classrooms:", error);
-            return {};
-        }
-    }
-
-    async function getReadNotifications(teacherId) {
-        try {
-            const snapshot = await db.collection('notification_teacher')
-                .where('teacherID', '==', teacherId)
-                .where('status', '==', 'read')
-                .get();
-                
-            const readNotifications = {};
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const key = `${data.type}_${data.notificationID}`;
-                readNotifications[key] = true;
-            });
-            return readNotifications;
-        } catch (error) {
-            console.error("Error getting read notifications:", error);
-            return {};
-        }
-    }
-
-    async function countUnreadNotifications(teacherId) {
-        try {
-            console.log("🔍 Counting unread notifications for teacher:", teacherId);
-            
-            // Get all calendar events
-            const calendarSnapshot = await db.collection('calendar').get();
-            console.log("📅 Total calendar events:", calendarSnapshot.size);
-            
-            // Get teacher's classrooms
-            const teacherClassrooms = await getTeacherClassrooms(teacherId);
-            const teacherClassroomIds = Object.keys(teacherClassrooms);
-            console.log("🏫 Teacher classroom IDs:", teacherClassroomIds);
-            
-            // Get all students with status "active" in teacher's classrooms
-            let studentsSnapshot;
-            if (teacherClassroomIds.length > 0) {
-                studentsSnapshot = await db.collection('students')
-                    .where('status', '==', 'active')
-                    .where('classroomId', 'in', teacherClassroomIds)
-                    .get();
-                console.log("👥 Active students in classrooms:", studentsSnapshot.size);
-            } else {
-                studentsSnapshot = { docs: [] };
-                console.log("❌ No classrooms found for teacher");
-            }
-            
-            // Get all read notifications
-            const readNotifications = await getReadNotifications(teacherId);
-            console.log("📖 Read notifications count:", Object.keys(readNotifications).length);
-            
-            // Count unread calendar notifications
-            let unreadCount = 0;
-            calendarSnapshot.forEach(doc => {
-                const key = `calendar_${doc.id}`;
-                if (!readNotifications[key]) {
-                    unreadCount++;
-                }
-            });
-            console.log("📆 Unread calendar notifications:", unreadCount);
-            
-            // Count unread student join notifications
-            let studentUnreadCount = 0;
-            studentsSnapshot.forEach(doc => {
-                const key = `student_${doc.id}`;
-                if (!readNotifications[key]) {
-                    studentUnreadCount++;
-                }
-            });
-            console.log("👤 Unread student notifications:", studentUnreadCount);
-            
-            unreadCount += studentUnreadCount;
-            console.log("🔢 Total unread notifications:", unreadCount);
-            
-            return unreadCount;
-        } catch (error) {
-            console.error("❌ Error counting unread notifications:", error);
-            return 0;
-        }
-    }
-
-    async function updateNotificationBadge() {
-        try {
-            const currentUser = auth.currentUser;
-            
-            if (!currentUser) {
-                console.log("❌ No current user found");
-                return;
-            }
-            
-            console.log("🔄 Updating notification badge for user:", currentUser.uid);
-            const unreadCount = await countUnreadNotifications(currentUser.uid);
-            const badge = document.getElementById('notification-badge');
-            
-            if (badge) {
-                badge.textContent = unreadCount;
-                
-                // Hide badge if count is 0
-                if (unreadCount === 0) {
-                    badge.style.display = 'none';
-                    console.log("✅ Badge hidden (no unread notifications)");
-                } else {
-                    badge.style.display = 'flex';
-                    console.log("✅ Badge shown with count:", unreadCount);
-                }
-            } else {
-                console.log("❌ Badge element not found!");
-            }
-        } catch (error) {
-            console.error("❌ Error updating notification badge:", error);
-        }
-    }
-
-    // Initialize when DOM is loaded
-    document.addEventListener('DOMContentLoaded', async () => {
+      // Initialize when DOM is loaded
+      document.addEventListener("DOMContentLoaded", async () => {
         console.log("🚀 Initializing messages system");
-        
+
         try {
-            // Wait for authentication
-            const user = await new Promise((resolve) => {
-                const unsubscribe = auth.onAuthStateChanged((user) => {
-                    unsubscribe();
-                    resolve(user);
-                });
+          // Wait for authentication
+          const user = await new Promise((resolve) => {
+            const unsubscribe = auth.onAuthStateChanged((user) => {
+              unsubscribe();
+              resolve(user);
             });
+          });
 
-            if (!user) {
-                console.error("❌ No user authenticated");
-                showErrorMessage("Please log in to access messages");
-                return;
-            }
+          if (!user) {
+            console.error("❌ No user authenticated");
+            showErrorMessage("Please log in to access messages");
+            return;
+          }
 
-            currentTeacher = user;
-            console.log("👤 Teacher authenticated:", currentTeacher.uid);
+          currentTeacher = user;
+          console.log("👤 Teacher authenticated:", currentTeacher.uid);
 
-            // Get teacher's classroom
-            await getTeacherClassroom();
-            
-            // Load parents and initialize messaging
-            await initializeMessagingSystem();
-            
-            // Update notification badge
-            await updateNotificationBadge();
+          // Get teacher's classroom
+          await getTeacherClassroom();
 
+          // Load parents and initialize messaging
+          await initializeMessagingSystem();
+
+          // Update notification badge
+          await updateNotificationBadge();
         } catch (error) {
-            console.error("❌ Error initializing messaging system:", error);
-            showErrorMessage("Error loading messages. Please refresh the page.");
+          console.error("❌ Error initializing messaging system:", error);
+          showErrorMessage("Error loading messages. Please refresh the page.");
         }
-    });
-</script>
-</body>
+      });
+    </script>
+  </body>
 </html>

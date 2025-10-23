@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AcadBird - Archived Classes</title>
     <link
       rel="stylesheet"
@@ -12,76 +12,95 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../style/homepage-archive_teacher.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../style/homepage-archive_teacher.css" />
+  </head>
+  <body>
     <div class="container">
-        <div class="navbar">
-            <div class="logo">
-                <img
-                    src="../../main/img/AcadBird - White no text.png"
-                    class="logo-img"
-                    alt="AcadBird Logo"
-                />
-                <img
-                    src="../../main/img/AcadBird - White Text.png"
-                    class="logo-text-img"
-                    alt="AcadBird Text"
-                />
+      <div class="navbar">
+        <div class="logo">
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            class="logo-img"
+            alt="AcadBird Logo"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
+        </div>
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
+        <div class="nav-icons">
+          <a href="notification_teacher.html" target="_blank">
+            <img
+              src="../../main/img/Notification.png"
+              alt="Notifications"
+              class="icon"
+            />
+          </a>
+          <a href="help_teacher.html" target="_blank">
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          </a>
+          <a href="settings_teacher.html" target="_blank">
+            <div class="account-menu">
+              <img
+                src="../../main/img/account icon.png"
+                alt="User Account"
+                class="icon"
+              />
             </div>
-            <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-            <div class="nav-icons">
-                <a href="notification_teacher.html" target="_blank">
-                    <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
-                </a>
-                <a href="help_teacher.html" target="_blank">
-                    <img src="../../main/img/Help.png" alt="Help" class="icon" />
-                </a>
-                <a href="settings_teacher.html" target="_blank">
-                    <div class="account-menu">
-                        <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
-                    </div>
-                </a>
+          </a>
+        </div>
+      </div>
+
+      <div class="secondary-header">
+        <div class="secondary-header-content">
+          <div class="teacher-name-header" id="teacher-name-header">
+            Loading Archived Classes...
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="loading-spinner"
+        style="text-align: center; padding: 50px; margin-top: 50px"
+      >
+        <div class="spinner"></div>
+        <p style="color: #000; font-weight: 600">Loading Archived Classes...</p>
+      </div>
+
+      <div id="main-content-wrapper" style="display: none">
+        <main>
+          <div class="main-content">
+            <a href="homepage-teachers.html" class="back-link">
+              <i class="fas fa-arrow-left"></i> Back to My Classes
+            </a>
+            <h1 class="section-title">Archived Classes</h1>
+            <div class="class-grid" id="archived-class-grid">
+              <!-- Archived classes will be dynamically inserted here -->
             </div>
-        </div>
-
-        <div class="secondary-header">
-            <div class="secondary-header-content">
-                <div class="teacher-name-header" id="teacher-name-header">Loading Archived Classes...</div>
-            </div>
-        </div>
-
-        <div id="loading-spinner" style="text-align: center; padding: 50px; margin-top: 50px;">
-            <div class="spinner"></div>
-            <p style="color: #000; font-weight: 600;">Loading Archived Classes...</p>
-        </div>
-
-        <div id="main-content-wrapper" style="display: none;">
-            <main>
-                <div class="main-content">
-                    <a href="homepage-teachers.html" class="back-link">
-                        <i class="fas fa-arrow-left"></i> Back to My Classes
-                    </a>
-                    <h1 class="section-title">Archived Classes</h1>
-                    <div class="class-grid" id="archived-class-grid">
-                        <!-- Archived classes will be dynamically inserted here -->
-                    </div>
-                </div>
-            </main>
-        </div>
+          </div>
+        </main>
+      </div>
     </div>
 
     <!-- Unarchive Confirmation Modal -->
     <div id="unarchive-confirm-modal" class="modal-overlay">
-        <div class="modal-box">
-            <div class="modal-content">
-                <p id="unarchive-modal-text">Are you sure you want to unarchive this class?</p>
-            </div>
-            <div class="modal-buttons">
-                <a href="#" class="btn btn-yes" id="unarchive-yes-btn">Yes</a>
-                <a href="#" class="btn btn-no" id="unarchive-no-btn">No</a>
-            </div>
+      <div class="modal-box">
+        <div class="modal-content">
+          <p id="unarchive-modal-text">
+            Are you sure you want to unarchive this class?
+          </p>
         </div>
+        <div class="modal-buttons">
+          <a href="#" class="btn btn-yes" id="unarchive-yes-btn">Yes</a>
+          <a href="#" class="btn btn-no" id="unarchive-no-btn">No</a>
+        </div>
+      </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -90,222 +109,238 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-            authDomain: "acadbird-379e3.firebaseapp.com",
-            projectId: "acadbird-379e3",
-            storageBucket: "acadbird-379e3.firebasestorage.app",
-            messagingSenderId: "575491576951",
-            appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-            measurementId: "G-N6Z672SXWJ"
-        };
+      // Firebase Configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
 
-        // Global variables
-        let currentUser = null;
-        let classToUnarchive = null;
+      // Global variables
+      let currentUser = null;
+      let classToUnarchive = null;
 
-        // DOM elements
-        const loadingSpinner = document.getElementById('loading-spinner');
-        const mainContentWrapper = document.getElementById('main-content-wrapper');
-        const teacherNameHeader = document.getElementById('teacher-name-header');
-        const archivedClassGrid = document.getElementById('archived-class-grid');
-        const unarchiveConfirmModal = document.getElementById('unarchive-confirm-modal');
-        const unarchiveModalText = document.getElementById('unarchive-modal-text');
-        const unarchiveYesBtn = document.getElementById('unarchive-yes-btn');
-        const unarchiveNoBtn = document.getElementById('unarchive-no-btn');
+      // DOM elements
+      const loadingSpinner = document.getElementById("loading-spinner");
+      const mainContentWrapper = document.getElementById(
+        "main-content-wrapper",
+      );
+      const teacherNameHeader = document.getElementById("teacher-name-header");
+      const archivedClassGrid = document.getElementById("archived-class-grid");
+      const unarchiveConfirmModal = document.getElementById(
+        "unarchive-confirm-modal",
+      );
+      const unarchiveModalText = document.getElementById(
+        "unarchive-modal-text",
+      );
+      const unarchiveYesBtn = document.getElementById("unarchive-yes-btn");
+      const unarchiveNoBtn = document.getElementById("unarchive-no-btn");
 
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', () => {
-            // Check authentication state
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    currentUser = user;
-                    loadTeacherData();
-                    loadArchivedClasses();
-                } else {
-                    // Redirect to login if not authenticated
-                    window.location.href = '../login.html';
-                }
-            });
-
-            // Set up modal event listeners
-            unarchiveYesBtn.addEventListener('click', handleUnarchiveConfirm);
-            unarchiveNoBtn.addEventListener('click', handleUnarchiveCancel);
-            
-            // Close modal when clicking outside
-            unarchiveConfirmModal.addEventListener('click', (e) => {
-                if (e.target === unarchiveConfirmModal) {
-                    hideModal('unarchive-confirm-modal');
-                }
-            });
+      // Initialize the application
+      document.addEventListener("DOMContentLoaded", () => {
+        // Check authentication state
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            currentUser = user;
+            loadTeacherData();
+            loadArchivedClasses();
+          } else {
+            // Redirect to login if not authenticated
+            window.location.href = "../login.html";
+          }
         });
 
-        // Load teacher data from Firestore (from users collection)
-        async function loadTeacherData() {
-            try {
-                const userDoc = await db.collection('users').doc(currentUser.uid).get();
-                
-                if (userDoc.exists) {
-                    const userData = userDoc.data();
-                    
-                    // Update UI with teacher data using firstName and lastName
-                    const fullName = `${userData.firstName} ${userData.lastName}`;
-                    teacherNameHeader.textContent = `${fullName}'s Archived Classes`;
-                } else {
-                    console.error('No user data found');
-                    teacherNameHeader.textContent = 'Archived Classes';
-                }
-            } catch (error) {
-                console.error('Error loading user data:', error);
-                teacherNameHeader.textContent = 'Archived Classes';
-            }
-        }
+        // Set up modal event listeners
+        unarchiveYesBtn.addEventListener("click", handleUnarchiveConfirm);
+        unarchiveNoBtn.addEventListener("click", handleUnarchiveCancel);
 
-        // Load archived classes from Firestore
-async function loadArchivedClasses() {
-    try {
-        // Query classrooms where teacherId matches current user and status is 'archived'
-        const classesSnapshot = await db.collection('classrooms')
-            .where('teacherId', '==', currentUser.uid)
-            .where('status', '==', 'archived')
+        // Close modal when clicking outside
+        unarchiveConfirmModal.addEventListener("click", (e) => {
+          if (e.target === unarchiveConfirmModal) {
+            hideModal("unarchive-confirm-modal");
+          }
+        });
+      });
+
+      // Load teacher data from Firestore (from users collection)
+      async function loadTeacherData() {
+        try {
+          const userDoc = await db
+            .collection("users")
+            .doc(currentUser.uid)
             .get();
 
-        // Get student counts for each classroom
-        const classesWithStudentCounts = await Promise.all(
+          if (userDoc.exists) {
+            const userData = userDoc.data();
+
+            // Update UI with teacher data using firstName and lastName
+            const fullName = `${userData.firstName} ${userData.lastName}`;
+            teacherNameHeader.textContent = `${fullName}'s Archived Classes`;
+          } else {
+            console.error("No user data found");
+            teacherNameHeader.textContent = "Archived Classes";
+          }
+        } catch (error) {
+          console.error("Error loading user data:", error);
+          teacherNameHeader.textContent = "Archived Classes";
+        }
+      }
+
+      // Load archived classes from Firestore
+      async function loadArchivedClasses() {
+        try {
+          // Query classrooms where teacherId matches current user and status is 'archived'
+          const classesSnapshot = await db
+            .collection("classrooms")
+            .where("teacherId", "==", currentUser.uid)
+            .where("status", "==", "archived")
+            .get();
+
+          // Get student counts for each classroom
+          const classesWithStudentCounts = await Promise.all(
             classesSnapshot.docs.map(async (doc) => {
-                const classData = doc.data();
-                const classId = doc.id;
-                
-                // Count students in this classroom
-                const studentsSnapshot = await db.collection('students')
-                    .where('classroomId', '==', classId)
-                    .where('status', '==', 'active')
-                    .get();
-                
-                return {
-                    id: classId,
-                    data: classData,
-                    studentCount: studentsSnapshot.size
-                };
-            })
-        );
+              const classData = doc.data();
+              const classId = doc.id;
 
-        displayArchivedClasses(classesWithStudentCounts);
-        
-        // Hide loading spinner and show main content
-        loadingSpinner.style.display = 'none';
-        mainContentWrapper.style.display = 'block';
-        
-    } catch (error) {
-        console.error('Error loading archived classes:', error);
-        loadingSpinner.innerHTML = '<p style="color: red;">Error loading archived classes. Please try again.</p>';
-    }
-}
+              // Count students in this classroom
+              const studentsSnapshot = await db
+                .collection("students")
+                .where("classroomId", "==", classId)
+                .where("status", "==", "active")
+                .get();
 
-// Display archived classes in the grid
-function displayArchivedClasses(classesWithStudentCounts) {
-    archivedClassGrid.innerHTML = '';
-    
-    if (classesWithStudentCounts.length === 0) {
-        archivedClassGrid.innerHTML = '<div style="font-size: 16px; color: #555; margin-top: 20px; width: 100%; text-align: center;">No archived classes found.</div>';
-        return;
-    }
+              return {
+                id: classId,
+                data: classData,
+                studentCount: studentsSnapshot.size,
+              };
+            }),
+          );
 
-    classesWithStudentCounts.forEach(classInfo => {
-        const classData = classInfo.data;
-        const classId = classInfo.id;
-        const studentCount = classInfo.studentCount;
-        
-        const card = document.createElement('div');
-        const cardColorClass = classData.color || 'yellow';
-        card.classList.add('class-card', cardColorClass);
-        card.setAttribute('data-class-id', classId);
-        
-        // Use classroomName instead of name
-        const className = classData.classroomName || 'Unnamed Class';
-        
-        card.innerHTML = `
+          displayArchivedClasses(classesWithStudentCounts);
+
+          // Hide loading spinner and show main content
+          loadingSpinner.style.display = "none";
+          mainContentWrapper.style.display = "block";
+        } catch (error) {
+          console.error("Error loading archived classes:", error);
+          loadingSpinner.innerHTML =
+            '<p style="color: red;">Error loading archived classes. Please try again.</p>';
+        }
+      }
+
+      // Display archived classes in the grid
+      function displayArchivedClasses(classesWithStudentCounts) {
+        archivedClassGrid.innerHTML = "";
+
+        if (classesWithStudentCounts.length === 0) {
+          archivedClassGrid.innerHTML =
+            '<div style="font-size: 16px; color: #555; margin-top: 20px; width: 100%; text-align: center;">No archived classes found.</div>';
+          return;
+        }
+
+        classesWithStudentCounts.forEach((classInfo) => {
+          const classData = classInfo.data;
+          const classId = classInfo.id;
+          const studentCount = classInfo.studentCount;
+
+          const card = document.createElement("div");
+          const cardColorClass = classData.color || "yellow";
+          card.classList.add("class-card", cardColorClass);
+          card.setAttribute("data-class-id", classId);
+
+          // Use classroomName instead of name
+          const className = classData.classroomName || "Unnamed Class";
+
+          card.innerHTML = `
             <div class="class-name">${className}</div>
             <div class="student-count">${studentCount} students</div>
             <button class="unarchive-button" title="Unarchive Class"><i class="fas fa-undo"></i></button>
         `;
-        
-        archivedClassGrid.appendChild(card);
 
-        // Add event listener to unarchive button
-        card.querySelector('.unarchive-button').addEventListener('click', (e) => {
-            e.stopPropagation();
-            showUnarchiveConfirmation(classData, classId);
+          archivedClassGrid.appendChild(card);
+
+          // Add event listener to unarchive button
+          card
+            .querySelector(".unarchive-button")
+            .addEventListener("click", (e) => {
+              e.stopPropagation();
+              showUnarchiveConfirmation(classData, classId);
+            });
         });
-    });
-}
-        // Show confirmation modal for unarchiving
-        function showUnarchiveConfirmation(classData, classId) {
-            classToUnarchive = { data: classData, id: classId };
-            const className = classData.classroomName || 'Unnamed Class';
-            unarchiveModalText.textContent = `Are you sure you want to unarchive "${className}"?`;
-            showModal('unarchive-confirm-modal');
-        }
+      }
+      // Show confirmation modal for unarchiving
+      function showUnarchiveConfirmation(classData, classId) {
+        classToUnarchive = { data: classData, id: classId };
+        const className = classData.classroomName || "Unnamed Class";
+        unarchiveModalText.textContent = `Are you sure you want to unarchive "${className}"?`;
+        showModal("unarchive-confirm-modal");
+      }
 
-        // Handle unarchive confirmation
-        async function handleUnarchiveConfirm(e) {
-            e.preventDefault();
-            
-            if (classToUnarchive) {
-                try {
-                    // Update the class status to 'active' in Firestore
-                    await db.collection('classrooms').doc(classToUnarchive.id).update({
-                        status: 'active'
-                    });
-                    
-                    // Remove the class card from the UI
-                    const classCard = document.querySelector(`[data-class-id="${classToUnarchive.id}"]`);
-                    if (classCard) {
-                        classCard.remove();
-                    }
-                    
-                    // Show message if no more archived classes
-                    if (archivedClassGrid.children.length === 0) {
-                        archivedClassGrid.innerHTML = '<div style="font-size: 16px; color: #555; margin-top: 20px; width: 100%; text-align: center;">No archived classes found.</div>';
-                    }
-                    
-                    hideModal('unarchive-confirm-modal');
-                    classToUnarchive = null;
-                    
-                } catch (error) {
-                    console.error('Error unarchiving class:', error);
-                    alert('Failed to unarchive class. Please try again.');
-                }
+      // Handle unarchive confirmation
+      async function handleUnarchiveConfirm(e) {
+        e.preventDefault();
+
+        if (classToUnarchive) {
+          try {
+            // Update the class status to 'active' in Firestore
+            await db.collection("classrooms").doc(classToUnarchive.id).update({
+              status: "active",
+            });
+
+            // Remove the class card from the UI
+            const classCard = document.querySelector(
+              `[data-class-id="${classToUnarchive.id}"]`,
+            );
+            if (classCard) {
+              classCard.remove();
             }
-        }
 
-        // Handle unarchive cancellation
-        function handleUnarchiveCancel(e) {
-            e.preventDefault();
-            hideModal('unarchive-confirm-modal');
+            // Show message if no more archived classes
+            if (archivedClassGrid.children.length === 0) {
+              archivedClassGrid.innerHTML =
+                '<div style="font-size: 16px; color: #555; margin-top: 20px; width: 100%; text-align: center;">No archived classes found.</div>';
+            }
+
+            hideModal("unarchive-confirm-modal");
             classToUnarchive = null;
+          } catch (error) {
+            console.error("Error unarchiving class:", error);
+            alert("Failed to unarchive class. Please try again.");
+          }
         }
+      }
 
-        // Modal utility functions
-        function showModal(modalId) {
-            const modalElement = document.getElementById(modalId);
-            if (modalElement) {
-                modalElement.classList.add('show');
-            }
-        }
+      // Handle unarchive cancellation
+      function handleUnarchiveCancel(e) {
+        e.preventDefault();
+        hideModal("unarchive-confirm-modal");
+        classToUnarchive = null;
+      }
 
-        function hideModal(modalId) {
-            const modalElement = document.getElementById(modalId);
-            if (modalElement) {
-                modalElement.classList.remove('show');
-            }
+      // Modal utility functions
+      function showModal(modalId) {
+        const modalElement = document.getElementById(modalId);
+        if (modalElement) {
+          modalElement.classList.add("show");
         }
+      }
+
+      function hideModal(modalId) {
+        const modalElement = document.getElementById(modalId);
+        if (modalElement) {
+          modalElement.classList.remove("show");
+        }
+      }
     </script>
-</body>
+  </body>
 </html>

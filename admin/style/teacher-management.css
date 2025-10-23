@@ -824,3 +824,27 @@
   }
 }
 
+.delete-btn {
+    color: #dc2626;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: #fef2f2;
+}
+
+.delete-btn:not(:last-child) {
+    margin-right: 4px;
+}
+
+/* Ensure action buttons container has proper spacing */
+.teachers-table td:last-child {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}

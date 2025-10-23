@@ -1,372 +1,457 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AcadBird Settings</title>
-    
+
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-    <link rel="stylesheet" href="../style/settings_teacher.css">
-    
+    <link rel="stylesheet" href="../style/settings_teacher.css" />
+
     <script>
-        // ⚠️ IMPORTANT: REPLACE THIS ENTIRE OBJECT with your actual Firebase project config ⚠️
-           const firebaseConfig = {
-            apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-            authDomain: "acadbird-379e3.firebaseapp.com",
-            projectId: "acadbird-379e3",
-            storageBucket: "acadbird-379e3.appspot.com",
-            messagingSenderId: "575491576951",
-            appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-            measurementId: "G-N6Z672SXWJ"
-        };
-        
-        // Initialize Firebase App and services
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+      // ⚠️ IMPORTANT: REPLACE THIS ENTIRE OBJECT with your actual Firebase project config ⚠️
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.appspot.com",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
+
+      // Initialize Firebase App and services
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <link rel="stylesheet" href="settings_teacher.css" />
     <style>
-        .save-cancel-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-            align-items: center;
-        }
+      .save-cancel-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+        align-items: center;
+      }
 
-        .save-changes-btn, .cancel-changes-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-width: 120px;
-        }
+      .save-changes-btn,
+      .cancel-changes-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 120px;
+      }
 
-        .save-changes-btn {
-            background: linear-gradient(135deg, #FFD700, #FF8C00) !important; /* Full color on hover */
-           border: 2px solid #000000 !important;
-            color: white;
-        }
+      .save-changes-btn {
+        background: linear-gradient(
+          135deg,
+          #ffd700,
+          #ff8c00
+        ) !important; /* Full color on hover */
+        border: 2px solid #000000 !important;
+        color: white;
+      }
 
-.save-changes-btn:hover:not(.disabled) {
-    background: linear-gradient(135deg, #FFD700, #FF8C00) !important; /* Full color on hover */
-    border: 2px solid #000000 !important;
-    transform: translateY(-1px);
-}
-        .cancel-changes-btn {
-            background-color: #cc1111;
-            color: white;
-        }
+      .save-changes-btn:hover:not(.disabled) {
+        background: linear-gradient(
+          135deg,
+          #ffd700,
+          #ff8c00
+        ) !important; /* Full color on hover */
+        border: 2px solid #000000 !important;
+        transform: translateY(-1px);
+      }
+      .cancel-changes-btn {
+        background-color: #cc1111;
+        color: white;
+      }
 
-        .cancel-changes-btn:hover:not(.disabled) {
-            background-color: #fb2004;
-            transform: translateY(-1px);
-        }
+      .cancel-changes-btn:hover:not(.disabled) {
+        background-color: #fb2004;
+        transform: translateY(-1px);
+      }
 
-        .disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
+      .disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+      }
 
-        .disabled:hover {
-            background-color: inherit !important;
-        }
+      .disabled:hover {
+        background-color: inherit !important;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="navbar">
-            <div class="logo">
-                <img src="../../main/img/back.png" alt="Back" class="back-icon" id="back-to-dashboard" />
-                <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-                <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
+      <div class="navbar">
+        <div class="logo">
+          <img
+            src="../../main/img/back.png"
+            alt="Back"
+            class="back-icon"
+            id="back-to-dashboard"
+          />
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            alt="AcadBird"
+            class="logo-img"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
+        </div>
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
+        <div class="nav-icons">
+          <img
+            src="../../main/img/Notification.png"
+            alt="Notifications"
+            class="icon"
+          />
+          <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          <div class="account-menu">
+            <img
+              src="../../main/img/account icon.png"
+              alt="User Account"
+              class="icon"
+            />
+            <i class="fas fa-caret-down dropdown-icon"></i>
+            <div class="dropdown-content">
+              <a href="settings_teacher.html" id="settings-link"
+                ><i class="fas fa-cog"></i> Settings</a
+              >
+              <a href="../../main/html/login.html" id="logout-link"
+                ><i class="fas fa-sign-out-alt"></i> Log Out</a
+              >
             </div>
-            <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-            <div class="nav-icons">
-                <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
-                <img src="../../main/img/Help.png" alt="Help" class="icon">
-                <div class="account-menu">
-                    <img src="../../main/img/account icon.png" alt="User Account" class="icon">
-                    <i class="fas fa-caret-down dropdown-icon"></i>
-                    <div class="dropdown-content">
-                        <a href="settings_teacher.html" id="settings-link"><i class="fas fa-cog"></i> Settings</a>
-                        <a href="../../main/html/login.html" id="logout-link"><i class="fas fa-sign-out-alt"></i> Log Out</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="secondary-header">
+        <nav class="nav-menu" id="main-nav-menu">
+          <a href="homepage-teachers.html" class="nav-item">Home</a>
+          <a href="homepage-classroom_teacher.html" class="nav-item"
+            >Classroom</a
+          >
+          <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
+          <a href="resources_teacher.html" class="nav-item">Resources</a>
+          <a href="messages_teacher.html" class="nav-item">Messages</a>
+          <a href="studentlistpage_teacher.html" class="nav-item"
+            >Student List</a
+          >
+        </nav>
+        <h2 class="main-title hidden" id="password-header-title">
+          Change Password
+        </h2>
+      </div>
+      <div class="separator"></div>
+
+      <div class="main-content">
+        <div class="settings-container" id="settings-view">
+          <h1 class="main-title">Settings</h1>
+          <div class="settings-layout">
+            <div class="settings-column">
+              <div class="card profile-card">
+                <h2 class="card-title">Profile</h2>
+                <div class="profile-details">
+                  <div class="profile-pic">
+                    <div class="avatar-placeholder">O</div>
+                    <button class="change-photo-btn">Change Photo</button>
+                  </div>
+                  <div class="profile-form">
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" value="Name" />
+                      </div>
+                      <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" value="Name" />
+                      </div>
                     </div>
+
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        value="sampleemail@school.edu.ph"
+                      />
+                    </div>
+                    <button class="text-button" id="change-password-btn">
+                      Change Password
+                    </button>
+                    <div class="save-cancel-buttons">
+                      <button
+                        class="save-changes-btn disabled"
+                        id="save-changes-btn"
+                      >
+                        Save Changes
+                      </button>
+                      <button
+                        class="cancel-changes-btn disabled"
+                        id="cancel-changes-btn"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
                 </div>
+              </div>
+              <button
+                class="action-button logout-btn-main"
+                id="logout-btn-main"
+              >
+                Log out
+              </button>
             </div>
+          </div>
         </div>
 
-        <div class="secondary-header">
-            <nav class="nav-menu" id="main-nav-menu">
-                <a href="homepage-teachers.html" class="nav-item">Home</a>
-                <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
-                <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
-                <a href="resources_teacher.html" class="nav-item">Resources</a>
-                <a href="messages_teacher.html" class="nav-item">Messages</a>
-                <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
-            </nav>
-            <h2 class="main-title hidden" id="password-header-title">Change Password</h2>
-        </div>
-        <div class="separator"></div>
-
-        <div class="main-content">
-            <div class="settings-container" id="settings-view">
-                <h1 class="main-title">Settings</h1>
-                <div class="settings-layout">
-                    <div class="settings-column">
-                        <div class="card profile-card">
-                            <h2 class="card-title">Profile</h2>
-                            <div class="profile-details">
-                                <div class="profile-pic">
-                                    <div class="avatar-placeholder">O</div>
-                                    <button class="change-photo-btn">Change Photo</button>
-                                </div>
-                                <div class="profile-form">
-                                    <div class="form-row">
-                                        <div class="form-group">
-                                            <label for="first-name">First Name</label>
-                                            <input type="text" id="first-name" value="Name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="last-name">Last Name</label>
-                                            <input type="text" id="last-name" value="Name">
-                                        </div>
-                                    </div>
-                                   
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="email" id="email" value="sampleemail@school.edu.ph">
-                                    </div>
-                                    <button class="text-button" id="change-password-btn">Change Password</button>
-                                    <div class="save-cancel-buttons">
-                                        <button class="save-changes-btn disabled" id="save-changes-btn">Save Changes</button>
-                                        <button class="cancel-changes-btn disabled" id="cancel-changes-btn">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button class="action-button logout-btn-main" id="logout-btn-main">Log out</button> 
-                    </div>
-                    
-                </div>
+        <div class="change-password-container hidden" id="password-view">
+          <div class="card password-card">
+            <div class="form-group">
+              <label for="current-password">Current Password</label>
+              <input type="password" id="current-password" />
             </div>
-
-            <div class="change-password-container hidden" id="password-view">
-                <div class="card password-card">
-                    <div class="form-group">
-                        <label for="current-password">Current Password</label>
-                        <input type="password" id="current-password">
-                    </div>
-                    <div class="form-group">
-                        <label for="new-password">New Password</label>
-                        <input type="password" id="new-password">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirm-password">Confirm New Password</label>
-                        <input type="password"id="confirm-password">
-                    </div>
-                    <button class="action-button">Change Password</button>
-                </div>
+            <div class="form-group">
+              <label for="new-password">New Password</label>
+              <input type="password" id="new-password" />
             </div>
+            <div class="form-group">
+              <label for="confirm-password">Confirm New Password</label>
+              <input type="password" id="confirm-password" />
+            </div>
+            <button class="action-button">Change Password</button>
+          </div>
         </div>
+      </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-    // ⚠️ IMPORTANT: 'auth' and 'db' objects are now defined in a <script> tag 
-    // in the HTML BEFORE this file is loaded.
+      document.addEventListener("DOMContentLoaded", function () {
+        // ⚠️ IMPORTANT: 'auth' and 'db' objects are now defined in a <script> tag
+        // in the HTML BEFORE this file is loaded.
 
-    // --- Element Selections ---
-    const accountMenu = document.querySelector('.account-menu');
-    const dropdown = document.querySelector('.dropdown-content');
-    const settingsView = document.getElementById('settings-view');
-    const passwordView = document.getElementById('password-view');
-    const backToDashboardBtn = document.getElementById('back-to-dashboard');
-    
-    // Header elements
-    const mainNavMenu = document.getElementById('main-nav-menu');
-    const passwordHeaderTitle = document.getElementById('password-header-title');
-    
-    // Buttons for switching views
-    const goToPasswordBtn = document.getElementById('change-password-btn');
-    const submitPasswordBtn = document.querySelector('#password-view .action-button'); // The submit button in the password view
-    const saveChangesBtn = document.getElementById('save-changes-btn');
-    const cancelChangesBtn = document.getElementById('cancel-changes-btn');
+        // --- Element Selections ---
+        const accountMenu = document.querySelector(".account-menu");
+        const dropdown = document.querySelector(".dropdown-content");
+        const settingsView = document.getElementById("settings-view");
+        const passwordView = document.getElementById("password-view");
+        const backToDashboardBtn = document.getElementById("back-to-dashboard");
 
-    // Logout Button Selections (RE-ADDED)
-    const dropdownLogoutLink = document.getElementById('logout-link');
-    const mainLogoutButton = document.getElementById('logout-btn-main'); 
+        // Header elements
+        const mainNavMenu = document.getElementById("main-nav-menu");
+        const passwordHeaderTitle = document.getElementById(
+          "password-header-title",
+        );
 
-    // Profile Form Fields (RE-ADDED)
-    const firstNameInput = document.getElementById('first-name');
-    const lastNameInput = document.getElementById('last-name');
-    const emailInput = document.getElementById('email'); 
-    const avatarPlaceholder = document.querySelector('.avatar-placeholder');
+        // Buttons for switching views
+        const goToPasswordBtn = document.getElementById("change-password-btn");
+        const submitPasswordBtn = document.querySelector(
+          "#password-view .action-button",
+        ); // The submit button in the password view
+        const saveChangesBtn = document.getElementById("save-changes-btn");
+        const cancelChangesBtn = document.getElementById("cancel-changes-btn");
 
-    // Track original values to detect changes
-    let originalFirstName = '';
-    let originalLastName = '';
-    let originalEmail = '';
+        // Logout Button Selections (RE-ADDED)
+        const dropdownLogoutLink = document.getElementById("logout-link");
+        const mainLogoutButton = document.getElementById("logout-btn-main");
 
-    // --- Utility Functions ---
+        // Profile Form Fields (RE-ADDED)
+        const firstNameInput = document.getElementById("first-name");
+        const lastNameInput = document.getElementById("last-name");
+        const emailInput = document.getElementById("email");
+        const avatarPlaceholder = document.querySelector(".avatar-placeholder");
 
-    /**
-     * Fetches user profile data from Firestore and updates the form.
-     * This function requires the 'db' (Firestore) object to be defined.
-     * @param {string} uid The Firebase User ID.
-     */
-    async function loadUserProfile(uid) {
-        if (typeof db === 'undefined') {
-            console.error("Firestore 'db' object is not defined. Cannot load profile data.");
+        // Track original values to detect changes
+        let originalFirstName = "";
+        let originalLastName = "";
+        let originalEmail = "";
+
+        // --- Utility Functions ---
+
+        /**
+         * Fetches user profile data from Firestore and updates the form.
+         * This function requires the 'db' (Firestore) object to be defined.
+         * @param {string} uid The Firebase User ID.
+         */
+        async function loadUserProfile(uid) {
+          if (typeof db === "undefined") {
+            console.error(
+              "Firestore 'db' object is not defined. Cannot load profile data.",
+            );
             return;
-        }
-        
-        try {
+          }
+
+          try {
             // Fetch the document from the 'users' collection using the UID
             const doc = await db.collection("users").doc(uid).get();
-            
+
             if (doc.exists) {
-                const data = doc.data();
-                
-                // Populate the form fields
-                firstNameInput.value = data.firstName || '';
-                lastNameInput.value = data.lastName || '';
-                
-                // Store original values
-                originalFirstName = data.firstName || '';
-                originalLastName = data.lastName || '';
-                originalEmail = auth.currentUser.email || '';
-                
-                // Update avatar placeholder 
-                if (data.firstName) {
-                    avatarPlaceholder.textContent = data.firstName.charAt(0).toUpperCase();
-                } else {
-                    avatarPlaceholder.textContent = 'A';
-                }
+              const data = doc.data();
 
-                console.log("Profile data loaded from Firestore successfully.");
-                
-                // Hide save/cancel buttons initially
-                updateSaveCancelButtons(false);
+              // Populate the form fields
+              firstNameInput.value = data.firstName || "";
+              lastNameInput.value = data.lastName || "";
+
+              // Store original values
+              originalFirstName = data.firstName || "";
+              originalLastName = data.lastName || "";
+              originalEmail = auth.currentUser.email || "";
+
+              // Update avatar placeholder
+              if (data.firstName) {
+                avatarPlaceholder.textContent = data.firstName
+                  .charAt(0)
+                  .toUpperCase();
+              } else {
+                avatarPlaceholder.textContent = "A";
+              }
+
+              console.log("Profile data loaded from Firestore successfully.");
+
+              // Hide save/cancel buttons initially
+              updateSaveCancelButtons(false);
             } else {
-                console.warn("No user data found in Firestore for UID:", uid);
+              console.warn("No user data found in Firestore for UID:", uid);
             }
-        } catch (error) {
+          } catch (error) {
             console.error("Error loading user profile:", error);
+          }
         }
-    }
 
-    /**
-     * Check if form values have changed from original values
-     */
-    function hasFormChanged() {
-        const currentFirstName = firstNameInput.value.trim();
-        const currentLastName = lastNameInput.value.trim();
-        const currentEmail = emailInput.value.trim();
-        
-        return currentFirstName !== originalFirstName || 
-               currentLastName !== originalLastName || 
-               currentEmail !== originalEmail;
-    }
+        /**
+         * Check if form values have changed from original values
+         */
+        function hasFormChanged() {
+          const currentFirstName = firstNameInput.value.trim();
+          const currentLastName = lastNameInput.value.trim();
+          const currentEmail = emailInput.value.trim();
 
-    /**
-     * Update save and cancel buttons visibility and state
-     */
-   /**
- * Update save and cancel buttons visibility and state
- */
-/**
- * Update save and cancel buttons visibility and state
- */
-/**
- * Update save and cancel buttons visibility and state
- */
-function updateSaveCancelButtons(hasChanges) {
-    if (hasChanges) {
-        saveChangesBtn.classList.remove('disabled');
-        cancelChangesBtn.classList.remove('disabled');
-        // Add login button style (faded gradient yellow-orange with black border)
-        saveChangesBtn.style.background = 'linear-gradient(135deg, rgba(255, 215, 0, 0.8), rgba(255, 140, 0, 0.8))';
-        saveChangesBtn.style.border = '2px solid #000000';
-        saveChangesBtn.style.color = '#000000';
-    } else {
-        saveChangesBtn.classList.add('disabled');
-        cancelChangesBtn.classList.add('disabled');
-        // Reset to original style when disabled
-        saveChangesBtn.style.background = '#3498db';
-        saveChangesBtn.style.border = 'none';
-        saveChangesBtn.style.color = 'white';
-    }
-}
-
-    /**
-     * Reset form to original values
-     */
-    function resetForm() {
-        firstNameInput.value = originalFirstName;
-        lastNameInput.value = originalLastName;
-        emailInput.value = originalEmail;
-        
-        // Update avatar placeholder
-        if (originalFirstName) {
-            avatarPlaceholder.textContent = originalFirstName.charAt(0).toUpperCase();
-        } else {
-            avatarPlaceholder.textContent = 'A';
+          return (
+            currentFirstName !== originalFirstName ||
+            currentLastName !== originalLastName ||
+            currentEmail !== originalEmail
+          );
         }
-        
-        updateSaveCancelButtons(false);
-    }
 
-    /**
-     * Save profile changes to Firestore
-     */
-    async function saveProfileChanges() {
-        if (typeof db === 'undefined') {
-            console.error("Firestore 'db' object is not defined. Cannot save profile data.");
+        /**
+         * Update save and cancel buttons visibility and state
+         */
+        /**
+         * Update save and cancel buttons visibility and state
+         */
+        /**
+         * Update save and cancel buttons visibility and state
+         */
+        /**
+         * Update save and cancel buttons visibility and state
+         */
+        function updateSaveCancelButtons(hasChanges) {
+          if (hasChanges) {
+            saveChangesBtn.classList.remove("disabled");
+            cancelChangesBtn.classList.remove("disabled");
+            // Add login button style (faded gradient yellow-orange with black border)
+            saveChangesBtn.style.background =
+              "linear-gradient(135deg, rgba(255, 215, 0, 0.8), rgba(255, 140, 0, 0.8))";
+            saveChangesBtn.style.border = "2px solid #000000";
+            saveChangesBtn.style.color = "#000000";
+          } else {
+            saveChangesBtn.classList.add("disabled");
+            cancelChangesBtn.classList.add("disabled");
+            // Reset to original style when disabled
+            saveChangesBtn.style.background = "#3498db";
+            saveChangesBtn.style.border = "none";
+            saveChangesBtn.style.color = "white";
+          }
+        }
+
+        /**
+         * Reset form to original values
+         */
+        function resetForm() {
+          firstNameInput.value = originalFirstName;
+          lastNameInput.value = originalLastName;
+          emailInput.value = originalEmail;
+
+          // Update avatar placeholder
+          if (originalFirstName) {
+            avatarPlaceholder.textContent = originalFirstName
+              .charAt(0)
+              .toUpperCase();
+          } else {
+            avatarPlaceholder.textContent = "A";
+          }
+
+          updateSaveCancelButtons(false);
+        }
+
+        /**
+         * Save profile changes to Firestore
+         */
+        async function saveProfileChanges() {
+          if (typeof db === "undefined") {
+            console.error(
+              "Firestore 'db' object is not defined. Cannot save profile data.",
+            );
             return;
-        }
+          }
 
-        const user = auth.currentUser;
-        if (!user) {
+          const user = auth.currentUser;
+          if (!user) {
             console.error("No user logged in. Cannot save profile.");
             return;
-        }
+          }
 
-        const newFirstName = firstNameInput.value.trim();
-        const newLastName = lastNameInput.value.trim();
-        const newEmail = emailInput.value.trim();
+          const newFirstName = firstNameInput.value.trim();
+          const newLastName = lastNameInput.value.trim();
+          const newEmail = emailInput.value.trim();
 
-        // Basic validation
-        if (!newFirstName || !newLastName || !newEmail) {
+          // Basic validation
+          if (!newFirstName || !newLastName || !newEmail) {
             alert("Please fill in all fields.");
             return;
-        }
+          }
 
-        if (!newEmail.includes('@')) {
+          if (!newEmail.includes("@")) {
             alert("Please enter a valid email address.");
             return;
-        }
+          }
 
-        try {
+          try {
             // Update Firestore
             await db.collection("users").doc(user.uid).update({
-                firstName: newFirstName,
-                lastName: newLastName,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+              firstName: newFirstName,
+              lastName: newLastName,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
             });
 
             // Update email in Firebase Auth if changed
             if (newEmail !== originalEmail) {
-                await user.updateEmail(newEmail);
-                console.log("Email updated in Firebase Auth");
+              await user.updateEmail(newEmail);
+              console.log("Email updated in Firebase Auth");
             }
 
             // Update original values
@@ -375,7 +460,9 @@ function updateSaveCancelButtons(hasChanges) {
             originalEmail = newEmail;
 
             // Update avatar placeholder
-            avatarPlaceholder.textContent = newFirstName.charAt(0).toUpperCase();
+            avatarPlaceholder.textContent = newFirstName
+              .charAt(0)
+              .toUpperCase();
 
             // Hide save/cancel buttons
             updateSaveCancelButtons(false);
@@ -384,176 +471,185 @@ function updateSaveCancelButtons(hasChanges) {
             alert("Profile updated successfully!");
 
             console.log("Profile data saved to Firestore successfully.");
-
-        } catch (error) {
+          } catch (error) {
             console.error("Error saving profile data:", error);
-            
-            if (error.code === 'auth/requires-recent-login') {
-                alert("For security reasons, please log in again to change your email.");
+
+            if (error.code === "auth/requires-recent-login") {
+              alert(
+                "For security reasons, please log in again to change your email.",
+              );
             } else {
-                alert("Failed to save changes: " + error.message);
+              alert("Failed to save changes: " + error.message);
             }
-        }
-    }
-
-    function showSettingsPage() {
-        // Hide password view and show settings view
-        passwordView.classList.add('hidden');
-        settingsView.classList.remove('hidden');
-        
-        // Hide password header and show main nav menu
-        passwordHeaderTitle.classList.add('hidden');
-        mainNavMenu.classList.remove('hidden');
-
-        // Show the back button (to go to dashboard)
-        backToDashboardBtn.style.visibility = 'visible';
-        backToDashboardBtn.onclick = () => {
-             // Change this to the actual dashboard/home page URL
-             window.location.href = 'homepage-teachers.html'; 
-        };
-    }
-
-    function showPasswordPage() {
-        // Hide settings view and show password view
-        settingsView.classList.add('hidden');
-        passwordView.classList.remove('hidden');
-        
-        // Hide main nav menu and show password header
-        mainNavMenu.classList.add('hidden');
-        passwordHeaderTitle.classList.remove('hidden');
-
-        // Hide the back button on the password page, and assign its function to go back to settings
-        backToDashboardBtn.style.visibility = 'visible';
-        backToDashboardBtn.onclick = showSettingsPage; // Pressing 'back' now returns to settings
-    }
-
-    /**
-     * Handles user sign-out using Firebase Auth.
-     */
-    async function handleLogout(event) {
-        event.preventDefault(); 
-        if (typeof auth === 'undefined') {
-             console.error("Firebase Auth not initialized. Cannot log out.");
-             return;
+          }
         }
 
-        try {
+        function showSettingsPage() {
+          // Hide password view and show settings view
+          passwordView.classList.add("hidden");
+          settingsView.classList.remove("hidden");
+
+          // Hide password header and show main nav menu
+          passwordHeaderTitle.classList.add("hidden");
+          mainNavMenu.classList.remove("hidden");
+
+          // Show the back button (to go to dashboard)
+          backToDashboardBtn.style.visibility = "visible";
+          backToDashboardBtn.onclick = () => {
+            // Change this to the actual dashboard/home page URL
+            window.location.href = "homepage-teachers.html";
+          };
+        }
+
+        function showPasswordPage() {
+          // Hide settings view and show password view
+          settingsView.classList.add("hidden");
+          passwordView.classList.remove("hidden");
+
+          // Hide main nav menu and show password header
+          mainNavMenu.classList.add("hidden");
+          passwordHeaderTitle.classList.remove("hidden");
+
+          // Hide the back button on the password page, and assign its function to go back to settings
+          backToDashboardBtn.style.visibility = "visible";
+          backToDashboardBtn.onclick = showSettingsPage; // Pressing 'back' now returns to settings
+        }
+
+        /**
+         * Handles user sign-out using Firebase Auth.
+         */
+        async function handleLogout(event) {
+          event.preventDefault();
+          if (typeof auth === "undefined") {
+            console.error("Firebase Auth not initialized. Cannot log out.");
+            return;
+          }
+
+          try {
             await auth.signOut();
             console.log("User successfully signed out. Redirecting to login.");
             // Redirect to the login page
-            window.location.href = '../../main/html/login.html'; 
-        } catch (error) {
+            window.location.href = "../../main/html/login.html";
+          } catch (error) {
             console.error("Sign out error:", error);
-            alert("Failed to sign out. Please try again. Error: " + error.message);
+            alert(
+              "Failed to sign out. Please try again. Error: " + error.message,
+            );
+          }
         }
-    }
 
+        // --- Event Listeners ---
 
-    // --- Event Listeners ---
+        // 1. Toggle Dropdown Menu
+        accountMenu.addEventListener("click", function (event) {
+          event.stopPropagation();
+          // Check if dropdown element exists before toggling
+          if (dropdown) {
+            dropdown.classList.toggle("show");
+          }
+        });
 
-    // 1. Toggle Dropdown Menu
-    accountMenu.addEventListener('click', function (event) {
-        event.stopPropagation();
-        // Check if dropdown element exists before toggling
-        if (dropdown) {
-            dropdown.classList.toggle('show');
+        // 2. Close dropdown if clicked outside
+        window.addEventListener("click", function () {
+          if (dropdown && dropdown.classList.contains("show")) {
+            dropdown.classList.remove("show");
+          }
+        });
+
+        // 3. Switch to Change Password view
+        if (goToPasswordBtn) {
+          goToPasswordBtn.addEventListener("click", showPasswordPage);
         }
-    });
 
-    // 2. Close dropdown if clicked outside
-    window.addEventListener('click', function () {
-        if (dropdown && dropdown.classList.contains('show')) {
-            dropdown.classList.remove('show');
-        }
-    });
-
-    // 3. Switch to Change Password view
-    if (goToPasswordBtn) {
-        goToPasswordBtn.addEventListener('click', showPasswordPage);
-    }
-    
-    // 4. Handle "Change Password" submission (Placeholder for Firebase Auth update)
-    if (submitPasswordBtn) {
-        submitPasswordBtn.addEventListener('click', function() {
-            // ⚠️ TODO: Add logic here to validate old/new passwords and call 
+        // 4. Handle "Change Password" submission (Placeholder for Firebase Auth update)
+        if (submitPasswordBtn) {
+          submitPasswordBtn.addEventListener("click", function () {
+            // ⚠️ TODO: Add logic here to validate old/new passwords and call
             // the Firebase Auth function to update the password.
-            console.log("Password change submitted! (Firebase update logic goes here)");
-            
+            console.log(
+              "Password change submitted! (Firebase update logic goes here)",
+            );
+
             // For now, just switch back to the main settings view
             showSettingsPage();
-        });
-    }
+          });
+        }
 
-    // 5. Save Changes button
-    if (saveChangesBtn) {
-        saveChangesBtn.addEventListener('click', function() {
-            if (!saveChangesBtn.classList.contains('disabled')) {
-                saveProfileChanges();
+        // 5. Save Changes button
+        if (saveChangesBtn) {
+          saveChangesBtn.addEventListener("click", function () {
+            if (!saveChangesBtn.classList.contains("disabled")) {
+              saveProfileChanges();
             }
-        });
-    }
+          });
+        }
 
-    // 6. Cancel Changes button
-    if (cancelChangesBtn) {
-        cancelChangesBtn.addEventListener('click', function() {
-            if (!cancelChangesBtn.classList.contains('disabled')) {
-                resetForm();
+        // 6. Cancel Changes button
+        if (cancelChangesBtn) {
+          cancelChangesBtn.addEventListener("click", function () {
+            if (!cancelChangesBtn.classList.contains("disabled")) {
+              resetForm();
             }
-        });
-    }
+          });
+        }
 
-    // 7. Form input change listeners
-    if (firstNameInput) {
-        firstNameInput.addEventListener('input', function() {
+        // 7. Form input change listeners
+        if (firstNameInput) {
+          firstNameInput.addEventListener("input", function () {
             updateSaveCancelButtons(hasFormChanged());
-        });
-    }
-    if (lastNameInput) {
-        lastNameInput.addEventListener('input', function() {
+          });
+        }
+        if (lastNameInput) {
+          lastNameInput.addEventListener("input", function () {
             updateSaveCancelButtons(hasFormChanged());
-        });
-    }
-    if (emailInput) {
-        emailInput.addEventListener('input', function() {
+          });
+        }
+        if (emailInput) {
+          emailInput.addEventListener("input", function () {
             updateSaveCancelButtons(hasFormChanged());
-        });
-    }
+          });
+        }
 
-    // 8. Logout Button Event Listeners (RE-ADDED)
-    if (dropdownLogoutLink) {
-        dropdownLogoutLink.addEventListener('click', handleLogout);
-    }
-    if (mainLogoutButton) {
-        mainLogoutButton.addEventListener('click', handleLogout);
-    }
-    
-    // 9. Authentication Check (Core logic for security and data loading) (RE-ADDED)
-    if (typeof auth !== 'undefined') {
-        auth.onAuthStateChanged((user) => {
+        // 8. Logout Button Event Listeners (RE-ADDED)
+        if (dropdownLogoutLink) {
+          dropdownLogoutLink.addEventListener("click", handleLogout);
+        }
+        if (mainLogoutButton) {
+          mainLogoutButton.addEventListener("click", handleLogout);
+        }
+
+        // 9. Authentication Check (Core logic for security and data loading) (RE-ADDED)
+        if (typeof auth !== "undefined") {
+          auth.onAuthStateChanged((user) => {
             if (!user) {
-                console.log("No user found. Redirecting to login.");
-                // ⚠️ Uncomment this line when ready to enforce login
-                // window.location.href = '../login.html'; 
+              console.log("No user found. Redirecting to login.");
+              // ⚠️ Uncomment this line when ready to enforce login
+              // window.location.href = '../login.html';
             } else {
-                console.log("User is logged in as:", user.email, "UID:", user.uid);
-                
-                // 1. Set email field from Firebase Auth object
-                emailInput.value = user.email; 
-                originalEmail = user.email;
-                
-                // 2. Fetch and load additional profile data from Firestore
-                loadUserProfile(user.uid);
+              console.log(
+                "User is logged in as:",
+                user.email,
+                "UID:",
+                user.uid,
+              );
+
+              // 1. Set email field from Firebase Auth object
+              emailInput.value = user.email;
+              originalEmail = user.email;
+
+              // 2. Fetch and load additional profile data from Firestore
+              loadUserProfile(user.uid);
             }
-        });
-    } else {
-        console.error("Firebase Auth not initialized. Check your HTML script order.");
-    }
+          });
+        } else {
+          console.error(
+            "Firebase Auth not initialized. Check your HTML script order.",
+          );
+        }
 
-
-    // Initialize the page view
-    showSettingsPage();
-
-});
+        // Initialize the page view
+        showSettingsPage();
+      });
     </script>
-</body>
+  </body>
 </html>

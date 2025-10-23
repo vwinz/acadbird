@@ -1,275 +1,370 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AcadBird Teacher - Help & Support</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-   <link rel="stylesheet" href="../style/help-teacher.css"/>
-   <style>
-        /* Additional styles for the step-by-step instructions */
-        .instruction-steps {
-            margin: 15px 0;
-            padding-left: 20px;
-        }
-        
-        .instruction-steps li {
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-        
-        .instruction-note {
-            background-color: #f0f7ff;
-            border-left: 4px solid #4a90e2;
-            padding: 10px 15px;
-            margin: 15px 0;
-            border-radius: 4px;
-        }
-        
-        .credit-options {
-            display: flex;
-            gap: 15px;
-            margin: 10px 0;
-        }
-        
-        .credit-option {
-            background: #f5f5f5;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-   </style>
-</head>
-<body>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../style/help-teacher.css" />
+    <style>
+      /* Additional styles for the step-by-step instructions */
+      .instruction-steps {
+        margin: 15px 0;
+        padding-left: 20px;
+      }
+
+      .instruction-steps li {
+        margin-bottom: 10px;
+        line-height: 1.5;
+      }
+
+      .instruction-note {
+        background-color: #f0f7ff;
+        border-left: 4px solid #4a90e2;
+        padding: 10px 15px;
+        margin: 15px 0;
+        border-radius: 4px;
+      }
+
+      .credit-options {
+        display: flex;
+        gap: 15px;
+        margin: 10px 0;
+      }
+
+      .credit-option {
+        background: #f5f5f5;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
     <div class="page-wrapper">
-        <div class="navbar">
-            <div class="navbar-container">
-                <div class="logo">
-                    <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" /> 
-                    <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
-                </div>
-                <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-                <div class="nav-icons">
-                    <a href="notification_teacher.html" title="Notifications">
-                        <i class="fas fa-bell icon"></i>
-                    </a>
-                    <a href="help_teacher.html" title="Help">
-                        <i class="fas fa-question-circle icon active"></i>
-                    </a>
-                    <a href="settings_teacher.html" title="Settings">
-                        <div class="account-menu">
-                            <i class="fas fa-user-circle icon"></i>
-                        </div>
-                    </a>
-                </div>
+      <div class="navbar">
+        <div class="navbar-container">
+          <div class="logo">
+            <img
+              src="../../main/img/AcadBird - White no text.png"
+              alt="AcadBird"
+              class="logo-img"
+            />
+            <img
+              src="../../main/img/AcadBird - White Text.png"
+              class="logo-text-img"
+              alt="AcadBird Text"
+            />
+          </div>
+          <img
+            src="../../main/img/sunhill.png"
+            alt="AcadBird"
+            class="middle-logo"
+          />
+          <div class="nav-icons">
+            <a href="notification_teacher.html" title="Notifications">
+              <i class="fas fa-bell icon"></i>
+            </a>
+            <a href="help_teacher.html" title="Help">
+              <i class="fas fa-question-circle icon active"></i>
+            </a>
+            <a href="settings_teacher.html" title="Settings">
+              <div class="account-menu">
+                <i class="fas fa-user-circle icon"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="secondary-header">
+        <div class="secondary-header-container">
+          <nav class="nav-menu">
+            <a href="homepage-teachers.html" class="nav-item">Home</a>
+            <a href="homepage-classroom_teacher.html" class="nav-item"
+              >Classroom</a
+            >
+            <a href="activitylog_teacher.html" class="nav-item"
+              >Activity Logs</a
+            >
+            <a href="resources_teacher.html" class="nav-item">Resources</a>
+            <a href="messages_teacher.html" class="nav-item">Messages</a>
+            <a href="studentlistpage_teacher.html" class="nav-item"
+              >Student List</a
+            >
+          </nav>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="main-content">
+        <div class="help-container">
+          <h1 class="main-title">
+            <i class="fas fa-life-ring"></i> AcadBird Teacher Help Center
+          </h1>
+
+          <div class="accordion-section">
+            <div class="accordion-header" data-target="content-classroom">
+              <div>
+                <i class="fas fa-chalkboard-teacher"></i> Classroom &
+                Assignments
+              </div>
+              <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-        </div>
-        
-        <div class="secondary-header">
-           <div class="secondary-header-container">
-               <nav class="nav-menu">
-                    <a href="homepage-teachers.html" class="nav-item">Home</a>
-                    <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
-                    <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
-                    <a href="resources_teacher.html" class="nav-item">Resources</a>
-                    <a href="messages_teacher.html" class="nav-item">Messages</a>
-                    <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
-               </nav>
-           </div>
-        </div>
-        
-        <div class="separator"></div>
-
-        <div class="main-content">
-            <div class="help-container">
-                <h1 class="main-title"><i class="fas fa-life-ring"></i> AcadBird Teacher Help Center</h1>
-                
-                <div class="accordion-section">
-                    <div class="accordion-header" data-target="content-classroom">
-                        <div><i class="fas fa-chalkboard-teacher"></i> Classroom & Assignments</div>
-                        <i class="fas fa-chevron-down toggle-icon"></i>
+            <div class="accordion-content" id="content-classroom">
+              <ul class="article-list">
+                <li class="article-item">
+                  <div
+                    class="article-header"
+                    data-article-target="article-grading"
+                  >
+                    Grading Workflow: Step-by-Step
+                    <i class="fas fa-chevron-right article-toggle"></i>
+                  </div>
+                  <div class="article-body" id="article-grading">
+                    <p>
+                      Follow these simple steps to grade student activities:
+                    </p>
+                    <ol class="instruction-steps">
+                      <li>
+                        <strong>Add Activity:</strong> Begin by adding a new
+                        activity for grading.
+                      </li>
+                      <li>
+                        <strong>Select Credit:</strong> Choose the credit value
+                        for the activity:
+                        <div class="credit-options">
+                          <span class="credit-option">Full Credit</span>
+                          <span class="credit-option">Partial Credit</span>
+                          <span class="credit-option">No Credit</span>
+                        </div>
+                      </li>
+                      <li>
+                        <strong>Submit:</strong> Finalize the grade by
+                        submitting the activity.
+                      </li>
+                    </ol>
+                    <div class="instruction-note">
+                      <i class="fas fa-lightbulb"></i> Tip: You can review and
+                      modify grades before the final submission.
                     </div>
-                    <div class="accordion-content" id="content-classroom">
-                        <ul class="article-list">
-                            <li class="article-item">
-                                <div class="article-header" data-article-target="article-grading">
-                                    Grading Workflow: Step-by-Step
-                                    <i class="fas fa-chevron-right article-toggle"></i>
-                                </div>
-                                <div class="article-body" id="article-grading">
-                                    <p>Follow these simple steps to grade student activities:</p>
-                                    <ol class="instruction-steps">
-                                        <li><strong>Add Activity:</strong> Begin by adding a new activity for grading.</li>
-                                        <li><strong>Select Credit:</strong> Choose the credit value for the activity:
-                                            <div class="credit-options">
-                                                <span class="credit-option">Full Credit</span>
-                                                <span class="credit-option">Partial Credit</span>
-                                                <span class="credit-option">No Credit</span>
-                                            </div>
-                                        </li>
-                                        <li><strong>Submit:</strong> Finalize the grade by submitting the activity.</li>
-                                    </ol>
-                                    <div class="instruction-note">
-                                        <i class="fas fa-lightbulb"></i> Tip: You can review and modify grades before the final submission.
-                                    </div>
-                                </div>
-                            </li>
-                   
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="accordion-section">
+            <div class="accordion-header" data-target="content-account">
+              <div><i class="fas fa-user-cog"></i> Account & Settings</div>
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="accordion-content" id="content-account">
+              <ul class="article-list">
+                <li class="article-item">
+                  <div
+                    class="article-header"
+                    data-article-target="article-update-profile"
+                  >
+                    Updating Your Profile Information
+                    <i class="fas fa-chevron-right article-toggle"></i>
+                  </div>
+                  <div class="article-body" id="article-update-profile">
+                    <p>
+                      Keep your profile information current with these steps:
+                    </p>
+                    <ol class="instruction-steps">
+                      <li>
+                        Click on your <strong>Profile Icon</strong> in the top
+                        navigation
+                      </li>
+                      <li>
+                        Select <strong>"Edit Profile"</strong> from the dropdown
+                        menu
+                      </li>
+                      <li>
+                        Update your information such as display name, contact
+                        details, or profile picture
+                      </li>
+                      <li>Save your changes to update your profile</li>
+                    </ol>
+                    <div class="instruction-note">
+                      <i class="fas fa-info-circle"></i> Your profile
+                      information is visible to students and parents, so keep it
+                      professional.
+                    </div>
+                  </div>
+                </li>
+                <li class="article-item">
+                  <div
+                    class="article-header"
+                    data-article-target="article-notification-prefs"
+                  >
+                    Managing Notification Preferences
+                    <i class="fas fa-chevron-right article-toggle"></i>
+                  </div>
+                  <div class="article-body" id="article-notification-prefs">
+                    <p>Control how you receive alerts and updates:</p>
+                    <ol class="instruction-steps">
+                      <li>Navigate to <strong>Settings</strong></li>
+                      <li>
+                        Locate the <strong>"Notifications"</strong> section
+                      </li>
+                      <li>
+                        Toggle the settings on or off according to your
+                        preferences for alerts and updates
+                      </li>
+                      <li>
+                        Customize notification types:
+                        <ul>
+                          <li>Assignment submissions</li>
+                          <li>Parent messages</li>
+                          <li>Grade updates</li>
+                          <li>System announcements</li>
                         </ul>
-                    </div>
-                </div>
+                      </li>
+                    </ol>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
 
-                <div class="accordion-section">
-                    <div class="accordion-header" data-target="content-account">
-                        <div><i class="fas fa-user-cog"></i> Account & Settings</div>
-                        <i class="fas fa-chevron-down toggle-icon"></i>
+          <div class="accordion-section">
+            <div class="accordion-header" data-target="content-communication">
+              <div>
+                <i class="fas fa-comments"></i> Communication & Messages
+              </div>
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="accordion-content" id="content-communication">
+              <ul class="article-list">
+                <li class="article-item">
+                  <div
+                    class="article-header"
+                    data-article-target="article-send-parent-message"
+                  >
+                    Sending a Private Message to a Parent
+                    <i class="fas fa-chevron-right article-toggle"></i>
+                  </div>
+                  <div class="article-body" id="article-send-parent-message">
+                    <p>Communicate directly with parents using these steps:</p>
+                    <ol class="instruction-steps">
+                      <li>
+                        Click the <strong>Message Button</strong> in the
+                        navigation
+                      </li>
+                      <li>
+                        Find and select the <strong>parent's name</strong> from
+                        your contacts or student list
+                      </li>
+                      <li>Type your message in the composition area</li>
+                      <li>
+                        Click <strong>"Send Message"</strong> to deliver your
+                        communication
+                      </li>
+                    </ol>
+                    <div class="instruction-note">
+                      <i class="fas fa-shield-alt"></i> All parent-teacher
+                      communications are securely stored and monitored for
+                      safety.
                     </div>
-                    <div class="accordion-content" id="content-account">
-                         <ul class="article-list">
-                            <li class="article-item">
-                                <div class="article-header" data-article-target="article-update-profile">
-                                    Updating Your Profile Information
-                                    <i class="fas fa-chevron-right article-toggle"></i>
-                                </div>
-                                <div class="article-body" id="article-update-profile">
-                                    <p>Keep your profile information current with these steps:</p>
-                                    <ol class="instruction-steps">
-                                        <li>Click on your <strong>Profile Icon</strong> in the top navigation</li>
-                                        <li>Select <strong>"Edit Profile"</strong> from the dropdown menu</li>
-                                        <li>Update your information such as display name, contact details, or profile picture</li>
-                                        <li>Save your changes to update your profile</li>
-                                    </ol>
-                                    <div class="instruction-note">
-                                        <i class="fas fa-info-circle"></i> Your profile information is visible to students and parents, so keep it professional.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="article-item">
-                                <div class="article-header" data-article-target="article-notification-prefs">
-                                    Managing Notification Preferences
-                                    <i class="fas fa-chevron-right article-toggle"></i>
-                                </div>
-                                <div class="article-body" id="article-notification-prefs">
-                                    <p>Control how you receive alerts and updates:</p>
-                                    <ol class="instruction-steps">
-                                        <li>Navigate to <strong>Settings</strong></li>
-                                        <li>Locate the <strong>"Notifications"</strong> section</li>
-                                        <li>Toggle the settings on or off according to your preferences for alerts and updates</li>
-                                        <li>Customize notification types:
-                                            <ul>
-                                                <li>Assignment submissions</li>
-                                                <li>Parent messages</li>
-                                                <li>Grade updates</li>
-                                                <li>System announcements</li>
-                                            </ul>
-                                        </li>
-                                    </ol>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="accordion-section">
-                    <div class="accordion-header" data-target="content-communication">
-                        <div><i class="fas fa-comments"></i> Communication & Messages</div>
-                        <i class="fas fa-chevron-down toggle-icon"></i>
-                    </div>
-                    <div class="accordion-content" id="content-communication">
-                        <ul class="article-list">
-                            <li class="article-item">
-                                <div class="article-header" data-article-target="article-send-parent-message">
-                                    Sending a Private Message to a Parent
-                                    <i class="fas fa-chevron-right article-toggle"></i>
-                                </div>
-                                <div class="article-body" id="article-send-parent-message">
-                                    <p>Communicate directly with parents using these steps:</p>
-                                    <ol class="instruction-steps">
-                                        <li>Click the <strong>Message Button</strong> in the navigation</li>
-                                        <li>Find and select the <strong>parent's name</strong> from your contacts or student list</li>
-                                        <li>Type your message in the composition area</li>
-                                        <li>Click <strong>"Send Message"</strong> to deliver your communication</li>
-                                    </ol>
-                                    <div class="instruction-note">
-                                        <i class="fas fa-shield-alt"></i> All parent-teacher communications are securely stored and monitored for safety.
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="article-item">
-                                <div class="article-header" data-article-target="article-post-announcement">
-                                    Posting a Class Announcement
-                                    <i class="fas fa-chevron-right article-toggle"></i>
-                                </div>
-                                <div class="article-body" id="article-post-announcement">
-                                    <p>Share important information with your class:</p>
-                                    <ol class="instruction-steps">
-                                        <li>Go to the <strong>Activity Logs</strong> section</li>
-                                        <li>Click to create a new post and select the type:
-                                            <div class="credit-options">
-                                                <span class="credit-option">Task</span>
-                                                <span class="credit-option">Note</span>
-                                                <span class="credit-option">Event</span>
-                                                <span class="credit-option">Reminder</span>
-                                            </div>
-                                        </li>
-                                        <li>Compose your announcement with clear details</li>
-                                        <li>Select visibility options (students only, or students and parents)</li>
-                                        <li>Post it to make it visible to your class</li>
-                                    </ol>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                </div>
+                  </div>
+                </li>
+                <li class="article-item">
+                  <div
+                    class="article-header"
+                    data-article-target="article-post-announcement"
+                  >
+                    Posting a Class Announcement
+                    <i class="fas fa-chevron-right article-toggle"></i>
+                  </div>
+                  <div class="article-body" id="article-post-announcement">
+                    <p>Share important information with your class:</p>
+                    <ol class="instruction-steps">
+                      <li>Go to the <strong>Activity Logs</strong> section</li>
+                      <li>
+                        Click to create a new post and select the type:
+                        <div class="credit-options">
+                          <span class="credit-option">Task</span>
+                          <span class="credit-option">Note</span>
+                          <span class="credit-option">Event</span>
+                          <span class="credit-option">Reminder</span>
+                        </div>
+                      </li>
+                      <li>Compose your announcement with clear details</li>
+                      <li>
+                        Select visibility options (students only, or students
+                        and parents)
+                      </li>
+                      <li>Post it to make it visible to your class</li>
+                    </ol>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Function to toggle the main accordion content
-            function toggleAccordion(header) {
-                const targetId = header.getAttribute('data-target');
-                const content = document.getElementById(targetId);
-                const isActive = header.classList.toggle('active');
+      document.addEventListener("DOMContentLoaded", function () {
+        // Function to toggle the main accordion content
+        function toggleAccordion(header) {
+          const targetId = header.getAttribute("data-target");
+          const content = document.getElementById(targetId);
+          const isActive = header.classList.toggle("active");
 
-                if (isActive) {
-                    content.classList.add('show');
-                } else {
-                    content.classList.remove('show');
-                    
-                    // Collapse all nested articles when the main category closes
-                    content.querySelectorAll('.article-header').forEach(articleHeader => {
-                        articleHeader.classList.remove('active');
-                        document.getElementById(articleHeader.getAttribute('data-article-target')).classList.remove('show');
-                    });
-                }
-            }
+          if (isActive) {
+            content.classList.add("show");
+          } else {
+            content.classList.remove("show");
 
-            // Function to toggle nested article content
-            function toggleArticle(header) {
-                const targetId = header.getAttribute('data-article-target');
-                const content = document.getElementById(targetId);
-                header.classList.toggle('active');
-                content.classList.toggle('show');
-            }
+            // Collapse all nested articles when the main category closes
+            content
+              .querySelectorAll(".article-header")
+              .forEach((articleHeader) => {
+                articleHeader.classList.remove("active");
+                document
+                  .getElementById(
+                    articleHeader.getAttribute("data-article-target"),
+                  )
+                  .classList.remove("show");
+              });
+          }
+        }
 
-            // Event listeners for main accordion headers
-            document.querySelectorAll('.accordion-header').forEach(header => {
-                header.addEventListener('click', () => toggleAccordion(header));
-            });
-            
-            // Event listeners for nested article headers
-            document.querySelectorAll('.article-header').forEach(header => {
-                header.addEventListener('click', (e) => {
-                    // Prevent article click from propagating and closing the main accordion
-                    e.stopPropagation(); 
-                    toggleArticle(header);
-                });
-            });
+        // Function to toggle nested article content
+        function toggleArticle(header) {
+          const targetId = header.getAttribute("data-article-target");
+          const content = document.getElementById(targetId);
+          header.classList.toggle("active");
+          content.classList.toggle("show");
+        }
+
+        // Event listeners for main accordion headers
+        document.querySelectorAll(".accordion-header").forEach((header) => {
+          header.addEventListener("click", () => toggleAccordion(header));
         });
+
+        // Event listeners for nested article headers
+        document.querySelectorAll(".article-header").forEach((header) => {
+          header.addEventListener("click", (e) => {
+            // Prevent article click from propagating and closing the main accordion
+            e.stopPropagation();
+            toggleArticle(header);
+          });
+        });
+      });
     </script>
-</body>
+  </body>
 </html>

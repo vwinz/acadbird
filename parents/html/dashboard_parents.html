@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -19,38 +19,56 @@
     <div class="container">
       <div class="navbar">
         <div class="logo">
-          <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-          <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            alt="AcadBird"
+            class="logo-img"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
         </div>
-        <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
         <div class="nav-icons">
           <div class="notification-wrapper">
-    <a href="notification_parent.html">
-      <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
-      <span class="notification-badge" id="notificationBadge">0</span>
-    </a>
-  </div>
+            <a href="notification_parent.html">
+              <img
+                src="../../main/img/Notification.png"
+                alt="Notifications"
+                class="icon"
+              />
+              <span class="notification-badge" id="notificationBadge">0</span>
+            </a>
+          </div>
           <a href="help_parent.html">
             <img src="../../main/img/Help.png" alt="Help" class="icon" />
           </a>
           <a href="account_parent.html">
             <div class="account-menu">
-              <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
+              <img
+                src="../../main/img/account icon.png"
+                alt="User Account"
+                class="icon"
+              />
             </div>
           </a>
         </div>
       </div>
       <div id="loading-overlay">
-
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
-
+        <div class="loader-3">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
 
       <div class="secondary-header">
         <nav class="nav-menu">
@@ -75,11 +93,11 @@
           <div class="main-section">
             <div class="card activity-card">
               <div class="activity-header">
-  <span class="title">Activity Participation</span>
-  <select id="week-select" class="yellow-btn">
-    <option value="all">All Weeks</option>
-  </select>
-</div>
+                <span class="title">Activity Participation</span>
+                <select id="week-select" class="yellow-btn">
+                  <option value="all">All Weeks</option>
+                </select>
+              </div>
 
               <div class="week-info">
                 <i class="far fa-calendar-alt"></i>
@@ -112,8 +130,6 @@
                 </div>
               </div>
             </div>
-
-            
           </div>
 
           <div class="side-section">
@@ -123,31 +139,32 @@
             </div>
 
             <div class="card performance-trend-card">
-  <div class="card-title">Performance Trend</div>
-  <div class="chart-container" style="height: 250px;">
-    <canvas id="performanceChart"></canvas>
-  </div>
-</div>
-
+              <div class="card-title">Performance Trend</div>
+              <div class="chart-container" style="height: 250px">
+                <canvas id="performanceChart"></canvas>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <script type="module">
- import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { 
-    getFirestore, 
-    collection, 
-    query, 
-    where, 
-    getDocs,
-    doc,
-    getDoc,
-    onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        where,
+        getDocs,
+        doc,
+        getDoc,
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
@@ -156,414 +173,425 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
         storageBucket: "acadbird-379e3.appspot.com",
         messagingSenderId: "575491576951",
         appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-        measurementId: "G-N6Z672SXWJ"
+        measurementId: "G-N6Z672SXWJ",
       };
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
 
-const loadingOverlay = document.getElementById("loading-overlay");
+      const loadingOverlay = document.getElementById("loading-overlay");
 
-   function showLoading() {
-  loadingOverlay.style.display = "flex";
-}
+      function showLoading() {
+        loadingOverlay.style.display = "flex";
+      }
 
-// Hide overlay
-function hideLoading() {
-  loadingOverlay.style.display = "none";
-}
-
-
-
+      // Hide overlay
+      function hideLoading() {
+        loadingOverlay.style.display = "none";
+      }
 
       const studentNameEl = document.getElementById("student-name");
       const studentClassEl = document.getElementById("student-class");
       const activityTableBody = document.querySelector(".activity-table tbody");
 
-     const weekSelect = document.getElementById("week-select");
+      const weekSelect = document.getElementById("week-select");
 
-(async () => {
+      (async () => {
+        showLoading();
+        const selectedStudentId = localStorage.getItem("selectedStudentId");
+        if (!selectedStudentId) return;
 
-  showLoading();
-  const selectedStudentId = localStorage.getItem("selectedStudentId");
-  if (!selectedStudentId) return;
+        const studentRef = doc(db, "students", selectedStudentId);
+        const studentSnap = await getDoc(studentRef);
+        if (!studentSnap.exists()) return;
 
-  const studentRef = doc(db, "students", selectedStudentId);
-  const studentSnap = await getDoc(studentRef);
-  if (!studentSnap.exists()) return;
+        const studentData = studentSnap.data();
+        studentNameEl.textContent =
+          `${studentData.firstName || ""} ${studentData.lastName || ""}`.trim() ||
+          "Unnamed Student";
 
-  const studentData = studentSnap.data();
-  studentNameEl.textContent = `${studentData.firstName || ""} ${studentData.lastName || ""}`.trim() || "Unnamed Student";
+        const classroomId = studentData.classroomId;
+        if (!classroomId) return;
+        const classRef = doc(db, "classrooms", classroomId);
+        const classSnap = await getDoc(classRef);
+        studentClassEl.textContent = classSnap.exists()
+          ? classSnap.data().classroomName || "Unnamed Class"
+          : "Class not found";
+        if (classroomId) {
+          localStorage.setItem("currentClassroomID", classroomId);
+        }
 
-  const classroomId = studentData.classroomId;
-  if (!classroomId) return;
-  const classRef = doc(db, "classrooms", classroomId);
-  const classSnap = await getDoc(classRef);
-  studentClassEl.textContent = classSnap.exists() ? classSnap.data().classroomName || "Unnamed Class" : "Class not found";
-if (classroomId) {
-  localStorage.setItem("currentClassroomID", classroomId);
-}
+        const activitiesQuery = query(
+          collection(db, "activity"),
+          where("classroomID", "==", classroomId),
+          where("studentID", "==", selectedStudentId),
+        );
+        const activitiesSnap = await getDocs(activitiesQuery);
 
-  const activitiesQuery = query(
-    collection(db, "activity"),
-    where("classroomID", "==", classroomId),
-    where("studentID", "==", selectedStudentId)
-  );
-  const activitiesSnap = await getDocs(activitiesQuery);
+        // Convert to array with Date
+        let activitiesArray = activitiesSnap.docs.map((docSnap) => {
+          const data = docSnap.data();
+          return {
+            ...data,
+            createdAtDate: data.created_at
+              ? data.created_at.toDate()
+              : new Date(0),
+          };
+        });
 
-  // Convert to array with Date
-  let activitiesArray = activitiesSnap.docs.map(docSnap => {
-    const data = docSnap.data();
-    return {
-      ...data,
-      createdAtDate: data.created_at ? data.created_at.toDate() : new Date(0)
-    };
-  });
+        // Sort by date
+        activitiesArray.sort((a, b) => a.createdAtDate - b.createdAtDate);
 
-  // Sort by date
-  activitiesArray.sort((a, b) => a.createdAtDate - b.createdAtDate);
+        // Generate week ranges (Mon–Sun)
+        const weeksMap = {}; // { "Week 1": [activities] }
+        activitiesArray.forEach((a) => {
+          const startOfWeek = new Date(a.createdAtDate);
+          startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1); // Monday
+          const endOfWeek = new Date(startOfWeek);
+          endOfWeek.setDate(endOfWeek.getDate() + 6); // Sunday
 
-  // Generate week ranges (Mon–Sun)
-  const weeksMap = {}; // { "Week 1": [activities] }
-  activitiesArray.forEach(a => {
-    const startOfWeek = new Date(a.createdAtDate);
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1); // Monday
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(endOfWeek.getDate() + 6); // Sunday
+          const weekKey = `${startOfWeek.toLocaleDateString()} - ${endOfWeek.toLocaleDateString()}`;
+          if (!weeksMap[weekKey]) weeksMap[weekKey] = [];
+          weeksMap[weekKey].push(a);
+        });
 
-    const weekKey = `${startOfWeek.toLocaleDateString()} - ${endOfWeek.toLocaleDateString()}`;
-    if (!weeksMap[weekKey]) weeksMap[weekKey] = [];
-    weeksMap[weekKey].push(a);
-  });
+        // Populate dropdown
+        Object.keys(weeksMap).forEach((weekKey) => {
+          const option = document.createElement("option");
+          option.value = weekKey;
+          option.textContent = weekKey;
+          weekSelect.appendChild(option);
+        });
 
-  // Populate dropdown
-  Object.keys(weeksMap).forEach(weekKey => {
-    const option = document.createElement("option");
-    option.value = weekKey;
-    option.textContent = weekKey;
-    weekSelect.appendChild(option);
-  });
+        const completionRateEl = document.querySelector(".completion-rate");
 
+        const updateCompletionRate = (activities) => {
+          if (!activities || activities.length === 0) {
+            completionRateEl.textContent = "0%";
+            return;
+          }
 
-  const completionRateEl = document.querySelector(".completion-rate");
+          const scoreMap = { full: 100, partial: 50, none: 0 };
+          const totalScore = activities.reduce(
+            (sum, a) => sum + (scoreMap[a.activityScore] || 0),
+            0,
+          );
+          const avgScore = Math.round(totalScore / activities.length);
+          completionRateEl.textContent = `${avgScore}%`;
+        };
 
-const updateCompletionRate = (activities) => {
-  if (!activities || activities.length === 0) {
-    completionRateEl.textContent = "0%";
-    return;
-  }
-
-  const scoreMap = { full: 100, partial: 50, none: 0 };
-  const totalScore = activities.reduce((sum, a) => sum + (scoreMap[a.activityScore] || 0), 0);
-  const avgScore = Math.round(totalScore / activities.length);
-  completionRateEl.textContent = `${avgScore}%`;
-};
-
-
-
-  // Function to render table
-  const renderTable = (activities) => {
-    activityTableBody.innerHTML = "";
-    activities.forEach(data => {
-      let statusClass = data.activityScore === "full" ? "green" :
-                        data.activityScore === "partial" ? "yellow" : "red";
-      let dateStr = data.createdAtDate.toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      });
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
+        // Function to render table
+        const renderTable = (activities) => {
+          activityTableBody.innerHTML = "";
+          activities.forEach((data) => {
+            let statusClass =
+              data.activityScore === "full"
+                ? "green"
+                : data.activityScore === "partial"
+                  ? "yellow"
+                  : "red";
+            let dateStr = data.createdAtDate.toLocaleDateString("en-US", {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            });
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
         <td>${data.activityName || "Unnamed Activity"}</td>
         <td><span class="status-dot ${statusClass}"></span> (${dateStr})</td>
         <td>${data.note || ""}</td>
       `;
-      activityTableBody.appendChild(tr);
-    });
-  };
+            activityTableBody.appendChild(tr);
+          });
+        };
 
-  // Initially show all activities
-  renderTable(activitiesArray);
+        // Initially show all activities
+        renderTable(activitiesArray);
 
-  // Handle week selection
-weekSelect.addEventListener("change", () => {
-  const selectedWeek = weekSelect.value;
-  let filteredActivities;
+        // Handle week selection
+        weekSelect.addEventListener("change", () => {
+          const selectedWeek = weekSelect.value;
+          let filteredActivities;
 
-  if (selectedWeek === "all") {
-    filteredActivities = activitiesArray;
-  } else {
-    filteredActivities = weeksMap[selectedWeek] || [];
-  }
+          if (selectedWeek === "all") {
+            filteredActivities = activitiesArray;
+          } else {
+            filteredActivities = weeksMap[selectedWeek] || [];
+          }
 
-  renderTable(filteredActivities);
-  updateCompletionRate(filteredActivities); // <-- update completion rate
-});
-
-
-
-
-// Function to convert activityScore to numeric
-const scoreMap = {
-  full: 100,
-  partial: 50,
-  none: 0
-};
-// Initially show all activities
-renderTable(activitiesArray);
-updateCompletionRate(activitiesArray); // <-- compute completion rate for "All Weeks"
-// Prepare performance data
-const weeks = Object.keys(weeksMap); // Week labels
-const weekScores = weeks.map(weekKey => {
-  const activities = weeksMap[weekKey];
-  if (!activities || activities.length === 0) return 0;
-  const totalScore = activities.reduce((sum, a) => sum + (scoreMap[a.activityScore] || 0), 0);
-  return Math.round(totalScore / activities.length); // average
-});
-
-// Render chart
-const ctx = document.getElementById('performanceChart').getContext('2d');
-const performanceChart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: weeks,
-    datasets: [{
-      label: 'Average Performance',
-      data: weekScores,
-      fill: true,                     // Fill under line
-      backgroundColor: 'rgba(250, 204, 21, 0.2)', // Yellow translucent fill
-      borderColor: '#FACC15',         // Yellow line
-      borderWidth: 1,
-      tension: 0.4,                   // Smooth curve
-      pointRadius: 6,
-      pointHoverRadius: 8,
-      pointBackgroundColor: '#FACC15',
-      pointBorderColor: '#fff',
-      pointBorderWidth: 1
-    }],
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false   // Hide legend for clean card look
-      },
-      tooltip: {
-        backgroundColor: '#333',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-        titleFont: { weight: 'bold' },
-        callbacks: {
-          label: (context) => `${context.parsed.y}%`
-        }
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 100,
-        grid: {
-          color: 'rgba(0,0,0,0.05)',  // Light grid lines
-          borderDash: [5, 5]
-        },
-        ticks: {
-          stepSize: 20,
-          color: '#666'
-        }
-      },
-      x: {
-        grid: { display: false },
-        ticks: {
-          color: '#666'
-        }
-      }
-    }
-  }
-});
-
-
-})();
-
-const BadgeService = {
-    currentUser: null,
-    studentIds: [],
-    
-    async init() {
-        return new Promise((resolve) => {
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    this.currentUser = user;
-                    await this.loadStudentIds();
-                    await this.setupRealTimeListener();
-                    await this.updateBadgeCount();
-                    resolve();
-                } else {
-                    resolve();
-                }
-            });
+          renderTable(filteredActivities);
+          updateCompletionRate(filteredActivities); // <-- update completion rate
         });
-    },
 
-    async loadStudentIds() {
-        try {
+        // Function to convert activityScore to numeric
+        const scoreMap = {
+          full: 100,
+          partial: 50,
+          none: 0,
+        };
+        // Initially show all activities
+        renderTable(activitiesArray);
+        updateCompletionRate(activitiesArray); // <-- compute completion rate for "All Weeks"
+        // Prepare performance data
+        const weeks = Object.keys(weeksMap); // Week labels
+        const weekScores = weeks.map((weekKey) => {
+          const activities = weeksMap[weekKey];
+          if (!activities || activities.length === 0) return 0;
+          const totalScore = activities.reduce(
+            (sum, a) => sum + (scoreMap[a.activityScore] || 0),
+            0,
+          );
+          return Math.round(totalScore / activities.length); // average
+        });
+
+        // Render chart
+        const ctx = document
+          .getElementById("performanceChart")
+          .getContext("2d");
+        const performanceChart = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: weeks,
+            datasets: [
+              {
+                label: "Average Performance",
+                data: weekScores,
+                fill: true, // Fill under line
+                backgroundColor: "rgba(250, 204, 21, 0.2)", // Yellow translucent fill
+                borderColor: "#FACC15", // Yellow line
+                borderWidth: 1,
+                tension: 0.4, // Smooth curve
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                pointBackgroundColor: "#FACC15",
+                pointBorderColor: "#fff",
+                pointBorderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                display: false, // Hide legend for clean card look
+              },
+              tooltip: {
+                backgroundColor: "#333",
+                titleColor: "#fff",
+                bodyColor: "#fff",
+                titleFont: { weight: "bold" },
+                callbacks: {
+                  label: (context) => `${context.parsed.y}%`,
+                },
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                grid: {
+                  color: "rgba(0,0,0,0.05)", // Light grid lines
+                  borderDash: [5, 5],
+                },
+                ticks: {
+                  stepSize: 20,
+                  color: "#666",
+                },
+              },
+              x: {
+                grid: { display: false },
+                ticks: {
+                  color: "#666",
+                },
+              },
+            },
+          },
+        });
+      })();
+
+      const BadgeService = {
+        currentUser: null,
+        studentIds: [],
+
+        async init() {
+          return new Promise((resolve) => {
+            onAuthStateChanged(auth, async (user) => {
+              if (user) {
+                this.currentUser = user;
+                await this.loadStudentIds();
+                await this.setupRealTimeListener();
+                await this.updateBadgeCount();
+                resolve();
+              } else {
+                resolve();
+              }
+            });
+          });
+        },
+
+        async loadStudentIds() {
+          try {
             const studentsQuery = query(
-                collection(db, 'students'),
-                where('parentId', '==', this.currentUser.uid)
+              collection(db, "students"),
+              where("parentId", "==", this.currentUser.uid),
             );
-            
+
             const querySnapshot = await getDocs(studentsQuery);
-            this.studentIds = querySnapshot.docs.map(doc => doc.id);
-        } catch (error) {
-            console.error('Error loading student IDs:', error);
+            this.studentIds = querySnapshot.docs.map((doc) => doc.id);
+          } catch (error) {
+            console.error("Error loading student IDs:", error);
             this.studentIds = [];
-        }
-    },
+          }
+        },
 
-    async setupRealTimeListener() {
-        if (this.studentIds.length === 0) return;
+        async setupRealTimeListener() {
+          if (this.studentIds.length === 0) return;
 
-        // Listen for new activities
-        this.studentIds.forEach(studentId => {
+          // Listen for new activities
+          this.studentIds.forEach((studentId) => {
             const activitiesQuery = query(
-                collection(db, 'activity'),
-                where('studentID', '==', studentId)
+              collection(db, "activity"),
+              where("studentID", "==", studentId),
             );
 
             onSnapshot(activitiesQuery, () => {
-                this.updateBadgeCount();
+              this.updateBadgeCount();
             });
-        });
+          });
 
-        // Listen for new resources
-        const classroomIds = await this.getClassroomIds();
-        classroomIds.forEach(classroomId => {
+          // Listen for new resources
+          const classroomIds = await this.getClassroomIds();
+          classroomIds.forEach((classroomId) => {
             const topicContentQuery = query(
-                collection(db, 'topicContent'),
-                where('classroomID', '==', classroomId)
+              collection(db, "topicContent"),
+              where("classroomID", "==", classroomId),
             );
 
             onSnapshot(topicContentQuery, () => {
-                this.updateBadgeCount();
+              this.updateBadgeCount();
             });
-        });
-    },
+          });
+        },
 
-    async getClassroomIds() {
-        const classroomIds = new Set();
-        
-        try {
+        async getClassroomIds() {
+          const classroomIds = new Set();
+
+          try {
             for (const studentId of this.studentIds) {
-                const studentDoc = await getDoc(doc(db, 'students', studentId));
-                if (studentDoc.exists()) {
-                    const studentData = studentDoc.data();
-                    if (studentData.classroomId) {
-                        classroomIds.add(studentData.classroomId);
-                    }
+              const studentDoc = await getDoc(doc(db, "students", studentId));
+              if (studentDoc.exists()) {
+                const studentData = studentDoc.data();
+                if (studentData.classroomId) {
+                  classroomIds.add(studentData.classroomId);
                 }
+              }
             }
-        } catch (error) {
-            console.error('Error fetching classroom IDs:', error);
-        }
-        
-        return Array.from(classroomIds);
-    },
+          } catch (error) {
+            console.error("Error fetching classroom IDs:", error);
+          }
 
-    async getUnreadCount() {
-        if (!this.currentUser || this.studentIds.length === 0) {
+          return Array.from(classroomIds);
+        },
+
+        async getUnreadCount() {
+          if (!this.currentUser || this.studentIds.length === 0) {
             return 0;
-        }
+          }
 
-        try {
+          try {
             let unreadCount = 0;
-            
+
             // Count unread activities
             for (const studentId of this.studentIds) {
-                const activitiesQuery = query(
-                    collection(db, 'activity'),
-                    where('studentID', '==', studentId)
+              const activitiesQuery = query(
+                collection(db, "activity"),
+                where("studentID", "==", studentId),
+              );
+
+              const activitiesSnapshot = await getDocs(activitiesQuery);
+
+              for (const activityDoc of activitiesSnapshot.docs) {
+                const isRead = await this.checkIfRead(
+                  activityDoc.id,
+                  "activity",
                 );
-                
-                const activitiesSnapshot = await getDocs(activitiesQuery);
-                
-                for (const activityDoc of activitiesSnapshot.docs) {
-                    const isRead = await this.checkIfRead(activityDoc.id, 'activity');
-                    if (!isRead) unreadCount++;
-                }
+                if (!isRead) unreadCount++;
+              }
             }
-            
+
             // Count unread resources
-           // Count unread resources (only public topics)
-const classroomIds = await this.getClassroomIds();
-for (const classroomId of classroomIds) {
-    const topicContentQuery = query(
-        collection(db, 'topicContent'),
-        where('classroomID', '==', classroomId)
-    );
+            // Count unread resources (only public topics)
+            const classroomIds = await this.getClassroomIds();
+            for (const classroomId of classroomIds) {
+              const topicContentQuery = query(
+                collection(db, "topicContent"),
+                where("classroomID", "==", classroomId),
+              );
 
-    const topicContentSnapshot = await getDocs(topicContentQuery);
+              const topicContentSnapshot = await getDocs(topicContentQuery);
 
-    for (const topicContentDoc of topicContentSnapshot.docs) {
-        const topicContentData = topicContentDoc.data();
-        const topicId = topicContentData.topicID;
+              for (const topicContentDoc of topicContentSnapshot.docs) {
+                const topicContentData = topicContentDoc.data();
+                const topicId = topicContentData.topicID;
 
-        // Fetch topic doc
-        const topicDocSnap = await getDoc(doc(db, 'topic', topicId));
-        if (!topicDocSnap.exists()) continue;
-        const topicData = topicDocSnap.data();
+                // Fetch topic doc
+                const topicDocSnap = await getDoc(doc(db, "topic", topicId));
+                if (!topicDocSnap.exists()) continue;
+                const topicData = topicDocSnap.data();
 
-        // Only count if topic is public
-        if (topicData.status !== "public") continue;
+                // Only count if topic is public
+                if (topicData.status !== "public") continue;
 
-        const isRead = await this.checkIfRead(topicContentDoc.id, 'resource');
-        if (!isRead) unreadCount++;
-    }
-}
+                const isRead = await this.checkIfRead(
+                  topicContentDoc.id,
+                  "resource",
+                );
+                if (!isRead) unreadCount++;
+              }
+            }
 
-            
             return unreadCount;
-        } catch (error) {
-            console.error('Error counting unread notifications:', error);
+          } catch (error) {
+            console.error("Error counting unread notifications:", error);
             return 0;
-        }
-    },
-    async checkIfRead(itemId, type) {
-        if (!itemId) return false;
-        
-        try {
-            const fieldName = type === 'activity' ? 'activityId' : 'resourceId';
+          }
+        },
+        async checkIfRead(itemId, type) {
+          if (!itemId) return false;
+
+          try {
+            const fieldName = type === "activity" ? "activityId" : "resourceId";
             const notificationsQuery = query(
-                collection(db, 'notification'),
-                where(fieldName, '==', itemId),
-                where('parentId', '==', this.currentUser.uid)
+              collection(db, "notification"),
+              where(fieldName, "==", itemId),
+              where("parentId", "==", this.currentUser.uid),
             );
-            
+
             const querySnapshot = await getDocs(notificationsQuery);
             return !querySnapshot.empty;
-        } catch (error) {
-            console.error('Error checking read status:', error);
+          } catch (error) {
+            console.error("Error checking read status:", error);
             return false;
-        }
-    },
+          }
+        },
 
-    async updateBadgeCount() {
-        const badge = document.getElementById('notificationBadge');
-        if (badge) {
+        async updateBadgeCount() {
+          const badge = document.getElementById("notificationBadge");
+          if (badge) {
             const count = await this.getUnreadCount();
             badge.textContent = count;
-            badge.style.display = count > 0 ? 'inline' : 'none';
-        }
-    }
-};
+            badge.style.display = count > 0 ? "inline" : "none";
+          }
+        },
+      };
 
-// Initialize badge service
-document.addEventListener('DOMContentLoaded', async function() {
-    await BadgeService.init();
-    hideLoading();
-});
-
-
+      // Initialize badge service
+      document.addEventListener("DOMContentLoaded", async function () {
+        await BadgeService.init();
+        hideLoading();
+      });
     </script>
   </body>
 </html>

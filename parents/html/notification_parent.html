@@ -1,818 +1,891 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Notifications - AcadBird</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <link rel="stylesheet" href="../style/notification_parent.css" />
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="navbar">
-            <div class="logo">
-                <a href="dashboard_parents.html"><img src="../../main/img/back.png" alt="Back" class="back-icon" /></a>
-                <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-                <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
-            </div>
-            <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-            <div class="nav-icons">
-                <div class="notification-wrapper">
-    <a href="notification_parent.html" class="active">
-        <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
-        <span class="notification-badge" id="notificationBadge">0</span>
-    </a>
-</div>
-
-                <a href="help_parent.html">
-                    <img src="../../main/img/Help.png" alt="Help" class="icon" />
-                </a>
-                <a href="account_parent.html">
-                    <div class="account-menu">
-                        <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
-                        <i class="fas fa-caret-down dropdown-icon"></i>
-                    </div>
-                </a>
-            </div>
+      <div class="navbar">
+        <div class="logo">
+          <a href="dashboard_parents.html"
+            ><img src="../../main/img/back.png" alt="Back" class="back-icon"
+          /></a>
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            alt="AcadBird"
+            class="logo-img"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
         </div>
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
+        <div class="nav-icons">
+          <div class="notification-wrapper">
+            <a href="notification_parent.html" class="active">
+              <img
+                src="../../main/img/Notification.png"
+                alt="Notifications"
+                class="icon"
+              />
+              <span class="notification-badge" id="notificationBadge">0</span>
+            </a>
+          </div>
 
-        <div class="secondary-header">
-            <nav class="nav-menu">
-                <a href="homepage_parents.html" class="nav-item">Home</a>
-                <a href="dashboard_parents.html" class="nav-item">Dashboard</a>
-                <a href="activitylog_parents.html" class="nav-item">Activity Logs</a>
-                <a href="resources_parents.html" class="nav-item">Resources</a>
-                <a href="messages_parents.html" class="nav-item">Messages</a>
-                <a href="account_parent.html" class="nav-item">Settings</a>
-            </nav>
-        </div>
-       <div id="loading-overlay">
-
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
-</div>
-
-        <div class="separator"></div>
-
-        <div class="main-content">
-            <div class="notification-filters">
-                <button id="markAllReadBtn" class="mark-all-btn">Mark all as read</button>
-                <select id="notificationFilter" class="filter-dropdown">
-                    <option value="all">All</option>
-                    <option value="grades">Grades</option>
-                    <option value="resources">Resources</option>
-                </select>
+          <a href="help_parent.html">
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          </a>
+          <a href="account_parent.html">
+            <div class="account-menu">
+              <img
+                src="../../main/img/account icon.png"
+                alt="User Account"
+                class="icon"
+              />
+              <i class="fas fa-caret-down dropdown-icon"></i>
             </div>
-
-            <div class="notification-list" id="notificationList">
-                <div class="loading-notifications">Loading notifications...</div>
-            </div>
+          </a>
         </div>
+      </div>
+
+      <div class="secondary-header">
+        <nav class="nav-menu">
+          <a href="homepage_parents.html" class="nav-item">Home</a>
+          <a href="dashboard_parents.html" class="nav-item">Dashboard</a>
+          <a href="activitylog_parents.html" class="nav-item">Activity Logs</a>
+          <a href="resources_parents.html" class="nav-item">Resources</a>
+          <a href="messages_parents.html" class="nav-item">Messages</a>
+          <a href="account_parent.html" class="nav-item">Settings</a>
+        </nav>
+      </div>
+      <div id="loading-overlay">
+        <div class="loader-3">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="main-content">
+      <div class="notification-filters">
+        <button id="markAllReadBtn" class="mark-all-btn">
+          Mark all as read
+        </button>
+        <select id="notificationFilter" class="filter-dropdown">
+          <option value="all">All</option>
+          <option value="grades">Grades</option>
+          <option value="resources">Resources</option>
+        </select>
+      </div>
+
+      <div class="notification-list" id="notificationList">
+        <div class="loading-notifications">Loading notifications...</div>
+      </div>
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-        import { 
-            getFirestore, 
-            collection, 
-            query, 
-            where, 
-            orderBy, 
-            onSnapshot, 
-            getDocs,
-            doc,
-            getDoc,
-            updateDoc,
-            addDoc,
-            deleteDoc,
-            serverTimestamp 
-        } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        query,
+        where,
+        orderBy,
+        onSnapshot,
+        getDocs,
+        doc,
+        getDoc,
+        updateDoc,
+        addDoc,
+        deleteDoc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-            authDomain: "acadbird-379e3.firebaseapp.com",
-            projectId: "acadbird-379e3",
-            storageBucket: "acadbird-379e3.firebasestorage.app",
-            messagingSenderId: "575491576951",
-            appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-            measurementId: "G-N6Z672SXWJ"
-        };
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
 
-        
-const loadingOverlay = document.getElementById("loading-overlay");
+      const loadingOverlay = document.getElementById("loading-overlay");
 
-   function showLoading() {
-  loadingOverlay.style.display = "flex";
-}
+      function showLoading() {
+        loadingOverlay.style.display = "flex";
+      }
 
-// Hide overlay
-function hideLoading() {
-  loadingOverlay.style.display = "none";
-}
+      // Hide overlay
+      function hideLoading() {
+        loadingOverlay.style.display = "none";
+      }
 
+      const NotificationService = {
+        currentUser: null,
+        studentIds: [],
+        studentMap: {},
 
+        async init() {
+          return new Promise((resolve) => {
+            onAuthStateChanged(auth, async (user) => {
+              if (user) {
+                this.currentUser = user;
+                await this.loadStudentIds();
+                resolve();
+              } else {
+                resolve();
+              }
+            });
+          });
+        },
 
-        const NotificationService = {
-            currentUser: null,
-            studentIds: [],
-            studentMap: {},
-            
-            async init() {
-                return new Promise((resolve) => {
-                    onAuthStateChanged(auth, async (user) => {
-                        if (user) {
-                            this.currentUser = user;
-                            await this.loadStudentIds();
-                            resolve();
-                        } else {
-                            resolve();
-                        }
-                    });
-                });
-            },
+        setupRealTimeListener() {
+          if (this.studentIds.length === 0) return;
 
-            setupRealTimeListener() {
-                if (this.studentIds.length === 0) return;
-
-                this.studentIds.forEach(studentId => {
-                    const activitiesQuery = query(
-                        collection(db, 'activity'),
-                        where('studentID', '==', studentId),
-                        orderBy('created_at', 'desc')
-                    );
-
-                    onSnapshot(activitiesQuery, (snapshot) => {
-                        snapshot.docChanges().forEach((change) => {
-                            if (change.type === 'added') {
-                                this.refreshNotifications();
-                            }
-                        });
-                    });
-                });
-
-                this.setupTopicContentListener();
-            },
-
-            async setupTopicContentListener() {
-                const classroomIds = await this.getClassroomIds();
-                
-                classroomIds.forEach(classroomId => {
-                    const topicContentQuery = query(
-                        collection(db, 'topicContent'),
-                        where('classroomID', '==', classroomId),
-                        orderBy('created_at', 'desc')
-                    );
-
-                    onSnapshot(topicContentQuery, (snapshot) => {
-                        snapshot.docChanges().forEach((change) => {
-                            if (change.type === 'added') {
-                                this.refreshNotifications();
-                            }
-                        });
-                    });
-                });
-            },
-
-            async getResourceNotifications() {
-    const notifications = [];
-    
-    try {
-        const classroomIds = await this.getClassroomIds();
-
-        if (classroomIds.length === 0) return notifications;
-
-        for (const classroomId of classroomIds) {
-            const topicContentQuery = query(
-                collection(db, 'topicContent'),
-                where('classroomID', '==', classroomId),
-                orderBy('created_at', 'desc')
+          this.studentIds.forEach((studentId) => {
+            const activitiesQuery = query(
+              collection(db, "activity"),
+              where("studentID", "==", studentId),
+              orderBy("created_at", "desc"),
             );
 
-            const querySnapshot = await getDocs(topicContentQuery);
+            onSnapshot(activitiesQuery, (snapshot) => {
+              snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                  this.refreshNotifications();
+                }
+              });
+            });
+          });
 
-            for (const docSnap of querySnapshot.docs) {
+          this.setupTopicContentListener();
+        },
+
+        async setupTopicContentListener() {
+          const classroomIds = await this.getClassroomIds();
+
+          classroomIds.forEach((classroomId) => {
+            const topicContentQuery = query(
+              collection(db, "topicContent"),
+              where("classroomID", "==", classroomId),
+              orderBy("created_at", "desc"),
+            );
+
+            onSnapshot(topicContentQuery, (snapshot) => {
+              snapshot.docChanges().forEach((change) => {
+                if (change.type === "added") {
+                  this.refreshNotifications();
+                }
+              });
+            });
+          });
+        },
+
+        async getResourceNotifications() {
+          const notifications = [];
+
+          try {
+            const classroomIds = await this.getClassroomIds();
+
+            if (classroomIds.length === 0) return notifications;
+
+            for (const classroomId of classroomIds) {
+              const topicContentQuery = query(
+                collection(db, "topicContent"),
+                where("classroomID", "==", classroomId),
+                orderBy("created_at", "desc"),
+              );
+
+              const querySnapshot = await getDocs(topicContentQuery);
+
+              for (const docSnap of querySnapshot.docs) {
                 const topicContent = docSnap.data();
 
                 // Fetch topic to check status
-                const topicDoc = await getDoc(doc(db, 'topic', topicContent.topicID));
+                const topicDoc = await getDoc(
+                  doc(db, "topic", topicContent.topicID),
+                );
                 if (topicDoc.exists()) {
-                    const topicData = topicDoc.data();
+                  const topicData = topicDoc.data();
 
-                    // Only create notification if topic is public
-                    if (topicData.status === 'public') {
-                        const notification = await this.createResourceNotification(topicContent, classroomId, docSnap.id);
-                        notifications.push(notification);
-                    }
+                  // Only create notification if topic is public
+                  if (topicData.status === "public") {
+                    const notification = await this.createResourceNotification(
+                      topicContent,
+                      classroomId,
+                      docSnap.id,
+                    );
+                    notifications.push(notification);
+                  }
                 }
+              }
             }
-        }
-    } catch (error) {
-        console.error('Error fetching resource notifications:', error);
-    }
+          } catch (error) {
+            console.error("Error fetching resource notifications:", error);
+          }
 
-    return notifications;
-},
+          return notifications;
+        },
 
+        async getClassroomIds() {
+          const classroomIds = new Set();
 
-            async getClassroomIds() {
-                const classroomIds = new Set();
-                
-                try {
-                    for (const studentId of this.studentIds) {
-                        const studentDoc = await getDoc(doc(db, 'students', studentId));
-                        if (studentDoc.exists()) {
-                            const studentData = studentDoc.data();
-                            if (studentData.classroomId) {
-                                classroomIds.add(studentData.classroomId);
-                            }
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error fetching classroom IDs:', error);
+          try {
+            for (const studentId of this.studentIds) {
+              const studentDoc = await getDoc(doc(db, "students", studentId));
+              if (studentDoc.exists()) {
+                const studentData = studentDoc.data();
+                if (studentData.classroomId) {
+                  classroomIds.add(studentData.classroomId);
                 }
-                
-                return Array.from(classroomIds);
-            },
-
-            async createResourceNotification(topicContent, classroomId, docId) {
-                const isRead = await this.checkIfResourceNotificationRead(docId);
-                const classroomName = await this.getClassroomName(classroomId);
-                const topicName = await this.getTopicName(topicContent.topicID);
-
-                const notification = {
-                    id: `resource_${classroomId}_${docId}_${topicContent.created_at?.toMillis() || Date.now()}`,
-                    type: 'resources',
-                    title: `New resource in ${classroomName}`,
-                    message: `${topicContent.description || 'New learning material available'}`,
-                    time: this.formatTime(topicContent.created_at?.toDate() || new Date()),
-                    classroom: classroomName,
-                    topic: topicName,
-                    description: topicContent.description,
-                    resourceType: this.getResourceType(topicContent),
-                    unread: !isRead,
-                    read: isRead,
-                    timestamp: topicContent.created_at?.toDate() || new Date(),
-                    resourceId: docId
-                };
-
-                return notification;
-            },
-
-            async checkIfResourceNotificationRead(resourceId) {
-                if (!resourceId) {
-                    return false;
-                }
-                
-                try {
-                    const notificationsQuery = query(
-                        collection(db, 'notification'),
-                        where('resourceId', '==', resourceId),
-                        where('parentId', '==', this.currentUser.uid),
-                        where('type', '==', 'resources')
-                    );
-                    
-                    const querySnapshot = await getDocs(notificationsQuery);
-                    return !querySnapshot.empty;
-                } catch (error) {
-                    console.error('Error checking resource notification status:', error);
-                    return false;
-                }
-            },
-
-            async getClassroomName(classroomId) {
-                try {
-                    const classroomDoc = await getDoc(doc(db, 'classrooms', classroomId));
-                    if (classroomDoc.exists()) {
-                        const classroomData = classroomDoc.data();
-                        return classroomData.name || `Classroom ${classroomId.substring(0, 8)}`;
-                    }
-                } catch (error) {
-                    console.error('Error fetching classroom name:', error);
-                }
-                return `Classroom ${classroomId.substring(0, 8)}`;
-            },
-
-            async getTopicName(topicId) {
-                if (!topicId) return 'General Topic';
-                
-                try {
-                    const topicDoc = await getDoc(doc(db, 'topic', topicId));
-                    if (topicDoc.exists()) {
-                        const topicData = topicDoc.data();
-                        return topicData.name || `Topic ${topicId.substring(0, 8)}`;
-                    }
-                } catch (error) {
-                    console.error('Error fetching topic name:', error);
-                }
-                return `Topic ${topicId?.substring(0, 8) || 'Unknown'}`;
-            },
-
-            async getMessageNotifications() {
-                try {
-                    return [];
-                } catch (error) {
-                    console.error('Error fetching message notifications:', error);
-                    return [];
-                }
-            },
-
-            getResourceType(topicContent) {
-                if (topicContent.file && topicContent.file !== '') {
-                    const fileExt = topicContent.file.split('.').pop().toLowerCase();
-                    if (['pdf', 'doc', 'docx'].includes(fileExt)) return 'Document';
-                    if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExt)) return 'Image';
-                    if (['mp4', 'avi', 'mov'].includes(fileExt)) return 'Video';
-                    return 'File';
-                }
-                return 'Text Content';
-            },
-
-            async markResourceAsReadAndInsert(resourceId) {
-                try {
-                    const existingQuery = query(
-                        collection(db, "notification"),
-                        where('resourceId', '==', resourceId),
-                        where('parentId', '==', this.currentUser.uid),
-                        where('type', '==', 'resources')
-                    );
-                    
-                    const existingSnapshot = await getDocs(existingQuery);
-                    
-                    if (existingSnapshot.empty) {
-                        await addDoc(collection(db, "notification"), {
-                            resourceId: resourceId,
-                            type: 'resources',
-                            status: "read",
-                            parentId: this.currentUser.uid,
-                            created_at: serverTimestamp()
-                        });
-                    }
-                } catch (error) {
-                    console.error("Error inserting resource notification:", error);
-                }
-            },
-
-            async markResourceAsUnreadAndDelete(resourceId) {
-                try {
-                    const notificationsQuery = query(
-                        collection(db, "notification"),
-                        where('resourceId', '==', resourceId),
-                        where('parentId', '==', this.currentUser.uid),
-                        where('type', '==', 'resources')
-                    );
-                    
-                    const querySnapshot = await getDocs(notificationsQuery);
-                    
-                    querySnapshot.forEach(async (docSnap) => {
-                        await deleteDoc(doc(db, "notification", docSnap.id));
-                    });
-                } catch (error) {
-                    console.error("Error deleting resource notification:", error);
-                }
-            },
-
-            async markAllAsRead() {
-                try {
-                    const allNotifications = await this.getAllNotifications();
-                    
-                    for (const notification of allNotifications) {
-                        if (notification.unread) {
-                            if (notification.type === 'grades' && notification.activityId) {
-                                await this.markAsReadAndInsert(notification.activityId);
-                            } else if (notification.type === 'resources' && notification.resourceId) {
-                                await this.markResourceAsReadAndInsert(notification.resourceId);
-                            }
-                        }
-                    }
-                } catch (error) {
-                    console.error("Error marking all as read:", error);
-                }
-            },
-
-            async loadStudentIds() {
-                try {
-                    const studentsQuery = query(
-                        collection(db, 'students'),
-                        where('parentId', '==', this.currentUser.uid)
-                    );
-                    
-                    const querySnapshot = await getDocs(studentsQuery);
-                    
-                    this.studentIds = [];
-                    this.studentMap = {};
-                    
-                    querySnapshot.forEach(docSnap => {
-                        this.studentIds.push(docSnap.id);
-                        const data = docSnap.data();
-                        this.studentMap[docSnap.id] = `${data.firstName} ${data.lastName}`.trim() || "Unknown Student";
-                    });
-                } catch (error) {
-                    console.error('Error loading student IDs:', error);
-                    this.studentIds = [];
-                    this.studentMap = {};
-                }
-            },
-
-            async getAllNotifications() {
-                if (!this.currentUser || this.studentIds.length === 0) {
-                    return this.getFallbackNotifications();
-                }
-
-                try {
-                    const notifications = [];
-                    
-                    const gradeNotifications = await this.getGradeNotifications();
-                    notifications.push(...gradeNotifications);
-                    
-                    const resourceNotifications = await this.getResourceNotifications();
-                    notifications.push(...resourceNotifications);
-                    
-                    const messageNotifications = await this.getMessageNotifications();
-                    notifications.push(...messageNotifications);
-
-                    notifications.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                    
-                    return notifications;
-                } catch (error) {
-                    console.error('Error fetching notifications:', error);
-                    return this.getFallbackNotifications();
-                }
-            },
-
-            async getGradeNotifications() {
-                const notifications = [];
-                
-                try {
-                    for (const studentId of this.studentIds) {
-                        const activitiesQuery = query(
-                            collection(db, 'activity'),
-                            where('studentID', '==', studentId),
-                            orderBy('created_at', 'desc')
-                        );
-                        
-                        const querySnapshot = await getDocs(activitiesQuery);
-                        
-                        for (const doc of querySnapshot.docs) {
-                            const activity = doc.data();
-                            const notification = await this.createGradeNotification(activity, studentId, doc.id);
-                            notifications.push(notification);
-                        }
-                    }
-                } catch (error) {
-                    console.error('Error fetching grade notifications:', error);
-                }
-                
-                return notifications;
-            },
-
-            async createGradeNotification(activity, studentId, docId) {
-                const studentName = this.getStudentName(studentId);
-                const isRead = await this.checkIfNotificationRead(docId);
-                
-                return {
-                    id: `grade_${studentId}_${docId}_${activity.created_at?.toMillis() || Date.now()}`,
-                    type: 'grades',
-                    title: `New grade for ${studentName}`,
-                    message: `${activity.activityName} - Score: ${activity.activityScore}`,
-                    time: this.formatTime(activity.created_at?.toDate() || new Date()),
-                    child: studentName,
-                    subject: this.extractSubject(activity.activityName),
-                    grade: activity.activityScore,
-                    unread: !isRead,
-                    read: isRead,
-                    timestamp: activity.created_at?.toDate() || new Date(),
-                    activityId: docId
-                };
-            },
-
-            async checkIfNotificationRead(activityId) {
-                if (!activityId) {
-                    return false;
-                }
-                
-                try {
-                    const notificationsQuery = query(
-                        collection(db, 'notification'),
-                        where('activityId', '==', activityId),
-                        where('parentId', '==', this.currentUser.uid)
-                    );
-                    
-                    const querySnapshot = await getDocs(notificationsQuery);
-                    return !querySnapshot.empty;
-                } catch (error) {
-                    console.error('Error checking notification status:', error);
-                    return false;
-                }
-            },
-
-            getStudentName(studentId) {
-                return this.studentMap[studentId] || "Unknown Student";
-            },
-
-            extractSubject(activityName) {
-                const subjects = ['Math', 'Science', 'English', 'History', 'Mathematics'];
-                for (let subject of subjects) {
-                    if (activityName.toLowerCase().includes(subject.toLowerCase())) {
-                        return subject;
-                    }
-                }
-                return 'General';
-            },
-
-            formatTime(timestamp) {
-                const now = new Date();
-                const created = new Date(timestamp);
-                const diffMs = now - created;
-                const diffMins = Math.floor(diffMs / 60000);
-                const diffHours = Math.floor(diffMs / 3600000);
-                const diffDays = Math.floor(diffMs / 86400000);
-
-                if (diffMins < 1) return 'Just now';
-                if (diffMins < 60) return `${diffMins} minutes ago`;
-                if (diffHours < 24) return `${diffHours} hours ago`;
-                return `${diffDays} days ago`;
-            },
-
-            async getNotificationsByType(type) {
-                const allNotifications = await this.getAllNotifications();
-                if (type === 'all') return allNotifications;
-                return allNotifications.filter(notification => notification.type === type);
-            },
-
-            async markAsReadAndInsert(activityId) {
-                try {
-                    const existingQuery = query(
-                        collection(db, "notification"),
-                        where('activityId', '==', activityId),
-                        where('parentId', '==', this.currentUser.uid)
-                    );
-                    
-                    const existingSnapshot = await getDocs(existingQuery);
-                    
-                    if (existingSnapshot.empty) {
-                        await addDoc(collection(db, "notification"), {
-                            activityId: activityId,
-                            status: "read",
-                            parentId: this.currentUser.uid,
-                            created_at: serverTimestamp()
-                        });
-                    }
-                } catch (error) {
-                    console.error("Error inserting notification:", error);
-                }
-            },
-
-            async markAsUnreadAndDelete(activityId) {
-                try {
-                    const notificationsQuery = query(
-                        collection(db, "notification"),
-                        where('activityId', '==', activityId),
-                        where('parentId', '==', this.currentUser.uid)
-                    );
-                    
-                    const querySnapshot = await getDocs(notificationsQuery);
-                    
-                    querySnapshot.forEach(async (docSnap) => {
-                        await deleteDoc(doc(db, "notification", docSnap.id));
-                    });
-                } catch (error) {
-                    console.error("Error deleting notification:", error);
-                }
-            },
-
-            async getUnreadCount() {
-                const notifications = await this.getAllNotifications();
-                return notifications.filter(n => n.unread).length;
-            },
-
-            async updateBadgeCount() {
-                const badge = document.getElementById('notificationBadge');
-                if (badge) {
-                    const count = await this.getUnreadCount();
-                    badge.textContent = count;
-                    badge.style.display = count > 0 ? 'inline' : 'none';
-                }
-            },
-
-            getIcon(type) {
-                const icons = {
-                    'grades': 'fas fa-chart-line',
-                    'resources': 'fas fa-file-alt',
-                    'messages': 'fas fa-comment'
-                };
-                return icons[type] || 'fas fa-bell';
-            },
-
-            getFallbackNotifications() {
-                return [
-                    {
-                        id: 1,
-                        type: 'grades',
-                        title: 'New grade assigned to Emily',
-                        message: 'Teacher Smith assigned a grade of A- to Emily for the Science project.',
-                        time: '2 hours ago',
-                        child: 'Emily',
-                        subject: 'Science',
-                        grade: 'A-',
-                        unread: true,
-                        timestamp: new Date()
-                    }
-                ];
-            },
-
-            async refreshNotifications() {
-                await this.updateBadgeCount();
-                
-                const activeFilter = document.querySelector('.filter-btn.active');
-                if (activeFilter) {
-                    const filter = activeFilter.dataset.filter;
-                    const notifications = await this.getNotificationsByType(filter);
-                    NotificationRenderer.renderNotifications(notifications);
-                }
+              }
             }
-        };
+          } catch (error) {
+            console.error("Error fetching classroom IDs:", error);
+          }
 
-        const NotificationRenderer = {
-            renderNotifications(notifications) {
-                const container = document.getElementById('notificationList');
-                if (!container) return;
+          return Array.from(classroomIds);
+        },
 
-                container.innerHTML = '';
+        async createResourceNotification(topicContent, classroomId, docId) {
+          const isRead = await this.checkIfResourceNotificationRead(docId);
+          const classroomName = await this.getClassroomName(classroomId);
+          const topicName = await this.getTopicName(topicContent.topicID);
 
-                if (notifications.length === 0) {
-                    container.innerHTML = '<div class="no-notifications">No notifications found</div>';
-                    return;
+          const notification = {
+            id: `resource_${classroomId}_${docId}_${topicContent.created_at?.toMillis() || Date.now()}`,
+            type: "resources",
+            title: `New resource in ${classroomName}`,
+            message: `${topicContent.description || "New learning material available"}`,
+            time: this.formatTime(
+              topicContent.created_at?.toDate() || new Date(),
+            ),
+            classroom: classroomName,
+            topic: topicName,
+            description: topicContent.description,
+            resourceType: this.getResourceType(topicContent),
+            unread: !isRead,
+            read: isRead,
+            timestamp: topicContent.created_at?.toDate() || new Date(),
+            resourceId: docId,
+          };
+
+          return notification;
+        },
+
+        async checkIfResourceNotificationRead(resourceId) {
+          if (!resourceId) {
+            return false;
+          }
+
+          try {
+            const notificationsQuery = query(
+              collection(db, "notification"),
+              where("resourceId", "==", resourceId),
+              where("parentId", "==", this.currentUser.uid),
+              where("type", "==", "resources"),
+            );
+
+            const querySnapshot = await getDocs(notificationsQuery);
+            return !querySnapshot.empty;
+          } catch (error) {
+            console.error(
+              "Error checking resource notification status:",
+              error,
+            );
+            return false;
+          }
+        },
+
+        async getClassroomName(classroomId) {
+          try {
+            const classroomDoc = await getDoc(
+              doc(db, "classrooms", classroomId),
+            );
+            if (classroomDoc.exists()) {
+              const classroomData = classroomDoc.data();
+              return (
+                classroomData.name || `Classroom ${classroomId.substring(0, 8)}`
+              );
+            }
+          } catch (error) {
+            console.error("Error fetching classroom name:", error);
+          }
+          return `Classroom ${classroomId.substring(0, 8)}`;
+        },
+
+        async getTopicName(topicId) {
+          if (!topicId) return "General Topic";
+
+          try {
+            const topicDoc = await getDoc(doc(db, "topic", topicId));
+            if (topicDoc.exists()) {
+              const topicData = topicDoc.data();
+              return topicData.name || `Topic ${topicId.substring(0, 8)}`;
+            }
+          } catch (error) {
+            console.error("Error fetching topic name:", error);
+          }
+          return `Topic ${topicId?.substring(0, 8) || "Unknown"}`;
+        },
+
+        async getMessageNotifications() {
+          try {
+            return [];
+          } catch (error) {
+            console.error("Error fetching message notifications:", error);
+            return [];
+          }
+        },
+
+        getResourceType(topicContent) {
+          if (topicContent.file && topicContent.file !== "") {
+            const fileExt = topicContent.file.split(".").pop().toLowerCase();
+            if (["pdf", "doc", "docx"].includes(fileExt)) return "Document";
+            if (["jpg", "jpeg", "png", "gif"].includes(fileExt)) return "Image";
+            if (["mp4", "avi", "mov"].includes(fileExt)) return "Video";
+            return "File";
+          }
+          return "Text Content";
+        },
+
+        async markResourceAsReadAndInsert(resourceId) {
+          try {
+            const existingQuery = query(
+              collection(db, "notification"),
+              where("resourceId", "==", resourceId),
+              where("parentId", "==", this.currentUser.uid),
+              where("type", "==", "resources"),
+            );
+
+            const existingSnapshot = await getDocs(existingQuery);
+
+            if (existingSnapshot.empty) {
+              await addDoc(collection(db, "notification"), {
+                resourceId: resourceId,
+                type: "resources",
+                status: "read",
+                parentId: this.currentUser.uid,
+                created_at: serverTimestamp(),
+              });
+            }
+          } catch (error) {
+            console.error("Error inserting resource notification:", error);
+          }
+        },
+
+        async markResourceAsUnreadAndDelete(resourceId) {
+          try {
+            const notificationsQuery = query(
+              collection(db, "notification"),
+              where("resourceId", "==", resourceId),
+              where("parentId", "==", this.currentUser.uid),
+              where("type", "==", "resources"),
+            );
+
+            const querySnapshot = await getDocs(notificationsQuery);
+
+            querySnapshot.forEach(async (docSnap) => {
+              await deleteDoc(doc(db, "notification", docSnap.id));
+            });
+          } catch (error) {
+            console.error("Error deleting resource notification:", error);
+          }
+        },
+
+        async markAllAsRead() {
+          try {
+            const allNotifications = await this.getAllNotifications();
+
+            for (const notification of allNotifications) {
+              if (notification.unread) {
+                if (notification.type === "grades" && notification.activityId) {
+                  await this.markAsReadAndInsert(notification.activityId);
+                } else if (
+                  notification.type === "resources" &&
+                  notification.resourceId
+                ) {
+                  await this.markResourceAsReadAndInsert(
+                    notification.resourceId,
+                  );
                 }
+              }
+            }
+          } catch (error) {
+            console.error("Error marking all as read:", error);
+          }
+        },
 
-                notifications.forEach(notification => {
-                    const notificationElement = this.createNotificationElement(notification);
-                    container.appendChild(notificationElement);
-                });
+        async loadStudentIds() {
+          try {
+            const studentsQuery = query(
+              collection(db, "students"),
+              where("parentId", "==", this.currentUser.uid),
+            );
+
+            const querySnapshot = await getDocs(studentsQuery);
+
+            this.studentIds = [];
+            this.studentMap = {};
+
+            querySnapshot.forEach((docSnap) => {
+              this.studentIds.push(docSnap.id);
+              const data = docSnap.data();
+              this.studentMap[docSnap.id] =
+                `${data.firstName} ${data.lastName}`.trim() ||
+                "Unknown Student";
+            });
+          } catch (error) {
+            console.error("Error loading student IDs:", error);
+            this.studentIds = [];
+            this.studentMap = {};
+          }
+        },
+
+        async getAllNotifications() {
+          if (!this.currentUser || this.studentIds.length === 0) {
+            return this.getFallbackNotifications();
+          }
+
+          try {
+            const notifications = [];
+
+            const gradeNotifications = await this.getGradeNotifications();
+            notifications.push(...gradeNotifications);
+
+            const resourceNotifications = await this.getResourceNotifications();
+            notifications.push(...resourceNotifications);
+
+            const messageNotifications = await this.getMessageNotifications();
+            notifications.push(...messageNotifications);
+
+            notifications.sort(
+              (a, b) => new Date(b.timestamp) - new Date(a.timestamp),
+            );
+
+            return notifications;
+          } catch (error) {
+            console.error("Error fetching notifications:", error);
+            return this.getFallbackNotifications();
+          }
+        },
+
+        async getGradeNotifications() {
+          const notifications = [];
+
+          try {
+            for (const studentId of this.studentIds) {
+              const activitiesQuery = query(
+                collection(db, "activity"),
+                where("studentID", "==", studentId),
+                orderBy("created_at", "desc"),
+              );
+
+              const querySnapshot = await getDocs(activitiesQuery);
+
+              for (const doc of querySnapshot.docs) {
+                const activity = doc.data();
+                const notification = await this.createGradeNotification(
+                  activity,
+                  studentId,
+                  doc.id,
+                );
+                notifications.push(notification);
+              }
+            }
+          } catch (error) {
+            console.error("Error fetching grade notifications:", error);
+          }
+
+          return notifications;
+        },
+
+        async createGradeNotification(activity, studentId, docId) {
+          const studentName = this.getStudentName(studentId);
+          const isRead = await this.checkIfNotificationRead(docId);
+
+          return {
+            id: `grade_${studentId}_${docId}_${activity.created_at?.toMillis() || Date.now()}`,
+            type: "grades",
+            title: `New grade for ${studentName}`,
+            message: `${activity.activityName} - Score: ${activity.activityScore}`,
+            time: this.formatTime(activity.created_at?.toDate() || new Date()),
+            child: studentName,
+            subject: this.extractSubject(activity.activityName),
+            grade: activity.activityScore,
+            unread: !isRead,
+            read: isRead,
+            timestamp: activity.created_at?.toDate() || new Date(),
+            activityId: docId,
+          };
+        },
+
+        async checkIfNotificationRead(activityId) {
+          if (!activityId) {
+            return false;
+          }
+
+          try {
+            const notificationsQuery = query(
+              collection(db, "notification"),
+              where("activityId", "==", activityId),
+              where("parentId", "==", this.currentUser.uid),
+            );
+
+            const querySnapshot = await getDocs(notificationsQuery);
+            return !querySnapshot.empty;
+          } catch (error) {
+            console.error("Error checking notification status:", error);
+            return false;
+          }
+        },
+
+        getStudentName(studentId) {
+          return this.studentMap[studentId] || "Unknown Student";
+        },
+
+        extractSubject(activityName) {
+          const subjects = [
+            "Math",
+            "Science",
+            "English",
+            "History",
+            "Mathematics",
+          ];
+          for (let subject of subjects) {
+            if (activityName.toLowerCase().includes(subject.toLowerCase())) {
+              return subject;
+            }
+          }
+          return "General";
+        },
+
+        formatTime(timestamp) {
+          const now = new Date();
+          const created = new Date(timestamp);
+          const diffMs = now - created;
+          const diffMins = Math.floor(diffMs / 60000);
+          const diffHours = Math.floor(diffMs / 3600000);
+          const diffDays = Math.floor(diffMs / 86400000);
+
+          if (diffMins < 1) return "Just now";
+          if (diffMins < 60) return `${diffMins} minutes ago`;
+          if (diffHours < 24) return `${diffHours} hours ago`;
+          return `${diffDays} days ago`;
+        },
+
+        async getNotificationsByType(type) {
+          const allNotifications = await this.getAllNotifications();
+          if (type === "all") return allNotifications;
+          return allNotifications.filter(
+            (notification) => notification.type === type,
+          );
+        },
+
+        async markAsReadAndInsert(activityId) {
+          try {
+            const existingQuery = query(
+              collection(db, "notification"),
+              where("activityId", "==", activityId),
+              where("parentId", "==", this.currentUser.uid),
+            );
+
+            const existingSnapshot = await getDocs(existingQuery);
+
+            if (existingSnapshot.empty) {
+              await addDoc(collection(db, "notification"), {
+                activityId: activityId,
+                status: "read",
+                parentId: this.currentUser.uid,
+                created_at: serverTimestamp(),
+              });
+            }
+          } catch (error) {
+            console.error("Error inserting notification:", error);
+          }
+        },
+
+        async markAsUnreadAndDelete(activityId) {
+          try {
+            const notificationsQuery = query(
+              collection(db, "notification"),
+              where("activityId", "==", activityId),
+              where("parentId", "==", this.currentUser.uid),
+            );
+
+            const querySnapshot = await getDocs(notificationsQuery);
+
+            querySnapshot.forEach(async (docSnap) => {
+              await deleteDoc(doc(db, "notification", docSnap.id));
+            });
+          } catch (error) {
+            console.error("Error deleting notification:", error);
+          }
+        },
+
+        async getUnreadCount() {
+          const notifications = await this.getAllNotifications();
+          return notifications.filter((n) => n.unread).length;
+        },
+
+        async updateBadgeCount() {
+          const badge = document.getElementById("notificationBadge");
+          if (badge) {
+            const count = await this.getUnreadCount();
+            badge.textContent = count;
+            badge.style.display = count > 0 ? "inline" : "none";
+          }
+        },
+
+        getIcon(type) {
+          const icons = {
+            grades: "fas fa-chart-line",
+            resources: "fas fa-file-alt",
+            messages: "fas fa-comment",
+          };
+          return icons[type] || "fas fa-bell";
+        },
+
+        getFallbackNotifications() {
+          return [
+            {
+              id: 1,
+              type: "grades",
+              title: "New grade assigned to Emily",
+              message:
+                "Teacher Smith assigned a grade of A- to Emily for the Science project.",
+              time: "2 hours ago",
+              child: "Emily",
+              subject: "Science",
+              grade: "A-",
+              unread: true,
+              timestamp: new Date(),
             },
+          ];
+        },
 
-            createNotificationElement(notification) {
-                const item = document.createElement('div');
-                item.className = `notification-item ${notification.unread ? 'unread' : 'read'}`;
-                item.dataset.id = notification.id;
-                item.dataset.type = notification.type;
-                item.dataset.activityId = notification.activityId || "";
-                item.dataset.resourceId = notification.resourceId || "";
+        async refreshNotifications() {
+          await this.updateBadgeCount();
 
-                const iconClass = NotificationService.getIcon(notification.type);
+          const activeFilter = document.querySelector(".filter-btn.active");
+          if (activeFilter) {
+            const filter = activeFilter.dataset.filter;
+            const notifications = await this.getNotificationsByType(filter);
+            NotificationRenderer.renderNotifications(notifications);
+          }
+        },
+      };
 
-                item.innerHTML = `
+      const NotificationRenderer = {
+        renderNotifications(notifications) {
+          const container = document.getElementById("notificationList");
+          if (!container) return;
+
+          container.innerHTML = "";
+
+          if (notifications.length === 0) {
+            container.innerHTML =
+              '<div class="no-notifications">No notifications found</div>';
+            return;
+          }
+
+          notifications.forEach((notification) => {
+            const notificationElement =
+              this.createNotificationElement(notification);
+            container.appendChild(notificationElement);
+          });
+        },
+
+        createNotificationElement(notification) {
+          const item = document.createElement("div");
+          item.className = `notification-item ${notification.unread ? "unread" : "read"}`;
+          item.dataset.id = notification.id;
+          item.dataset.type = notification.type;
+          item.dataset.activityId = notification.activityId || "";
+          item.dataset.resourceId = notification.resourceId || "";
+
+          const iconClass = NotificationService.getIcon(notification.type);
+
+          item.innerHTML = `
                     <div class="notification-icon">
                         <i class="${iconClass}"></i>
                     </div>
                     <div class="notification-content">
                         <div class="notification-title">${notification.title}</div>
                         <div class="notification-text">${notification.message}</div>
-                        ${notification.child ? `<div class="notification-details">Child: ${notification.child} | Subject: ${notification.subject} | Grade: ${notification.grade}</div>` : ''}
-                        ${notification.classroom ? `<div class="notification-details">Class: ${notification.classroom} | Topic: ${notification.topic} | Type: ${notification.resourceType}</div>` : ''}
+                        ${notification.child ? `<div class="notification-details">Child: ${notification.child} | Subject: ${notification.subject} | Grade: ${notification.grade}</div>` : ""}
+                        ${notification.classroom ? `<div class="notification-details">Class: ${notification.classroom} | Topic: ${notification.topic} | Type: ${notification.resourceType}</div>` : ""}
                         <div class="notification-time">${notification.time}</div>
                     </div>
                     <div class="notification-actions">
-                        <button class="notification-action">${notification.unread ? 'Mark as read' : 'Mark as unread'}</button>
+                        <button class="notification-action">${notification.unread ? "Mark as read" : "Mark as unread"}</button>
                     </div>
                 `;
 
-                return item;
-            }
-        };
+          return item;
+        },
+      };
 
-        const NotificationHandlers = {
-            init() {
-                const filterDropdown = document.getElementById('notificationFilter');
-                if (filterDropdown) {
-                    filterDropdown.addEventListener('change', async (e) => {
-                        showLoading();
-                        const filter = e.target.value;
-                        const notifications = await NotificationService.getNotificationsByType(filter);
-                        NotificationRenderer.renderNotifications(notifications);
-                          hideLoading();
-                    });
+      const NotificationHandlers = {
+        init() {
+          const filterDropdown = document.getElementById("notificationFilter");
+          if (filterDropdown) {
+            filterDropdown.addEventListener("change", async (e) => {
+              showLoading();
+              const filter = e.target.value;
+              const notifications =
+                await NotificationService.getNotificationsByType(filter);
+              NotificationRenderer.renderNotifications(notifications);
+              hideLoading();
+            });
+          }
+
+          const markAllBtn = document.getElementById("markAllReadBtn");
+          if (markAllBtn) {
+            markAllBtn.addEventListener("click", async () => {
+              showLoading();
+
+              await NotificationService.markAllAsRead();
+              await NotificationService.updateBadgeCount();
+              const filterDropdown =
+                document.getElementById("notificationFilter");
+              const filter = filterDropdown ? filterDropdown.value : "all";
+              const notifications =
+                await NotificationService.getNotificationsByType(filter);
+              NotificationRenderer.renderNotifications(notifications);
+              hideLoading();
+            });
+          }
+
+          document.addEventListener("click", async (e) => {
+            const notificationItem = e.target.closest(".notification-item");
+
+            if (notificationItem) {
+              const activityId = notificationItem.dataset.activityId;
+              const resourceId = notificationItem.dataset.resourceId;
+              const type = notificationItem.dataset.type;
+
+              if (e.target.classList.contains("notification-action")) {
+                await this.handleMarkAction(e.target);
+                return;
+              }
+
+              if (type === "grades") {
+                if (activityId) {
+                  await NotificationService.markAsReadAndInsert(activityId);
+                  notificationItem.classList.remove("unread");
+                  notificationItem.classList.add("read");
                 }
-
-                const markAllBtn = document.getElementById('markAllReadBtn');
-                if (markAllBtn) {
-                    markAllBtn.addEventListener('click', async () => {
-                                showLoading();
-
-                        await NotificationService.markAllAsRead();
-                        await NotificationService.updateBadgeCount();
-                        const filterDropdown = document.getElementById('notificationFilter');
-                        const filter = filterDropdown ? filterDropdown.value : 'all';
-                        const notifications = await NotificationService.getNotificationsByType(filter);
-                        NotificationRenderer.renderNotifications(notifications);
-                        hideLoading();
-                    });
+                window.location.href = "dashboard_parents.html";
+              } else if (type === "resources") {
+                if (resourceId) {
+                  await NotificationService.markResourceAsReadAndInsert(
+                    resourceId,
+                  );
+                  notificationItem.classList.remove("unread");
+                  notificationItem.classList.add("read");
                 }
-
-                document.addEventListener('click', async (e) => {
-                    const notificationItem = e.target.closest('.notification-item');
-
-                    if (notificationItem) {
-                        const activityId = notificationItem.dataset.activityId;
-                        const resourceId = notificationItem.dataset.resourceId;
-                        const type = notificationItem.dataset.type;
-
-                        if (e.target.classList.contains('notification-action')) {
-                            await this.handleMarkAction(e.target);
-                            return;
-                        }
-
-                        if (type === 'grades') {
-                            if (activityId) {
-                                await NotificationService.markAsReadAndInsert(activityId);
-                                notificationItem.classList.remove('unread');
-                                notificationItem.classList.add('read');
-                            }
-                            window.location.href = "dashboard_parents.html";
-                        } else if (type === 'resources') {
-                            if (resourceId) {
-                                await NotificationService.markResourceAsReadAndInsert(resourceId);
-                                notificationItem.classList.remove('unread');
-                                notificationItem.classList.add('read');
-                            }
-                            window.location.href = "resources_parents.html";
-                        }
-                    }
-                });
-            },
-
-            async handleMarkAction(button) {
-                const notificationItem = button.closest('.notification-item');
-                const activityId = notificationItem.dataset.activityId;
-                const resourceId = notificationItem.dataset.resourceId;
-                const type = notificationItem.dataset.type;
-                const isUnread = notificationItem.classList.contains('unread');
-                
-                if (isUnread) {
-                    if (type === 'grades' && activityId) {
-                        await NotificationService.markAsReadAndInsert(activityId);
-                    } else if (type === 'resources' && resourceId) {
-                        await NotificationService.markResourceAsReadAndInsert(resourceId);
-                    }
-                    notificationItem.classList.remove('unread');
-                    notificationItem.classList.add('read');
-                    button.textContent = 'Mark as unread';
-                } else {
-                    if (type === 'grades' && activityId) {
-                        await NotificationService.markAsUnreadAndDelete(activityId);
-                    } else if (type === 'resources' && resourceId) {
-                        await NotificationService.markResourceAsUnreadAndDelete(resourceId);
-                    }
-                    notificationItem.classList.remove('read');
-                    notificationItem.classList.add('unread');
-                    button.textContent = 'Mark as read';
-                }
-                
-                await NotificationService.updateBadgeCount();
+                window.location.href = "resources_parents.html";
+              }
             }
-        };
+          });
+        },
 
-        document.addEventListener('DOMContentLoaded', async function () {
-             showLoading(); 
-            await NotificationService.init();
-            await NotificationService.updateBadgeCount();
-            
-            const notifications = await NotificationService.getAllNotifications();
-            NotificationRenderer.renderNotifications(notifications);
-            
-            NotificationHandlers.init();
-            NotificationService.setupRealTimeListener();
-            
-            const accountMenu = document.querySelector('.account-menu');
-            const dropdown = document.querySelector('.dropdown-content');
-            
-            if (accountMenu) {
-                accountMenu.addEventListener('click', function (event) {
-                    event.stopPropagation();
-                    if (dropdown) dropdown.classList.toggle('show');
-                });
+        async handleMarkAction(button) {
+          const notificationItem = button.closest(".notification-item");
+          const activityId = notificationItem.dataset.activityId;
+          const resourceId = notificationItem.dataset.resourceId;
+          const type = notificationItem.dataset.type;
+          const isUnread = notificationItem.classList.contains("unread");
+
+          if (isUnread) {
+            if (type === "grades" && activityId) {
+              await NotificationService.markAsReadAndInsert(activityId);
+            } else if (type === "resources" && resourceId) {
+              await NotificationService.markResourceAsReadAndInsert(resourceId);
             }
-            
-            if (dropdown) {
-                window.addEventListener('click', function () {
-                    if (dropdown.classList.contains('show')) {
-                        dropdown.classList.remove('show');
-                    }
-                });
+            notificationItem.classList.remove("unread");
+            notificationItem.classList.add("read");
+            button.textContent = "Mark as unread";
+          } else {
+            if (type === "grades" && activityId) {
+              await NotificationService.markAsUnreadAndDelete(activityId);
+            } else if (type === "resources" && resourceId) {
+              await NotificationService.markResourceAsUnreadAndDelete(
+                resourceId,
+              );
             }
-             hideLoading(); 
-        });
+            notificationItem.classList.remove("read");
+            notificationItem.classList.add("unread");
+            button.textContent = "Mark as read";
+          }
+
+          await NotificationService.updateBadgeCount();
+        },
+      };
+
+      document.addEventListener("DOMContentLoaded", async function () {
+        showLoading();
+        await NotificationService.init();
+        await NotificationService.updateBadgeCount();
+
+        const notifications = await NotificationService.getAllNotifications();
+        NotificationRenderer.renderNotifications(notifications);
+
+        NotificationHandlers.init();
+        NotificationService.setupRealTimeListener();
+
+        const accountMenu = document.querySelector(".account-menu");
+        const dropdown = document.querySelector(".dropdown-content");
+
+        if (accountMenu) {
+          accountMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+            if (dropdown) dropdown.classList.toggle("show");
+          });
+        }
+
+        if (dropdown) {
+          window.addEventListener("click", function () {
+            if (dropdown.classList.contains("show")) {
+              dropdown.classList.remove("show");
+            }
+          });
+        }
+        hideLoading();
+      });
     </script>
-</body>
+  </body>
 </html>

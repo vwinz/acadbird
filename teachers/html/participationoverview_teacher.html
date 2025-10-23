@@ -1,495 +1,609 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Activity Participation Overview</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <link rel="stylesheet" href="../style/participationoverview_teacher.css" />
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="navbar">
-            <div class="logo">
-                <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-                <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
-            </div>
-            <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-            <div class="nav-icons">
-                <img src="../../main/img/Notification.png" alt="Notifications" class="icon" />
-                <img src="../../main/img/Help.png" alt="Help" class="icon" />
-                <div class="account-menu">
-                    <img src="../../main/img/account icon.png" alt="User Account" class="icon" />
-                </div>
-            </div>
+      <div class="navbar">
+        <div class="logo">
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            alt="AcadBird"
+            class="logo-img"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
         </div>
-        <div class="secondary-header">
-            <nav class="nav-menu">
-                <a href="homepage-teachers.html" class="nav-item">Home</a>
-                <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
-                <a href="activitylog_teacher.html" class="nav-item active">Activity Logs</a>
-                <a href="resources_teacher.html" class="nav-item">Resources</a>
-                <a href="messages_teacher.html" class="nav-item">Messages</a>
-                <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
-            </nav>
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
+        <div class="nav-icons">
+          <img
+            src="../../main/img/Notification.png"
+            alt="Notifications"
+            class="icon"
+          />
+          <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          <div class="account-menu">
+            <img
+              src="../../main/img/account icon.png"
+              alt="User Account"
+              class="icon"
+            />
+          </div>
         </div>
-        <div class="separator"></div>
+      </div>
+      <div class="secondary-header">
+        <nav class="nav-menu">
+          <a href="homepage-teachers.html" class="nav-item">Home</a>
+          <a href="homepage-classroom_teacher.html" class="nav-item"
+            >Classroom</a
+          >
+          <a href="activitylog_teacher.html" class="nav-item active"
+            >Activity Logs</a
+          >
+          <a href="resources_teacher.html" class="nav-item">Resources</a>
+          <a href="messages_teacher.html" class="nav-item">Messages</a>
+          <a href="studentlistpage_teacher.html" class="nav-item"
+            >Student List</a
+          >
+        </nav>
+      </div>
+      <div class="separator"></div>
 
-        <main class="main-content">
-            <div class="overview-container">
-                <header class="overview-header">
-                    <h1>Activity Participation Overview</h1>
-                    <div class="header-actions">
-                        <button class="action-btn add-activity-btn" id="addActivityBtn">Add Activity</button>
-                        <button class="action-btn quick-log-btn" id="quickLogBtn">Quick Activity Participation Log</button>
-                    </div>
-                </header>
-
-                <section class="student-participation-level">
-                <h2 id="participation-class-title">Student Participation Level (Loading Class Name)</h2>
-
-                    <div class="participation-chart">
-                        <div class="chart-legend">
-                            <span class="legend-item"><span class="legend-color full"></span>Full</span>
-                            <span class="legend-item"><span class="legend-color partial"></span>Partial</span>
-                            <span class="legend-item"><span class="legend-color none"></span>None</span>
-                        </div>
-                        <div class="chart-container" id="participationChart">
-                        </div>
-                        <p class="chart-label">Total Participation Score</p>
-                    </div>
-                </section>
-
-                <div class="week-selector-container">
-                    <div class="week-selector">
-                        <div class="dropdown">
-    <button class="dropdown-toggle">
-        Week of April 1 - 5
-        <i class="fas fa-chevron-down"></i>
-    </button>
-    <div class="dropdown-menu hidden"></div>
-</div>
-
-                    </div>
-                    <div class="week-info">
-                        <span class="week-icon">📚</span>
-                        
-                        <span class="date-icon">🗓️</span>
-                        
-                    </div>
-                </div>
-
-                <section class="activity-participation-section" id="activityCardsContainer">
-                </section>
+      <main class="main-content">
+        <div class="overview-container">
+          <header class="overview-header">
+            <h1>Activity Participation Overview</h1>
+            <div class="header-actions">
+              <button class="action-btn add-activity-btn" id="addActivityBtn">
+                Add Activity
+              </button>
+              <button class="action-btn quick-log-btn" id="quickLogBtn">
+                Quick Activity Participation Log
+              </button>
             </div>
-        </main>
+          </header>
+
+          <section class="student-participation-level">
+            <h2 id="participation-class-title">
+              Student Participation Level (Loading Class Name)
+            </h2>
+
+            <div class="participation-chart">
+              <div class="chart-legend">
+                <span class="legend-item"
+                  ><span class="legend-color full"></span>Full</span
+                >
+                <span class="legend-item"
+                  ><span class="legend-color partial"></span>Partial</span
+                >
+                <span class="legend-item"
+                  ><span class="legend-color none"></span>None</span
+                >
+              </div>
+              <div class="chart-container" id="participationChart"></div>
+              <p class="chart-label">Total Participation Score</p>
+            </div>
+          </section>
+
+          <div class="week-selector-container">
+            <div class="week-selector">
+              <div class="dropdown">
+                <button class="dropdown-toggle">
+                  Week of April 1 - 5
+                  <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu hidden"></div>
+              </div>
+            </div>
+            <div class="week-info">
+              <span class="week-icon">📚</span>
+
+              <span class="date-icon">🗓️</span>
+            </div>
+          </div>
+
+          <section
+            class="activity-participation-section"
+            id="activityCardsContainer"
+          ></section>
+        </div>
+      </main>
     </div>
 
-      <div id="loading-overlay">
+    <div id="loading-overlay">
+      <div class="loader-3">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+    </div>
 
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
-
-</div>
     <div class="modal-overlay hidden" id="addActivityModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Add Activity</h2>
-                <button class="close-modal-btn">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div id="addActivityForm">
-                    <div class="form-group">
-                        <label for="add-activity-title">Activity Title:</label>
-                        <input type="text" id="add-activity-title" placeholder="e.g., Identifying the colors of the flag" />
-                    </div>
-                    <p class="participation-label">Participation:</p>
-                    <table class="participation-table" id="addActivityTable">
-                        <thead>
-    <tr>
-        <th>Name</th>
-        <th>Full</th>
-        <th>Partial</th>
-        <th>None</th>
-        <th>Note</th>
-    </tr>
-    <tr>
-        <th><label><input type="checkbox" id="addSelectAllCheckbox"> Select All</label></th>
-        <td><input type="radio" name="add-select-all" value="full"></td>
-        <td><input type="radio" name="add-select-all" value="partial"></td>
-        <td><input type="radio" name="add-select-all" value="none"></td>
-        <td></td>
-    </tr>
-</thead>
-
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <div class="modal-actions">
-                        <button class="action-btn log-participation-btn" id="addLogBtn">Log Participation</button>
-                    </div>
-                </div>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add Activity</h2>
+          <button class="close-modal-btn">&times;</button>
         </div>
+        <div class="modal-body">
+          <div id="addActivityForm">
+            <div class="form-group">
+              <label for="add-activity-title">Activity Title:</label>
+              <input
+                type="text"
+                id="add-activity-title"
+                placeholder="e.g., Identifying the colors of the flag"
+              />
+            </div>
+            <p class="participation-label">Participation:</p>
+            <table class="participation-table" id="addActivityTable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Full</th>
+                  <th>Partial</th>
+                  <th>None</th>
+                  <th>Note</th>
+                </tr>
+                <tr>
+                  <th>
+                    <label
+                      ><input type="checkbox" id="addSelectAllCheckbox" />
+                      Select All</label
+                    >
+                  </th>
+                  <td>
+                    <input type="radio" name="add-select-all" value="full" />
+                  </td>
+                  <td>
+                    <input type="radio" name="add-select-all" value="partial" />
+                  </td>
+                  <td>
+                    <input type="radio" name="add-select-all" value="none" />
+                  </td>
+                  <td></td>
+                </tr>
+              </thead>
+
+              <tbody></tbody>
+            </table>
+            <div class="modal-actions">
+              <button class="action-btn log-participation-btn" id="addLogBtn">
+                Log Participation
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="modal-overlay hidden" id="quickLogModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Quick Activity Participation Log</h2>
-                <button class="close-modal-btn">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="quick-activity-input">Activity:</label>
-    <input type="text" id="quick-activity-input" placeholder="Enter activity title" />
-                    </select>
-                </div>
-                <p class="participation-label">Participation:</p>
-                <table class="participation-table" id="quickLogTable">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Full</th>
-                            <th>Partial</th>
-                            <th>None</th>
-                        </tr>
-                        <tr>
-                            <th><label><input type="checkbox" id="quickSelectAllCheckbox"> Select All</label></th>
-                            <td><input type="radio" name="quick-select-all" value="full"></td>
-                            <td><input type="radio" name="quick-select-all" value="partial"></td>
-                            <td><input type="radio" name="quick-select-all" value="none"></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-                <div class="quick-log-actions">
-                    <button class="copy-previous-btn" id="copyPreviousBtn">Copy Participation from Previous Activity</button>
-                    <button class="log-participation-btn" id="quickLogBtnSubmit">Log Participation</button>
-                </div>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Quick Activity Participation Log</h2>
+          <button class="close-modal-btn">&times;</button>
         </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="quick-activity-input">Activity:</label>
+            <input
+              type="text"
+              id="quick-activity-input"
+              placeholder="Enter activity title"
+            />
+          </div>
+          <p class="participation-label">Participation:</p>
+          <table class="participation-table" id="quickLogTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Full</th>
+                <th>Partial</th>
+                <th>None</th>
+              </tr>
+              <tr>
+                <th>
+                  <label
+                    ><input type="checkbox" id="quickSelectAllCheckbox" />
+                    Select All</label
+                  >
+                </th>
+                <td>
+                  <input type="radio" name="quick-select-all" value="full" />
+                </td>
+                <td>
+                  <input type="radio" name="quick-select-all" value="partial" />
+                </td>
+                <td>
+                  <input type="radio" name="quick-select-all" value="none" />
+                </td>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <div class="quick-log-actions">
+            <button class="copy-previous-btn" id="copyPreviousBtn">
+              Copy Participation from Previous Activity
+            </button>
+            <button class="log-participation-btn" id="quickLogBtnSubmit">
+              Log Participation
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="modal-overlay hidden" id="noteModal">
-    <div class="modal-content">
+      <div class="modal-content">
         <div class="modal-header">
-            <h2>Student Note</h2>
-            <button class="close-modal-btn">&times;</button>
+          <h2>Student Note</h2>
+          <button class="close-modal-btn">&times;</button>
         </div>
         <div class="modal-body">
-            <p id="noteText">This is a note</p>
+          <p id="noteText">This is a note</p>
         </div>
+      </div>
     </div>
-</div>
 
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        where,
+        addDoc,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getFirestore, collection, getDocs, query, where, addDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
 
-const firebaseConfig = {
-    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-    authDomain: "acadbird-379e3.firebaseapp.com",
-    projectId: "acadbird-379e3",
-    storageBucket: "acadbird-379e3.firebasestorage.app",
-    messagingSenderId: "575491576951",
-    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-    measurementId: "G-N6Z672SXWJ"
-};
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth();
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth();
+      let teacherID = null;
+      let STUDENTS = [];
+      let activitiesData = [];
+      let studentParticipationScores = [];
+      const loadingOverlay = document.getElementById("loading-overlay");
+      const PARTICIPATION_POINTS = { full: 15, partial: 5, none: 0 };
+      const COLOR_MAP = { high: "#79de87", medium: "#ffc107", low: "#ff5757" };
 
-let teacherID = null;
-let STUDENTS = [];
-let activitiesData = [];
-let studentParticipationScores = [];
-const loadingOverlay = document.getElementById("loading-overlay");
-const PARTICIPATION_POINTS = { full: 15, partial: 5, none: 0 };
-const COLOR_MAP = { high: '#79de87', medium: '#ffc107', low: '#ff5757' };
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) return console.log("No user signed in.");
+        teacherID = user.uid;
 
-onAuthStateChanged(auth, async (user) => {
-    if (!user) return console.log("No user signed in.");
-    teacherID = user.uid;
+        showLoading();
 
-    showLoading();
+        try {
+          await fetchStudentsFromFirestore();
+          await fetchActivitiesFromFirestore();
+          generateWeeks();
 
-    try {
-        await fetchStudentsFromFirestore();
-        await fetchActivitiesFromFirestore();
-        generateWeeks();
+          // Render everything after data is ready
+          const participationChart =
+            document.getElementById("participationChart");
+          const activityCardsContainer = document.getElementById(
+            "activityCardsContainer",
+          );
 
-        // Render everything after data is ready
-        const participationChart = document.getElementById("participationChart");
-        const activityCardsContainer = document.getElementById("activityCardsContainer");
+          renderAll();
 
-        renderAll();
+          // Populate add activity table
+          const addActivityTableBody = document.querySelector(
+            "#addActivityTable tbody",
+          );
+          populateStudentTables(addActivityTableBody);
 
-        // Populate add activity table
-        const addActivityTableBody = document.querySelector("#addActivityTable tbody");
-        populateStudentTables(addActivityTableBody);
-        
-        // Populate quick log table
-        const quickLogTableBody = document.querySelector("#quickLogTable tbody");
-        populateStudentTables(quickLogTableBody);
-        
-    } catch (err) {
-        console.error("Error loading data:", err);
-    } finally {
-        hideLoading();
-    }
-});
+          // Populate quick log table
+          const quickLogTableBody = document.querySelector(
+            "#quickLogTable tbody",
+          );
+          populateStudentTables(quickLogTableBody);
+        } catch (err) {
+          console.error("Error loading data:", err);
+        } finally {
+          hideLoading();
+        }
+      });
 
+      async function fetchStudentsFromFirestore() {
+        try {
+          const classroomID = localStorage.getItem("selectedClassId");
+          if (!classroomID) return;
 
+          const snapshot = await getDocs(
+            query(
+              collection(db, "students"),
+              where("classroomId", "==", classroomID),
+            ),
+          );
 
-async function fetchStudentsFromFirestore() {
-    try {
-        const classroomID = localStorage.getItem('selectedClassId');
-        if (!classroomID) return;
-
-       const snapshot = await getDocs(query(collection(db, "students"), where("classroomId", "==", classroomID)));
-
-        STUDENTS = snapshot.docs.map(doc => {
+          STUDENTS = snapshot.docs.map((doc) => {
             const data = doc.data();
-            return { id: doc.id, fullName: `${data.firstName} ${data.lastName}` };
-        });
+            return {
+              id: doc.id,
+              fullName: `${data.firstName} ${data.lastName}`,
+            };
+          });
 
-        // Sort alphabetically
-        STUDENTS.sort((a, b) => a.fullName.localeCompare(b.fullName));
-    } catch (err) {
-        console.error("Error fetching students:", err);
-    }
-}
+          // Sort alphabetically
+          STUDENTS.sort((a, b) => a.fullName.localeCompare(b.fullName));
+        } catch (err) {
+          console.error("Error fetching students:", err);
+        }
+      }
 
+      let weeksData = []; // array of { weekLabel: 'Week 1: ...', start: Date, end: Date }
 
-let weeksData = []; // array of { weekLabel: 'Week 1: ...', start: Date, end: Date }
+      function generateWeeks() {
+        if (!activitiesData.length) return;
 
-function generateWeeks() {
-    if (!activitiesData.length) return;
+        // Get min and max dates
+        const dates = activitiesData.map((a) => a.created_at.toDate()); // Firestore Timestamp -> JS Date
+        const minDate = new Date(Math.min(...dates));
+        const maxDate = new Date(Math.max(...dates));
 
-    // Get min and max dates
-    const dates = activitiesData.map(a => a.created_at.toDate()); // Firestore Timestamp -> JS Date
-    const minDate = new Date(Math.min(...dates));
-    const maxDate = new Date(Math.max(...dates));
+        weeksData = [];
+        let currentStart = new Date(minDate);
+        currentStart.setHours(0, 0, 0, 0);
 
-    weeksData = [];
-    let currentStart = new Date(minDate);
-    currentStart.setHours(0,0,0,0);
+        let weekNum = 1;
+        while (currentStart <= maxDate) {
+          const currentEnd = new Date(currentStart);
+          currentEnd.setDate(currentEnd.getDate() + 6); // 7-day week
 
-    let weekNum = 1;
-    while (currentStart <= maxDate) {
-        const currentEnd = new Date(currentStart);
-        currentEnd.setDate(currentEnd.getDate() + 6); // 7-day week
-
-        weeksData.push({
+          weeksData.push({
             weekLabel: `Week ${weekNum}: ${currentStart.toLocaleDateString()} - ${currentEnd.toLocaleDateString()}`,
             start: new Date(currentStart),
-            end: new Date(currentEnd)
-        });
+            end: new Date(currentEnd),
+          });
 
-        currentStart.setDate(currentStart.getDate() + 7);
-        weekNum++;
-    }
+          currentStart.setDate(currentStart.getDate() + 7);
+          weekNum++;
+        }
 
-    populateWeekDropdown();
-}
+        populateWeekDropdown();
+      }
 
-const weekInfoContainer = document.querySelector('.week-info');
+      const weekInfoContainer = document.querySelector(".week-info");
 
-function updateWeekInfo(selectedWeek) {
-    if (!selectedWeek.start || !selectedWeek.end) {
-        // All Weeks
-        weekInfoContainer.innerHTML = `
+      function updateWeekInfo(selectedWeek) {
+        if (!selectedWeek.start || !selectedWeek.end) {
+          // All Weeks
+          weekInfoContainer.innerHTML = `
             <span class="week-icon">📚</span>
             <p><strong>${selectedWeek.weekLabel}</strong></p>
         `;
-    } else {
-        weekInfoContainer.innerHTML = `
+        } else {
+          weekInfoContainer.innerHTML = `
             <span class="week-icon">📚</span>
             <p><strong>${selectedWeek.weekLabel}</strong></p>
             <span class="date-icon">🗓️</span>
             <p>${selectedWeek.start.toLocaleDateString()} – ${selectedWeek.end.toLocaleDateString()}</p>
         `;
-    }
-}
+        }
+      }
 
-function recalculateAllScores() {
-    studentParticipationScores = calculateScores(activitiesData);
-}
+      function recalculateAllScores() {
+        studentParticipationScores = calculateScores(activitiesData);
+      }
 
+      const weekDropdown = document.querySelector(".dropdown-toggle");
 
-const weekDropdown = document.querySelector('.dropdown-toggle');
+      function populateWeekDropdown() {
+        const menu = document.querySelector(".dropdown-menu");
+        if (!weeksData.length) return;
 
-function populateWeekDropdown() {
-    const menu = document.querySelector('.dropdown-menu');
-    if (!weeksData.length) return;
+        // Include "All Weeks" as the first option
+        const allWeeksOption = `<div class="dropdown-item" data-idx="-1">All Weeks</div>`;
 
-    // Include "All Weeks" as the first option
-    const allWeeksOption = `<div class="dropdown-item" data-idx="-1">All Weeks</div>`;
+        menu.innerHTML =
+          allWeeksOption +
+          weeksData
+            .map(
+              (week, idx) =>
+                `<div class="dropdown-item" data-idx="${idx}">${week.weekLabel}</div>`,
+            )
+            .join("");
 
-    menu.innerHTML = allWeeksOption + weeksData.map((week, idx) =>
-        `<div class="dropdown-item" data-idx="${idx}">${week.weekLabel}</div>`
-    ).join('');
+        // Set default toggle to All Weeks
+        const dropdownToggle = document.querySelector(".dropdown-toggle");
+        dropdownToggle.innerHTML = `All Weeks <i class="fas fa-chevron-down"></i>`;
 
-    // Set default toggle to All Weeks
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    dropdownToggle.innerHTML = `All Weeks <i class="fas fa-chevron-down"></i>`;
+        // Show all activities by default
+        renderActivityCards(activitiesData);
+        updateWeekInfo({ weekLabel: "All Weeks", start: null, end: null });
 
-    // Show all activities by default
-    renderActivityCards(activitiesData);
-    updateWeekInfo({ weekLabel: 'All Weeks', start: null, end: null });
-
-    // Click listeners for dropdown
-    menu.querySelectorAll('.dropdown-item').forEach(item => {
-        item.addEventListener('click', (e) => {
+        // Click listeners for dropdown
+        menu.querySelectorAll(".dropdown-item").forEach((item) => {
+          item.addEventListener("click", (e) => {
             const idx = parseInt(e.target.dataset.idx);
             dropdownToggle.innerHTML = `${e.target.textContent} <i class="fas fa-chevron-down"></i>`;
-            menu.classList.add('hidden');
+            menu.classList.add("hidden");
 
             if (idx === -1) {
-    
-                renderActivityCards(activitiesData);
-                const scores = calculateScores(activitiesData);
-                renderParticipationChart(scores);
-                updateWeekInfo({ weekLabel: 'All Weeks', start: null, end: null });
-            } else {
-                const selectedWeek = weeksData[idx];
-                const filteredActivities = activitiesData.filter(a => {
-                    const createdDate = a.created_at.toDate();
-                    return createdDate >= selectedWeek.start && createdDate <= selectedWeek.end;
+              renderActivityCards(activitiesData);
+              const scores = calculateScores(activitiesData);
+              renderParticipationChart(scores);
+              updateWeekInfo({
+                weekLabel: "All Weeks",
+                start: null,
+                end: null,
               });
-                renderActivityCards(filteredActivities);
-                const scores = calculateScores(filteredActivities);
-                renderParticipationChart(scores);
-                updateWeekInfo(selectedWeek);
+            } else {
+              const selectedWeek = weeksData[idx];
+              const filteredActivities = activitiesData.filter((a) => {
+                const createdDate = a.created_at.toDate();
+                return (
+                  createdDate >= selectedWeek.start &&
+                  createdDate <= selectedWeek.end
+                );
+              });
+              renderActivityCards(filteredActivities);
+              const scores = calculateScores(filteredActivities);
+              renderParticipationChart(scores);
+              updateWeekInfo(selectedWeek);
             }
-
+          });
         });
-    });
-}
+      }
 
-async function fetchActivitiesFromFirestore() {
-    try {
-        const classroomID = localStorage.getItem('selectedClassId');
-        if (!classroomID) return;
+      async function fetchActivitiesFromFirestore() {
+        try {
+          const classroomID = localStorage.getItem("selectedClassId");
+          if (!classroomID) return;
 
-        const q = query(collection(db, "activity"), where("classroomID", "==", classroomID));
-        const snapshot = await getDocs(q);
-        
-       const rawActivities = snapshot.docs.map(doc => {
-    const data = doc.data();
-    return {
-        activityNumber: data.activityNo,
-        description: data.activityName,
-        participants: { 
-    [data.studentID]: { 
-        level: data.activityScore, 
-        note: data.note || '' 
-    } 
-}
-,
-        created_at: data.created_at // <-- add this
-    };
-});
+          const q = query(
+            collection(db, "activity"),
+            where("classroomID", "==", classroomID),
+          );
+          const snapshot = await getDocs(q);
 
+          const rawActivities = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+              activityNumber: data.activityNo,
+              description: data.activityName,
+              participants: {
+                [data.studentID]: {
+                  level: data.activityScore,
+                  note: data.note || "",
+                },
+              },
+              created_at: data.created_at, // <-- add this
+            };
+          });
 
-       const merged = {};
-rawActivities.forEach(a => {
-    if (!merged[a.activityNumber]) merged[a.activityNumber] = { ...a, participants: {} };
-    Object.assign(merged[a.activityNumber].participants, a.participants);
-});
+          const merged = {};
+          rawActivities.forEach((a) => {
+            if (!merged[a.activityNumber])
+              merged[a.activityNumber] = { ...a, participants: {} };
+            Object.assign(
+              merged[a.activityNumber].participants,
+              a.participants,
+            );
+          });
 
+          activitiesData = Object.values(merged);
+          recalculateAllScores();
+          renderAll();
+        } catch (err) {
+          console.error("Error fetching activities:", err);
+        }
+      }
+      function showLoading() {
+        loadingOverlay.style.display = "flex";
+      }
 
-        activitiesData = Object.values(merged);
-        recalculateAllScores();
-        renderAll();
-       
-    } catch (err) {
-        console.error("Error fetching activities:", err);
-    }
-}
-  function showLoading() {
-  loadingOverlay.style.display = "flex";
-}
+      // Hide overlay
+      function hideLoading() {
+        loadingOverlay.style.display = "none";
+      }
 
-// Hide overlay
-function hideLoading() {
-  loadingOverlay.style.display = "none";
-}
+      function filterActivitiesByWeek(startDate, endDate) {
+        const filtered = activitiesData.filter((a) => {
+          const createdDate = a.created_at.toDate(); // Firestore timestamp -> JS Date
+          return createdDate >= startDate && createdDate <= endDate;
+        });
 
-function filterActivitiesByWeek(startDate, endDate) {
-    const filtered = activitiesData.filter(a => {
-        const createdDate = a.created_at.toDate(); // Firestore timestamp -> JS Date
-        return createdDate >= startDate && createdDate <= endDate;
-    });
+        renderActivityCards(filtered);
+      }
 
-    renderActivityCards(filtered);
-}
+      function calculateScores(filteredActivities) {
+        //KNN - Neighbor Average computation
+        return STUDENTS.map((student) => {
+          let totalScore = 0;
+          let count = 0;
 
-
-
-function calculateScores(filteredActivities) {
-    //KNN - Neighbor Average computation
-    return STUDENTS.map(student => {
-        let totalScore = 0;
-        let count = 0;
-
-        filteredActivities.forEach(act => {
+          filteredActivities.forEach((act) => {
             if (act.participants[student.id]) {
-                const level = typeof act.participants[student.id] === 'object' ? act.participants[student.id].level : act.participants[student.id];
-                const points = level === 'full' ? 100 : level === 'partial' ? 50 : 0; 
-                totalScore += points;
-                count++;
+              const level =
+                typeof act.participants[student.id] === "object"
+                  ? act.participants[student.id].level
+                  : act.participants[student.id];
+              const points =
+                level === "full" ? 100 : level === "partial" ? 50 : 0;
+              totalScore += points;
+              count++;
             }
+          });
+
+          const avgScore = count > 0 ? totalScore / count : 0;
+          return { name: student.fullName, score: avgScore };
         });
+      }
 
-        const avgScore = count > 0 ? totalScore / count : 0;
-        return { name: student.fullName, score: avgScore };
-    });
-}
+      const getBarColor = (score) =>
+        score >= 70
+          ? COLOR_MAP.high
+          : score >= 30
+            ? COLOR_MAP.medium
+            : COLOR_MAP.low;
 
+      const renderParticipationChart = (
+        scores = studentParticipationScores,
+      ) => {
+        if (!participationChart) return;
+        participationChart.innerHTML = "";
 
+        scores
+          .slice()
+          .sort((a, b) => b.score - a.score)
+          .forEach((student) => {
+            const bar = document.createElement("div");
+            bar.className = "chart-bar";
 
- const getBarColor = score => score >= 70 ? COLOR_MAP.high : score >= 30 ? COLOR_MAP.medium : COLOR_MAP.low;
-
-   const renderParticipationChart = (scores = studentParticipationScores) => {
-    if (!participationChart) return;
-    participationChart.innerHTML = '';
-
-    scores.slice()
-        .sort((a,b) => b.score - a.score)
-        .forEach(student => {
-            const bar = document.createElement('div');
-            bar.className = 'chart-bar';
-
-            const label = document.createElement('div');
-            label.className = 'chart-bar-label';
+            const label = document.createElement("div");
+            label.className = "chart-bar-label";
             label.textContent = student.name;
 
-            const barBg = document.createElement('div');
-            barBg.className = 'bar-bg';
+            const barBg = document.createElement("div");
+            barBg.className = "bar-bg";
 
-            const barFill = document.createElement('div');
-            barFill.className = 'bar-fill';
+            const barFill = document.createElement("div");
+            barFill.className = "bar-fill";
             barFill.style.width = `${student.score}%`;
             barFill.style.backgroundColor = getBarColor(student.score);
 
-            const scoreDisplay = document.createElement('span');
-            scoreDisplay.textContent = student.score.toFixed(0) + '%';
+            const scoreDisplay = document.createElement("span");
+            scoreDisplay.textContent = student.score.toFixed(0) + "%";
 
-            scoreDisplay.style.position = 'absolute';
-            scoreDisplay.style.right = '5px';
+            scoreDisplay.style.position = "absolute";
+            scoreDisplay.style.right = "5px";
 
             barBg.appendChild(barFill);
             bar.appendChild(label);
@@ -497,398 +611,473 @@ function calculateScores(filteredActivities) {
             bar.appendChild(scoreDisplay);
 
             participationChart.appendChild(bar);
-        });
-};
+          });
+      };
 
-
-   const renderActivityCards = (data = activitiesData) => {
-    if (!activityCardsContainer) return;
-    activityCardsContainer.innerHTML = '';
-    data.slice().reverse().forEach(act => {
-        const card = document.createElement('div');
-        card.className = 'activity-card';
-        const rowsHtml = Object.keys(act.participants)
-    .map(id => {
-        const student = STUDENTS.find(s => s.id === id);
-        if (!student) return ''; // skip if student is not in this classroom
-        const participant = act.participants[id];
-        const level = typeof participant === 'object' ? participant.level : participant;
-        const note = typeof participant === 'object' ? participant.note || '' : '';
-        return `<tr>
+      const renderActivityCards = (data = activitiesData) => {
+        if (!activityCardsContainer) return;
+        activityCardsContainer.innerHTML = "";
+        data
+          .slice()
+          .reverse()
+          .forEach((act) => {
+            const card = document.createElement("div");
+            card.className = "activity-card";
+            const rowsHtml = Object.keys(act.participants)
+              .map((id) => {
+                const student = STUDENTS.find((s) => s.id === id);
+                if (!student) return ""; // skip if student is not in this classroom
+                const participant = act.participants[id];
+                const level =
+                  typeof participant === "object"
+                    ? participant.level
+                    : participant;
+                const note =
+                  typeof participant === "object" ? participant.note || "" : "";
+                return `<tr>
             <td>${student.fullName}</td>
             <td style="text-align:center;"><div class="participation-dot dot-${level}"></div></td>
             <td><i class="fas fa-eye view-note" data-note="${note}" title="View Note"></i></td>
         </tr>`;
-    }).join('');
+              })
+              .join("");
 
+            card.innerHTML = `<div class="activity-card-header"><p>Activity ${act.activityNumber}</p><p>${act.description}</p></div><table class="activity-table"><thead><tr><th>Name</th><th>Participation Level</th><th>Note</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
+            activityCardsContainer.appendChild(card);
+          });
+      };
 
-        card.innerHTML = `<div class="activity-card-header"><p>Activity ${act.activityNumber}</p><p>${act.description}</p></div><table class="activity-table"><thead><tr><th>Name</th><th>Participation Level</th><th>Note</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
-        activityCardsContainer.appendChild(card);
-    });
-};
+      const renderAll = () => {
+        recalculateAllScores();
+        renderParticipationChart();
+        renderActivityCards();
+      };
 
+      const populateStudentTables = (tableBody, initialParticipants = {}) => {
+        tableBody.innerHTML = "";
+        STUDENTS.forEach((student) => {
+          const level = initialParticipants[student.id] || "none";
+          const note = initialParticipants[student.id + "_note"] || ""; // optional note
+          const nameSlug = student.fullName
+            .replace(/\s/g, "-")
+            .replace(/[^\w-]/g, "");
 
-    const renderAll = () => { recalculateAllScores(); renderParticipationChart(); renderActivityCards(); };
+          const row = document.createElement("tr");
+          row.dataset.studentId = student.id;
 
-const populateStudentTables = (tableBody, initialParticipants = {}) => {
-    tableBody.innerHTML = '';
-    STUDENTS.forEach(student => {
-        const level = initialParticipants[student.id] || 'none';
-        const note = initialParticipants[student.id + '_note'] || ''; // optional note
-        const nameSlug = student.fullName.replace(/\s/g,'-').replace(/[^\w-]/g,'');
-
-        const row = document.createElement('tr');
-        row.dataset.studentId = student.id;
-
-        row.innerHTML = `
+          row.innerHTML = `
             <td>${student.fullName}</td>
-            <td><input type="radio" name="student-${nameSlug}" value="full" ${level === 'full' ? 'checked' : ''}></td>
-            <td><input type="radio" name="student-${nameSlug}" value="partial" ${level === 'partial' ? 'checked' : ''}></td>
-            <td><input type="radio" name="student-${nameSlug}" value="none" ${level === 'none' ? 'checked' : ''}></td>
+            <td><input type="radio" name="student-${nameSlug}" value="full" ${level === "full" ? "checked" : ""}></td>
+            <td><input type="radio" name="student-${nameSlug}" value="partial" ${level === "partial" ? "checked" : ""}></td>
+            <td><input type="radio" name="student-${nameSlug}" value="none" ${level === "none" ? "checked" : ""}></td>
             <td><input type="text" class="note-input" placeholder="Add note" value="${note}"></td>
         `;
 
-        tableBody.appendChild(row);
-    });
-};
-
-
-
-        const quickActivitySelect = document.getElementById("quick-activity-select");
-document.addEventListener("DOMContentLoaded", () => {
-    // DOM elements
-    const participationChart = document.getElementById("participationChart");
-    const activityCardsContainer = document.getElementById("activityCardsContainer");
-    const participationClassTitle = document.getElementById("participation-class-title");
-    participationClassTitle.textContent = `Student Participation Level (${localStorage.getItem('selectedClassName') || "No class selected"})`;
-
-    const addActivityModal = document.getElementById("addActivityModal");
-    const quickLogModal = document.getElementById("quickLogModal");
-    const addActivityBtn = document.getElementById("addActivityBtn");
-    const quickLogBtn = document.getElementById("quickLogBtn"); // This opens the modal
-    const closeButtons = document.querySelectorAll(".close-modal-btn");
-
-    const addActivityTitleInput = document.getElementById("add-activity-title");
-    const addActivityTableBody = document.querySelector("#addActivityTable tbody");
-    const addSelectAllCheckbox = document.getElementById("addSelectAllCheckbox");
-    const addSelectAllRadios = document.querySelectorAll('input[name="add-select-all"]');
-    const addLogBtnSubmit = document.getElementById("addLogBtn");
-
-    const quickActivityInput = document.getElementById("quick-activity-input"); // Fixed: changed from quick-activity-select to quick-activity-input
-    const quickLogTableBody = document.querySelector("#quickLogTable tbody");
-    const quickSelectAllCheckbox = document.getElementById("quickSelectAllCheckbox");
-    const quickSelectAllRadios = document.querySelectorAll('input[name="quick-select-all"]');
-    const copyPreviousBtn = document.getElementById("copyPreviousBtn");
-    const quickLogBtnSubmit = document.getElementById("quickLogBtnSubmit"); // This submits the form
-
-    // Modal helpers
-    const openModal = modal => modal.classList.remove("hidden");
-    const closeModal = modal => modal.classList.add("hidden");
-
-    // Close modals when clicking close button
-    closeButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const modal = this.closest('.modal-overlay');
-            closeModal(modal);
+          tableBody.appendChild(row);
         });
-    });
+      };
 
-    // Close modals when clicking outside
-    document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('modal-overlay')) {
+      const quickActivitySelect = document.getElementById(
+        "quick-activity-select",
+      );
+      document.addEventListener("DOMContentLoaded", () => {
+        // DOM elements
+        const participationChart =
+          document.getElementById("participationChart");
+        const activityCardsContainer = document.getElementById(
+          "activityCardsContainer",
+        );
+        const participationClassTitle = document.getElementById(
+          "participation-class-title",
+        );
+        participationClassTitle.textContent = `Student Participation Level (${localStorage.getItem("selectedClassName") || "No class selected"})`;
+
+        const addActivityModal = document.getElementById("addActivityModal");
+        const quickLogModal = document.getElementById("quickLogModal");
+        const addActivityBtn = document.getElementById("addActivityBtn");
+        const quickLogBtn = document.getElementById("quickLogBtn"); // This opens the modal
+        const closeButtons = document.querySelectorAll(".close-modal-btn");
+
+        const addActivityTitleInput =
+          document.getElementById("add-activity-title");
+        const addActivityTableBody = document.querySelector(
+          "#addActivityTable tbody",
+        );
+        const addSelectAllCheckbox = document.getElementById(
+          "addSelectAllCheckbox",
+        );
+        const addSelectAllRadios = document.querySelectorAll(
+          'input[name="add-select-all"]',
+        );
+        const addLogBtnSubmit = document.getElementById("addLogBtn");
+
+        const quickActivityInput = document.getElementById(
+          "quick-activity-input",
+        ); // Fixed: changed from quick-activity-select to quick-activity-input
+        const quickLogTableBody = document.querySelector(
+          "#quickLogTable tbody",
+        );
+        const quickSelectAllCheckbox = document.getElementById(
+          "quickSelectAllCheckbox",
+        );
+        const quickSelectAllRadios = document.querySelectorAll(
+          'input[name="quick-select-all"]',
+        );
+        const copyPreviousBtn = document.getElementById("copyPreviousBtn");
+        const quickLogBtnSubmit = document.getElementById("quickLogBtnSubmit"); // This submits the form
+
+        // Modal helpers
+        const openModal = (modal) => modal.classList.remove("hidden");
+        const closeModal = (modal) => modal.classList.add("hidden");
+
+        // Close modals when clicking close button
+        closeButtons.forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const modal = this.closest(".modal-overlay");
+            closeModal(modal);
+          });
+        });
+
+        // Close modals when clicking outside
+        document.addEventListener("click", (e) => {
+          if (e.target.classList.contains("modal-overlay")) {
             closeModal(e.target);
-        }
-    });
+          }
+        });
 
-    // Week dropdown functionality
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
+        // Week dropdown functionality
+        const dropdownToggle = document.querySelector(".dropdown-toggle");
+        const dropdownMenu = document.querySelector(".dropdown-menu");
 
-    dropdownToggle.addEventListener('click', () => {
-        dropdownMenu.classList.toggle('hidden');
-    });
+        dropdownToggle.addEventListener("click", () => {
+          dropdownMenu.classList.toggle("hidden");
+        });
 
-    // Note modal functionality
-    const noteModal = document.getElementById("noteModal");
-    const noteText = document.getElementById("noteText");
-    const noteCloseBtn = noteModal.querySelector(".close-modal-btn");
+        // Note modal functionality
+        const noteModal = document.getElementById("noteModal");
+        const noteText = document.getElementById("noteText");
+        const noteCloseBtn = noteModal.querySelector(".close-modal-btn");
 
-    activityCardsContainer.addEventListener('click', (e) => {
-        const target = e.target;
-        if (target.classList.contains('view-note')) {
+        activityCardsContainer.addEventListener("click", (e) => {
+          const target = e.target;
+          if (target.classList.contains("view-note")) {
             const note = target.dataset.note;
-            noteText.textContent = note || "No note available for this student.";
+            noteText.textContent =
+              note || "No note available for this student.";
             openModal(noteModal);
-        }
-    });
+          }
+        });
 
-    noteCloseBtn.addEventListener('click', () => closeModal(noteModal));
+        noteCloseBtn.addEventListener("click", () => closeModal(noteModal));
 
-    // Week dropdown selection
-    dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => {
-        item.addEventListener('click', (e) => {
+        // Week dropdown selection
+        dropdownMenu.querySelectorAll(".dropdown-item").forEach((item) => {
+          item.addEventListener("click", (e) => {
             const idx = parseInt(e.target.dataset.idx);
             dropdownToggle.innerHTML = `${e.target.textContent} <i class="fas fa-chevron-down"></i>`;
-            dropdownMenu.classList.add('hidden');
+            dropdownMenu.classList.add("hidden");
 
             let filteredActivities = [];
 
             if (idx === -1) {
-                filteredActivities = activitiesData;
-                updateWeekInfo({ weekLabel: 'All Weeks', start: null, end: null });
+              filteredActivities = activitiesData;
+              updateWeekInfo({
+                weekLabel: "All Weeks",
+                start: null,
+                end: null,
+              });
             } else {
-                const selectedWeek = weeksData[idx];
-                filteredActivities = activitiesData.filter(a => {
-                    const createdDate = a.created_at.toDate();
-                    return createdDate >= selectedWeek.start && createdDate <= selectedWeek.end;
-                });
-                updateWeekInfo(selectedWeek);
+              const selectedWeek = weeksData[idx];
+              filteredActivities = activitiesData.filter((a) => {
+                const createdDate = a.created_at.toDate();
+                return (
+                  createdDate >= selectedWeek.start &&
+                  createdDate <= selectedWeek.end
+                );
+              });
+              updateWeekInfo(selectedWeek);
             }
 
             const scores = calculateScores(filteredActivities);
             renderParticipationChart(scores);
             renderActivityCards(filteredActivities);
+          });
         });
-    });
 
-    // Close dropdown if clicked outside
-    document.addEventListener('click', (e) => {
-        if (!dropdownToggle.contains(e.target) && !dropdownMenu.contains(e.target)) {
-            dropdownMenu.classList.add('hidden');
-        }
-    });
-
-    // Select All functionality
-const setupSelectAllLogic = (checkbox, radios, tableBody) => {
-    checkbox.addEventListener('change', () => {
-        if (checkbox.checked) {
-            // Find which radio is selected in the "Select All" section
-            const selectedRadio = Array.from(radios).find(radio => radio.checked);
-            const levelToApply = selectedRadio ? selectedRadio.value : 'none';
-            applySelectAll(levelToApply, tableBody);
-        } else {
-            applySelectAll('none', tableBody);
-        }
-    });
-    
-    radios.forEach(r => r.addEventListener('change', () => {
-        if (checkbox.checked) {
-            applySelectAll(r.value, tableBody);
-        }
-    }));
-};
-
-const applySelectAll = (level, tableBody) => {
-    tableBody.querySelectorAll('tr').forEach(row => {
-        const studentName = row.querySelector('td:first-child').textContent;
-        const nameSlug = studentName.replace(/\s/g, '-').replace(/[^\w-]/g, '');
-        row.querySelectorAll(`input[name="student-${nameSlug}"]`).forEach(radio => {
-            radio.checked = radio.value === level;
+        // Close dropdown if clicked outside
+        document.addEventListener("click", (e) => {
+          if (
+            !dropdownToggle.contains(e.target) &&
+            !dropdownMenu.contains(e.target)
+          ) {
+            dropdownMenu.classList.add("hidden");
+          }
         });
-    });
-};
 
-    setupSelectAllLogic(addSelectAllCheckbox, addSelectAllRadios, addActivityTableBody);
-    setupSelectAllLogic(quickSelectAllCheckbox, quickSelectAllRadios, quickLogTableBody);
+        // Select All functionality
+        const setupSelectAllLogic = (checkbox, radios, tableBody) => {
+          checkbox.addEventListener("change", () => {
+            if (checkbox.checked) {
+              // Find which radio is selected in the "Select All" section
+              const selectedRadio = Array.from(radios).find(
+                (radio) => radio.checked,
+              );
+              const levelToApply = selectedRadio ? selectedRadio.value : "none";
+              applySelectAll(levelToApply, tableBody);
+            } else {
+              applySelectAll("none", tableBody);
+            }
+          });
 
-    // Add Activity Modal
-    addActivityBtn.addEventListener('click', async () => {
-        await fetchStudentsFromFirestore();
-        populateStudentTables(addActivityTableBody);
-        addSelectAllCheckbox.checked = false;
-        addActivityTitleInput.value = '';
-        openModal(addActivityModal);
-    });
+          radios.forEach((r) =>
+            r.addEventListener("change", () => {
+              if (checkbox.checked) {
+                applySelectAll(r.value, tableBody);
+              }
+            }),
+          );
+        };
 
-    addLogBtnSubmit.addEventListener('click', async () => {
-        const title = addActivityTitleInput.value.trim();
-        if (!title) {
+        const applySelectAll = (level, tableBody) => {
+          tableBody.querySelectorAll("tr").forEach((row) => {
+            const studentName = row.querySelector("td:first-child").textContent;
+            const nameSlug = studentName
+              .replace(/\s/g, "-")
+              .replace(/[^\w-]/g, "");
+            row
+              .querySelectorAll(`input[name="student-${nameSlug}"]`)
+              .forEach((radio) => {
+                radio.checked = radio.value === level;
+              });
+          });
+        };
+
+        setupSelectAllLogic(
+          addSelectAllCheckbox,
+          addSelectAllRadios,
+          addActivityTableBody,
+        );
+        setupSelectAllLogic(
+          quickSelectAllCheckbox,
+          quickSelectAllRadios,
+          quickLogTableBody,
+        );
+
+        // Add Activity Modal
+        addActivityBtn.addEventListener("click", async () => {
+          await fetchStudentsFromFirestore();
+          populateStudentTables(addActivityTableBody);
+          addSelectAllCheckbox.checked = false;
+          addActivityTitleInput.value = "";
+          openModal(addActivityModal);
+        });
+
+        addLogBtnSubmit.addEventListener("click", async () => {
+          const title = addActivityTitleInput.value.trim();
+          if (!title) {
             alert("Enter activity title");
             return;
-        }
-        const classroomID = localStorage.getItem('selectedClassId');
-        if (!classroomID) {
+          }
+          const classroomID = localStorage.getItem("selectedClassId");
+          if (!classroomID) {
             alert("No classroom selected");
             return;
-        }
+          }
 
-        const participants = {};
-        addActivityTableBody.querySelectorAll('tr').forEach(row => {
+          const participants = {};
+          addActivityTableBody.querySelectorAll("tr").forEach((row) => {
             const id = row.dataset.studentId;
-            const name = row.querySelector('td:first-child').textContent;
-            const checked = row.querySelector(`input[name="student-${name.replace(/\s/g, '-').replace(/[^\w-]/g, '')}"]:checked`);
-            const noteInput = row.querySelector('.note-input');
-            const note = noteInput ? noteInput.value.trim() : '';
+            const name = row.querySelector("td:first-child").textContent;
+            const checked = row.querySelector(
+              `input[name="student-${name.replace(/\s/g, "-").replace(/[^\w-]/g, "")}"]:checked`,
+            );
+            const noteInput = row.querySelector(".note-input");
+            const note = noteInput ? noteInput.value.trim() : "";
 
             participants[id] = {
-                level: checked ? checked.value : 'none',
-                note: note
+              level: checked ? checked.value : "none",
+              note: note,
             };
-        });
+          });
 
-        const newAct = {
+          const newAct = {
             activityNumber: activitiesData.length + 1,
             description: title,
             participants,
-            created_at: new Date() // Add created_at for the new activity
-        };
-        activitiesData.push(newAct);
+            created_at: new Date(), // Add created_at for the new activity
+          };
+          activitiesData.push(newAct);
 
-        for (const id in newAct.participants) {
+          for (const id in newAct.participants) {
             const p = newAct.participants[id];
-            await addDoc(collection(db, 'activity'), {
-                activityName: newAct.description,
-                activityNo: newAct.activityNumber,
-                activityScore: p.level,
-                note: p.note,
-                classroomID,
-                created_at: new Date(),
-                studentID: id,
-                teacherID
+            await addDoc(collection(db, "activity"), {
+              activityName: newAct.description,
+              activityNo: newAct.activityNumber,
+              activityScore: p.level,
+              note: p.note,
+              classroomID,
+              created_at: new Date(),
+              studentID: id,
+              teacherID,
             });
-        }
+          }
 
-        recalculateAllScores();
-        renderAll();
-        closeModal(addActivityModal);
-    });
+          recalculateAllScores();
+          renderAll();
+          closeModal(addActivityModal);
+        });
 
-    // QUICK LOG MODAL - FIXED: Add event listener to open the modal
-    quickLogBtn.addEventListener('click', async () => {
-        await fetchStudentsFromFirestore();
-        populateStudentTables(quickLogTableBody);
-        quickSelectAllCheckbox.checked = false;
-        quickActivityInput.value = ''; // Clear the input field
-        openModal(quickLogModal);
-    });
+        // QUICK LOG MODAL - FIXED: Add event listener to open the modal
+        quickLogBtn.addEventListener("click", async () => {
+          await fetchStudentsFromFirestore();
+          populateStudentTables(quickLogTableBody);
+          quickSelectAllCheckbox.checked = false;
+          quickActivityInput.value = ""; // Clear the input field
+          openModal(quickLogModal);
+        });
 
-    // Quick Log Submit
-    quickLogBtnSubmit.addEventListener('click', async () => {
-        const title = quickActivityInput.value.trim(); // Fixed: use quickActivityInput
-        if (!title) {
+        // Quick Log Submit
+        quickLogBtnSubmit.addEventListener("click", async () => {
+          const title = quickActivityInput.value.trim(); // Fixed: use quickActivityInput
+          if (!title) {
             alert("Enter activity title");
             return;
-        }
-        const classroomID = localStorage.getItem('selectedClassId');
-        if (!classroomID) {
+          }
+          const classroomID = localStorage.getItem("selectedClassId");
+          if (!classroomID) {
             alert("No classroom selected");
             return;
-        }
+          }
 
-        // Create participants object
-        const participants = {};
-        quickLogTableBody.querySelectorAll('tr').forEach(row => {
+          // Create participants object
+          const participants = {};
+          quickLogTableBody.querySelectorAll("tr").forEach((row) => {
             const id = row.dataset.studentId;
-            const name = row.querySelector('td:first-child').textContent;
-            const checked = row.querySelector(`input[name="student-${name.replace(/\s/g, '-').replace(/[^\w-]/g, '')}"]:checked`);
-            participants[id] = checked ? checked.value : 'none';
-        });
+            const name = row.querySelector("td:first-child").textContent;
+            const checked = row.querySelector(
+              `input[name="student-${name.replace(/\s/g, "-").replace(/[^\w-]/g, "")}"]:checked`,
+            );
+            participants[id] = checked ? checked.value : "none";
+          });
 
-        // Add as new activity
-        const newAct = {
+          // Add as new activity
+          const newAct = {
             activityNumber: activitiesData.length + 1,
             description: title,
             participants,
-            created_at: new Date() // Add created_at for the new activity
-        };
-        activitiesData.push(newAct);
+            created_at: new Date(), // Add created_at for the new activity
+          };
+          activitiesData.push(newAct);
 
-        // Save each participant in Firestore
-        for (const id in newAct.participants) {
+          // Save each participant in Firestore
+          for (const id in newAct.participants) {
             const level = newAct.participants[id];
-            await addDoc(collection(db, 'activity'), {
-                activityName: newAct.description,
-                activityNo: newAct.activityNumber,
-                activityScore: level,
-                classroomID,
-                created_at: new Date(),
-                studentID: id,
-                teacherID
+            await addDoc(collection(db, "activity"), {
+              activityName: newAct.description,
+              activityNo: newAct.activityNumber,
+              activityScore: level,
+              classroomID,
+              created_at: new Date(),
+              studentID: id,
+              teacherID,
             });
-        }
+          }
 
-        recalculateAllScores();
-        renderAll();
-        closeModal(quickLogModal);
-    });
-
-    copyPreviousBtn.addEventListener('click', () => {
-    if (activitiesData.length === 0) {
-        alert("No previous activity to copy from.");
-        return;
-    }
-
-    const previousActivity = activitiesData[activitiesData.length - 1];
-    let copiedCount = 0;
-
-    // Apply previous activity's participation levels
-    quickLogTableBody.querySelectorAll('tr').forEach(row => {
-        const studentId = row.dataset.studentId;
-        const name = row.querySelector('td:first-child').textContent;
-        const nameSlug = name.replace(/\s/g, '-').replace(/[^\w-]/g, '');
-        
-        // Clear current selection
-        row.querySelectorAll(`input[name="student-${nameSlug}"]`).forEach(radio => {
-            radio.checked = false;
+          recalculateAllScores();
+          renderAll();
+          closeModal(quickLogModal);
         });
 
-        // Set previous participation level if it exists
-        if (previousActivity.participants[studentId]) {
-            const previousLevel = typeof previousActivity.participants[studentId] === 'object' 
-                ? previousActivity.participants[studentId].level 
-                : previousActivity.participants[studentId];
-            
-            const radioToCheck = row.querySelector(`input[name="student-${nameSlug}"][value="${previousLevel}"]`);
-            if (radioToCheck) {
+        copyPreviousBtn.addEventListener("click", () => {
+          if (activitiesData.length === 0) {
+            alert("No previous activity to copy from.");
+            return;
+          }
+
+          const previousActivity = activitiesData[activitiesData.length - 1];
+          let copiedCount = 0;
+
+          // Apply previous activity's participation levels
+          quickLogTableBody.querySelectorAll("tr").forEach((row) => {
+            const studentId = row.dataset.studentId;
+            const name = row.querySelector("td:first-child").textContent;
+            const nameSlug = name.replace(/\s/g, "-").replace(/[^\w-]/g, "");
+
+            // Clear current selection
+            row
+              .querySelectorAll(`input[name="student-${nameSlug}"]`)
+              .forEach((radio) => {
+                radio.checked = false;
+              });
+
+            // Set previous participation level if it exists
+            if (previousActivity.participants[studentId]) {
+              const previousLevel =
+                typeof previousActivity.participants[studentId] === "object"
+                  ? previousActivity.participants[studentId].level
+                  : previousActivity.participants[studentId];
+
+              const radioToCheck = row.querySelector(
+                `input[name="student-${nameSlug}"][value="${previousLevel}"]`,
+              );
+              if (radioToCheck) {
                 radioToCheck.checked = true;
                 copiedCount++;
+              }
             }
-        }
-    });
-    
-    // Update the "Select All" checkbox state based on the copied data
-    updateSelectAllCheckboxState(quickSelectAllCheckbox, quickLogTableBody);
-    
-    alert(`Copied participation data for ${copiedCount} students from the previous activity!`);
-});
+          });
 
-// Helper function to update Select All checkbox state
-function updateSelectAllCheckboxState(checkbox, tableBody) {
-    const rows = tableBody.querySelectorAll('tr');
-    let allSame = true;
-    let firstLevel = null;
-    
-    rows.forEach(row => {
-        const name = row.querySelector('td:first-child').textContent;
-        const nameSlug = name.replace(/\s/g, '-').replace(/[^\w-]/g, '');
-        const checkedRadio = row.querySelector(`input[name="student-${nameSlug}"]:checked`);
-        
-        if (checkedRadio) {
-            if (firstLevel === null) {
+          // Update the "Select All" checkbox state based on the copied data
+          updateSelectAllCheckboxState(
+            quickSelectAllCheckbox,
+            quickLogTableBody,
+          );
+
+          alert(
+            `Copied participation data for ${copiedCount} students from the previous activity!`,
+          );
+        });
+
+        // Helper function to update Select All checkbox state
+        function updateSelectAllCheckboxState(checkbox, tableBody) {
+          const rows = tableBody.querySelectorAll("tr");
+          let allSame = true;
+          let firstLevel = null;
+
+          rows.forEach((row) => {
+            const name = row.querySelector("td:first-child").textContent;
+            const nameSlug = name.replace(/\s/g, "-").replace(/[^\w-]/g, "");
+            const checkedRadio = row.querySelector(
+              `input[name="student-${nameSlug}"]:checked`,
+            );
+
+            if (checkedRadio) {
+              if (firstLevel === null) {
                 firstLevel = checkedRadio.value;
-            } else if (checkedRadio.value !== firstLevel) {
+              } else if (checkedRadio.value !== firstLevel) {
                 allSame = false;
+              }
+            } else {
+              allSame = false;
             }
-        } else {
-            allSame = false;
-        }
-    });
-    
-    // If all students have the same level, check the Select All checkbox and set the corresponding radio
-    if (allSame && firstLevel !== null) {
-        checkbox.checked = true;
-        const correspondingRadio = document.querySelector(`input[name="quick-select-all"][value="${firstLevel}"]`);
-        if (correspondingRadio) {
-            correspondingRadio.checked = true;
-        }
-    } else {
-        checkbox.checked = false;
-    }
-}
+          });
 
-    renderAll();
-});
-</script>
+          // If all students have the same level, check the Select All checkbox and set the corresponding radio
+          if (allSame && firstLevel !== null) {
+            checkbox.checked = true;
+            const correspondingRadio = document.querySelector(
+              `input[name="quick-select-all"][value="${firstLevel}"]`,
+            );
+            if (correspondingRadio) {
+              correspondingRadio.checked = true;
+            }
+          } else {
+            checkbox.checked = false;
+          }
+        }
 
-</body>
+        renderAll();
+      });
+    </script>
+  </body>
 </html>

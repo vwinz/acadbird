@@ -1,1053 +1,1333 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>AcadBird Admin - Teacher Management</title>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-        <link rel="stylesheet" href="../style/teacher-management.css" />
-    </head>
-    <body>
-        <div class="page-wrapper">
-            <!-- Navbar -->
-            <div class="navbar">
-                <div class="navbar-container">
-                    <div class="logo">
-                        <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-                        <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
-                    </div>
-                <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-                    <div class="nav-icons">
-                        <a href="notification_admin.html" title="Notifications" class="notification-badge-container">
-    <i class="fas fa-bell icon"></i>
-    <span class="notification-bell-badge" id="notification-bell-badge" style="display: none;">0</span>
-</a>
-                        <a href="help_admin.html" title="Help">
-                            <i class="fas fa-question-circle icon"></i>
-                        </a>
-                        <a href="settings_admin.html" title="Settings">
-                            <div class="account-menu">
-                                <i class="fas fa-user-circle icon"></i>
-                            </div>
-                        </a>
-                    </div>
-                </div>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AcadBird Admin - Teacher Management</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../style/teacher-management.css" />
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <!-- Navbar -->
+      <div class="navbar">
+        <div class="navbar-container">
+          <div class="logo">
+            <img
+              src="../../main/img/AcadBird - White no text.png"
+              alt="AcadBird"
+              class="logo-img"
+            />
+            <img
+              src="../../main/img/AcadBird - White Text.png"
+              class="logo-text-img"
+              alt="AcadBird Text"
+            />
+          </div>
+          <img
+            src="../../main/img/sunhill.png"
+            alt="AcadBird"
+            class="middle-logo"
+          />
+          <div class="nav-icons">
+            <a
+              href="notification_admin.html"
+              title="Notifications"
+              class="notification-badge-container"
+            >
+              <i class="fas fa-bell icon"></i>
+              <span
+                class="notification-bell-badge"
+                id="notification-bell-badge"
+                style="display: none"
+                >0</span
+              >
+            </a>
+            <a href="help_admin.html" title="Help">
+              <i class="fas fa-question-circle icon"></i>
+            </a>
+            <a href="settings_admin.html" title="Settings">
+              <div class="account-menu">
+                <i class="fas fa-user-circle icon"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div id="loading-overlay">
+        <div class="loader-3">
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+          <div class="circle"></div>
+        </div>
+      </div>
+
+      <!-- Secondary Header -->
+      <div class="secondary-header">
+        <div class="secondary-header-container">
+          <nav class="nav-menu">
+            <a href="dashboard_admin.html" class="nav-item">Dashboard</a>
+            <a href="classes-management.html" class="nav-item"
+              >Class Management</a
+            >
+            <a href="teacher-management.html" class="nav-item active"
+              >Teacher Management</a
+            >
+            <a href="calendar.html" class="nav-item">Calendar</a>
+            <a href="settings_admin.html" class="nav-item">Settings</a>
+          </nav>
+        </div>
+      </div>
+
+      <div class="separator"></div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <div class="admin-card">
+            <h2>Admin 1</h2>
+            <div>
+              <span>Sunhill Academy</span>
             </div>
+          </div>
 
-            <div id="loading-overlay">
+          <div class="metrics-container">
+            <h3 class="metric-title">Teacher Metrics</h3>
 
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
-            
-            <!-- Secondary Header -->
-            <div class="secondary-header">
-            <div class="secondary-header-container">
-                <nav class="nav-menu">
-                        <a href="dashboard_admin.html" class="nav-item">Dashboard</a>
-                        <a href="classes-management.html" class="nav-item">Class Management</a> 
-                        <a href="teacher-management.html" class="nav-item active">Teacher Management</a>
-                        <a href="calendar.html" class="nav-item">Calendar</a>
-                        <a href="settings_admin.html" class="nav-item">Settings</a>
-                </nav>
+            <div class="metric-card metric-card-green">
+              <p id="metric-active-teachers">5</p>
+              <p>Active Teachers</p>
             </div>
+            <div class="metric-card metric-card-blue">
+              <p id="metric-total-teachers">7</p>
+              <p>Total Teachers</p>
             </div>
-            
-            <div class="separator"></div>
-
-            <!-- Main Content -->
-            <div class="main-content">
-                <!-- Sidebar -->
-                <div class="sidebar">
-                    <div class="admin-card">
-                        <h2>Admin 1</h2>
-                        <div>
-                            <span>Sunhill Academy</span>
-                        </div>
-                    </div>
-
-                    <div class="metrics-container">
-                        <h3 class="metric-title">Teacher Metrics</h3>
-                        
-                        <div class="metric-card metric-card-green">
-                            <p id="metric-active-teachers">5</p>
-                            <p>Active Teachers</p>
-                        </div>
-                        <div class="metric-card metric-card-blue">
-                            <p id="metric-total-teachers">7</p>
-                            <p>Total Teachers</p>
-                        </div>
-                        <div class="metric-card metric-card-orange">
-                            <p id="metric-unassigned-teachers">2</p>
-                            <p>Available for Classes</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Content Area -->
-                <div class="content-area">
-                    <div class="teacher-directory">
-                        <h2>Teacher Directory 🧑‍🏫</h2>
-                        
-                        <div class="controls-container">
-                            <div class="search-container">
-                                <input type="text" id="search-input" class="search-input" placeholder="Search by Teacher Name or Email">
-                                <i class="fas fa-search search-icon"></i>
-                            </div>
-                            
-                            <div class="filters-container">
-                                <select id="filter-status" class="filter-select">
-    <option value="">Filter by Status</option>
-    <option value="Active">Active</option>
-    <option value="Inactive">Inactive</option>
-    <option value="Archived">Archived</option>
-</select>
-                                
-                                <button id="add-teacher-btn" class="add-teacher-btn">
-                                    <i class="fas fa-user-plus"></i> Add Teacher
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="table-container">
-                            <table class="teachers-table">
-                                <thead>
-                                    <tr>
-                                        <th>Teacher Name</th>
-                                        <th>Email</th>
-                                        <th>Classes Taught</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="teachers-table-body">
-                                    <!-- Teachers will be populated by JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div class="pagination-container">
-                            <p class="pagination-info">Showing all <span id="pagination-total">7</span> teachers</p>
-                        </div>
-                    </div>
-                    
-                    <div class="quick-action-card" id="quick-add-teacher">
-                        <h3 class="quick-action-title">Quick Action</h3>
-                        <div class="quick-action-content">
-                            <i class="fas fa-plus-circle"></i>
-                            <p>Add New Teacher</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="metric-card metric-card-orange">
+              <p id="metric-unassigned-teachers">2</p>
+              <p>Available for Classes</p>
             </div>
+          </div>
         </div>
 
-        <!-- Add/Edit Teacher Modal -->
-        <!-- Add/Edit Teacher Modal -->
-<div id="teacher-modal" class="modal">
-    <div class="modal-content large">
+        <!-- Content Area -->
+        <div class="content-area">
+          <div class="teacher-directory">
+            <h2>Teacher Directory 🧑‍🏫</h2>
+
+            <div class="controls-container">
+              <div class="search-container">
+                <input
+                  type="text"
+                  id="search-input"
+                  class="search-input"
+                  placeholder="Search by Teacher Name or Email"
+                />
+                <i class="fas fa-search search-icon"></i>
+              </div>
+
+              <div class="filters-container">
+                <select id="filter-status" class="filter-select">
+                  <option value="">Filter by Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                  <option value="Archived">Archived</option>
+                </select>
+
+                <button id="add-teacher-btn" class="add-teacher-btn">
+                  <i class="fas fa-user-plus"></i> Add Teacher
+                </button>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table class="teachers-table">
+                <thead>
+                  <tr>
+                    <th>Teacher Name</th>
+                    <th>Email</th>
+                    <th>Classes Taught</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="teachers-table-body">
+                  <!-- Teachers will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="pagination-container">
+              <p class="pagination-info">
+                Showing all <span id="pagination-total">7</span> teachers
+              </p>
+            </div>
+          </div>
+
+          <div class="quick-action-card" id="quick-add-teacher">
+            <h3 class="quick-action-title">Quick Action</h3>
+            <div class="quick-action-content">
+              <i class="fas fa-plus-circle"></i>
+              <p>Add New Teacher</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add/Edit Teacher Modal -->
+    <!-- Add/Edit Teacher Modal -->
+    <div id="teacher-modal" class="modal">
+      <div class="modal-content large">
         <button class="close-button" id="close-teacher-modal">&times;</button>
         <h2 class="modal-title" id="teacher-modal-title">Add New Teacher ➕</h2>
-        
+
         <form id="teacher-form">
-            <input type="hidden" id="teacher-id">
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="teacher-first-name">First Name:</label>
-                    <input type="text" id="teacher-first-name" name="firstName" placeholder="Enter first name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="teacher-last-name">Last Name:</label>
-                    <input type="text" id="teacher-last-name" name="lastName" placeholder="Enter last name" required>
-                </div>
-            </div>
-            
+          <input type="hidden" id="teacher-id" />
+
+          <div class="form-row">
             <div class="form-group">
-                <label for="teacher-email">Email Address:</label>
-                <input type="email" id="teacher-email" name="email" placeholder="Enter email address" required>
+              <label for="teacher-first-name">First Name:</label>
+              <input
+                type="text"
+                id="teacher-first-name"
+                name="firstName"
+                placeholder="Enter first name"
+                required
+              />
             </div>
 
-           
-            
             <div class="form-group">
-                <label>Classes Taught (Select all that apply):</label>
-                <div class="multi-select-container" id="classes-taught-multiselect">
-                    <!-- Classes will be populated by JavaScript -->
-                </div>
-                <p class="form-note">Classes assigned here will update the *unassigned* status in Class Management.</p>
+              <label for="teacher-last-name">Last Name:</label>
+              <input
+                type="text"
+                id="teacher-last-name"
+                name="lastName"
+                placeholder="Enter last name"
+                required
+              />
             </div>
+          </div>
 
-            <div class="form-actions">
-                <button type="button" class="btn btn-secondary" id="cancel-teacher">Cancel</button>
-                <button type="submit" class="btn btn-primary" id="teacher-form-submit-btn">Add Teacher</button>
+          <div class="form-group">
+            <label for="teacher-email">Email Address:</label>
+            <input
+              type="email"
+              id="teacher-email"
+              name="email"
+              placeholder="Enter email address"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Classes Taught (Select all that apply):</label>
+            <div class="multi-select-container" id="classes-taught-multiselect">
+              <!-- Classes will be populated by JavaScript -->
             </div>
+            <p class="form-note">
+              Classes assigned here will update the *unassigned* status in Class
+              Management.
+            </p>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" id="cancel-teacher">
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              id="teacher-form-submit-btn"
+            >
+              Add Teacher
+            </button>
+          </div>
         </form>
+      </div>
     </div>
-</div>
-        <!-- Archive Confirmation Modal -->
-        <div id="archive-confirmation-modal" class="modal confirmation-modal">
-            <div class="modal-content">
-                <button class="close-button" id="close-archive-modal">&times;</button>
-                <h2 class="modal-title">Archive Teacher</h2>
-                
-                <p class="confirmation-message">Are you sure you want to archive <span id="archive-teacher-name" class="font-bold"></span>?</p>
-                <p class="confirmation-warning">Archived teachers will no longer appear in active lists but can be restored later.</p>
-                
-                <div class="confirmation-actions">
-                    <button type="button" class="btn btn-secondary" id="cancel-archive">Cancel</button>
-                    <button type="button" class="btn btn-warning" id="confirm-archive-btn">Archive Teacher</button>
-                </div>
-            </div>
+    <!-- Archive Confirmation Modal -->
+    <div id="archive-confirmation-modal" class="modal confirmation-modal">
+      <div class="modal-content">
+        <button class="close-button" id="close-archive-modal">&times;</button>
+        <h2 class="modal-title">Archive Teacher</h2>
+
+        <p class="confirmation-message">
+          Are you sure you want to archive
+          <span id="archive-teacher-name" class="font-bold"></span>?
+        </p>
+        <p class="confirmation-warning">
+          Archived teachers will no longer appear in active lists but can be
+          restored later.
+        </p>
+
+        <div class="confirmation-actions">
+          <button type="button" class="btn btn-secondary" id="cancel-archive">
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-warning"
+            id="confirm-archive-btn"
+          >
+            Archive Teacher
+          </button>
         </div>
-        
-        <!-- Delete Confirmation Modal -->
-        <div id="delete-confirmation-modal" class="modal confirmation-modal">
-            <div class="modal-content">
-                <button class="close-button" id="close-delete-modal">&times;</button>
-                <h2 class="modal-title">Confirm Deletion</h2>
-                
-                <p class="confirmation-message">Are you sure you want to delete <span id="delete-teacher-name" class="font-bold"></span>?</p>
-                <p class="confirmation-warning">This action cannot be undone.</p>
-                
-                <div class="confirmation-actions">
-                    <button type="button" class="btn btn-secondary" id="cancel-delete">Cancel</button>
-                    <button type="button" class="btn btn-delete" id="confirm-delete-btn">Delete Teacher</button>
-                </div>
-            </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-confirmation-modal" class="modal confirmation-modal">
+      <div class="modal-content">
+        <button class="close-button" id="close-delete-modal">&times;</button>
+        <h2 class="modal-title">Confirm Deletion</h2>
+
+        <p class="confirmation-message">
+          Are you sure you want to delete
+          <span id="delete-teacher-name" class="font-bold"></span>?
+        </p>
+        <p class="confirmation-warning">This action cannot be undone.</p>
+
+        <div class="confirmation-actions">
+          <button type="button" class="btn btn-secondary" id="cancel-delete">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-delete" id="confirm-delete-btn">
+            Delete Teacher
+          </button>
         </div>
+      </div>
+    </div>
 
-        <script type="module">
-import { 
-    getFirestore, collection, getDocs, query, where, doc, getDoc, addDoc, setDoc, updateDoc, deleteDoc, serverTimestamp 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { 
-    getAuth, createUserWithEmailAndPassword 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    <script type="module">
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        where,
+        doc,
+        getDoc,
+        addDoc,
+        setDoc,
+        updateDoc,
+        deleteDoc,
+        serverTimestamp,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-    authDomain: "acadbird-379e3.firebaseapp.com",
-    projectId: "acadbird-379e3",
-    storageBucket: "acadbird-379e3.firebasestorage.app",
-    messagingSenderId: "575491576951",
-    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-    measurementId: "G-N6Z672SXWJ"
-  };
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
 
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+      const loadingOverlay = document.getElementById("loading-overlay");
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-const auth = getAuth(app);
-const loadingOverlay = document.getElementById("loading-overlay");
+      function showLoading() {
+        loadingOverlay.style.display = "flex";
+      }
 
-   function showLoading() {
-  loadingOverlay.style.display = "flex";
-}
+      // Hide overlay
+      function hideLoading() {
+        loadingOverlay.style.display = "none";
+      }
 
-// Hide overlay
-function hideLoading() {
-  loadingOverlay.style.display = "none";
-}
+      // =========================================================================================
+      // DATA STRUCTURES
+      // =========================================================================================
 
+      // Sample Class Data
+      const allClasses = [
+        { id: 1, name: "Kinder Lily" },
+        { id: 2, name: "Grade 1 Daisy" },
+        { id: 3, name: "Kinder Rose" },
+        { id: 4, name: "Grade 2 Maple" },
+        { id: 5, name: "Grade 3 Tulip" },
+        { id: 6, name: "Grade 4 Cedar" },
+      ];
 
-    // =========================================================================================
-    // DATA STRUCTURES
-    // =========================================================================================
+      // Sample Teacher Data (for modal operations - will be replaced by Firestore data)
+      let teachersData = [
+        {
+          id: 1,
+          name: "Ms. Rose",
+          email: "rose@acadbird.edu",
+          classes: ["Kinder Lily", "Grade 2 Maple"],
+          status: "Active",
+        },
+        {
+          id: 2,
+          name: "Mr. David",
+          email: "david@acadbird.edu",
+          classes: ["Grade 1 Daisy"],
+          status: "Active",
+        },
+        {
+          id: 3,
+          name: "Mrs. Smith",
+          email: "smith@acadbird.edu",
+          classes: [],
+          status: "Inactive",
+        },
+      ];
 
-    // Sample Class Data
-    const allClasses = [
-        { id: 1, name: 'Kinder Lily' },
-        { id: 2, name: 'Grade 1 Daisy' },
-        { id: 3, name: 'Kinder Rose' },
-        { id: 4, name: 'Grade 2 Maple' },
-        { id: 5, name: 'Grade 3 Tulip' },
-        { id: 6, name: 'Grade 4 Cedar' },
-    ];
+      // =========================================================================================
+      // CORE FUNCTIONS
+      // =========================================================================================
 
-    // Sample Teacher Data (for modal operations - will be replaced by Firestore data)
-    let teachersData = [
-        { id: 1, name: 'Ms. Rose', email: 'rose@acadbird.edu', classes: ['Kinder Lily', 'Grade 2 Maple'], status: 'Active' },
-        { id: 2, name: 'Mr. David', email: 'david@acadbird.edu', classes: ['Grade 1 Daisy'], status: 'Active' },
-        { id: 3, name: 'Mrs. Smith', email: 'smith@acadbird.edu', classes: [], status: 'Inactive' },
-    ];
+      // DOM Elements
+      const tableBody = document.getElementById("teachers-table-body");
+      const searchInput = document.getElementById("search-input");
+      const filterStatus = document.getElementById("filter-status");
+      const teacherModal = document.getElementById("teacher-modal");
+      const teacherForm = document.getElementById("teacher-form");
+      const classesTaughtMultiselect = document.getElementById(
+        "classes-taught-multiselect",
+      );
+      const archiveConfirmationModal = document.getElementById(
+        "archive-confirmation-modal",
+      );
+      const archiveTeacherNameSpan = document.getElementById(
+        "archive-teacher-name",
+      );
+      const confirmArchiveBtn = document.getElementById("confirm-archive-btn");
+      const deleteConfirmationModal = document.getElementById(
+        "delete-confirmation-modal",
+      );
+      const deleteTeacherNameSpan = document.getElementById(
+        "delete-teacher-name",
+      );
+      const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
 
-    // =========================================================================================
-    // CORE FUNCTIONS
-    // =========================================================================================
+      // State variables
+      let teacherToArchiveId = null;
+      let teacherToDeleteId = null;
+      let currentTeachersData = [];
 
-    // DOM Elements
-    const tableBody = document.getElementById('teachers-table-body');
-    const searchInput = document.getElementById('search-input');
-    const filterStatus = document.getElementById('filter-status');
-    const teacherModal = document.getElementById('teacher-modal');
-    const teacherForm = document.getElementById('teacher-form');
-    const classesTaughtMultiselect = document.getElementById('classes-taught-multiselect');
-    const archiveConfirmationModal = document.getElementById('archive-confirmation-modal');
-    const archiveTeacherNameSpan = document.getElementById('archive-teacher-name');
-    const confirmArchiveBtn = document.getElementById('confirm-archive-btn');
-    const deleteConfirmationModal = document.getElementById('delete-confirmation-modal');
-    const deleteTeacherNameSpan = document.getElementById('delete-teacher-name');
-    const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+      // --- Modal Control Functions ---
+      function openModal(modalElement) {
+        modalElement.style.display = "flex";
+      }
 
-    // State variables
-    let teacherToArchiveId = null;
-    let teacherToDeleteId = null;
-    let currentTeachersData = [];
+      function closeModal(modalElement) {
+        modalElement.style.display = "none";
+      }
 
-    // --- Modal Control Functions ---
-    function openModal(modalElement) {
-        modalElement.style.display = 'flex';
-    }
-
-    function closeModal(modalElement) {
-        modalElement.style.display = 'none';
-    }
-
-    function closeTeacherModal() {
+      function closeTeacherModal() {
         closeModal(teacherModal);
         teacherForm.reset();
-    }
+      }
 
-    function closeArchiveConfirmationModal() {
+      function closeArchiveConfirmationModal() {
         closeModal(archiveConfirmationModal);
         teacherToArchiveId = null;
-    }
+      }
 
-    function closeDeleteConfirmationModal() {
+      function closeDeleteConfirmationModal() {
         closeModal(deleteConfirmationModal);
         teacherToDeleteId = null;
-    }
+      }
 
-  // Update the renderTeacherTable function to show ALL teachers initially
-async function renderTeacherTable() {
-    showLoading();
-    tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Loading teachers...</td></tr>';
-    
-    try {
-        // Fetch teachers from Firestore
-        const teachersQuery = query(collection(db, "users"), where("role", "==", "teacher"));
-        const teachersSnap = await getDocs(teachersQuery);
-        
-        console.log(`📊 Found ${teachersSnap.size} teachers in database`);
-        
-        // Fetch classrooms to determine which teachers have classes
-        const classroomsSnap = await getDocs(collection(db, "classrooms"));
-        
-        // Create a map of teacherId -> classroom names
-        const teacherClassroomsMap = new Map();
-        classroomsSnap.forEach(classroomDoc => {
+      // Update the renderTeacherTable function to show ALL teachers initially
+      async function renderTeacherTable() {
+        showLoading();
+        tableBody.innerHTML =
+          '<tr><td colspan="5" class="text-center py-4">Loading teachers...</td></tr>';
+
+        try {
+          // Fetch teachers from Firestore
+          const teachersQuery = query(
+            collection(db, "users"),
+            where("role", "==", "teacher"),
+          );
+          const teachersSnap = await getDocs(teachersQuery);
+
+          console.log(`📊 Found ${teachersSnap.size} teachers in database`);
+
+          // Fetch classrooms to determine which teachers have classes
+          const classroomsSnap = await getDocs(collection(db, "classrooms"));
+
+          // Create a map of teacherId -> classroom names
+          const teacherClassroomsMap = new Map();
+          classroomsSnap.forEach((classroomDoc) => {
             const classroom = classroomDoc.data();
-            if (classroom.teacherId && classroom.teacherId !== "unassigned" && classroom.teacherId !== "") {
-                if (!teacherClassroomsMap.has(classroom.teacherId)) {
-                    teacherClassroomsMap.set(classroom.teacherId, []);
-                }
-                teacherClassroomsMap.get(classroom.teacherId).push(classroom.classroomName || "Unnamed Class");
+            if (
+              classroom.teacherId &&
+              classroom.teacherId !== "unassigned" &&
+              classroom.teacherId !== ""
+            ) {
+              if (!teacherClassroomsMap.has(classroom.teacherId)) {
+                teacherClassroomsMap.set(classroom.teacherId, []);
+              }
+              teacherClassroomsMap
+                .get(classroom.teacherId)
+                .push(classroom.classroomName || "Unnamed Class");
             }
-        });
+          });
 
-        tableBody.innerHTML = '';
-        currentTeachersData = [];
-        
-        if (teachersSnap.empty) {
-            console.log('❌ No teachers found in database');
-            tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No teachers found</td></tr>';
-        } else {
-            teachersSnap.forEach(docSnap => {
-                const teacher = docSnap.data();
-                const teacherId = docSnap.id;
-                
-                console.log(`👨‍🏫 Processing teacher:`, { id: teacherId, data: teacher });
-                
-                // Get teacher's name using the new structure
-                const teacherName = teacher.fullName || 
-                                  (teacher.firstName && teacher.lastName ? `${teacher.firstName} ${teacher.lastName}` : 
-                                  teacher.name || "Unknown Teacher");
-                
-                // Get teacher's email
-                const teacherEmail = teacher.email || "No email";
-                
-                // Get classes taught (from teacher's data or from classroom assignments)
-                const classesFromProfile = teacher.classesTaught || [];
-                const classesFromAssignments = teacherClassroomsMap.get(teacherId) || [];
-                const classesTaught = [...new Set([...classesFromProfile, ...classesFromAssignments])];
-                const classesDisplay = classesTaught.length > 0 ? classesTaught.join(', ') : 'None';
-                
-                // Determine status - prioritize the status from Firestore
-                let status = teacher.status;
-                if (!status) {
-                    status = classesTaught.length > 0 ? 'Active' : 'Available';
-                }
-                
-                const statusClass = status === 'Active' ? 'status-active' : 
-                                   status === 'Inactive' ? 'status-inactive' : 
-                                   status === 'Archived' ? 'status-archived' : 'status-available';
+          tableBody.innerHTML = "";
+          currentTeachersData = [];
 
-                // Store teacher data for filtering
-                currentTeachersData.push({
-                    id: teacherId,
-                    name: teacherName,
-                    firstName: teacher.firstName,
-                    lastName: teacher.lastName,
-                    email: teacherEmail,
-                    classes: classesTaught,
-                    status: status
-                });
+          if (teachersSnap.empty) {
+            console.log("❌ No teachers found in database");
+            tableBody.innerHTML =
+              '<tr><td colspan="5" class="text-center py-4">No teachers found</td></tr>';
+          } else {
+            teachersSnap.forEach((docSnap) => {
+              const teacher = docSnap.data();
+              const teacherId = docSnap.id;
+
+              console.log(`👨‍🏫 Processing teacher:`, {
+                id: teacherId,
+                data: teacher,
+              });
+
+              // Get teacher's name using the new structure
+              const teacherName =
+                teacher.fullName ||
+                (teacher.firstName && teacher.lastName
+                  ? `${teacher.firstName} ${teacher.lastName}`
+                  : teacher.name || "Unknown Teacher");
+
+              // Get teacher's email
+              const teacherEmail = teacher.email || "No email";
+
+              // Get classes taught (from teacher's data or from classroom assignments)
+              const classesFromProfile = teacher.classesTaught || [];
+              const classesFromAssignments =
+                teacherClassroomsMap.get(teacherId) || [];
+              const classesTaught = [
+                ...new Set([...classesFromProfile, ...classesFromAssignments]),
+              ];
+              const classesDisplay =
+                classesTaught.length > 0 ? classesTaught.join(", ") : "None";
+
+              // Determine status - prioritize the status from Firestore
+              let status = teacher.status;
+              if (!status) {
+                status = classesTaught.length > 0 ? "Active" : "Available";
+              }
+
+              const statusClass =
+                status === "Active"
+                  ? "status-active"
+                  : status === "Inactive"
+                    ? "status-inactive"
+                    : status === "Archived"
+                      ? "status-archived"
+                      : "status-available";
+
+              // Store teacher data for filtering
+              currentTeachersData.push({
+                id: teacherId,
+                name: teacherName,
+                firstName: teacher.firstName,
+                lastName: teacher.lastName,
+                email: teacherEmail,
+                classes: classesTaught,
+                status: status,
+              });
             });
 
             // Apply initial filtering based on current filter status
             await applyFiltersAndSearch();
+          }
+
+          // Update metrics
+          await updateMetrics();
+          hideLoading();
+        } catch (err) {
+          console.error("❌ Error loading teachers:", err);
+          tableBody.innerHTML =
+            '<tr><td colspan="5" class="text-center py-4 text-red-600">Error loading teachers: ' +
+            err.message +
+            "</td></tr>";
+          hideLoading();
         }
-        
-        // Update metrics
-        await updateMetrics();
-        hideLoading();
-        
-    } catch (err) {
-        console.error("❌ Error loading teachers:", err);
-        tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-red-600">Error loading teachers: ' + err.message + '</td></tr>';
-        hideLoading();
-    }
-}
+      }
 
-// Update the applyFiltersAndSearch function to handle all filtering
-async function applyFiltersAndSearch() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const filterValue = filterStatus.value;
-    
-    console.log(`🔍 Applying filters - Search: "${searchTerm}", Filter: "${filterValue}"`);
-    
-    try {
-        let filteredData = [...currentTeachersData];
+      // Update the applyFiltersAndSearch function to handle all filtering
+      async function applyFiltersAndSearch() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filterValue = filterStatus.value;
 
-        // Apply search filter
-        if (searchTerm) {
-            filteredData = filteredData.filter(teacher => 
-                teacher.name.toLowerCase().includes(searchTerm) || 
-                teacher.email.toLowerCase().includes(searchTerm)
+        console.log(
+          `🔍 Applying filters - Search: "${searchTerm}", Filter: "${filterValue}"`,
+        );
+
+        try {
+          let filteredData = [...currentTeachersData];
+
+          // Apply search filter
+          if (searchTerm) {
+            filteredData = filteredData.filter(
+              (teacher) =>
+                teacher.name.toLowerCase().includes(searchTerm) ||
+                teacher.email.toLowerCase().includes(searchTerm),
             );
-        }
-        
-        // Apply status filter - if no filter is selected, show all NON-ARCHIVED teachers
-        if (filterValue) {
-            filteredData = filteredData.filter(teacher => teacher.status === filterValue);
-        } else {
+          }
+
+          // Apply status filter - if no filter is selected, show all NON-ARCHIVED teachers
+          if (filterValue) {
+            filteredData = filteredData.filter(
+              (teacher) => teacher.status === filterValue,
+            );
+          } else {
             // Default: show all teachers except archived ones
-            filteredData = filteredData.filter(teacher => teacher.status !== "Archived");
+            filteredData = filteredData.filter(
+              (teacher) => teacher.status !== "Archived",
+            );
+          }
+
+          console.log(
+            `📊 Filtered to ${filteredData.length} teachers out of ${currentTeachersData.length} total`,
+          );
+          renderFilteredTable(filteredData);
+        } catch (err) {
+          console.error("Error applying filters:", err);
         }
-        
-        console.log(`📊 Filtered to ${filteredData.length} teachers out of ${currentTeachersData.length} total`);
-        renderFilteredTable(filteredData);
-        
-    } catch (err) {
-        console.error("Error applying filters:", err);
-    }
-}
+      }
 
-// Update the renderFilteredTable function to handle the new button states
+      // Update the renderFilteredTable function to handle the new button states
 
-// Update the metrics function to properly count archived teachers
-async function updateMetrics() {
-    try {
-        // 🔹 Total Teachers: Count of users with role == "teacher" (including archived)
-        const teachersQuery = query(collection(db, "users"), where("role", "==", "teacher"));
-        const teachersSnap = await getDocs(teachersQuery);
-        
-        let totalTeachers = 0;
-        let activeTeachers = 0;
-        let archivedTeachers = 0;
-        
-        teachersSnap.forEach(doc => {
+      // Update the metrics function to properly count archived teachers
+      async function updateMetrics() {
+        try {
+          // 🔹 Total Teachers: Count of users with role == "teacher" (including archived)
+          const teachersQuery = query(
+            collection(db, "users"),
+            where("role", "==", "teacher"),
+          );
+          const teachersSnap = await getDocs(teachersQuery);
+
+          let totalTeachers = 0;
+          let activeTeachers = 0;
+          let archivedTeachers = 0;
+
+          teachersSnap.forEach((doc) => {
             const teacher = doc.data();
             totalTeachers++;
             if (teacher.status === "Archived") {
-                archivedTeachers++;
+              archivedTeachers++;
             }
-        });
-        
-        // 🔹 Active Teachers: Teachers who have at least one classroom assigned and are not archived
-        const classroomsSnap = await getDocs(collection(db, "classrooms"));
-        
-        // Get all teacher IDs that have classrooms assigned (excluding null/unassigned)
-        const teachersWithClassrooms = new Set();
-        classroomsSnap.forEach(classroomDoc => {
+          });
+
+          // 🔹 Active Teachers: Teachers who have at least one classroom assigned and are not archived
+          const classroomsSnap = await getDocs(collection(db, "classrooms"));
+
+          // Get all teacher IDs that have classrooms assigned (excluding null/unassigned)
+          const teachersWithClassrooms = new Set();
+          classroomsSnap.forEach((classroomDoc) => {
             const classroom = classroomDoc.data();
             if (classroom.teacherId && classroom.teacherId !== "unassigned") {
-                teachersWithClassrooms.add(classroom.teacherId);
+              teachersWithClassrooms.add(classroom.teacherId);
             }
-        });
-        
-        // Count only non-archived teachers with classrooms
-        const teacherPromises = Array.from(teachersWithClassrooms).map(async (teacherId) => {
-            try {
+          });
+
+          // Count only non-archived teachers with classrooms
+          const teacherPromises = Array.from(teachersWithClassrooms).map(
+            async (teacherId) => {
+              try {
                 const teacherDoc = await getDoc(doc(db, "users", teacherId));
                 if (teacherDoc.exists()) {
-                    const teacher = teacherDoc.data();
-                    return teacher.status !== "Archived";
+                  const teacher = teacherDoc.data();
+                  return teacher.status !== "Archived";
                 }
-            } catch (err) {
+              } catch (err) {
                 console.error(`Error fetching teacher ${teacherId}:`, err);
-            }
-            return false;
-        });
-        
-        const activeStatuses = await Promise.all(teacherPromises);
-        activeTeachers = activeStatuses.filter(status => status).length;
-        
-        // 🔹 Available for Classes: Non-archived teachers without classrooms assigned
-        const nonArchivedTeachers = totalTeachers - archivedTeachers;
-        const availableForClasses = nonArchivedTeachers - activeTeachers;
+              }
+              return false;
+            },
+          );
 
-        console.log(`📊 Metrics - Total: ${totalTeachers}, Active: ${activeTeachers}, Archived: ${archivedTeachers}, Available: ${availableForClasses}`);
+          const activeStatuses = await Promise.all(teacherPromises);
+          activeTeachers = activeStatuses.filter((status) => status).length;
 
-        // Update the UI
-        document.getElementById('metric-active-teachers').textContent = activeTeachers;
-        document.getElementById('metric-total-teachers').textContent = totalTeachers;
-        document.getElementById('metric-unassigned-teachers').textContent = availableForClasses;
+          // 🔹 Available for Classes: Non-archived teachers without classrooms assigned
+          const nonArchivedTeachers = totalTeachers - archivedTeachers;
+          const availableForClasses = nonArchivedTeachers - activeTeachers;
 
-    } catch (err) {
-        console.error("Error fetching metrics:", err);
-        // Fallback to showing 0 if there's an error
-        document.getElementById('metric-active-teachers').textContent = '0';
-        document.getElementById('metric-total-teachers').textContent = '0';
-        document.getElementById('metric-unassigned-teachers').textContent = '0';
-    }
-}
+          console.log(
+            `📊 Metrics - Total: ${totalTeachers}, Active: ${activeTeachers}, Archived: ${archivedTeachers}, Available: ${availableForClasses}`,
+          );
 
-// Add CSS for the archived status if not already present
-// Add this to your CSS file or in a style tag
-
-
-async function populateClassesMultiselect(container, assignedClasses = [], teacherId = '') {
-    console.log('🔍 populateClassesMultiselect called with:', {
-        container: container.id,
-        assignedClasses: assignedClasses,
-        teacherId: teacherId
-    });
-    showLoading();
-    container.innerHTML = '<div class="loading-text">Loading classes...</div>';
-
-    try {
-        const classroomsSnap = await getDocs(collection(db, "classrooms"));
-        console.log('📚 Total classrooms found:', classroomsSnap.size);
-        
-        container.innerHTML = '';
-
-        if (classroomsSnap.empty) {
-            console.log('❌ No classrooms available in database');
-            container.innerHTML = '<div class="no-classes-text">No classrooms available</div>';
-            hideLoading();  
-            return;
+          // Update the UI
+          document.getElementById("metric-active-teachers").textContent =
+            activeTeachers;
+          document.getElementById("metric-total-teachers").textContent =
+            totalTeachers;
+          document.getElementById("metric-unassigned-teachers").textContent =
+            availableForClasses;
+        } catch (err) {
+          console.error("Error fetching metrics:", err);
+          // Fallback to showing 0 if there's an error
+          document.getElementById("metric-active-teachers").textContent = "0";
+          document.getElementById("metric-total-teachers").textContent = "0";
+          document.getElementById("metric-unassigned-teachers").textContent =
+            "0";
         }
+      }
 
-        let availableCount = 0;
-        let unassignedCount = 0;
-        let assignedCount = 0;
-        let assignedToThisTeacherCount = 0;
+      // Add CSS for the archived status if not already present
+      // Add this to your CSS file or in a style tag
 
-        // Get the current teacher's classrooms to exclude them
-        const thisTeachersClassrooms = new Set(assignedClasses);
+      async function populateClassesMultiselect(
+        container,
+        assignedClasses = [],
+        teacherId = "",
+      ) {
+        console.log("🔍 populateClassesMultiselect called with:", {
+          container: container.id,
+          assignedClasses: assignedClasses,
+          teacherId: teacherId,
+        });
+        showLoading();
+        container.innerHTML =
+          '<div class="loading-text">Loading classes...</div>';
 
-        classroomsSnap.forEach(classDoc => {
+        try {
+          const classroomsSnap = await getDocs(collection(db, "classrooms"));
+          console.log("📚 Total classrooms found:", classroomsSnap.size);
+
+          container.innerHTML = "";
+
+          if (classroomsSnap.empty) {
+            console.log("❌ No classrooms available in database");
+            container.innerHTML =
+              '<div class="no-classes-text">No classrooms available</div>';
+            hideLoading();
+            return;
+          }
+
+          let availableCount = 0;
+          let unassignedCount = 0;
+          let assignedCount = 0;
+          let assignedToThisTeacherCount = 0;
+
+          // Get the current teacher's classrooms to exclude them
+          const thisTeachersClassrooms = new Set(assignedClasses);
+
+          classroomsSnap.forEach((classDoc) => {
             const classData = classDoc.data();
             const classId = classDoc.id;
             const className = classData.classroomName || "Unnamed Class";
             const teacherIdField = classData.teacherId; // ← FIXED: Use teacherId (lowercase d)
 
-            console.log(`🏫 Classroom: "${className}", teacherId:`, teacherIdField);
+            console.log(
+              `🏫 Classroom: "${className}", teacherId:`,
+              teacherIdField,
+            );
 
             // Check if this classroom is assigned to the current teacher
-            const isAssignedToThisTeacher = thisTeachersClassrooms.has(className);
-            
-            // ONLY show classrooms that are unassigned AND not already assigned to this teacher
-            const isUnassigned = !teacherIdField || teacherIdField === "" || teacherIdField === "unassigned";
-            const shouldShow = isUnassigned && !isAssignedToThisTeacher;
-            
-            if (shouldShow) {
-                unassignedCount++;
-                
-                const isChecked = false; // Always false since we're only showing NEW classrooms to assign
-                
-                console.log(`✅ Available classroom to assign: "${className}", Checked: ${isChecked}`);
+            const isAssignedToThisTeacher =
+              thisTeachersClassrooms.has(className);
 
-                const option = document.createElement('div');
-                option.classList.add('select-option');
-                option.innerHTML = `
-                    <input type="checkbox" id="class-${classId}" name="classes" value="${className}" ${isChecked ? 'checked' : ''}>
+            // ONLY show classrooms that are unassigned AND not already assigned to this teacher
+            const isUnassigned =
+              !teacherIdField ||
+              teacherIdField === "" ||
+              teacherIdField === "unassigned";
+            const shouldShow = isUnassigned && !isAssignedToThisTeacher;
+
+            if (shouldShow) {
+              unassignedCount++;
+
+              const isChecked = false; // Always false since we're only showing NEW classrooms to assign
+
+              console.log(
+                `✅ Available classroom to assign: "${className}", Checked: ${isChecked}`,
+              );
+
+              const option = document.createElement("div");
+              option.classList.add("select-option");
+              option.innerHTML = `
+                    <input type="checkbox" id="class-${classId}" name="classes" value="${className}" ${isChecked ? "checked" : ""}>
                     <label for="class-${classId}">${className}</label>
                 `;
-                container.appendChild(option);
-                availableCount++;
+              container.appendChild(option);
+              availableCount++;
             } else if (isAssignedToThisTeacher) {
-                assignedToThisTeacherCount++;
-                console.log(`📌 Classroom "${className}" is already assigned to this teacher, excluding from list`);
+              assignedToThisTeacherCount++;
+              console.log(
+                `📌 Classroom "${className}" is already assigned to this teacher, excluding from list`,
+              );
             } else {
-                assignedCount++;
-                console.log(`❌ Classroom "${className}" is assigned to another teacher: ${teacherIdField}, skipping`);
+              assignedCount++;
+              console.log(
+                `❌ Classroom "${className}" is assigned to another teacher: ${teacherIdField}, skipping`,
+              );
             }
-        });
+          });
 
-        console.log('📊 Classroom Summary:', {
+          console.log("📊 Classroom Summary:", {
             total: classroomsSnap.size,
             unassigned: unassignedCount,
             assignedToThisTeacher: assignedToThisTeacherCount,
             assignedToOthers: assignedCount,
-            availableInList: availableCount
-        });
+            availableInList: availableCount,
+          });
 
-        if (availableCount === 0) {
-            console.log('⚠️ No available classrooms to assign');
-            container.innerHTML = '<div class="no-classes-text">No available classrooms to assign</div>';
+          if (availableCount === 0) {
+            console.log("⚠️ No available classrooms to assign");
+            container.innerHTML =
+              '<div class="no-classes-text">No available classrooms to assign</div>';
+          } else {
+            console.log(
+              `✅ Loaded ${availableCount} available classrooms into multiselect`,
+            );
+          }
+          hideLoading();
+        } catch (err) {
+          console.error("❌ Error loading classes:", err);
+          container.innerHTML =
+            '<div class="error-text">Error loading classes</div>';
+          hideLoading();
+        }
+      }
+      // When assigning classes to teachers, update the classroom documents
+      // When assigning classes to teachers, update the classroom documents
+      async function updateClassroomTeacher(classroomId, teacherId) {
+        try {
+          await updateDoc(doc(db, "classrooms", classroomId), {
+            teacherId: teacherId, // ← FIXED: Use teacherId (lowercase d)
+          });
+        } catch (err) {
+          console.error("Error updating classroom:", err);
+          throw err;
+        }
+      }
+      // Update the renderTeacherTable function to handle the new name structure
+
+      // --- Filter and Search Functions ---
+
+      // --- Modal Functions ---
+      // --- Modal Functions ---
+      function openTeacherModal(teacherData = null) {
+        console.log(
+          "🎯 openTeacherModal called with teacherData:",
+          teacherData,
+        );
+
+        const teacherIdInput = document.getElementById("teacher-id");
+        const teacherFirstNameInput =
+          document.getElementById("teacher-first-name");
+        const teacherLastNameInput =
+          document.getElementById("teacher-last-name");
+        const teacherEmailInput = document.getElementById("teacher-email");
+        const teacherModalTitle = document.getElementById(
+          "teacher-modal-title",
+        );
+        const teacherFormSubmitBtn = document.getElementById(
+          "teacher-form-submit-btn",
+        );
+
+        teacherForm.reset();
+        if (teacherData) {
+          // Edit Mode
+          console.log("✏️ EDIT MODE - Teacher data:", teacherData);
+          teacherModalTitle.textContent = `Edit Teacher: ${teacherData.name} 📝`;
+          teacherFormSubmitBtn.textContent = "Save Changes";
+          teacherIdInput.value = teacherData.id;
+
+          // Split full name into first and last name
+          const nameParts = teacherData.name.split(" ");
+          teacherFirstNameInput.value = nameParts[0] || "";
+          teacherLastNameInput.value = nameParts.slice(1).join(" ") || "";
+
+          teacherEmailInput.value = teacherData.email;
+
+          console.log(
+            "📋 Calling populateClassesMultiselect with assignedClasses:",
+            teacherData.classes,
+          );
+          // Only show unassigned classrooms (teacherID parameter not needed anymore)
+          populateClassesMultiselect(
+            classesTaughtMultiselect,
+            teacherData.classes,
+          );
         } else {
-            console.log(`✅ Loaded ${availableCount} available classrooms into multiselect`);
+          // Add Mode - show only unassigned classrooms
+          console.log("➕ ADD MODE - Creating new teacher");
+          teacherModalTitle.textContent = "Add New Teacher ➕";
+          teacherFormSubmitBtn.textContent = "Add Teacher";
+          teacherIdInput.value = "";
+          teacherFirstNameInput.value = "";
+          teacherLastNameInput.value = "";
+          teacherEmailInput.value = "";
+          console.log(
+            "📋 Calling populateClassesMultiselect with empty assignedClasses",
+          );
+          populateClassesMultiselect(classesTaughtMultiselect, []);
         }
-        hideLoading();
-    } catch (err) {
-        console.error("❌ Error loading classes:", err);
-        container.innerHTML = '<div class="error-text">Error loading classes</div>';
-        hideLoading();
-    }
-}
-// When assigning classes to teachers, update the classroom documents
-// When assigning classes to teachers, update the classroom documents
-async function updateClassroomTeacher(classroomId, teacherId) {
-    try {
-        await updateDoc(doc(db, "classrooms", classroomId), {
-            teacherId: teacherId // ← FIXED: Use teacherId (lowercase d)
-        });
-    } catch (err) {
-        console.error("Error updating classroom:", err);
-        throw err;
-    }
-}
-// Update the renderTeacherTable function to handle the new name structure
+        openModal(teacherModal);
+      }
+      async function handleTeacherFormSubmission(e) {
+        e.preventDefault();
+        console.log("📝 Teacher form submitted");
 
+        const teacherIdInput = document.getElementById("teacher-id");
+        const teacherFirstNameInput =
+          document.getElementById("teacher-first-name");
+        const teacherLastNameInput =
+          document.getElementById("teacher-last-name");
+        const teacherEmailInput = document.getElementById("teacher-email");
 
-// --- Filter and Search Functions ---
+        const firstName = teacherFirstNameInput.value.trim();
+        const lastName = teacherLastNameInput.value.trim();
+        const email = teacherEmailInput.value.trim();
 
-    // --- Modal Functions ---
-    // --- Modal Functions ---
-function openTeacherModal(teacherData = null) {
-    console.log('🎯 openTeacherModal called with teacherData:', teacherData);
-    
-    const teacherIdInput = document.getElementById('teacher-id');
-    const teacherFirstNameInput = document.getElementById('teacher-first-name');
-    const teacherLastNameInput = document.getElementById('teacher-last-name');
-    const teacherEmailInput = document.getElementById('teacher-email');
-    const teacherModalTitle = document.getElementById('teacher-modal-title');
-    const teacherFormSubmitBtn = document.getElementById('teacher-form-submit-btn');
+        // Get selected classes from checkboxes
+        const selectedClassCheckboxes =
+          classesTaughtMultiselect.querySelectorAll(
+            'input[type="checkbox"]:checked',
+          );
+        const classesTaught = Array.from(selectedClassCheckboxes).map(
+          (cb) => cb.value,
+        );
 
-    teacherForm.reset();
-    if (teacherData) {
-        // Edit Mode
-        console.log('✏️ EDIT MODE - Teacher data:', teacherData);
-        teacherModalTitle.textContent = `Edit Teacher: ${teacherData.name} 📝`;
-        teacherFormSubmitBtn.textContent = 'Save Changes';
-        teacherIdInput.value = teacherData.id;
-        
-        // Split full name into first and last name
-        const nameParts = teacherData.name.split(' ');
-        teacherFirstNameInput.value = nameParts[0] || '';
-        teacherLastNameInput.value = nameParts.slice(1).join(' ') || '';
-        
-        teacherEmailInput.value = teacherData.email;
-        
-        console.log('📋 Calling populateClassesMultiselect with assignedClasses:', teacherData.classes);
-        // Only show unassigned classrooms (teacherID parameter not needed anymore)
-        populateClassesMultiselect(classesTaughtMultiselect, teacherData.classes);
-    } else {
-        // Add Mode - show only unassigned classrooms
-        console.log('➕ ADD MODE - Creating new teacher');
-        teacherModalTitle.textContent = 'Add New Teacher ➕';
-        teacherFormSubmitBtn.textContent = 'Add Teacher';
-        teacherIdInput.value = '';
-        teacherFirstNameInput.value = '';
-        teacherLastNameInput.value = '';
-        teacherEmailInput.value = '';
-        console.log('📋 Calling populateClassesMultiselect with empty assignedClasses');
-        populateClassesMultiselect(classesTaughtMultiselect, []);
-    }
-    openModal(teacherModal);
-}
-async function handleTeacherFormSubmission(e) {
-   
-    e.preventDefault();
-    console.log('📝 Teacher form submitted');
-    
-    const teacherIdInput = document.getElementById('teacher-id');
-    const teacherFirstNameInput = document.getElementById('teacher-first-name');
-    const teacherLastNameInput = document.getElementById('teacher-last-name');
-    const teacherEmailInput = document.getElementById('teacher-email');
+        const isEditMode = !!teacherIdInput.value;
+        const teacherId = teacherIdInput.value;
 
-    const firstName = teacherFirstNameInput.value.trim();
-    const lastName = teacherLastNameInput.value.trim();
-    const email = teacherEmailInput.value.trim();
-    
-    // Get selected classes from checkboxes
-    const selectedClassCheckboxes = classesTaughtMultiselect.querySelectorAll('input[type="checkbox"]:checked');
-    const classesTaught = Array.from(selectedClassCheckboxes).map(cb => cb.value);
-    
-    const isEditMode = !!teacherIdInput.value;
-    const teacherId = teacherIdInput.value;
-    
-    // Basic validation
-    if (!firstName || !lastName || !email) {
-        alert("Please fill out all required fields.");
-        return;
-    }
+        // Basic validation
+        if (!firstName || !lastName || !email) {
+          alert("Please fill out all required fields.");
+          return;
+        }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert("Please enter a valid email address.");
-        return;
-    }
+        // Email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          alert("Please enter a valid email address.");
+          return;
+        }
 
-    try {
-         showLoading();
-        // Check if email already exists in Firestore (only for new teachers, not for edits)
-        if (!isEditMode) {
-            const emailCheckQuery = query(collection(db, "users"), where("email", "==", email));
+        try {
+          showLoading();
+          // Check if email already exists in Firestore (only for new teachers, not for edits)
+          if (!isEditMode) {
+            const emailCheckQuery = query(
+              collection(db, "users"),
+              where("email", "==", email),
+            );
             const emailCheckSnap = await getDocs(emailCheckQuery);
-            
-            if (!emailCheckSnap.empty) {
-                alert("A teacher with this email already exists.");
-                hideLoading();
-                return;
-            }
-        }
 
-        let finalTeacherId = teacherId;
-        
-        if (isEditMode) {
+            if (!emailCheckSnap.empty) {
+              alert("A teacher with this email already exists.");
+              hideLoading();
+              return;
+            }
+          }
+
+          let finalTeacherId = teacherId;
+
+          if (isEditMode) {
             // Update existing teacher
             const teacherData = {
-                firstName: firstName,
-                lastName: lastName,
-                fullName: `${firstName} ${lastName}`,
-                email: email,
-                classesTaught: classesTaught,
-                updatedAt: serverTimestamp()
+              firstName: firstName,
+              lastName: lastName,
+              fullName: `${firstName} ${lastName}`,
+              email: email,
+              classesTaught: classesTaught,
+              updatedAt: serverTimestamp(),
             };
 
             await updateDoc(doc(db, "users", teacherId), teacherData);
             alert(`SUCCESS: Teacher "${firstName} ${lastName}" updated!`);
-        } else {
+          } else {
             // CREATE NEW TEACHER IN FIREBASE AUTHENTICATION
             const password = "TempPassword123!"; // You can generate a random password or set a default
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const userCredential = await createUserWithEmailAndPassword(
+              auth,
+              email,
+              password,
+            );
             const authUid = userCredential.user.uid;
-            
+
             // Create teacher data for Firestore
             const teacherData = {
-                uid: authUid, // Store the auth UID in Firestore
-                firstName: firstName,
-                lastName: lastName,
-                fullName: `${firstName} ${lastName}`,
-                email: email,
-                role: "teacher",
-                classesTaught: classesTaught,
-                createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp()
+              uid: authUid, // Store the auth UID in Firestore
+              firstName: firstName,
+              lastName: lastName,
+              fullName: `${firstName} ${lastName}`,
+              email: email,
+              role: "teacher",
+              classesTaught: classesTaught,
+              createdAt: serverTimestamp(),
+              updatedAt: serverTimestamp(),
             };
 
             // Add to Firestore with the same UID as authentication
             await setDoc(doc(db, "users", authUid), teacherData);
             finalTeacherId = authUid;
-            
-            alert(`SUCCESS: Teacher "${firstName} ${lastName}" created! Account email: ${email}`);
-        }
-        
-        // UPDATE CLASSROOM ASSIGNMENTS
-        const classroomsSnap = await getDocs(collection(db, "classrooms"));
-        const classroomUpdates = [];
-        
-        // Process all selected classrooms
-        for (const checkbox of selectedClassCheckboxes) {
-            const classroomName = checkbox.value;
-            
-            const classroomDoc = classroomsSnap.docs.find(doc => 
-                doc.data().classroomName === classroomName
+
+            alert(
+              `SUCCESS: Teacher "${firstName} ${lastName}" created! Account email: ${email}`,
             );
-            
+          }
+
+          // UPDATE CLASSROOM ASSIGNMENTS
+          const classroomsSnap = await getDocs(collection(db, "classrooms"));
+          const classroomUpdates = [];
+
+          // Process all selected classrooms
+          for (const checkbox of selectedClassCheckboxes) {
+            const classroomName = checkbox.value;
+
+            const classroomDoc = classroomsSnap.docs.find(
+              (doc) => doc.data().classroomName === classroomName,
+            );
+
             if (classroomDoc) {
-                classroomUpdates.push(
-                    updateDoc(doc(db, "classrooms", classroomDoc.id), {
-                        teacherId: finalTeacherId,
-                        status: "active"
-                    })
-                );
+              classroomUpdates.push(
+                updateDoc(doc(db, "classrooms", classroomDoc.id), {
+                  teacherId: finalTeacherId,
+                  status: "active",
+                }),
+              );
             }
-        }
-        
-        // Handle unassigning for edit mode
-        if (isEditMode) {
-            const allClassCheckboxes = classesTaughtMultiselect.querySelectorAll('input[type="checkbox"]');
+          }
+
+          // Handle unassigning for edit mode
+          if (isEditMode) {
+            const allClassCheckboxes =
+              classesTaughtMultiselect.querySelectorAll(
+                'input[type="checkbox"]',
+              );
             const deselectedClasses = Array.from(allClassCheckboxes)
-                .filter(cb => !cb.checked)
-                .map(cb => cb.value);
-            
+              .filter((cb) => !cb.checked)
+              .map((cb) => cb.value);
+
             for (const classroomName of deselectedClasses) {
-                const classroomDoc = classroomsSnap.docs.find(doc => 
-                    doc.data().classroomName === classroomName && 
-                    doc.data().teacherId === finalTeacherId
+              const classroomDoc = classroomsSnap.docs.find(
+                (doc) =>
+                  doc.data().classroomName === classroomName &&
+                  doc.data().teacherId === finalTeacherId,
+              );
+
+              if (classroomDoc) {
+                classroomUpdates.push(
+                  updateDoc(doc(db, "classrooms", classroomDoc.id), {
+                    teacherId: "",
+                    status: "pending",
+                  }),
                 );
-                
-                if (classroomDoc) {
-                    classroomUpdates.push(
-                        updateDoc(doc(db, "classrooms", classroomDoc.id), {
-                            teacherId: "",
-                            status: "pending"
-                        })
-                    );
-                }
+              }
             }
-        }
-        
-        if (classroomUpdates.length > 0) {
+          }
+
+          if (classroomUpdates.length > 0) {
             await Promise.all(classroomUpdates);
-        }
-        
-        closeTeacherModal();
-        await renderTeacherTable();
-        hideLoading();
-        
-    } catch (err) {
-        console.error("Error saving teacher:", err);
-         hideLoading();
-        // Handle specific authentication errors
-        if (err.code === 'auth/email-already-in-use') {
+          }
+
+          closeTeacherModal();
+          await renderTeacherTable();
+          hideLoading();
+        } catch (err) {
+          console.error("Error saving teacher:", err);
+          hideLoading();
+          // Handle specific authentication errors
+          if (err.code === "auth/email-already-in-use") {
             alert("This email is already registered in the system.");
-        } else if (err.code === 'auth/invalid-email') {
+          } else if (err.code === "auth/invalid-email") {
             alert("Please enter a valid email address.");
-        } else if (err.code === 'auth/weak-password') {
+          } else if (err.code === "auth/weak-password") {
             alert("The password is too weak.");
-        } else {
+          } else {
             alert("Failed to save teacher. Please try again.");
+          }
         }
-    }
-}
+      }
 
-
-   
-    function openDeleteConfirmationModal(teacherId, teacherName) {
+      function openDeleteConfirmationModal(teacherId, teacherName) {
+        console.log(
+          `🗑️ Opening delete confirmation for: ${teacherName} (${teacherId})`,
+        );
         teacherToDeleteId = teacherId;
         deleteTeacherNameSpan.textContent = teacherName;
         openModal(deleteConfirmationModal);
-    }
+      }
 
-
-
-
-    // Update the archiveTeacher function to work with Firestore
-async function archiveTeacher(teacherId) {
-    try {
-        showLoading();  
-        // Update the teacher's status to "Archived" in Firestore
-        await updateDoc(doc(db, "users", teacherId), {
+      // Add this event listener to your init function
+      confirmDeleteBtn.addEventListener("click", async () => {
+        console.log(
+          `🗑️ Confirm delete clicked for teacher: ${teacherToDeleteId}`,
+        );
+        if (teacherToDeleteId) {
+          await deleteTeacher(teacherToDeleteId);
+        }
+      });
+      // Update the archiveTeacher function to work with Firestore
+      async function archiveTeacher(teacherId) {
+        try {
+          showLoading();
+          // Update the teacher's status to "Archived" in Firestore
+          await updateDoc(doc(db, "users", teacherId), {
             status: "Archived",
             archivedAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-        });
+            updatedAt: serverTimestamp(),
+          });
 
-        // Also unassign this teacher from all classrooms
-        const classroomsQuery = query(
-            collection(db, "classrooms"), 
-            where("teacherId", "==", teacherId)
-        );
-        const classroomsSnap = await getDocs(classroomsQuery);
-        
-        const unassignPromises = [];
-        classroomsSnap.forEach(classroomDoc => {
+          // Also unassign this teacher from all classrooms
+          const classroomsQuery = query(
+            collection(db, "classrooms"),
+            where("teacherId", "==", teacherId),
+          );
+          const classroomsSnap = await getDocs(classroomsQuery);
+
+          const unassignPromises = [];
+          classroomsSnap.forEach((classroomDoc) => {
             unassignPromises.push(
-                updateDoc(doc(db, "classrooms", classroomDoc.id), {
-                    teacherId: "",
-                    status: "pending"
-                })
+              updateDoc(doc(db, "classrooms", classroomDoc.id), {
+                teacherId: "",
+                status: "pending",
+              }),
             );
-        });
+          });
 
-        if (unassignPromises.length > 0) {
+          if (unassignPromises.length > 0) {
             await Promise.all(unassignPromises);
+          }
+
+          alert("Teacher has been archived and unassigned from all classes.");
+          await renderTeacherTable(); // Reload the table
+          await updateMetrics(); // Update the metrics
+          hideLoading();
+        } catch (err) {
+          console.error("Error archiving teacher:", err);
+          alert("Failed to archive teacher. Please try again.");
+          hideLoading();
+        }
+        closeArchiveConfirmationModal();
+      }
+
+      // Update the renderTeacherTable function to properly handle archived status
+      // Update the renderTeacherTable function to properly fetch and display teachers
+      // Update the openArchiveConfirmationModal to handle both archive and restore
+      function openArchiveConfirmationModal(
+        teacherId,
+        teacherName,
+        isArchived = false,
+      ) {
+        teacherToArchiveId = teacherId;
+        archiveTeacherNameSpan.textContent = teacherName;
+
+        const modalTitle = document.querySelector(
+          "#archive-confirmation-modal .modal-title",
+        );
+        const confirmBtn = document.getElementById("confirm-archive-btn");
+        const message = document.querySelector(
+          "#archive-confirmation-modal .confirmation-message",
+        );
+
+        if (isArchived) {
+          // Restore mode
+          modalTitle.textContent = "Restore Teacher";
+          message.innerHTML = `Are you sure you want to restore <span id="archive-teacher-name" class="font-bold">${teacherName}</span>?`;
+          confirmBtn.textContent = "Restore Teacher";
+          confirmBtn.className = "btn btn-primary";
+        } else {
+          // Archive mode
+          modalTitle.textContent = "Archive Teacher";
+          message.innerHTML = `Are you sure you want to archive <span id="archive-teacher-name" class="font-bold">${teacherName}</span>?`;
+          confirmBtn.textContent = "Archive Teacher";
+          confirmBtn.className = "btn btn-warning";
         }
 
-        alert("Teacher has been archived and unassigned from all classes.");
-        await renderTeacherTable(); // Reload the table
-        await updateMetrics(); // Update the metrics
-         hideLoading();
-        
-    } catch (err) {
-        console.error("Error archiving teacher:", err);
-        alert("Failed to archive teacher. Please try again.");
-         hideLoading();
-    }
-    closeArchiveConfirmationModal();
-}
+        openModal(archiveConfirmationModal);
+      }
 
-// Update the renderTeacherTable function to properly handle archived status
-// Update the renderTeacherTable function to properly fetch and display teachers
-// Update the openArchiveConfirmationModal to handle both archive and restore
-function openArchiveConfirmationModal(teacherId, teacherName, isArchived = false) {
-    teacherToArchiveId = teacherId;
-    archiveTeacherNameSpan.textContent = teacherName;
-    
-    const modalTitle = document.querySelector('#archive-confirmation-modal .modal-title');
-    const confirmBtn = document.getElementById('confirm-archive-btn');
-    const message = document.querySelector('#archive-confirmation-modal .confirmation-message');
-    
-    if (isArchived) {
-        // Restore mode
-        modalTitle.textContent = "Restore Teacher";
-        message.innerHTML = `Are you sure you want to restore <span id="archive-teacher-name" class="font-bold">${teacherName}</span>?`;
-        confirmBtn.textContent = "Restore Teacher";
-        confirmBtn.className = "btn btn-primary";
-    } else {
-        // Archive mode
-        modalTitle.textContent = "Archive Teacher";
-        message.innerHTML = `Are you sure you want to archive <span id="archive-teacher-name" class="font-bold">${teacherName}</span>?`;
-        confirmBtn.textContent = "Archive Teacher";
-        confirmBtn.className = "btn btn-warning";
-    }
-    
-    openModal(archiveConfirmationModal);
-}
+      // Update the archive button click handler in attachRowEventListeners
+      // Update the renderFilteredTable function to conditionally show delete button
+      function renderFilteredTable(filteredTeachers) {
+        tableBody.innerHTML = "";
 
-// Update the archive button click handler in attachRowEventListeners
-// Update the renderFilteredTable function to conditionally show delete button
-function renderFilteredTable(filteredTeachers) {
-    tableBody.innerHTML = '';
-    
-    if (filteredTeachers.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">No teachers found matching your criteria</td></tr>';
-    } else {
-        filteredTeachers.forEach(teacher => {
-            const classesDisplay = teacher.classes.length > 0 ? teacher.classes.join(', ') : 'None';
-            const statusClass = teacher.status === 'Active' ? 'status-active' : 
-                               teacher.status === 'Inactive' ? 'status-inactive' : 
-                               teacher.status === 'Archived' ? 'status-archived' : 'status-available';
+        if (filteredTeachers.length === 0) {
+          tableBody.innerHTML =
+            '<tr><td colspan="5" class="text-center py-4">No teachers found matching your criteria</td></tr>';
+        } else {
+          filteredTeachers.forEach((teacher) => {
+            const classesDisplay =
+              teacher.classes.length > 0 ? teacher.classes.join(", ") : "None";
+            const statusClass =
+              teacher.status === "Active"
+                ? "status-active"
+                : teacher.status === "Inactive"
+                  ? "status-inactive"
+                  : teacher.status === "Archived"
+                    ? "status-archived"
+                    : "status-available";
 
             const newRow = tableBody.insertRow();
-            newRow.setAttribute('data-id', teacher.id);
-            
+            newRow.setAttribute("data-id", teacher.id);
+
             // Only show delete button for archived teachers
-            const deleteButtonHtml = teacher.status === 'Archived' ? 
-                `<button class="action-btn delete-btn" title="Delete Teacher">
-                    <i class="fas fa-trash"></i>
-                </button>` : '';
+            // Create the delete button HTML separately
+            const deleteButton =
+              teacher.status === "Archived"
+                ? '<button class="action-btn delete-btn" title="Delete Teacher"><i class="fas fa-trash"></i></button>'
+                : "";
+
+            // Create the archive button title and icon
+            const archiveTitle =
+              teacher.status === "Archived"
+                ? "Restore Teacher"
+                : "Archive Teacher";
+            const archiveIcon =
+              teacher.status === "Archived" ? "fa-undo" : "fa-archive";
+
+            // Create the edit button disabled attribute
+            const editDisabled =
+              teacher.status === "Archived" ? "disabled" : "";
 
             newRow.innerHTML = `
-                <td>
-                    <a href="teacher_profile.html?id=${teacher.id}" class="teacher-name-link" data-teacher-id="${teacher.id}">
-                        ${teacher.name}
-                    </a>
-                </td>
-                <td>${teacher.email}</td>
-                <td class="text-sm italic">${classesDisplay}</td>
-                <td><span class="${statusClass}">${teacher.status}</span></td>
-                <td class="whitespace-nowrap">
-                    <button class="action-btn edit-btn" title="Edit Teacher" ${teacher.status === 'Archived' ? 'disabled' : ''}>
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="action-btn archive-btn" title="${teacher.status === 'Archived' ? 'Restore Teacher' : 'Archive Teacher'}">
-                        <i class="fas ${teacher.status === 'Archived' ? 'fa-undo' : 'fa-archive'}"></i>
-                    </button>
-                    ${deleteButtonHtml}
-                </td>
-            `;
-        });
-    }
-    
-    document.getElementById('pagination-total').textContent = filteredTeachers.length;
-    attachRowEventListeners();
-}
+    <td>
+        <a href="teacher_profile.html?id=${teacher.id}" class="teacher-name-link" data-teacher-id="${teacher.id}">
+            ${teacher.name}
+        </a>
+    </td>
+    <td>${teacher.email}</td>
+    <td class="text-sm italic">${classesDisplay}</td>
+    <td><span class="${statusClass}">${teacher.status}</span></td>
+    <td>
+        <div class="action-buttons-container">
+            <button class="action-btn edit-btn" title="Edit Teacher" ${editDisabled}>
+                <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn archive-btn" title="${archiveTitle}">
+                <i class="fas ${archiveIcon}"></i>
+            </button>
+            ${deleteButton}
+        </div>
+    </td>
+`;
+          });
+        }
 
-// Update the attachRowEventListeners function to handle the conditional delete buttons
-function attachRowEventListeners() {
-    // Edit buttons
-    tableBody.querySelectorAll('.edit-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        document.getElementById("pagination-total").textContent =
+          filteredTeachers.length;
+        attachRowEventListeners();
+      }
+
+      function attachRowEventListeners() {
+        console.log("🔗 Attaching event listeners to table rows...");
+
+        // Edit buttons
+        tableBody.querySelectorAll(".edit-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
             e.stopPropagation();
-            const row = e.target.closest('tr');
-            const teacherId = row.getAttribute('data-id');
-            const teacher = currentTeachersData.find(t => t.id === teacherId);
+            console.log("✏️ Edit button clicked");
+            const row = e.target.closest("tr");
+            const teacherId = row.getAttribute("data-id");
+            const teacher = currentTeachersData.find((t) => t.id === teacherId);
             if (teacher) {
-                openTeacherModal(teacher);
+              openTeacherModal(teacher);
             }
+          });
         });
-    });
 
-    // Archive/Restore buttons
-    tableBody.querySelectorAll('.archive-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        // Archive/Restore buttons
+        tableBody.querySelectorAll(".archive-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
             e.stopPropagation();
-            const row = e.target.closest('tr');
-            const teacherId = row.getAttribute('data-id');
-            const teacherName = row.cells[0].querySelector('.teacher-name-link').textContent;
+            console.log("📦 Archive button clicked");
+            const row = e.target.closest("tr");
+            const teacherId = row.getAttribute("data-id");
+            const teacherName =
+              row.cells[0].querySelector(".teacher-name-link").textContent;
             const statusCell = row.cells[3];
-            const isArchived = statusCell.textContent.trim() === 'Archived';
-            
+            const isArchived = statusCell.textContent.trim() === "Archived";
+
             openArchiveConfirmationModal(teacherId, teacherName, isArchived);
+          });
         });
-    });
-    
-    // Delete buttons (only present for archived teachers)
-    tableBody.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+
+        // Delete buttons (only present for archived teachers)
+        tableBody.querySelectorAll(".delete-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.preventDefault();
             e.stopPropagation();
-            const row = e.target.closest('tr');
-            const teacherId = row.getAttribute('data-id');
-            const teacherName = row.cells[0].querySelector('.teacher-name-link').textContent;
+            console.log("🗑️ Delete button clicked");
+            const row = e.target.closest("tr");
+            const teacherId = row.getAttribute("data-id");
+            const teacherName =
+              row.cells[0].querySelector(".teacher-name-link").textContent;
+            console.log(`Deleting teacher: ${teacherName} (ID: ${teacherId})`);
             openDeleteConfirmationModal(teacherId, teacherName);
+          });
         });
-    });
-}
 
-// Update the deleteTeacher function to actually delete from Firestore
-async function deleteTeacher(teacherId) {
-    try {
-        showLoading();
-        // Delete teacher from Firestore
-        await deleteDoc(doc(db, "users", teacherId));
-        
-        // Also delete the teacher from Firebase Authentication if needed
-        // Note: This requires admin privileges and the Firebase Admin SDK on the server side
-        // For now, we'll just delete from Firestore
-        
-        alert("Teacher has been permanently deleted.");
-        await renderTeacherTable(); // Reload the table
-        await updateMetrics(); // Update the metrics
-         hideLoading();
-        
-    } catch (err) {
-        console.error("Error deleting teacher:", err);
-        alert("Failed to delete teacher. Please try again.");
-         hideLoading();
-    }
-    closeDeleteConfirmationModal();
-}
+        console.log(
+          `✅ Attached listeners: ${tableBody.querySelectorAll(".edit-btn").length} edit, ${tableBody.querySelectorAll(".archive-btn").length} archive, ${tableBody.querySelectorAll(".delete-btn").length} delete buttons`,
+        );
+      }
+      // Update the deleteTeacher function to actually delete from Firestore
+      async function deleteTeacher(teacherId) {
+        try {
+          showLoading();
+          // Delete teacher from Firestore
+          await deleteDoc(doc(db, "users", teacherId));
 
-// Update the modal to reflect that deletion is permanent
-// Change the delete confirmation modal text to be more specific
-const deleteModalTitle = document.querySelector('#delete-confirmation-modal .modal-title');
-const deleteModalMessage = document.querySelector('#delete-confirmation-modal .confirmation-message');
-const deleteModalWarning = document.querySelector('#delete-confirmation-modal .confirmation-warning');
+          // Also delete the teacher from Firebase Authentication if needed
+          // Note: This requires admin privileges and the Firebase Admin SDK on the server side
+          // For now, we'll just delete from Firestore
 
-// Update the modal content to be more specific about deletion
-deleteModalTitle.textContent = "Permanently Delete Teacher";
-deleteModalMessage.innerHTML = `Are you sure you want to permanently delete <span id="delete-teacher-name" class="font-bold"></span>?`;
-deleteModalWarning.textContent = "This action cannot be undone. The teacher will be permanently removed from the system.";
+          alert("Teacher has been permanently deleted.");
+          await renderTeacherTable(); // Reload the table
+          await updateMetrics(); // Update the metrics
+          hideLoading();
+        } catch (err) {
+          console.error("Error deleting teacher:", err);
+          alert("Failed to delete teacher. Please try again.");
+          hideLoading();
+        }
+        closeDeleteConfirmationModal();
+      }
 
-// Update the CSS to ensure proper spacing when delete button is hidden
-const style = document.createElement('style');
-style.textContent = `
+      // Update the modal to reflect that deletion is permanent
+      // Change the delete confirmation modal text to be more specific
+      const deleteModalTitle = document.querySelector(
+        "#delete-confirmation-modal .modal-title",
+      );
+      const deleteModalMessage = document.querySelector(
+        "#delete-confirmation-modal .confirmation-message",
+      );
+      const deleteModalWarning = document.querySelector(
+        "#delete-confirmation-modal .confirmation-warning",
+      );
+
+      // Update the modal content to be more specific about deletion
+      deleteModalTitle.textContent = "Permanently Delete Teacher";
+      deleteModalMessage.innerHTML = `Are you sure you want to permanently delete <span id="delete-teacher-name" class="font-bold"></span>?`;
+      deleteModalWarning.textContent =
+        "This action cannot be undone. The teacher will be permanently removed from the system.";
+
+      // Update the CSS to ensure proper spacing when delete button is hidden
+      const style = document.createElement("style");
+      style.textContent = `
     .status-archived {
         background-color: #f3f4f6;
         color: #6b7280;
@@ -1072,120 +1352,143 @@ style.textContent = `
         min-width: 120px;
     }
 `;
-document.head.appendChild(style);
-// Update the confirmArchiveBtn event listener to handle both archive and restore
-confirmArchiveBtn.addEventListener('click', async () => {
-    if (teacherToArchiveId) {
-        const row = tableBody.querySelector(`tr[data-id="${teacherToArchiveId}"]`);
-        const statusCell = row.cells[3];
-        const isCurrentlyArchived = statusCell.textContent.trim() === 'Archived';
-        
-        if (isCurrentlyArchived) {
-            await restoreTeacher(teacherToArchiveId);
-        } else {
-            await archiveTeacher(teacherToArchiveId);
-        }
-    }
-});
+      document.head.appendChild(style);
+      // Update the confirmArchiveBtn event listener to handle both archive and restore
+      confirmArchiveBtn.addEventListener("click", async () => {
+        if (teacherToArchiveId) {
+          const row = tableBody.querySelector(
+            `tr[data-id="${teacherToArchiveId}"]`,
+          );
+          const statusCell = row.cells[3];
+          const isCurrentlyArchived =
+            statusCell.textContent.trim() === "Archived";
 
-// Add restore teacher function
-async function restoreTeacher(teacherId) {
-    try {
-        showLoading();
-        // Update the teacher's status to "Active" in Firestore
-        await updateDoc(doc(db, "users", teacherId), {
+          if (isCurrentlyArchived) {
+            await restoreTeacher(teacherToArchiveId);
+          } else {
+            await archiveTeacher(teacherToArchiveId);
+          }
+        }
+      });
+
+      // Add restore teacher function
+      async function restoreTeacher(teacherId) {
+        try {
+          showLoading();
+          // Update the teacher's status to "Active" in Firestore
+          await updateDoc(doc(db, "users", teacherId), {
             status: "Active",
             restoredAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-        });
+            updatedAt: serverTimestamp(),
+          });
 
-        alert("Teacher has been restored and is now active.");
-        await renderTeacherTable(); // Reload the table
-        await updateMetrics(); // Update the metrics
-         hideLoading();
-        
-    } catch (err) {
-        console.error("Error restoring teacher:", err);
-        alert("Failed to restore teacher. Please try again.");
-         hideLoading();
-    }
-    closeArchiveConfirmationModal();
-}
-
-// Update the metrics function to exclude archived teachers from active counts
- 
-   // Remove the duplicate event listeners and fix the archive confirmation
-// Fetch unread notifications count for the badge
-async function getUnreadNotificationsCount() {
-    try {
-        showLoading();
-        const notificationsSnapshot = await getDocs(collection(db, "notification_admin"));
-        let unreadCount = 0;
-        
-        notificationsSnapshot.forEach(doc => {
-            const notification = doc.data();
-            if (notification.status === 'unread') {
-                unreadCount++;
-            }
-        });
-        
-        updateNotificationBellBadge(unreadCount);
-        hideLoading();
-        return unreadCount;
-    } catch (error) {
-        console.error("Error fetching notifications count:", error);
-         hideLoading();
-        return 0;
-    }
-}
-
-// Update the notification bell badge
-function updateNotificationBellBadge(unreadCount) {
-    const notificationBellBadge = document.getElementById('notification-bell-badge');
-    
-    if (!notificationBellBadge) return;
-    
-    if (unreadCount > 0) {
-        notificationBellBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
-        notificationBellBadge.style.display = 'flex';
-        
-        // Add pulse animation for new notifications
-        if (unreadCount > 0) {
-            notificationBellBadge.style.animation = 'pulse 2s infinite';
+          alert("Teacher has been restored and is now active.");
+          await renderTeacherTable(); // Reload the table
+          await updateMetrics(); // Update the metrics
+          hideLoading();
+        } catch (err) {
+          console.error("Error restoring teacher:", err);
+          alert("Failed to restore teacher. Please try again.");
+          hideLoading();
         }
-    } else {
-        notificationBellBadge.style.display = 'none';
-    }
-}
+        closeArchiveConfirmationModal();
+      }
 
-// Add this to your initialization function
-async function init() {
-    // Your existing initialization code
-    teacherForm.addEventListener('submit', handleTeacherFormSubmission);
-    
-    // Add Teacher button listeners
-    document.getElementById('add-teacher-btn').addEventListener('click', () => openTeacherModal());
-    document.getElementById('quick-add-teacher').addEventListener('click', () => openTeacherModal());
+      // Update the metrics function to exclude archived teachers from active counts
 
-    // Modal close buttons
-    document.getElementById('close-teacher-modal').addEventListener('click', closeTeacherModal);
-    document.getElementById('close-archive-modal').addEventListener('click', closeArchiveConfirmationModal);
-    document.getElementById('close-delete-modal').addEventListener('click', closeDeleteConfirmationModal);
-    document.getElementById('cancel-teacher').addEventListener('click', closeTeacherModal);
-    document.getElementById('cancel-archive').addEventListener('click', closeArchiveConfirmationModal);
-    document.getElementById('cancel-delete').addEventListener('click', closeDeleteConfirmationModal);
+      // Remove the duplicate event listeners and fix the archive confirmation
+      // Fetch unread notifications count for the badge
+      async function getUnreadNotificationsCount() {
+        try {
+          showLoading();
+          const notificationsSnapshot = await getDocs(
+            collection(db, "notification_admin"),
+          );
+          let unreadCount = 0;
 
-    // Search and Filter listeners
-    searchInput.addEventListener('input', applyFiltersAndSearch);
-    filterStatus.addEventListener('change', applyFiltersAndSearch);
-    
-    // Initial render with real data
-    renderTeacherTable();
-    
-    // Add notification badge - ADD THIS LINE
-    getUnreadNotificationsCount();
-}  // Initialize the application
-    document.addEventListener('DOMContentLoaded', init);
+          notificationsSnapshot.forEach((doc) => {
+            const notification = doc.data();
+            if (notification.status === "unread") {
+              unreadCount++;
+            }
+          });
+
+          updateNotificationBellBadge(unreadCount);
+          hideLoading();
+          return unreadCount;
+        } catch (error) {
+          console.error("Error fetching notifications count:", error);
+          hideLoading();
+          return 0;
+        }
+      }
+
+      // Update the notification bell badge
+      function updateNotificationBellBadge(unreadCount) {
+        const notificationBellBadge = document.getElementById(
+          "notification-bell-badge",
+        );
+
+        if (!notificationBellBadge) return;
+
+        if (unreadCount > 0) {
+          notificationBellBadge.textContent =
+            unreadCount > 99 ? "99+" : unreadCount;
+          notificationBellBadge.style.display = "flex";
+
+          // Add pulse animation for new notifications
+          if (unreadCount > 0) {
+            notificationBellBadge.style.animation = "pulse 2s infinite";
+          }
+        } else {
+          notificationBellBadge.style.display = "none";
+        }
+      }
+
+      // Add this to your initialization function
+      async function init() {
+        // Your existing initialization code
+        teacherForm.addEventListener("submit", handleTeacherFormSubmission);
+
+        // Add Teacher button listeners
+        document
+          .getElementById("add-teacher-btn")
+          .addEventListener("click", () => openTeacherModal());
+        document
+          .getElementById("quick-add-teacher")
+          .addEventListener("click", () => openTeacherModal());
+
+        // Modal close buttons
+        document
+          .getElementById("close-teacher-modal")
+          .addEventListener("click", closeTeacherModal);
+        document
+          .getElementById("close-archive-modal")
+          .addEventListener("click", closeArchiveConfirmationModal);
+        document
+          .getElementById("close-delete-modal")
+          .addEventListener("click", closeDeleteConfirmationModal);
+        document
+          .getElementById("cancel-teacher")
+          .addEventListener("click", closeTeacherModal);
+        document
+          .getElementById("cancel-archive")
+          .addEventListener("click", closeArchiveConfirmationModal);
+        document
+          .getElementById("cancel-delete")
+          .addEventListener("click", closeDeleteConfirmationModal);
+
+        // Search and Filter listeners
+        searchInput.addEventListener("input", applyFiltersAndSearch);
+        filterStatus.addEventListener("change", applyFiltersAndSearch);
+
+        // Initial render with real data
+        renderTeacherTable();
+
+        // Add notification badge - ADD THIS LINE
+        getUnreadNotificationsCount();
+      } // Initialize the application
+      document.addEventListener("DOMContentLoaded", init);
     </script>
-    </body>
-    </html>
+  </body>
+</html>

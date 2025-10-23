@@ -1,382 +1,468 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AcadBird Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <link rel="stylesheet" href="../style/activitylog_teacher.css" />
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-         <nav class="navbar">
+      <nav class="navbar">
         <div class="logo">
-            <img src="../../main/img/AcadBird - White no text.png" class="logo-img" alt="AcadBird Logo" />
-            <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text" />
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            class="logo-img"
+            alt="AcadBird Logo"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
         </div>
-        <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
         <div class="nav-icons">
-    <a href="notification_teacher.html" target="_blank" class="notification-link">
-        <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
-        <span class="notification-badge" id="notification-badge">0</span>
-    </a>
-    <a href="help_teacher.html" target="_blank">
-        <img src="../../main/img/Help.png" alt="Help" class="icon">
-    </a>
-    <a href="settings_teacher.html" target="_blank">
-        <div class="account-menu">
-            <img src="../../main/img/account icon.png" alt="User Account" class="icon">
+          <a
+            href="notification_teacher.html"
+            target="_blank"
+            class="notification-link"
+          >
+            <img
+              src="../../main/img/Notification.png"
+              alt="Notifications"
+              class="icon"
+            />
+            <span class="notification-badge" id="notification-badge">0</span>
+          </a>
+          <a href="help_teacher.html" target="_blank">
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          </a>
+          <a href="settings_teacher.html" target="_blank">
+            <div class="account-menu">
+              <img
+                src="../../main/img/account icon.png"
+                alt="User Account"
+                class="icon"
+              />
+            </div>
+          </a>
         </div>
-    </a>
-</div>
+      </nav>
+      <div class="secondary-header">
+        <nav class="nav-menu">
+          <a href="homepage-teachers.html" class="nav-item">Home</a>
+          <a href="homepage-classroom_teacher.html" class="nav-item"
+            >Classroom</a
+          >
+          <a href="account_profile_teacher.html" class="nav-item active"
+            >Activity Logs</a
+          >
+          <a href="resources_teacher.html" class="nav-item">Resources</a>
+          <a href="messages_teacher.html" class="nav-item">Messages</a>
+          <a href="studentlistpage_teacher.html" class="nav-item"
+            >Student List</a
+          >
+        </nav>
+      </div>
+      <div class="separator"></div>
 
-    </nav>
-        <div class="secondary-header">
-            <nav class="nav-menu">
-                <a href="homepage-teachers.html" class="nav-item">Home</a>
-                <a href="homepage-classroom_teacher.html" class="nav-item">Classroom</a>
-                <a href="account_profile_teacher.html" class="nav-item active">Activity Logs</a>
-                <a href="resources_teacher.html" class="nav-item">Resources</a>
-                <a href="messages_teacher.html" class="nav-item">Messages</a>
-                <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
-            </nav>
-        </div>
-        <div class="separator"></div>
-
-        <div class="main-content">
-            <div class="left-section">
-
-
-                <div class="card post-card" id="post-creation-card">
-                   <div class="post-header">
-    <p id="teacher-name">Loading Teacher Name...</p>
-    <i class="fas fa-user-circle post-avatar"></i>
-    <input type="text" id="initial-input" placeholder="What's taking place in your classroom?">
-</div>
-
-                    
-                    <div id="expanded-content" class="hidden">
-                        <div class="post-type-options">
-                            <button class="post-action-btn active" data-type="Note"><i class="fas fa-file-alt"></i> Note</button>
-                            <button class="post-action-btn" data-type="Reminder"><i class="fas fa-bell"></i> Reminder</button>
-                            <button class="post-action-btn" data-type="Event"><i class="fas fa-calendar-alt"></i> Event</button>
-                            <button class="post-action-btn" data-type="Task"><i class="fas fa-tasks"></i> Task</button>
-                            
-                            <input type="file" id="file-upload" multiple hidden />
-                        </div>
-                        
-                        <div id="dynamic-inputs">
-                            <textarea id="note-input" class="post-content-input" placeholder="What's taking place in your classroom?"></textarea>
-                            
-                            <div id="typed-post-inputs" class="hidden">
-                                <input type="text" id="post-title-input" class="text-input" placeholder="Enter Title..." />
-                                <div class="date-input-container">
-                                    <label for="post-date-input">Date:</label>
-                                    <input type="date" id="post-date-input" class="date-input" />
-                                </div>
-                                <textarea id="post-description-input" class="post-content-input" placeholder="Description: What's taking place in your classroom?"></textarea>
-                            </div>
-                        </div>
-
-                        <div id="file-preview-container"></div>
-
-                        <div class="post-footer-actions">
-                            <button id="post-button" class="post-btn">Post</button>
-                            <button id="cancel-button" class="post-btn">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="post-feed" id="post-feed">
-                    
-                </div>
+      <div class="main-content">
+        <div class="left-section">
+          <div class="card post-card" id="post-creation-card">
+            <div class="post-header">
+              <p id="teacher-name">Loading Teacher Name...</p>
+              <i class="fas fa-user-circle post-avatar"></i>
+              <input
+                type="text"
+                id="initial-input"
+                placeholder="What's taking place in your classroom?"
+              />
             </div>
 
-            <div class="right-section">
-                <div class="card event-card">
-                    <h4 class="card-title">Upcoming Events</h4>
-                    <ul id="event-list">
-                         
-                    </ul>
+            <div id="expanded-content" class="hidden">
+              <div class="post-type-options">
+                <button class="post-action-btn active" data-type="Note">
+                  <i class="fas fa-file-alt"></i> Note
+                </button>
+                <button class="post-action-btn" data-type="Reminder">
+                  <i class="fas fa-bell"></i> Reminder
+                </button>
+                <button class="post-action-btn" data-type="Event">
+                  <i class="fas fa-calendar-alt"></i> Event
+                </button>
+                <button class="post-action-btn" data-type="Task">
+                  <i class="fas fa-tasks"></i> Task
+                </button>
+
+                <input type="file" id="file-upload" multiple hidden />
+              </div>
+
+              <div id="dynamic-inputs">
+                <textarea
+                  id="note-input"
+                  class="post-content-input"
+                  placeholder="What's taking place in your classroom?"
+                ></textarea>
+
+                <div id="typed-post-inputs" class="hidden">
+                  <input
+                    type="text"
+                    id="post-title-input"
+                    class="text-input"
+                    placeholder="Enter Title..."
+                  />
+                  <div class="date-input-container">
+                    <label for="post-date-input">Date:</label>
+                    <input
+                      type="date"
+                      id="post-date-input"
+                      class="date-input"
+                    />
+                  </div>
+                  <textarea
+                    id="post-description-input"
+                    class="post-content-input"
+                    placeholder="Description: What's taking place in your classroom?"
+                  ></textarea>
                 </div>
-                <div class="card reminders-card">
-                    <h4 class="card-title">Reminders</h4>
-                    <ul id="reminder-list">
-                      
-                    </ul>
-                </div>
-                <div class="card tasks-card">
-                    <h4 class="card-title">Tasks</h4>
-                    <ul id="task-list">
-                    
-                    </ul>
-                </div>
+              </div>
+
+              <div id="file-preview-container"></div>
+
+              <div class="post-footer-actions">
+                <button id="post-button" class="post-btn">Post</button>
+                <button id="cancel-button" class="post-btn">Cancel</button>
+              </div>
             </div>
+          </div>
+
+          <div class="post-feed" id="post-feed"></div>
         </div>
+
+        <div class="right-section">
+          <div class="card event-card">
+            <h4 class="card-title">Upcoming Events</h4>
+            <ul id="event-list"></ul>
+          </div>
+          <div class="card reminders-card">
+            <h4 class="card-title">Reminders</h4>
+            <ul id="reminder-list"></ul>
+          </div>
+          <div class="card tasks-card">
+            <h4 class="card-title">Tasks</h4>
+            <ul id="task-list"></ul>
+          </div>
+        </div>
+      </div>
     </div>
-        <div id="loading-overlay">
-
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
+    <div id="loading-overlay">
+      <div class="loader-3">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+    </div>
     <div id="shareCodeModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <div class="modal-header">
-                <i class="fas fa-share-alt"></i>
-                <h3>Share Class Code</h3>
-            </div>
-            <div class="modal-body">
-                <p>Share this unique code with parents to connect them to your classroom!</p>
-                <div class="class-code-display">
-                    <p id="classCode">ABC-123-XYZ</p>
-                    <button id="copyCodeBtn"><i class="fas fa-copy"></i></button>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-close-btn">Done</button>
-            </div>
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <div class="modal-header">
+          <i class="fas fa-share-alt"></i>
+          <h3>Share Class Code</h3>
         </div>
+        <div class="modal-body">
+          <p>
+            Share this unique code with parents to connect them to your
+            classroom!
+          </p>
+          <div class="class-code-display">
+            <p id="classCode">ABC-123-XYZ</p>
+            <button id="copyCodeBtn"><i class="fas fa-copy"></i></button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-close-btn">Done</button>
+        </div>
+      </div>
     </div>
 
     <div id="deleteModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn">&times;</span>
-            <div class="modal-header">
-                <i class="fas fa-exclamation-triangle"></i>
-                <h3>Delete Post?</h3>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this post? This action cannot be undone.</p>
-            </div>
-            <div class="modal-footer">
-                <button id="confirmDeleteBtn" class="confirm-btn">Delete</button>
-                <button class="modal-cancel-btn">Cancel</button>
-            </div>
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <div class="modal-header">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h3>Delete Post?</h3>
         </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete this post? This action cannot be
+            undone.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="confirmDeleteBtn" class="confirm-btn">Delete</button>
+          <button class="modal-cancel-btn">Cancel</button>
+        </div>
+      </div>
     </div>
 
     <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-import { collection, addDoc, serverTimestamp, query, orderBy, getDocs, where, deleteDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+      import {
+        collection,
+        addDoc,
+        serverTimestamp,
+        query,
+        orderBy,
+        getDocs,
+        where,
+        deleteDoc,
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
+      // --------------------
+      // 1. Firebase config
+      // --------------------
+      const firebaseConfig = {
+        apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
+        authDomain: "acadbird-379e3.firebaseapp.com",
+        projectId: "acadbird-379e3",
+        storageBucket: "acadbird-379e3.firebasestorage.app",
+        messagingSenderId: "575491576951",
+        appId: "1:575491576951:web:70f86aba1e33b871f8a272",
+        measurementId: "G-N6Z672SXWJ",
+      };
+      // Add this after your Firebase initialization
+      emailjs.init("Bf08qF9nwMnYPdI7s"); // Replace with your EmailJS public key
 
-// --------------------
-// 1. Firebase config
-// --------------------
-  const firebaseConfig = {
-    apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
-    authDomain: "acadbird-379e3.firebaseapp.com",
-    projectId: "acadbird-379e3",
-    storageBucket: "acadbird-379e3.firebasestorage.app",
-    messagingSenderId: "575491576951",
-    appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-    measurementId: "G-N6Z672SXWJ"
-    
-  };
-// Add this after your Firebase initialization
-emailjs.init("Bf08qF9nwMnYPdI7s"); // Replace with your EmailJS public key
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+      const postFeed = document.getElementById("post-feed");
+      const loadingOverlay = document.getElementById("loading-overlay");
 
-  const postFeed = document.getElementById('post-feed');
-const loadingOverlay = document.getElementById("loading-overlay");
+      function showLoading() {
+        loadingOverlay.style.display = "flex";
+      }
 
-   function showLoading() {
-  loadingOverlay.style.display = "flex";
-}
+      // Hide overlay
+      function hideLoading() {
+        loadingOverlay.style.display = "none";
+      }
 
-// Hide overlay
-function hideLoading() {
-  loadingOverlay.style.display = "none";
-}
+      const eventList = document.getElementById("event-list");
+      const reminderList = document.getElementById("reminder-list");
+      const taskList = document.getElementById("task-list");
 
-
-
-
-const eventList = document.getElementById('event-list');
-const reminderList = document.getElementById('reminder-list');
-const taskList = document.getElementById('task-list');
-
-function createRightSectionItem(title, date, type) {
-        const listItem = document.createElement('li');
-        let formattedDate = '';
+      function createRightSectionItem(title, date, type) {
+        const listItem = document.createElement("li");
+        let formattedDate = "";
         if (date) {
-            const [year, month, day] = date.split('-');
-            formattedDate = `${month}/${day}/${year}`;
+          const [year, month, day] = date.split("-");
+          formattedDate = `${month}/${day}/${year}`;
         }
-        const displayTitle = title.length > 25 ? title.substring(0, 22) + '...' : title;
+        const displayTitle =
+          title.length > 25 ? title.substring(0, 22) + "..." : title;
 
         switch (type) {
-            case 'Event':
-                listItem.innerHTML = `<p class="event-item">${displayTitle}<br>${formattedDate || 'Date N/A'}<br>Time N/A</p>`;
-                eventList.prepend(listItem);
-                break;
-            case 'Reminder':
-                listItem.innerHTML = `<p class="reminder-item">${displayTitle}<br>When: ${formattedDate || 'Date N/A'}</p>`;
-                reminderList.prepend(listItem);
-                break;
-            case 'Task':
-                listItem.innerHTML = `<p class="task-item">${displayTitle}<br>When: ${formattedDate || 'Date N/A'}</p>`;
-                taskList.prepend(listItem);
-                break;
+          case "Event":
+            listItem.innerHTML = `<p class="event-item">${displayTitle}<br>${formattedDate || "Date N/A"}<br>Time N/A</p>`;
+            eventList.prepend(listItem);
+            break;
+          case "Reminder":
+            listItem.innerHTML = `<p class="reminder-item">${displayTitle}<br>When: ${formattedDate || "Date N/A"}</p>`;
+            reminderList.prepend(listItem);
+            break;
+          case "Task":
+            listItem.innerHTML = `<p class="task-item">${displayTitle}<br>When: ${formattedDate || "Date N/A"}</p>`;
+            taskList.prepend(listItem);
+            break;
         }
-    }
+      }
 
-// Function to load likes for a post
-// Function to load likes for a post
-// Function to load likes for a post
+      // Function to load likes for a post
+      // Function to load likes for a post
+      // Function to load likes for a post
 
-// Like button functionality
+      // Like button functionality
 
-// Function to load comments for a post
-async function loadCommentsForPost(postId, commentsList, commentCountSpan) {
-    try {
-        const commentsRef = collection(db, "comments");
-        const q = query(
-            commentsRef, 
+      // Function to load comments for a post
+      async function loadCommentsForPost(
+        postId,
+        commentsList,
+        commentCountSpan,
+      ) {
+        try {
+          const commentsRef = collection(db, "comments");
+          const q = query(
+            commentsRef,
             where("postId", "==", postId),
-            orderBy("createdAt", "asc")
-        );
-        const querySnapshot = await getDocs(q);
-        
-        commentsList.innerHTML = '';
-        querySnapshot.forEach(doc => {
+            orderBy("createdAt", "asc"),
+          );
+          const querySnapshot = await getDocs(q);
+
+          commentsList.innerHTML = "";
+          querySnapshot.forEach((doc) => {
             const commentData = doc.data();
             const commentElement = createCommentElement(commentData);
             commentsList.appendChild(commentElement);
-        });
-        
-        commentCountSpan.textContent = querySnapshot.size;
-    } catch (error) {
-        console.error("Error loading comments:", error);
-    }
-}
+          });
 
-// Function to create comment element
-function createCommentElement(commentData) {
-    const commentElement = document.createElement('div');
-    commentElement.classList.add('comment-item');
-    commentElement.setAttribute('data-comment-id', commentData.commentId || commentData.id);
-    
-    const timestamp = commentData.createdAt?.toDate 
-        ? commentData.createdAt.toDate().toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
-        : 'Just now';
+          commentCountSpan.textContent = querySnapshot.size;
+        } catch (error) {
+          console.error("Error loading comments:", error);
+        }
+      }
 
-    commentElement.innerHTML = `
-        <div class="comment-author">${commentData.userName || 'Unknown User'}</div>
+      // Function to create comment element
+      function createCommentElement(commentData) {
+        const commentElement = document.createElement("div");
+        commentElement.classList.add("comment-item");
+        commentElement.setAttribute(
+          "data-comment-id",
+          commentData.commentId || commentData.id,
+        );
+
+        const timestamp = commentData.createdAt?.toDate
+          ? commentData.createdAt.toDate().toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })
+          : "Just now";
+
+        commentElement.innerHTML = `
+        <div class="comment-author">${commentData.userName || "Unknown User"}</div>
         <div class="comment-text">${commentData.text}</div>
         <div class="comment-timestamp">${timestamp}</div>
         <button class="delete-comment-btn"><i class="fas fa-times-circle"></i></button>
     `;
-    
-    return commentElement;
-}
 
-// Function to setup real-time listeners for likes and comments
+        return commentElement;
+      }
 
-// Function to get teacher name from post data
-async function getTeacherNameForPost(teacherID) {
-    if (!teacherID) {
-        console.log("❌ No teacherID provided for post");
-        return "Unknown Teacher";
-    }
-    
-    try {
-        console.log(`🔍 Fetching teacher name for ID: ${teacherID}`);
-        const userRef = doc(db, "users", teacherID);
-        const snap = await getDoc(userRef);
-        
-        if (snap.exists()) {
+      // Function to setup real-time listeners for likes and comments
+
+      // Function to get teacher name from post data
+      async function getTeacherNameForPost(teacherID) {
+        if (!teacherID) {
+          console.log("❌ No teacherID provided for post");
+          return "Unknown Teacher";
+        }
+
+        try {
+          console.log(`🔍 Fetching teacher name for ID: ${teacherID}`);
+          const userRef = doc(db, "users", teacherID);
+          const snap = await getDoc(userRef);
+
+          if (snap.exists()) {
             const data = snap.data();
-            const teacherName = `${data.firstName || ""} ${data.lastName || ""}`.trim() || "Unknown Teacher";
+            const teacherName =
+              `${data.firstName || ""} ${data.lastName || ""}`.trim() ||
+              "Unknown Teacher";
             console.log(`✅ Found teacher: ${teacherName}`);
             return teacherName;
-        } else {
+          } else {
             console.log("❌ Teacher document not found");
             return "Unknown Teacher";
+          }
+        } catch (e) {
+          console.error("Error fetching teacher name:", e);
+          return "Unknown Teacher";
         }
-    } catch (e) {
-        console.error("Error fetching teacher name:", e);
-        return "Unknown Teacher";
-    }
-}
+      }
 
-// Function to get classroom name
-async function getClassroomName(classroomID) {
-    if (!classroomID) {
-        console.log("❌ No classroomID provided");
-        return "";
-    }
-    
-    try {
-        console.log(`🔍 Fetching classroom name for ID: ${classroomID}`);
-        const classroomRef = doc(db, "classrooms", classroomID);
-        const snap = await getDoc(classroomRef);
-        if (snap.exists()) {
+      // Function to get classroom name
+      async function getClassroomName(classroomID) {
+        if (!classroomID) {
+          console.log("❌ No classroomID provided");
+          return "";
+        }
+
+        try {
+          console.log(`🔍 Fetching classroom name for ID: ${classroomID}`);
+          const classroomRef = doc(db, "classrooms", classroomID);
+          const snap = await getDoc(classroomRef);
+          if (snap.exists()) {
             const data = snap.data();
             const className = data.classroomName || "";
             console.log(`✅ Found classroom: ${className}`);
             return className;
-        } else {
+          } else {
             console.log("❌ Classroom document not found");
             return "";
+          }
+        } catch (e) {
+          console.error("Error fetching classroom name:", e);
+          return "";
         }
-    } catch (e) {
-        console.error("Error fetching classroom name:", e);
-        return "";
-    }
-}
+      }
 
-// Updated loadPosts function to fetch teacher names for each post
-async function loadPosts() {
-    try {
-        // get classroomId from URL or localStorage
-        let classroomId = new URLSearchParams(window.location.search).get('classroomId');
-        if (!classroomId) {
-            classroomId = localStorage.getItem('selectedClassId');
-        }
-        if (!classroomId) {
+      // Updated loadPosts function to fetch teacher names for each post
+      async function loadPosts() {
+        try {
+          // get classroomId from URL or localStorage
+          let classroomId = new URLSearchParams(window.location.search).get(
+            "classroomId",
+          );
+          if (!classroomId) {
+            classroomId = localStorage.getItem("selectedClassId");
+          }
+          if (!classroomId) {
             alert("No classroom selected! Please go back to the homepage.");
             window.location.href = "homepage-teachers.html";
             return;
-        }
+          }
 
-        console.log(`📝 Loading posts for classroom: ${classroomId}`);
+          console.log(`📝 Loading posts for classroom: ${classroomId}`);
 
-        // Firestore query only for this classroom
-        const postsRef = collection(db, "posts");
-        const q = query(
+          // Firestore query only for this classroom
+          const postsRef = collection(db, "posts");
+          const q = query(
             postsRef,
             where("classroomID", "==", classroomId),
-            orderBy("created_at", "desc")
-        );
+            orderBy("created_at", "desc"),
+          );
 
-        const querySnapshot = await getDocs(q);
+          const querySnapshot = await getDocs(q);
 
-        postFeed.innerHTML = ""; // clear feed first
+          postFeed.innerHTML = ""; // clear feed first
 
-        if (querySnapshot.empty) {
-            postFeed.innerHTML = '<div class="notification-item">No posts found for this classroom</div>';
+          if (querySnapshot.empty) {
+            postFeed.innerHTML =
+              '<div class="notification-item">No posts found for this classroom</div>';
             return;
-        }
+          }
 
-        console.log(`📄 Found ${querySnapshot.size} posts`);
+          console.log(`📄 Found ${querySnapshot.size} posts`);
 
-        // Process each post and fetch teacher names
-        for (const docSnap of querySnapshot.docs) {
+          // Process each post and fetch teacher names
+          for (const docSnap of querySnapshot.docs) {
             const data = docSnap.data();
             console.log(`🔄 Processing post ${docSnap.id}:`, data);
 
@@ -384,84 +470,108 @@ async function loadPosts() {
             const teacherName = await getTeacherNameForPost(data.teacherID);
             const classroomName = await getClassroomName(data.classroomID);
 
-            console.log(`✅ Post ${docSnap.id} - Teacher: ${teacherName}, Classroom: ${classroomName}`);
+            console.log(
+              `✅ Post ${docSnap.id} - Teacher: ${teacherName}, Classroom: ${classroomName}`,
+            );
 
             const files = [];
             const postElement = createPostElement(
-                docSnap.id, // Pass post ID
-                data.task || data.type,
-                data.description || '',
-                data.type,
-                data.date || '',
-                files,
-                teacherName, // Use the fetched teacher name, not loggedInTeacherName
-                data.created_at
+              docSnap.id, // Pass post ID
+              data.task || data.type,
+              data.description || "",
+              data.type,
+              data.date || "",
+              files,
+              teacherName, // Use the fetched teacher name, not loggedInTeacherName
+              data.created_at,
             );
 
             postFeed.appendChild(postElement);
             addPostInteractionListeners(postElement);
 
-            if (data.type === 'Event' || data.type === 'Reminder' || data.type === 'Task') {
-                createRightSectionItem(data.task || data.type, data.date || '', data.type);
+            if (
+              data.type === "Event" ||
+              data.type === "Reminder" ||
+              data.type === "Task"
+            ) {
+              createRightSectionItem(
+                data.task || data.type,
+                data.date || "",
+                data.type,
+              );
             }
+          }
+        } catch (error) {
+          console.error("Error loading posts:", error);
+          const postFeed = document.getElementById("post-feed");
+          postFeed.innerHTML =
+            '<div class="notification-item">Error loading posts</div>';
         }
+      }
 
-    } catch (error) {
-        console.error("Error loading posts:", error);
-        const postFeed = document.getElementById('post-feed');
-        postFeed.innerHTML = '<div class="notification-item">Error loading posts</div>';
-    }
-}
+      // Updated createPostElement function (no changes needed here, just for reference)
+      function createPostElement(
+        postId,
+        title,
+        content,
+        type,
+        date,
+        files,
+        teacherName,
+        createdAt,
+        classroomName,
+      ) {
+        const postElement = document.createElement("div");
+        postElement.classList.add("card", "post-feed-card");
+        postElement.setAttribute("data-post-id", postId);
 
-// Updated createPostElement function (no changes needed here, just for reference)
-function createPostElement(postId, title, content, type, date, files, teacherName, createdAt, classroomName) {
-    const postElement = document.createElement('div');
-    postElement.classList.add('card', 'post-feed-card');
-    postElement.setAttribute('data-post-id', postId);
-
-    // --- File handling ---
-    let fileHtml = '';
-    if (files.length > 0) {
-        const firstFile = files[0];
-        if (firstFile.type.startsWith('image/')) {
+        // --- File handling ---
+        let fileHtml = "";
+        if (files.length > 0) {
+          const firstFile = files[0];
+          if (firstFile.type.startsWith("image/")) {
             const imageUrl = URL.createObjectURL(firstFile);
             fileHtml = `<img src="${imageUrl}" alt="Uploaded image" class="post-image">`;
-        } else {
+          } else {
             fileHtml = `<p class="post-text">Attached File: ${firstFile.name}</p>`;
+          }
         }
-    }
 
-    // --- Relative timestamp ---
-    function getRelativeTime(timestamp) {
-        if (!timestamp) return '';
-        const now = new Date();
-        const createdTime = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-        const diffMs = now - createdTime;
-        const diffSeconds = Math.floor(diffMs / 1000);
-        const diffMinutes = Math.floor(diffSeconds / 60);
-        const diffHours = Math.floor(diffMinutes / 60);
-        const diffDays = Math.floor(diffHours / 24);
+        // --- Relative timestamp ---
+        function getRelativeTime(timestamp) {
+          if (!timestamp) return "";
+          const now = new Date();
+          const createdTime = timestamp.toDate
+            ? timestamp.toDate()
+            : new Date(timestamp);
+          const diffMs = now - createdTime;
+          const diffSeconds = Math.floor(diffMs / 1000);
+          const diffMinutes = Math.floor(diffSeconds / 60);
+          const diffHours = Math.floor(diffMinutes / 60);
+          const diffDays = Math.floor(diffHours / 24);
 
-        if (diffSeconds < 60) return 'Just now';
-        if (diffMinutes < 60) return `${diffMinutes} min${diffMinutes > 1 ? 's' : ''} ago`;
-        if (diffHours < 24) return `${diffHours} hr${diffHours > 1 ? 's' : ''} ago`;
-        return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-    }
+          if (diffSeconds < 60) return "Just now";
+          if (diffMinutes < 60)
+            return `${diffMinutes} min${diffMinutes > 1 ? "s" : ""} ago`;
+          if (diffHours < 24)
+            return `${diffHours} hr${diffHours > 1 ? "s" : ""} ago`;
+          return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
+        }
 
-    const relativeTimestamp = getRelativeTime(createdAt);
+        const relativeTimestamp = getRelativeTime(createdAt);
 
-    // --- Additional details ---
-    let additionalDetails = '';
-    if (date) {
-        const [year, month, day] = date.split('-');
-        const formattedDate = `${day}/${month}/${year.slice(2)}`;
-        additionalDetails += `<li><i class="fas fa-calendar-alt"></i> Date: ${formattedDate}</li>`;
-    }
-    if (type === 'Event') {
-        additionalDetails += `<li><i class="fas fa-clock"></i> Time: To be announced</li>`;
-    }
+        // --- Additional details ---
+        let additionalDetails = "";
+        if (date) {
+          const [year, month, day] = date.split("-");
+          const formattedDate = `${day}/${month}/${year.slice(2)}`;
+          additionalDetails += `<li><i class="fas fa-calendar-alt"></i> Date: ${formattedDate}</li>`;
+        }
+        if (type === "Event") {
+          additionalDetails += `<li><i class="fas fa-clock"></i> Time: To be announced</li>`;
+        }
 
-    const postHtml = `
+        const postHtml = `
 <div class="post-info">
     <div class="user-info">
         <i class="fas fa-user-circle post-avatar"></i>
@@ -472,9 +582,9 @@ function createPostElement(postId, title, content, type, date, files, teacherNam
     </div>
     <span class="timestamp">${relativeTimestamp}</span>
 </div>
-<h3 class="post-title">${title} ${type === 'Event' ? '🎉' : ''}</h3>
-<p class="post-text">${content.replace(/\n/g, '<br>')}</p>
-${additionalDetails ? `<ul class="post-details">${additionalDetails}</ul>` : ''}
+<h3 class="post-title">${title} ${type === "Event" ? "🎉" : ""}</h3>
+<p class="post-text">${content.replace(/\n/g, "<br>")}</p>
+${additionalDetails ? `<ul class="post-details">${additionalDetails}</ul>` : ""}
 ${fileHtml}
 <div class="post-interaction">
     <button class="like-btn" data-post-id="${postId}">
@@ -501,740 +611,814 @@ ${fileHtml}
 </div>
 `;
 
-    postElement.innerHTML = postHtml;
-    return postElement;
-}
+        postElement.innerHTML = postHtml;
+        return postElement;
+      }
 
-// Notification badge functionality
-async function getTeacherClassrooms(teacherId) {
-    try {
-        const classroomsRef = collection(db, "classrooms");
-        const q = query(classroomsRef, where("teacherId", "==", teacherId));
-        const snapshot = await getDocs(q);
-        
-        const teacherClassrooms = {};
-        snapshot.forEach(doc => {
+      // Notification badge functionality
+      async function getTeacherClassrooms(teacherId) {
+        try {
+          const classroomsRef = collection(db, "classrooms");
+          const q = query(classroomsRef, where("teacherId", "==", teacherId));
+          const snapshot = await getDocs(q);
+
+          const teacherClassrooms = {};
+          snapshot.forEach((doc) => {
             teacherClassrooms[doc.id] = doc.data();
-        });
-        
-        return teacherClassrooms;
-    } catch (error) {
-        console.error("Error getting teacher classrooms:", error);
-        return {};
-    }
-}
+          });
 
-async function getReadNotifications(teacherId) {
-    try {
-        const notificationsRef = collection(db, "notification_teacher");
-        const q = query(
-            notificationsRef, 
+          return teacherClassrooms;
+        } catch (error) {
+          console.error("Error getting teacher classrooms:", error);
+          return {};
+        }
+      }
+
+      async function getReadNotifications(teacherId) {
+        try {
+          const notificationsRef = collection(db, "notification_teacher");
+          const q = query(
+            notificationsRef,
             where("teacherID", "==", teacherId),
-            where("status", "==", "read")
-        );
-        const snapshot = await getDocs(q);
-        const readNotifications = {};
-        snapshot.forEach(doc => {
+            where("status", "==", "read"),
+          );
+          const snapshot = await getDocs(q);
+          const readNotifications = {};
+          snapshot.forEach((doc) => {
             const data = doc.data();
             const key = `${data.type}_${data.notificationID}`;
             readNotifications[key] = true;
-        });
-        return readNotifications;
-    } catch (error) {
-        console.error("Error getting read notifications:", error);
-        return {};
-    }
-}
+          });
+          return readNotifications;
+        } catch (error) {
+          console.error("Error getting read notifications:", error);
+          return {};
+        }
+      }
 
-async function countUnreadNotifications(teacherId) {
-    try {
-        // Get all calendar events
-        const calendarRef = collection(db, "calendar");
-        const calendarSnapshot = await getDocs(calendarRef);
-        
-        // Get teacher's classrooms
-        const teacherClassrooms = await getTeacherClassrooms(teacherId);
-        const teacherClassroomIds = Object.keys(teacherClassrooms);
-        
-        // Get all students with status "active" in teacher's classrooms
-        let studentsSnapshot;
-        if (teacherClassroomIds.length > 0) {
+      async function countUnreadNotifications(teacherId) {
+        try {
+          // Get all calendar events
+          const calendarRef = collection(db, "calendar");
+          const calendarSnapshot = await getDocs(calendarRef);
+
+          // Get teacher's classrooms
+          const teacherClassrooms = await getTeacherClassrooms(teacherId);
+          const teacherClassroomIds = Object.keys(teacherClassrooms);
+
+          // Get all students with status "active" in teacher's classrooms
+          let studentsSnapshot;
+          if (teacherClassroomIds.length > 0) {
             const studentsRef = collection(db, "students");
             const studentsQuery = query(
-                studentsRef, 
-                where("status", "==", "active"),
-                where("classroomId", "in", teacherClassroomIds)
+              studentsRef,
+              where("status", "==", "active"),
+              where("classroomId", "in", teacherClassroomIds),
             );
             studentsSnapshot = await getDocs(studentsQuery);
-        } else {
+          } else {
             studentsSnapshot = { docs: [] };
-        }
-        
-        // Get all read notifications
-        const readNotifications = await getReadNotifications(teacherId);
-        
-        // Count unread calendar notifications
-        let unreadCount = 0;
-        calendarSnapshot.forEach(doc => {
+          }
+
+          // Get all read notifications
+          const readNotifications = await getReadNotifications(teacherId);
+
+          // Count unread calendar notifications
+          let unreadCount = 0;
+          calendarSnapshot.forEach((doc) => {
             const key = `calendar_${doc.id}`;
             if (!readNotifications[key]) {
-                unreadCount++;
+              unreadCount++;
             }
-        });
-        
-        // Count unread student join notifications
-        studentsSnapshot.forEach(doc => {
+          });
+
+          // Count unread student join notifications
+          studentsSnapshot.forEach((doc) => {
             const key = `student_${doc.id}`;
             if (!readNotifications[key]) {
-                unreadCount++;
+              unreadCount++;
             }
-        });
-        
-        return unreadCount;
-    } catch (error) {
-        console.error("Error counting unread notifications:", error);
-        return 0;
-    }
-}
+          });
 
-async function updateNotificationBadge() {
-    if (!auth.currentUser) return;
-    
-    const unreadCount = await countUnreadNotifications(auth.currentUser.uid);
-    const badge = document.getElementById('notification-badge');
-    
-    if (badge) {
-        badge.textContent = unreadCount;
-        
-        // Hide badge if count is 0
-        if (unreadCount === 0) {
-            badge.style.display = 'none';
-        } else {
-            badge.style.display = 'flex';
+          return unreadCount;
+        } catch (error) {
+          console.error("Error counting unread notifications:", error);
+          return 0;
         }
-        console.log("Notification badge updated:", unreadCount);
-    }
-}
-// --------------------
-// 2. Load teacher name
-// --------------------
+      }
 
-let loggedInTeacherName = "Unknown Teacher";
+      async function updateNotificationBadge() {
+        if (!auth.currentUser) return;
 
-onAuthStateChanged(auth, async (user) => {
-    const teacherNameElement = document.getElementById("teacher-name");
+        const unreadCount = await countUnreadNotifications(
+          auth.currentUser.uid,
+        );
+        const badge = document.getElementById("notification-badge");
 
-    showLoading(); // 👈 start loading immediately
+        if (badge) {
+          badge.textContent = unreadCount;
 
-    try {
-        if (user) {
+          // Hide badge if count is 0
+          if (unreadCount === 0) {
+            badge.style.display = "none";
+          } else {
+            badge.style.display = "flex";
+          }
+          console.log("Notification badge updated:", unreadCount);
+        }
+      }
+      // --------------------
+      // 2. Load teacher name
+      // --------------------
+
+      let loggedInTeacherName = "Unknown Teacher";
+
+      onAuthStateChanged(auth, async (user) => {
+        const teacherNameElement = document.getElementById("teacher-name");
+
+        showLoading(); // 👈 start loading immediately
+
+        try {
+          if (user) {
             const uid = user.uid;
             const userDocRef = doc(db, "users", uid);
 
             try {
-                const docSnap = await getDoc(userDocRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    loggedInTeacherName = `${data.firstName} ${data.lastName}`;
-                    teacherNameElement.textContent = loggedInTeacherName;
-                } else {
-                    teacherNameElement.textContent = "Unknown Teacher";
-                }
+              const docSnap = await getDoc(userDocRef);
+              if (docSnap.exists()) {
+                const data = docSnap.data();
+                loggedInTeacherName = `${data.firstName} ${data.lastName}`;
+                teacherNameElement.textContent = loggedInTeacherName;
+              } else {
+                teacherNameElement.textContent = "Unknown Teacher";
+              }
             } catch (error) {
-                console.error("Error fetching teacher data:", error);
-                teacherNameElement.textContent = "Error loading name";
+              console.error("Error fetching teacher data:", error);
+              teacherNameElement.textContent = "Error loading name";
             }
 
             // ✅ Load posts after setting teacher name
             await loadPosts();
-            
+
             // ✅ Update notification badge
             await updateNotificationBadge();
-
-        } else {
+          } else {
             teacherNameElement.textContent = "Not signed in";
+          }
+        } catch (err) {
+          console.error("Auth state error:", err);
+        } finally {
+          hideLoading(); // 👈 always hide loading once done
         }
-    } catch (err) {
-        console.error("Auth state error:", err);
-    } finally {
-        hideLoading(); // 👈 always hide loading once done
-    }
-});
+      });
 
+      // Function to load likes for a post - UPDATED for new structure
+      async function loadLikesForPost(postId, likeCountSpan, likeBtn) {
+        try {
+          const likesRef = collection(db, "likes");
+          const q = query(likesRef, where("postId", "==", postId));
+          const querySnapshot = await getDocs(q);
 
-// Function to load likes for a post - UPDATED for new structure
-async function loadLikesForPost(postId, likeCountSpan, likeBtn) {
-    try {
-        const likesRef = collection(db, "likes");
-        const q = query(likesRef, where("postId", "==", postId));
-        const querySnapshot = await getDocs(q);
-        
-        const likeCount = querySnapshot.size;
-        likeCountSpan.textContent = likeCount;
-        
-        // Check if current user has liked this post
-        const currentUserId = auth.currentUser?.uid;
-        if (currentUserId) {
+          const likeCount = querySnapshot.size;
+          likeCountSpan.textContent = likeCount;
+
+          // Check if current user has liked this post
+          const currentUserId = auth.currentUser?.uid;
+          if (currentUserId) {
             const userLikeQuery = query(
-                likesRef, 
-                where("postId", "==", postId),
-                where("userId", "==", currentUserId)
+              likesRef,
+              where("postId", "==", postId),
+              where("userId", "==", currentUserId),
             );
             const userLikeSnapshot = await getDocs(userLikeQuery);
             if (!userLikeSnapshot.empty) {
-                // User has liked this post - make heart red
-                const heartIcon = likeBtn.querySelector('i');
-                heartIcon.classList.add('liked');
-                heartIcon.style.color = '#ff4444';
+              // User has liked this post - make heart red
+              const heartIcon = likeBtn.querySelector("i");
+              heartIcon.classList.add("liked");
+              heartIcon.style.color = "#ff4444";
             } else {
-                // User hasn't liked this post - make heart white
-                const heartIcon = likeBtn.querySelector('i');
-                heartIcon.classList.remove('liked');
-                heartIcon.style.color = '#666';
+              // User hasn't liked this post - make heart white
+              const heartIcon = likeBtn.querySelector("i");
+              heartIcon.classList.remove("liked");
+              heartIcon.style.color = "#666";
             }
+          }
+        } catch (error) {
+          console.error("Error loading likes:", error);
         }
-    } catch (error) {
-        console.error("Error loading likes:", error);
-    }
-}
+      }
 
-// Function to setup real-time listeners for likes and comments - UPDATED
-function setupRealtimeListeners(postId, likeCountSpan, likeBtn, commentsList, commentCountSpan) {
-    // Real-time listener for likes
-    const likesRef = collection(db, "likes");
-    const likesQuery = query(likesRef, where("postId", "==", postId));
-    
-    onSnapshot(likesQuery, (snapshot) => {
-        const likeCount = snapshot.size;
-        likeCountSpan.textContent = likeCount;
-        
-        // Check if current user has liked this post
-        const currentUserId = auth.currentUser?.uid;
-        if (currentUserId) {
-            const userLiked = snapshot.docs.some(doc => doc.data().userId === currentUserId);
-            const heartIcon = likeBtn.querySelector('i');
+      // Function to setup real-time listeners for likes and comments - UPDATED
+      function setupRealtimeListeners(
+        postId,
+        likeCountSpan,
+        likeBtn,
+        commentsList,
+        commentCountSpan,
+      ) {
+        // Real-time listener for likes
+        const likesRef = collection(db, "likes");
+        const likesQuery = query(likesRef, where("postId", "==", postId));
+
+        onSnapshot(likesQuery, (snapshot) => {
+          const likeCount = snapshot.size;
+          likeCountSpan.textContent = likeCount;
+
+          // Check if current user has liked this post
+          const currentUserId = auth.currentUser?.uid;
+          if (currentUserId) {
+            const userLiked = snapshot.docs.some(
+              (doc) => doc.data().userId === currentUserId,
+            );
+            const heartIcon = likeBtn.querySelector("i");
             if (userLiked) {
-                // User has liked this post - make heart red
-                heartIcon.classList.add('liked');
-                heartIcon.style.color = '#ff4444';
+              // User has liked this post - make heart red
+              heartIcon.classList.add("liked");
+              heartIcon.style.color = "#ff4444";
             } else {
-                // User hasn't liked this post - make heart white
-                heartIcon.classList.remove('liked');
-                heartIcon.style.color = '#666';
+              // User hasn't liked this post - make heart white
+              heartIcon.classList.remove("liked");
+              heartIcon.style.color = "#666";
             }
-        }
-    });
+          }
+        });
 
-    // Real-time listener for comments
-    const commentsRef = collection(db, "comments");
-    const commentsQuery = query(
-        commentsRef, 
-        where("postId", "==", postId),
-        orderBy("createdAt", "asc")
-    );
-    
-    onSnapshot(commentsQuery, (snapshot) => {
-        commentsList.innerHTML = '';
-        snapshot.forEach(doc => {
+        // Real-time listener for comments
+        const commentsRef = collection(db, "comments");
+        const commentsQuery = query(
+          commentsRef,
+          where("postId", "==", postId),
+          orderBy("createdAt", "asc"),
+        );
+
+        onSnapshot(commentsQuery, (snapshot) => {
+          commentsList.innerHTML = "";
+          snapshot.forEach((doc) => {
             const commentData = doc.data();
             const commentElement = createCommentElement(commentData);
             commentsList.appendChild(commentElement);
+          });
+          commentCountSpan.textContent = snapshot.size;
         });
-        commentCountSpan.textContent = snapshot.size;
-    });
-}
+      }
 
-// UPDATED addPostInteractionListeners function
-function addPostInteractionListeners(postElement) {
-    const postId = postElement.getAttribute('data-post-id');
-    const likeBtn = postElement.querySelector('.like-btn');
-    const likeCountSpan = postElement.querySelector('.like-count');
-    const commentBtn = postElement.querySelector('.comment-btn');
-    const moreBtn = postElement.querySelector('.more-btn');
-    const deleteBtn = postElement.querySelector('.delete-btn');
-    const dropdownMenu = postElement.querySelector('.dropdown-menu');
-    const commentsSection = postElement.querySelector('.comments-section');
-    const commentInputContainer = commentsSection.querySelector('.comment-input-container');
-    const commentsList = commentsSection.querySelector('.comments-list');
-    const commentInput = commentInputContainer.querySelector('.comment-input');
-    const submitCommentBtn = commentInputContainer.querySelector('.submit-comment-btn');
-    const commentCountSpan = postElement.querySelector('.comment-count');
+      // UPDATED addPostInteractionListeners function
+      function addPostInteractionListeners(postElement) {
+        const postId = postElement.getAttribute("data-post-id");
+        const likeBtn = postElement.querySelector(".like-btn");
+        const likeCountSpan = postElement.querySelector(".like-count");
+        const commentBtn = postElement.querySelector(".comment-btn");
+        const moreBtn = postElement.querySelector(".more-btn");
+        const deleteBtn = postElement.querySelector(".delete-btn");
+        const dropdownMenu = postElement.querySelector(".dropdown-menu");
+        const commentsSection = postElement.querySelector(".comments-section");
+        const commentInputContainer = commentsSection.querySelector(
+          ".comment-input-container",
+        );
+        const commentsList = commentsSection.querySelector(".comments-list");
+        const commentInput =
+          commentInputContainer.querySelector(".comment-input");
+        const submitCommentBtn = commentInputContainer.querySelector(
+          ".submit-comment-btn",
+        );
+        const commentCountSpan = postElement.querySelector(".comment-count");
 
-    // Load initial likes and comments
-    loadLikesForPost(postId, likeCountSpan, likeBtn);
-    loadCommentsForPost(postId, commentsList, commentCountSpan);
-    
-    // Setup real-time listeners
-    setupRealtimeListeners(postId, likeCountSpan, likeBtn, commentsList, commentCountSpan);
+        // Load initial likes and comments
+        loadLikesForPost(postId, likeCountSpan, likeBtn);
+        loadCommentsForPost(postId, commentsList, commentCountSpan);
 
-    // Toggle dropdown menu for delete button
-    moreBtn.addEventListener('click', () => {
-        dropdownMenu.classList.toggle('hidden');
-    });
+        // Setup real-time listeners
+        setupRealtimeListeners(
+          postId,
+          likeCountSpan,
+          likeBtn,
+          commentsList,
+          commentCountSpan,
+        );
 
-    // Hide dropdown if user clicks outside
-    document.addEventListener('click', (event) => {
-        if (!moreBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
-            dropdownMenu.classList.add('hidden');
-        }
-    });
+        // Toggle dropdown menu for delete button
+        moreBtn.addEventListener("click", () => {
+          dropdownMenu.classList.toggle("hidden");
+        });
 
-    // Like button functionality - UPDATED
-    likeBtn.addEventListener('click', async () => {
-        const currentUser = auth.currentUser;
-        if (!currentUser) {
-            alert('Please sign in to like posts');
+        // Hide dropdown if user clicks outside
+        document.addEventListener("click", (event) => {
+          if (
+            !moreBtn.contains(event.target) &&
+            !dropdownMenu.contains(event.target)
+          ) {
+            dropdownMenu.classList.add("hidden");
+          }
+        });
+
+        // Like button functionality - UPDATED
+        likeBtn.addEventListener("click", async () => {
+          const currentUser = auth.currentUser;
+          if (!currentUser) {
+            alert("Please sign in to like posts");
             return;
-        }
+          }
 
-        try {
+          try {
             const likesRef = collection(db, "likes");
             const userLikeQuery = query(
-                likesRef, 
-                where("postId", "==", postId),
-                where("userId", "==", currentUser.uid)
+              likesRef,
+              where("postId", "==", postId),
+              where("userId", "==", currentUser.uid),
             );
-            
+
             const userLikeSnapshot = await getDocs(userLikeQuery);
-            const heartIcon = likeBtn.querySelector('i');
-            
+            const heartIcon = likeBtn.querySelector("i");
+
             if (userLikeSnapshot.empty) {
-                // Add like
-                await addDoc(likesRef, {
-                    postId: postId,
-                    userId: currentUser.uid,
-                    userName: loggedInTeacherName,
-                    createdAt: serverTimestamp()
-                });
-                // Heart will turn red via real-time listener
-            } else {
-                // Remove like (unlike)
-                const likeDoc = userLikeSnapshot.docs[0];
-                await deleteDoc(doc(db, "likes", likeDoc.id));
-                // Heart will turn white via real-time listener
-            }
-        } catch (error) {
-            console.error("Error toggling like:", error);
-        }
-    });
-
-    // Comment button functionality
-    commentBtn.addEventListener('click', () => {
-        commentInputContainer.classList.toggle('hidden');
-        commentsSection.classList.toggle('hidden');
-        if (!commentInputContainer.classList.contains('hidden')) {
-            commentInput.focus();
-        }
-    });
-
-    // Submit comment
-    submitCommentBtn.addEventListener('click', async () => {
-        const commentText = commentInput.value.trim();
-        const currentUser = auth.currentUser;
-        
-        if (!commentText) {
-            alert('Please enter a comment');
-            return;
-        }
-        
-        if (!currentUser) {
-            alert('Please sign in to comment');
-            return;
-        }
-
-        try {
-            const commentsRef = collection(db, "comments");
-            await addDoc(commentsRef, {
+              // Add like
+              await addDoc(likesRef, {
                 postId: postId,
                 userId: currentUser.uid,
                 userName: loggedInTeacherName,
-                text: commentText,
-                createdAt: serverTimestamp()
+                createdAt: serverTimestamp(),
+              });
+              // Heart will turn red via real-time listener
+            } else {
+              // Remove like (unlike)
+              const likeDoc = userLikeSnapshot.docs[0];
+              await deleteDoc(doc(db, "likes", likeDoc.id));
+              // Heart will turn white via real-time listener
+            }
+          } catch (error) {
+            console.error("Error toggling like:", error);
+          }
+        });
+
+        // Comment button functionality
+        commentBtn.addEventListener("click", () => {
+          commentInputContainer.classList.toggle("hidden");
+          commentsSection.classList.toggle("hidden");
+          if (!commentInputContainer.classList.contains("hidden")) {
+            commentInput.focus();
+          }
+        });
+
+        // Submit comment
+        submitCommentBtn.addEventListener("click", async () => {
+          const commentText = commentInput.value.trim();
+          const currentUser = auth.currentUser;
+
+          if (!commentText) {
+            alert("Please enter a comment");
+            return;
+          }
+
+          if (!currentUser) {
+            alert("Please sign in to comment");
+            return;
+          }
+
+          try {
+            const commentsRef = collection(db, "comments");
+            await addDoc(commentsRef, {
+              postId: postId,
+              userId: currentUser.uid,
+              userName: loggedInTeacherName,
+              text: commentText,
+              createdAt: serverTimestamp(),
             });
-            
-            commentInput.value = '';
-        } catch (error) {
+
+            commentInput.value = "";
+          } catch (error) {
             console.error("Error adding comment:", error);
             alert("Failed to add comment. Please try again.");
-        }
-    });
+          }
+        });
 
-    // Delete comment functionality
-    commentsList.addEventListener('click', async (event) => {
-        if (event.target.closest('.delete-comment-btn')) {
-            const commentItem = event.target.closest('.comment-item');
-            const commentId = commentItem.getAttribute('data-comment-id');
-            
+        // Delete comment functionality
+        commentsList.addEventListener("click", async (event) => {
+          if (event.target.closest(".delete-comment-btn")) {
+            const commentItem = event.target.closest(".comment-item");
+            const commentId = commentItem.getAttribute("data-comment-id");
+
             try {
-                // Find the comment document by matching the data
-                const commentsRef = collection(db, "comments");
-                const commentQuery = query(
-                    commentsRef, 
-                    where("postId", "==", postId),
-                    where("userId", "==", auth.currentUser.uid)
-                );
-                
-                const commentSnapshot = await getDocs(commentQuery);
-                if (!commentSnapshot.empty) {
-                    const commentDoc = commentSnapshot.docs[0];
-                    await deleteDoc(doc(db, "comments", commentDoc.id));
-                }
+              // Find the comment document by matching the data
+              const commentsRef = collection(db, "comments");
+              const commentQuery = query(
+                commentsRef,
+                where("postId", "==", postId),
+                where("userId", "==", auth.currentUser.uid),
+              );
+
+              const commentSnapshot = await getDocs(commentQuery);
+              if (!commentSnapshot.empty) {
+                const commentDoc = commentSnapshot.docs[0];
+                await deleteDoc(doc(db, "comments", commentDoc.id));
+              }
             } catch (error) {
-                console.error("Error deleting comment:", error);
+              console.error("Error deleting comment:", error);
             }
-        }
-    });
+          }
+        });
 
-    // Delete post functionality with modal
-    deleteBtn.addEventListener('click', () => {
-        postToDelete = postElement;
-        deleteModal.classList.remove('hidden');
-    });
-}
+        // Delete post functionality with modal
+        deleteBtn.addEventListener("click", () => {
+          postToDelete = postElement;
+          deleteModal.classList.remove("hidden");
+        });
+      }
 
+      document.addEventListener("DOMContentLoaded", () => {
+        // DOM elements
+        const postCreationCard = document.getElementById("post-creation-card");
+        const initialInput = document.getElementById("initial-input");
+        const expandedContent = document.getElementById("expanded-content");
+        const noteInput = document.getElementById("note-input");
+        const typedPostInputs = document.getElementById("typed-post-inputs");
+        const postTitleInput = document.getElementById("post-title-input");
+        const postDateInput = document.getElementById("post-date-input");
+        const postDescriptionInput = document.getElementById(
+          "post-description-input",
+        );
+        const postButton = document.getElementById("post-button");
+        const cancelButton = document.getElementById("cancel-button");
 
-        document.addEventListener('DOMContentLoaded', () => {
-    // DOM elements
-    const postCreationCard = document.getElementById('post-creation-card');
-    const initialInput = document.getElementById('initial-input');
-    const expandedContent = document.getElementById('expanded-content');
-    const noteInput = document.getElementById('note-input');
-    const typedPostInputs = document.getElementById('typed-post-inputs');
-    const postTitleInput = document.getElementById('post-title-input');
-    const postDateInput = document.getElementById('post-date-input');
-    const postDescriptionInput = document.getElementById('post-description-input');
-    const postButton = document.getElementById('post-button');
-    const cancelButton = document.getElementById('cancel-button');
-  
-    const postActionBtns = document.querySelectorAll('.post-action-btn');
-    const fileInput = document.getElementById('file-upload');
-    const filePreviewContainer = document.getElementById('file-preview-container');
-    const eventList = document.getElementById('event-list');
-    const reminderList = document.getElementById('reminder-list');
-    const taskList = document.getElementById('task-list');
+        const postActionBtns = document.querySelectorAll(".post-action-btn");
+        const fileInput = document.getElementById("file-upload");
+        const filePreviewContainer = document.getElementById(
+          "file-preview-container",
+        );
+        const eventList = document.getElementById("event-list");
+        const reminderList = document.getElementById("reminder-list");
+        const taskList = document.getElementById("task-list");
 
-    // Modal elements
-    const shareCodeBtn = document.querySelector('.share-code-btn');
-    const shareCodeModal = document.getElementById('shareCodeModal');
-    const deleteModal = document.getElementById('deleteModal');
-    const copyCodeBtn = document.getElementById('copyCodeBtn');
-    const classCodeText = document.getElementById('classCode');
+        // Modal elements
+        const shareCodeBtn = document.querySelector(".share-code-btn");
+        const shareCodeModal = document.getElementById("shareCodeModal");
+        const deleteModal = document.getElementById("deleteModal");
+        const copyCodeBtn = document.getElementById("copyCodeBtn");
+        const classCodeText = document.getElementById("classCode");
 
-    let postType = 'Note';
-    let postToDelete = null;
+        let postType = "Note";
+        let postToDelete = null;
 
-    // Event listener to expand the card when the initial input is clicked
-    initialInput.addEventListener('focus', () => {
-        postCreationCard.classList.add('expanded');
-        expandedContent.classList.remove('hidden');
-        initialInput.classList.add('hidden');
-        showInputFields('Note');
-    });
+        // Event listener to expand the card when the initial input is clicked
+        initialInput.addEventListener("focus", () => {
+          postCreationCard.classList.add("expanded");
+          expandedContent.classList.remove("hidden");
+          initialInput.classList.add("hidden");
+          showInputFields("Note");
+        });
 
-    // Event listener for the Cancel button
-    cancelButton.addEventListener('click', () => {
-        resetPostCard();
-    });
+        // Event listener for the Cancel button
+        cancelButton.addEventListener("click", () => {
+          resetPostCard();
+        });
 
-    // Handle post type selection
-    postActionBtns.forEach(button => {
-        button.addEventListener('click', (event) => {
-            postActionBtns.forEach(btn => btn.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+        // Handle post type selection
+        postActionBtns.forEach((button) => {
+          button.addEventListener("click", (event) => {
+            postActionBtns.forEach((btn) => btn.classList.remove("active"));
+            event.currentTarget.classList.add("active");
             postType = event.currentTarget.dataset.type;
             showInputFields(postType);
+          });
         });
-    });
 
+        // Function to show/hide input fields based on post type
+        function showInputFields(type) {
+          noteInput.classList.add("hidden");
+          typedPostInputs.classList.add("hidden");
+          noteInput.value = "";
+          postTitleInput.value = "";
+          postDateInput.value = "";
+          postDescriptionInput.value = "";
+          fileInput.value = "";
+          filePreviewContainer.innerHTML = "";
 
-
-    // Function to show/hide input fields based on post type
-    function showInputFields(type) {
-        noteInput.classList.add('hidden');
-        typedPostInputs.classList.add('hidden');
-        noteInput.value = '';
-        postTitleInput.value = '';
-        postDateInput.value = '';
-        postDescriptionInput.value = '';
-        fileInput.value = '';
-        filePreviewContainer.innerHTML = '';
-
-        if (type === 'Note' || type === 'File') {
-            noteInput.classList.remove('hidden');
+          if (type === "Note" || type === "File") {
+            noteInput.classList.remove("hidden");
             noteInput.placeholder = "What's taking place in your classroom?";
             noteInput.focus();
-        } else {
-            typedPostInputs.classList.remove('hidden');
+          } else {
+            typedPostInputs.classList.remove("hidden");
             postTitleInput.placeholder = `Enter ${type} Title...`;
             postDescriptionInput.placeholder = `Description: What's taking place in your classroom?`;
             postTitleInput.focus();
+          }
         }
-    }
 
-    // Handle file upload and preview
-    fileInput.addEventListener('change', (event) => {
-        filePreviewContainer.innerHTML = '';
-        const files = event.target.files;
-        if (files.length > 0) {
+        // Handle file upload and preview
+        fileInput.addEventListener("change", (event) => {
+          filePreviewContainer.innerHTML = "";
+          const files = event.target.files;
+          if (files.length > 0) {
             for (const file of files) {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        filePreviewContainer.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                } else {
-                    const fileSpan = document.createElement('span');
-                    fileSpan.textContent = file.name;
-                    filePreviewContainer.appendChild(fileSpan);
-                }
+              if (file.type.startsWith("image/")) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                  const img = document.createElement("img");
+                  img.src = e.target.result;
+                  filePreviewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+              } else {
+                const fileSpan = document.createElement("span");
+                fileSpan.textContent = file.name;
+                filePreviewContainer.appendChild(fileSpan);
+              }
             }
-        }
-    });
+          }
+        });
 
-    // Handle post creation
-   postButton.addEventListener('click', async () => {
-    let content = '';
-    let title = '';
-    let date = '';
+        // Handle post creation
+        postButton.addEventListener("click", async () => {
+          let content = "";
+          let title = "";
+          let date = "";
 
-    if (postType === 'Note' || postType === 'File') {
-        content = noteInput.value.trim();
-        title = postType;
-    } else {
-        title = postTitleInput.value.trim();
-        date = postDateInput.value;
-        content = postDescriptionInput.value.trim();
-    }
+          if (postType === "Note" || postType === "File") {
+            content = noteInput.value.trim();
+            title = postType;
+          } else {
+            title = postTitleInput.value.trim();
+            date = postDateInput.value;
+            content = postDescriptionInput.value.trim();
+          }
 
-    const teacherID = auth.currentUser ? auth.currentUser.uid : null;
-    let classroomId = new URLSearchParams(window.location.search).get('classroomId');
-    if (!classroomId) {
-        classroomId = localStorage.getItem('selectedClassId');
-    }
-    if (!classroomId) {
-        alert("No classroom selected! Please go back to the homepage.");
-        window.location.href = "homepage-teachers.html";
-        return;
-    }
+          const teacherID = auth.currentUser ? auth.currentUser.uid : null;
+          let classroomId = new URLSearchParams(window.location.search).get(
+            "classroomId",
+          );
+          if (!classroomId) {
+            classroomId = localStorage.getItem("selectedClassId");
+          }
+          if (!classroomId) {
+            alert("No classroom selected! Please go back to the homepage.");
+            window.location.href = "homepage-teachers.html";
+            return;
+          }
 
-    const files = fileInput.files;
+          const files = fileInput.files;
 
-    if (title || content || files.length > 0) {
-        try {
-            showLoading(); // Show loading while processing
+          if (title || content || files.length > 0) {
+            try {
+              showLoading(); // Show loading while processing
 
-            const postData = {
+              const postData = {
                 task: title || null,
-                description: content || '',
+                description: content || "",
                 type: postType,
                 date: date || null,
                 teacherID: teacherID,
                 classroomID: classroomId,
-                created_at: serverTimestamp()
-            };
+                created_at: serverTimestamp(),
+              };
 
-            // Save post to Firestore
-            const docRef = await addDoc(collection(db, "posts"), postData);
-            console.log("✅ Post added with ID:", docRef.id);
+              // Save post to Firestore
+              const docRef = await addDoc(collection(db, "posts"), postData);
+              console.log("✅ Post added with ID:", docRef.id);
 
-            // Send email only for Event, Task, Reminder
-            if (['Event', 'Task', 'Reminder'].includes(postType)) {
-                console.log(`📧 Preparing to send ${postType} notification to parents`);
-                
-                const parentEmails = await getParentEmailsForClassroom(classroomId);
+              // Send email only for Event, Task, Reminder
+              if (["Event", "Task", "Reminder"].includes(postType)) {
+                console.log(
+                  `📧 Preparing to send ${postType} notification to parents`,
+                );
+
+                const parentEmails =
+                  await getParentEmailsForClassroom(classroomId);
                 const classroomName = await getClassroomName(classroomId);
-                
+
                 if (parentEmails.length > 0) {
-                    await sendEmailToParents(postData, loggedInTeacherName, classroomName, parentEmails);
-                    console.log(`✅ ${postType} notification sent to ${parentEmails.length} parents`);
+                  await sendEmailToParents(
+                    postData,
+                    loggedInTeacherName,
+                    classroomName,
+                    parentEmails,
+                  );
+                  console.log(
+                    `✅ ${postType} notification sent to ${parentEmails.length} parents`,
+                  );
                 } else {
-                    console.log("ℹ️ No parent emails found - notification not sent");
+                  console.log(
+                    "ℹ️ No parent emails found - notification not sent",
+                  );
                 }
-            } else {
+              } else {
                 console.log("ℹ️ Post type doesn't require email notification");
-            }
+              }
 
-            // Create local DOM element
-            const newPost = createPostElement(docRef.id, title, content, postType, date, files);
-            postFeed.prepend(newPost);
-            addPostInteractionListeners(newPost);
-            
-            if (postType === 'Event' || postType === 'Reminder' || postType === 'Task') {
+              // Create local DOM element
+              const newPost = createPostElement(
+                docRef.id,
+                title,
+                content,
+                postType,
+                date,
+                files,
+              );
+              postFeed.prepend(newPost);
+              addPostInteractionListeners(newPost);
+
+              if (
+                postType === "Event" ||
+                postType === "Reminder" ||
+                postType === "Task"
+              ) {
                 createRightSectionItem(title, date, postType);
+              }
+
+              resetPostCard();
+            } catch (error) {
+              console.error("❌ Error adding post to Firestore:", error);
+              alert("Failed to save post. Please try again.");
+            } finally {
+              hideLoading(); // Hide loading regardless of outcome
             }
-
-            resetPostCard();
-            
-        } catch (error) {
-            console.error("❌ Error adding post to Firestore:", error);
-            alert("Failed to save post. Please try again.");
-        } finally {
-            hideLoading(); // Hide loading regardless of outcome
-        }
-    } else {
-        alert('Please add some content, a title, or a file to your post.');
-    }
-});
-    
-    function resetPostCard() {
-        noteInput.value = '';
-        postTitleInput.value = '';
-        postDateInput.value = '';
-        postDescriptionInput.value = '';
-        fileInput.value = '';
-        filePreviewContainer.innerHTML = '';
-        
-        expandedContent.classList.add('hidden');
-        initialInput.classList.remove('hidden');
-        postCreationCard.classList.remove('expanded');
-        
-        postType = 'Note';
-        postActionBtns.forEach(btn => btn.classList.remove('active'));
-        document.querySelector('.post-action-btn[data-type="Note"]').classList.add('active');
-    }
-
-    async function getParentEmailsForClassroom(classroomID) {
-    try {
-        console.log(`🔍 Fetching parent emails for classroom: ${classroomID}`);
-        
-        // First, get all students in this classroom
-        const studentsRef = collection(db, "students");
-        const studentsQuery = query(
-            studentsRef,
-            where("classroomId", "==", classroomID),
-            where("status", "==", "active")
-        );
-        
-        const studentsSnapshot = await getDocs(studentsQuery);
-        
-        if (studentsSnapshot.empty) {
-            console.log("❌ No active students found in this classroom");
-            return [];
-        }
-
-        console.log(`📚 Found ${studentsSnapshot.size} students in classroom`);
-        
-        // Get unique parent IDs from students
-        const parentIds = [];
-        studentsSnapshot.forEach(doc => {
-            const studentData = doc.data();
-            if (studentData.parentId && !parentIds.includes(studentData.parentId)) {
-                parentIds.push(studentData.parentId);
-            }
+          } else {
+            alert("Please add some content, a title, or a file to your post.");
+          }
         });
 
-        console.log(`👨‍👩‍👧‍👦 Found ${parentIds.length} unique parent IDs:`, parentIds);
+        function resetPostCard() {
+          noteInput.value = "";
+          postTitleInput.value = "";
+          postDateInput.value = "";
+          postDescriptionInput.value = "";
+          fileInput.value = "";
+          filePreviewContainer.innerHTML = "";
 
-        if (parentIds.length === 0) {
-            console.log("❌ No parent IDs found for students in this classroom");
-            return [];
+          expandedContent.classList.add("hidden");
+          initialInput.classList.remove("hidden");
+          postCreationCard.classList.remove("expanded");
+
+          postType = "Note";
+          postActionBtns.forEach((btn) => btn.classList.remove("active"));
+          document
+            .querySelector('.post-action-btn[data-type="Note"]')
+            .classList.add("active");
         }
 
-        // Get parent emails from users collection
-        const parentEmails = [];
-        
-        for (const parentId of parentIds) {
-            try {
+        async function getParentEmailsForClassroom(classroomID) {
+          try {
+            console.log(
+              `🔍 Fetching parent emails for classroom: ${classroomID}`,
+            );
+
+            // First, get all students in this classroom
+            const studentsRef = collection(db, "students");
+            const studentsQuery = query(
+              studentsRef,
+              where("classroomId", "==", classroomID),
+              where("status", "==", "active"),
+            );
+
+            const studentsSnapshot = await getDocs(studentsQuery);
+
+            if (studentsSnapshot.empty) {
+              console.log("❌ No active students found in this classroom");
+              return [];
+            }
+
+            console.log(
+              `📚 Found ${studentsSnapshot.size} students in classroom`,
+            );
+
+            // Get unique parent IDs from students
+            const parentIds = [];
+            studentsSnapshot.forEach((doc) => {
+              const studentData = doc.data();
+              if (
+                studentData.parentId &&
+                !parentIds.includes(studentData.parentId)
+              ) {
+                parentIds.push(studentData.parentId);
+              }
+            });
+
+            console.log(
+              `👨‍👩‍👧‍👦 Found ${parentIds.length} unique parent IDs:`,
+              parentIds,
+            );
+
+            if (parentIds.length === 0) {
+              console.log(
+                "❌ No parent IDs found for students in this classroom",
+              );
+              return [];
+            }
+
+            // Get parent emails from users collection
+            const parentEmails = [];
+
+            for (const parentId of parentIds) {
+              try {
                 const userRef = doc(db, "users", parentId);
                 const userSnap = await getDoc(userRef);
-                
+
                 if (userSnap.exists()) {
-                    const userData = userSnap.data();
-                    // Check if user is a parent
-                    if (userData.role === "parent" && userData.email) {
-                        parentEmails.push(userData.email);
-                        console.log(`✅ Found parent email: ${userData.email}`);
-                    }
+                  const userData = userSnap.data();
+                  // Check if user is a parent
+                  if (userData.role === "parent" && userData.email) {
+                    parentEmails.push(userData.email);
+                    console.log(`✅ Found parent email: ${userData.email}`);
+                  }
                 } else {
-                    console.log(`❌ User document not found for parent ID: ${parentId}`);
+                  console.log(
+                    `❌ User document not found for parent ID: ${parentId}`,
+                  );
                 }
-            } catch (error) {
+              } catch (error) {
                 console.error(`Error fetching user ${parentId}:`, error);
+              }
             }
+
+            console.log(`📧 Final parent emails list:`, parentEmails);
+            return parentEmails;
+          } catch (error) {
+            console.error("Error fetching parent emails:", error);
+            return [];
+          }
         }
 
-        console.log(`📧 Final parent emails list:`, parentEmails);
-        return parentEmails;
-        
-    } catch (error) {
-        console.error("Error fetching parent emails:", error);
-        return [];
-    }
-}
+        async function sendEmailToParents(
+          postData,
+          teacherName,
+          classroomName,
+          parentEmails,
+        ) {
+          if (parentEmails.length === 0) {
+            console.log("📭 No parent emails found to send notification");
+            return;
+          }
 
-async function sendEmailToParents(postData, teacherName, classroomName, parentEmails) {
-    if (parentEmails.length === 0) {
-        console.log("📭 No parent emails found to send notification");
-        return;
-    }
+          console.log(`📤 Sending email to ${parentEmails.length} parents`);
 
-    console.log(`📤 Sending email to ${parentEmails.length} parents`);
+          // EmailJS template parameters
+          const templateParams = {
+            type: postData.type,
+            teacherName: teacherName,
+            classroomName: classroomName,
+            title: postData.task || postData.type,
+            description: postData.description,
+            date: postData.date || "",
+            to_email: parentEmails.join(","),
+            post_date: new Date().toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }),
+          };
 
-    // EmailJS template parameters
-    const templateParams = {
-        type: postData.type,
-        teacherName: teacherName,
-        classroomName: classroomName,
-        title: postData.task || postData.type,
-        description: postData.description,
-        date: postData.date || '',
-        to_email: parentEmails.join(','),
-        post_date: new Date().toLocaleDateString('en-US', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric' 
-        })
-    };
-
-    try {
-        const response = await emailjs.send(
-            'service_yq2mtbi', // Replace with your EmailJS service ID
-            'template_prmhlmw', // Replace with your EmailJS template ID
-            templateParams
-        );
-        console.log('✅ Email sent successfully:', response);
-        return true;
-    } catch (error) {
-        console.error('❌ Failed to send email:', error);
-        return false;
-    }
-}
-
-
-    // Custom Modal Functionality
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(modal => {
-        modal.querySelector('.close-btn').addEventListener('click', () => modal.classList.add('hidden'));
-        modal.querySelector('.modal-close-btn')?.addEventListener('click', () => modal.classList.add('hidden'));
-        modal.querySelector('.modal-cancel-btn')?.addEventListener('click', () => modal.classList.add('hidden'));
-    });
-
-    shareCodeBtn.addEventListener('click', () => {
-        shareCodeModal.classList.remove('hidden');
-    });
-
-    copyCodeBtn.addEventListener('click', () => {
-        navigator.clipboard.writeText(classCodeText.textContent);
-        alert('Class code copied!');
-    });
-
-    // Confirm Delete functionality
-    document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
-        if (postToDelete) {
-            postToDelete.remove();
-            postToDelete = null;
+          try {
+            const response = await emailjs.send(
+              "service_yq2mtbi", // Replace with your EmailJS service ID
+              "template_prmhlmw", // Replace with your EmailJS template ID
+              templateParams,
+            );
+            console.log("✅ Email sent successfully:", response);
+            return true;
+          } catch (error) {
+            console.error("❌ Failed to send email:", error);
+            return false;
+          }
         }
-        deleteModal.classList.add('hidden');
-    });
 
-    // Initialize listeners for any pre-existing posts on page load (like the pizza party post)
-    document.querySelectorAll('.post-feed-card').forEach(post => {
-        addPostInteractionListeners(post);
-    });
-});
+        // Custom Modal Functionality
+        const modals = document.querySelectorAll(".modal");
+        modals.forEach((modal) => {
+          modal
+            .querySelector(".close-btn")
+            .addEventListener("click", () => modal.classList.add("hidden"));
+          modal
+            .querySelector(".modal-close-btn")
+            ?.addEventListener("click", () => modal.classList.add("hidden"));
+          modal
+            .querySelector(".modal-cancel-btn")
+            ?.addEventListener("click", () => modal.classList.add("hidden"));
+        });
+
+        shareCodeBtn.addEventListener("click", () => {
+          shareCodeModal.classList.remove("hidden");
+        });
+
+        copyCodeBtn.addEventListener("click", () => {
+          navigator.clipboard.writeText(classCodeText.textContent);
+          alert("Class code copied!");
+        });
+
+        // Confirm Delete functionality
+        document
+          .getElementById("confirmDeleteBtn")
+          .addEventListener("click", () => {
+            if (postToDelete) {
+              postToDelete.remove();
+              postToDelete = null;
+            }
+            deleteModal.classList.add("hidden");
+          });
+
+        // Initialize listeners for any pre-existing posts on page load (like the pizza party post)
+        document.querySelectorAll(".post-feed-card").forEach((post) => {
+          addPostInteractionListeners(post);
+        });
+      });
     </script>
-</body>
+  </body>
 </html>

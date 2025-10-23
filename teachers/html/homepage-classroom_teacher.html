@@ -1,424 +1,486 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AcadBird Dashboard</title>
 
-
-
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
     <link rel="stylesheet" href="../style/homepage-classroom_teacher.css" />
     <style>
-      
-/* Calendar day with events */
-.notification-link {
-    position: relative;
-    display: inline-block;
-}
+      /* Calendar day with events */
+      .notification-link {
+        position: relative;
+        display: inline-block;
+      }
 
-.notification-badge {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background-color: #ff4444;
-    color: white;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    display: none; /* Initially hidden */
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
+      .notification-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #ff4444;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        display: none; /* Initially hidden */
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        <div class="navbar">
-            <div class="logo">
-                <img src="../../main/img/AcadBird - White no text.png" alt="AcadBird" class="logo-img" />
-                <img src="../../main/img/AcadBird - White Text.png" class="logo-text-img" alt="AcadBird Text">
-            </div>
-            <img src="../../main/img/sunhill.png" alt="AcadBird" class="middle-logo" />
-            <div class="nav-icons">
-                 <a href="notification_teacher.html" target="_blank" class="notification-link">
-        <img src="../../main/img/Notification.png" alt="Notifications" class="icon">
-        <span class="notification-badge" id="notification-badge">0</span>
-    </a>
-                <a href="help_teacher.html" target="_blank">
-                    <img src="../../main/img/Help.png" alt="Help" class="icon">
-                </a>
-                <a href="settings_teacher.html" target="_blank">
-                    <div class="account-menu">
-                        <img src="../../main/img/account icon.png" alt="User Account" class="icon">
-                    </div>
-                </a>
-            </div>
+      <div class="navbar">
+        <div class="logo">
+          <img
+            src="../../main/img/AcadBird - White no text.png"
+            alt="AcadBird"
+            class="logo-img"
+          />
+          <img
+            src="../../main/img/AcadBird - White Text.png"
+            class="logo-text-img"
+            alt="AcadBird Text"
+          />
         </div>
-        
-        <div class="secondary-header">
-            <nav class="nav-menu">
-                <a href="homepage-teachers.html" class="nav-item">Home</a>
-                <a href="homepage-classroom_teacher.html" class="nav-item active">Classroom</a>
-                <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
-                <a href="resources_teacher.html" class="nav-item">Resources</a>
-                <a href="messages_teacher.html" class="nav-item">Messages</a>
-                <a href="studentlistpage_teacher.html" class="nav-item">Student List</a>
-            </nav>
+        <img
+          src="../../main/img/sunhill.png"
+          alt="AcadBird"
+          class="middle-logo"
+        />
+        <div class="nav-icons">
+          <a
+            href="notification_teacher.html"
+            target="_blank"
+            class="notification-link"
+          >
+            <img
+              src="../../main/img/Notification.png"
+              alt="Notifications"
+              class="icon"
+            />
+            <span class="notification-badge" id="notification-badge">0</span>
+          </a>
+          <a href="help_teacher.html" target="_blank">
+            <img src="../../main/img/Help.png" alt="Help" class="icon" />
+          </a>
+          <a href="settings_teacher.html" target="_blank">
+            <div class="account-menu">
+              <img
+                src="../../main/img/account icon.png"
+                alt="User Account"
+                class="icon"
+              />
+            </div>
+          </a>
         </div>
-        <div class="separator"></div>
+      </div>
 
-        <div class="main-content">
-            <div class="dashboard-content">
-                <h1 class="dashboard-title" id="classroom-title">Loading Class Name...</h1>
+      <div class="secondary-header">
+        <nav class="nav-menu">
+          <a href="homepage-teachers.html" class="nav-item">Home</a>
+          <a href="homepage-classroom_teacher.html" class="nav-item active"
+            >Classroom</a
+          >
+          <a href="activitylog_teacher.html" class="nav-item">Activity Logs</a>
+          <a href="resources_teacher.html" class="nav-item">Resources</a>
+          <a href="messages_teacher.html" class="nav-item">Messages</a>
+          <a href="studentlistpage_teacher.html" class="nav-item"
+            >Student List</a
+          >
+        </nav>
+      </div>
+      <div class="separator"></div>
 
-                <div class="calendar-card card-section">
-                    <span class="badge">Calendar</span>
-                    <div class="calendar-header">
-                        <a href="#" class="nav-arrow left-arrow" id="prev-month"><i class="fas fa-chevron-left"></i></a>
-                        
-                        <span class="calendar-month" id="current-month-year">Loading...</span> 
-                        
-                        <a href="#" class="nav-arrow right-arrow" id="next-month"><i class="fas fa-chevron-right"></i></a>
-                    </div>
-                    
-                    <div class="calendar-grid">
-                        <div class="day-name">Sun</div>
-                        <div class="day-name">Mon</div>
-                        <div class="day-name">Tue</div>
-                        <div class="day-name">Wed</div>
-                        <div class="day-name">Thu</div>
-                        <div class="day-name">Fri</div>
-                        <div class="day-name">Sat</div>
-                    </div>
+      <div class="main-content">
+        <div class="dashboard-content">
+          <h1 class="dashboard-title" id="classroom-title">
+            Loading Class Name...
+          </h1>
 
-                    <div class="calendar-grid" id="calendar-grid">
-                        </div>
-                    
-                    <div class="calendar-legends">
+          <div class="calendar-card card-section">
+            <span class="badge">Calendar</span>
+            <div class="calendar-header">
+              <a href="#" class="nav-arrow left-arrow" id="prev-month"
+                ><i class="fas fa-chevron-left"></i
+              ></a>
 
-  
-    <div class="legend-item">
-        <span class="legend-color holiday"></span> Holiday
-    </div>
-    <div class="legend-item">
-        <span class="legend-color meeting"></span> Meeting
-    </div>
-    <div class="legend-item">
-        <span class="legend-color event"></span> Event
-    </div>
-    <div class="legend-item">
-        <span class="legend-color staff"></span> Staff
-    </div>
-    <div class="legend-item">
-        <span class="legend-color deadline"></span> Deadline
-    </div>
-</div>
+              <span class="calendar-month" id="current-month-year"
+                >Loading...</span
+              >
+
+              <a href="#" class="nav-arrow right-arrow" id="next-month"
+                ><i class="fas fa-chevron-right"></i
+              ></a>
+            </div>
+
+            <div class="calendar-grid">
+              <div class="day-name">Sun</div>
+              <div class="day-name">Mon</div>
+              <div class="day-name">Tue</div>
+              <div class="day-name">Wed</div>
+              <div class="day-name">Thu</div>
+              <div class="day-name">Fri</div>
+              <div class="day-name">Sat</div>
+            </div>
+
+            <div class="calendar-grid" id="calendar-grid"></div>
+
+            <div class="calendar-legends">
+              <div class="legend-item">
+                <span class="legend-color holiday"></span> Holiday
+              </div>
+              <div class="legend-item">
+                <span class="legend-color meeting"></span> Meeting
+              </div>
+              <div class="legend-item">
+                <span class="legend-color event"></span> Event
+              </div>
+              <div class="legend-item">
+                <span class="legend-color staff"></span> Staff
+              </div>
+              <div class="legend-item">
+                <span class="legend-color deadline"></span> Deadline
+              </div>
+            </div>
+          </div>
+
+          <div class="data-dashboard">
+            <h2 class="section-title">Data Dashboard</h2>
+            <div class="data-card data-card-green">
+              <div class="data-number" id="student-count">--</div>
+              <div class="data-label">Students<br />Logged</div>
+            </div>
+            <div class="data-card">
+              <div class="data-number" id="parent-count">--</div>
+              <div class="data-label">Parents</div>
+            </div>
+            <a
+              href="participationoverview_teacher.html"
+              class="overview-btn"
+              style="text-decoration: none"
+              >Add Activity Participation Overview</a
+            >
+          </div>
+
+          <div class="bottom-row">
+            <div class="top-engaged card-section">
+              <div class="card-header">Top Engaged Students</div>
+              <div class="student-list">
+                <div class="student-item">
+                  <span class="student-name">First Name Lastname</span>
+                  <div class="progress-bar">
+                    <div class="progress-fill-green" style="width: 100%"></div>
+                  </div>
+                  <span class="progress-value">20</span>
                 </div>
-
-                <div class="data-dashboard">
-    <h2 class="section-title">Data Dashboard</h2>
-    <div class="data-card data-card-green">
-        <div class="data-number" id="student-count">--</div>
-        <div class="data-label">Students<br />Logged</div>
-    </div>
-    <div class="data-card">
-        <div class="data-number" id="parent-count">--</div>
-        <div class="data-label">Parents</div>
-    </div>
-    <a href="participationoverview_teacher.html" class="overview-btn" style="text-decoration: none;">Add Activity Participation Overview</a>
-</div>
-
-
-                <div class="bottom-row">
-                    <div class="top-engaged card-section">
-                        <div class="card-header">Top Engaged Students</div>
-                        <div class="student-list">
-                            <div class="student-item">
-                                <span class="student-name">First Name Lastname</span>
-                                <div class="progress-bar">
-                                    <div class="progress-fill-green" style="width: 100%;"></div>
-                                </div>
-                                <span class="progress-value">20</span>
-                            </div>
-                            <div class="student-item">
-                                <span class="student-name">First Name Lastname</span>
-                                <div class="progress-bar">
-                                    <div class="progress-fill-green" style="width: 85%;"></div>
-                                </div>
-                                <span class="progress-value">17</span>
-                            </div>
-                            <div class="student-item">
-                                <span class="student-name">First Name Lastname</span>
-                                <div class="progress-bar">
-                                    <div class="progress-fill-green" style="width: 65%;"></div>
-                                </div>
-                                <span class="progress-value">13</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="low-engagement card-section">
-                        <div class="card-header">Low Engagement Alerts</div>
-                        <div class="student-list">
-                            <div class="student-item">
-                                <span class="student-name">First Name Lastname</span>
-                                <div class="progress-bar">
-                                    <div class="progress-fill-red" style="width: 20%;"></div>
-                                </div>
-                                <span class="progress-value">4</span>
-                            </div>
-                            <div class="student-item">
-                                <span class="student-name">First Name Lastname</span>
-                                <div class="progress-bar">
-                                    <div class="progress-fill-red" style="width: 25%;"></div>
-                                </div>
-                                <span class="progress-value">5</span>
-                            </div>
-                            <div class="student-item">
-                                <span class="student-name">First Name Lastname</span>
-                                <div class="progress-bar">
-                                    <div class="progress-fill-red" style="width: 35%;"></div>
-                                </div>
-                                <span class="progress-value">7</span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="student-item">
+                  <span class="student-name">First Name Lastname</span>
+                  <div class="progress-bar">
+                    <div class="progress-fill-green" style="width: 85%"></div>
+                  </div>
+                  <span class="progress-value">17</span>
                 </div>
+                <div class="student-item">
+                  <span class="student-name">First Name Lastname</span>
+                  <div class="progress-bar">
+                    <div class="progress-fill-green" style="width: 65%"></div>
+                  </div>
+                  <span class="progress-value">13</span>
+                </div>
+              </div>
             </div>
+
+            <div class="low-engagement card-section">
+              <div class="card-header">Low Engagement Alerts</div>
+              <div class="student-list">
+                <div class="student-item">
+                  <span class="student-name">First Name Lastname</span>
+                  <div class="progress-bar">
+                    <div class="progress-fill-red" style="width: 20%"></div>
+                  </div>
+                  <span class="progress-value">4</span>
+                </div>
+                <div class="student-item">
+                  <span class="student-name">First Name Lastname</span>
+                  <div class="progress-bar">
+                    <div class="progress-fill-red" style="width: 25%"></div>
+                  </div>
+                  <span class="progress-value">5</span>
+                </div>
+                <div class="student-item">
+                  <span class="student-name">First Name Lastname</span>
+                  <div class="progress-bar">
+                    <div class="progress-fill-red" style="width: 35%"></div>
+                  </div>
+                  <span class="progress-value">7</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
 
     <div id="loading-overlay">
-
-<div class="loader-3">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
-</div>
-
-
-    <div id="calendar-modal" class="modal">
-        <div class="modal-content">
-          <span class="close-button" id="close-modal-button">&times;</span>
-            <h2 id="modal-date">March 18, 2025</h2>
-            <div id="modal-details" class="modal-details">
-                <p><strong>Exams:</strong> Final Exams</p>
-                <p><strong>Assignments Due:</strong> Science Project</p>
-                <p><strong>Events:</strong> Parent-Teacher Conference (2PM)</p>
-            </div>
-        </div>
+      <div class="loader-3">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
     </div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
-    import { 
-        collection, 
-        getDocs, 
-        query, 
-        where 
-    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+    <div id="calendar-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" id="close-modal-button">&times;</span>
+        <h2 id="modal-date">March 18, 2025</h2>
+        <div id="modal-details" class="modal-details">
+          <p><strong>Exams:</strong> Final Exams</p>
+          <p><strong>Assignments Due:</strong> Science Project</p>
+          <p><strong>Events:</strong> Parent-Teacher Conference (2PM)</p>
+        </div>
+      </div>
+    </div>
 
-    const firebaseConfig = {
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        setPersistence,
+        browserLocalPersistence,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+      import {
+        collection,
+        getDocs,
+        query,
+        where,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+      const firebaseConfig = {
         apiKey: "AIzaSyB7gwN-3GVlJ-a_MTBxqVnc7Oltq5wSvHQ",
         authDomain: "acadbird-379e3.firebaseapp.com",
         projectId: "acadbird-379e3",
         storageBucket: "acadbird-379e3.firebasestorage.app",
         messagingSenderId: "575491576951",
         appId: "1:575491576951:web:70f86aba1e33b871f8a272",
-        measurementId: "G-N6Z672SXWJ"
-    };
+        measurementId: "G-N6Z672SXWJ",
+      };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    let classId = null;
-    let className = null;
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      let classId = null;
+      let className = null;
 
-    // Fix setPersistence
-    setPersistence(auth, browserLocalPersistence).catch((error) => {
+      // Fix setPersistence
+      setPersistence(auth, browserLocalPersistence).catch((error) => {
         console.error("Error setting persistence:", error);
-    });
+      });
 
-    let currentDate = new Date();
-    const calendarGrid = document.getElementById("calendar-grid");
-    const currentMonthYear = document.getElementById("current-month-year");
-    const classroomTitle = document.getElementById("classroom-title");
-    const studentCountElement = document.querySelector('.data-card-green .data-number');
-    const loadingOverlay = document.getElementById("loading-overlay");
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-                        "July", "August", "September", "October", "November", "December"];
+      let currentDate = new Date();
+      const calendarGrid = document.getElementById("calendar-grid");
+      const currentMonthYear = document.getElementById("current-month-year");
+      const classroomTitle = document.getElementById("classroom-title");
+      const studentCountElement = document.querySelector(
+        ".data-card-green .data-number",
+      );
+      const loadingOverlay = document.getElementById("loading-overlay");
+      const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
 
-    function showLoading() {
+      function showLoading() {
         loadingOverlay.style.display = "flex";
-    }
+      }
 
-    function hideLoading() {
+      function hideLoading() {
         loadingOverlay.style.display = "none";
-    }
+      }
 
-    let calendarEvents = [];
+      let calendarEvents = [];
 
-    // Notification functions
-    async function getTeacherClassrooms(teacherId) {
+      // Notification functions
+      async function getTeacherClassrooms(teacherId) {
         try {
-            const classroomsRef = collection(db, "classrooms");
-            const q = query(classroomsRef, where("teacherId", "==", teacherId));
-            const snapshot = await getDocs(q);
-            
-            const teacherClassrooms = {};
-            snapshot.forEach(doc => {
-                teacherClassrooms[doc.id] = doc.data();
-            });
-            
-            return teacherClassrooms;
+          const classroomsRef = collection(db, "classrooms");
+          const q = query(classroomsRef, where("teacherId", "==", teacherId));
+          const snapshot = await getDocs(q);
+
+          const teacherClassrooms = {};
+          snapshot.forEach((doc) => {
+            teacherClassrooms[doc.id] = doc.data();
+          });
+
+          return teacherClassrooms;
         } catch (error) {
-            console.error("Error getting teacher classrooms:", error);
-            return {};
+          console.error("Error getting teacher classrooms:", error);
+          return {};
         }
-    }
+      }
 
-    async function getReadNotifications(teacherId) {
+      async function getReadNotifications(teacherId) {
         try {
-            const notificationsRef = collection(db, "notification_teacher");
-            const q = query(
-                notificationsRef, 
-                where("teacherID", "==", teacherId),
-                where("status", "==", "read")
+          const notificationsRef = collection(db, "notification_teacher");
+          const q = query(
+            notificationsRef,
+            where("teacherID", "==", teacherId),
+            where("status", "==", "read"),
+          );
+          const snapshot = await getDocs(q);
+          const readNotifications = {};
+          snapshot.forEach((doc) => {
+            const data = doc.data();
+            const key = `${data.type}_${data.notificationID}`;
+            readNotifications[key] = true;
+          });
+          return readNotifications;
+        } catch (error) {
+          console.error("Error getting read notifications:", error);
+          return {};
+        }
+      }
+
+      async function countUnreadNotifications(teacherId) {
+        try {
+          // Get all calendar events
+          const calendarRef = collection(db, "calendar");
+          const calendarSnapshot = await getDocs(calendarRef);
+
+          // Get teacher's classrooms
+          const teacherClassrooms = await getTeacherClassrooms(teacherId);
+          const teacherClassroomIds = Object.keys(teacherClassrooms);
+
+          // Get all students with status "active" in teacher's classrooms
+          let studentsSnapshot;
+          if (teacherClassroomIds.length > 0) {
+            const studentsRef = collection(db, "students");
+            const studentsQuery = query(
+              studentsRef,
+              where("status", "==", "active"),
+              where("classroomId", "in", teacherClassroomIds),
             );
-            const snapshot = await getDocs(q);
-            const readNotifications = {};
-            snapshot.forEach(doc => {
-                const data = doc.data();
-                const key = `${data.type}_${data.notificationID}`;
-                readNotifications[key] = true;
-            });
-            return readNotifications;
-        } catch (error) {
-            console.error("Error getting read notifications:", error);
-            return {};
-        }
-    }
+            studentsSnapshot = await getDocs(studentsQuery);
+          } else {
+            studentsSnapshot = { docs: [] };
+          }
 
-    async function countUnreadNotifications(teacherId) {
-        try {
-            // Get all calendar events
-            const calendarRef = collection(db, "calendar");
-            const calendarSnapshot = await getDocs(calendarRef);
-            
-            // Get teacher's classrooms
-            const teacherClassrooms = await getTeacherClassrooms(teacherId);
-            const teacherClassroomIds = Object.keys(teacherClassrooms);
-            
-            // Get all students with status "active" in teacher's classrooms
-            let studentsSnapshot;
-            if (teacherClassroomIds.length > 0) {
-                const studentsRef = collection(db, "students");
-                const studentsQuery = query(
-                    studentsRef, 
-                    where("status", "==", "active"),
-                    where("classroomId", "in", teacherClassroomIds)
-                );
-                studentsSnapshot = await getDocs(studentsQuery);
-            } else {
-                studentsSnapshot = { docs: [] };
+          // Get all read notifications
+          const readNotifications = await getReadNotifications(teacherId);
+
+          // Count unread calendar notifications
+          let unreadCount = 0;
+          calendarSnapshot.forEach((doc) => {
+            const key = `calendar_${doc.id}`;
+            if (!readNotifications[key]) {
+              unreadCount++;
             }
-            
-            // Get all read notifications
-            const readNotifications = await getReadNotifications(teacherId);
-            
-            // Count unread calendar notifications
-            let unreadCount = 0;
-            calendarSnapshot.forEach(doc => {
-                const key = `calendar_${doc.id}`;
-                if (!readNotifications[key]) {
-                    unreadCount++;
-                }
-            });
-            
-            // Count unread student join notifications
-            studentsSnapshot.forEach(doc => {
-                const key = `student_${doc.id}`;
-                if (!readNotifications[key]) {
-                    unreadCount++;
-                }
-            });
-            
-            return unreadCount;
-        } catch (error) {
-            console.error("Error counting unread notifications:", error);
-            return 0;
-        }
-    }
+          });
 
-    async function updateNotificationBadge() {
+          // Count unread student join notifications
+          studentsSnapshot.forEach((doc) => {
+            const key = `student_${doc.id}`;
+            if (!readNotifications[key]) {
+              unreadCount++;
+            }
+          });
+
+          return unreadCount;
+        } catch (error) {
+          console.error("Error counting unread notifications:", error);
+          return 0;
+        }
+      }
+
+      async function updateNotificationBadge() {
         if (!auth.currentUser) return;
-        
-        const unreadCount = await countUnreadNotifications(auth.currentUser.uid);
-        const badge = document.getElementById('notification-badge');
-        
-        if (badge) {
-            badge.textContent = unreadCount;
-            
-            // Hide badge if count is 0
-            if (unreadCount === 0) {
-                badge.style.display = 'none';
-            } else {
-                badge.style.display = 'flex';
-            }
-            console.log("Notification badge updated:", unreadCount);
-        }
-    }
 
-    // Calendar functions
-    async function loadCalendarEvents() {
+        const unreadCount = await countUnreadNotifications(
+          auth.currentUser.uid,
+        );
+        const badge = document.getElementById("notification-badge");
+
+        if (badge) {
+          badge.textContent = unreadCount;
+
+          // Hide badge if count is 0
+          if (unreadCount === 0) {
+            badge.style.display = "none";
+          } else {
+            badge.style.display = "flex";
+          }
+          console.log("Notification badge updated:", unreadCount);
+        }
+      }
+
+      // Calendar functions
+      async function loadCalendarEvents() {
         showLoading();
         try {
-            const calendarRef = collection(db, "calendar");
-            const snapshot = await getDocs(calendarRef);
+          const calendarRef = collection(db, "calendar");
+          const snapshot = await getDocs(calendarRef);
 
-            calendarEvents = snapshot.docs.map(doc => {
-                const data = doc.data();
-                return {
-                    id: doc.id,
-                    title: data.title,
-                    description: data.description,
-                    date: data.date,
-                    time: data.time,
-                    type: data.type
-                };
-            });
+          calendarEvents = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            return {
+              id: doc.id,
+              title: data.title,
+              description: data.description,
+              date: data.date,
+              time: data.time,
+              type: data.type,
+            };
+          });
 
-            console.log("Loaded all calendar events:", calendarEvents);
+          console.log("Loaded all calendar events:", calendarEvents);
         } catch (err) {
-            console.error("Error loading calendar events:", err);
+          console.error("Error loading calendar events:", err);
         } finally {
-            hideLoading();
+          hideLoading();
         }
-    }
+      }
 
-    const EVENT_TYPE_COLORS = {
-        'exam': { class: 'exam-day', color: '#ff6b6b' },
-        'due date': { class: 'due-date', color: '#4ecdc4' },
-        'holiday': { class: 'holiday', color: '#45b7d1' },
-        'meeting': { class: 'meeting', color: '#96ceb4' },
-        'event': { class: 'event', color: '#feca57' },
-        'staff': { class: 'staff', color: '#ff9ff3' },
-        'deadline': { class: 'deadline', color: '#54a0ff' }
-    };
+      const EVENT_TYPE_COLORS = {
+        exam: { class: "exam-day", color: "#ff6b6b" },
+        "due date": { class: "due-date", color: "#4ecdc4" },
+        holiday: { class: "holiday", color: "#45b7d1" },
+        meeting: { class: "meeting", color: "#96ceb4" },
+        event: { class: "event", color: "#feca57" },
+        staff: { class: "staff", color: "#ff9ff3" },
+        deadline: { class: "deadline", color: "#54a0ff" },
+      };
 
-    function renderCalendar(date) {
+      function renderCalendar(date) {
         calendarGrid.innerHTML = "";
         const year = date.getFullYear();
         const month = date.getMonth();
@@ -427,237 +489,274 @@
         const totalDays = new Date(year, month + 1, 0).getDate();
 
         for (let i = 0; i < firstDay; i++) {
-            calendarGrid.appendChild(document.createElement("div"));
+          calendarGrid.appendChild(document.createElement("div"));
         }
 
         for (let day = 1; day <= totalDays; day++) {
-            const dayCell = document.createElement("div");
-            dayCell.className = "calendar-day";
-            dayCell.textContent = day;
+          const dayCell = document.createElement("div");
+          dayCell.className = "calendar-day";
+          dayCell.textContent = day;
 
-            const today = new Date();
-            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-                dayCell.classList.add("today");
+          const today = new Date();
+          if (
+            day === today.getDate() &&
+            month === today.getMonth() &&
+            year === today.getFullYear()
+          ) {
+            dayCell.classList.add("today");
+          }
+
+          const dayStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+          const eventsForDay = calendarEvents.filter(
+            (ev) => ev.date === dayStr,
+          );
+
+          if (eventsForDay.length > 0) {
+            const primaryEvent = eventsForDay[0];
+            const eventType = primaryEvent.type?.toLowerCase() || "event";
+            const eventColor =
+              EVENT_TYPE_COLORS[eventType] || EVENT_TYPE_COLORS["event"];
+
+            dayCell.style.backgroundColor = eventColor.color;
+            dayCell.style.color = "#ffffff";
+            dayCell.style.borderRadius = "8px";
+            dayCell.style.fontWeight = "bold";
+
+            if (eventsForDay.length > 1) {
+              const eventCount = document.createElement("div");
+              eventCount.className = "event-count-badge";
+              eventCount.textContent = eventsForDay.length;
+              eventCount.style.position = "absolute";
+              eventCount.style.top = "2px";
+              eventCount.style.right = "2px";
+              eventCount.style.background = "rgba(255,255,255,0.9)";
+              eventCount.style.color = eventColor.color;
+              eventCount.style.borderRadius = "50%";
+              eventCount.style.width = "18px";
+              eventCount.style.height = "18px";
+              eventCount.style.fontSize = "10px";
+              eventCount.style.display = "flex";
+              eventCount.style.alignItems = "center";
+              eventCount.style.justifyContent = "center";
+              eventCount.style.fontWeight = "bold";
+              dayCell.style.position = "relative";
+              dayCell.appendChild(eventCount);
             }
 
-            const dayStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-            const eventsForDay = calendarEvents.filter(ev => ev.date === dayStr);
+            dayCell.title = eventsForDay
+              .map((ev) => `${ev.title} (${ev.type}) - ${ev.time}`)
+              .join("\n");
+          }
 
-            if (eventsForDay.length > 0) {
-                const primaryEvent = eventsForDay[0];
-                const eventType = primaryEvent.type?.toLowerCase() || 'event';
-                const eventColor = EVENT_TYPE_COLORS[eventType] || EVENT_TYPE_COLORS['event'];
-                
-                dayCell.style.backgroundColor = eventColor.color;
-                dayCell.style.color = '#ffffff';
-                dayCell.style.borderRadius = '8px';
-                dayCell.style.fontWeight = 'bold';
-                
-                if (eventsForDay.length > 1) {
-                    const eventCount = document.createElement("div");
-                    eventCount.className = "event-count-badge";
-                    eventCount.textContent = eventsForDay.length;
-                    eventCount.style.position = 'absolute';
-                    eventCount.style.top = '2px';
-                    eventCount.style.right = '2px';
-                    eventCount.style.background = 'rgba(255,255,255,0.9)';
-                    eventCount.style.color = eventColor.color;
-                    eventCount.style.borderRadius = '50%';
-                    eventCount.style.width = '18px';
-                    eventCount.style.height = '18px';
-                    eventCount.style.fontSize = '10px';
-                    eventCount.style.display = 'flex';
-                    eventCount.style.alignItems = 'center';
-                    eventCount.style.justifyContent = 'center';
-                    eventCount.style.fontWeight = 'bold';
-                    dayCell.style.position = 'relative';
-                    dayCell.appendChild(eventCount);
-                }
-                
-                dayCell.title = eventsForDay.map(ev => 
-                    `${ev.title} (${ev.type}) - ${ev.time}`
-                ).join("\n");
-            }
+          dayCell.addEventListener("click", () => {
+            openDateModal(day, month, year, eventsForDay);
+          });
 
-            dayCell.addEventListener("click", () => {
-                openDateModal(day, month, year, eventsForDay);
-            });
-
-            calendarGrid.appendChild(dayCell);
+          calendarGrid.appendChild(dayCell);
         }
-    }
+      }
 
-    function openDateModal(day, month, year, eventsForDay = []) {
+      function openDateModal(day, month, year, eventsForDay = []) {
         const modalDateEl = document.getElementById("modal-date");
         const modalDetails = document.getElementById("modal-details");
-        
+
         modalDateEl.textContent = `${monthNames[month]} ${day}, ${year}`;
 
         if (eventsForDay.length === 0) {
-            modalDetails.innerHTML = "<p>No events for this day.</p>";
+          modalDetails.innerHTML = "<p>No events for this day.</p>";
         } else {
-            modalDetails.innerHTML = eventsForDay.map(ev => {
-                const eventType = ev.type?.toLowerCase() || 'event';
-                const eventColor = EVENT_TYPE_COLORS[eventType] || EVENT_TYPE_COLORS['event'];
-                
-                return `
+          modalDetails.innerHTML = eventsForDay
+            .map((ev) => {
+              const eventType = ev.type?.toLowerCase() || "event";
+              const eventColor =
+                EVENT_TYPE_COLORS[eventType] || EVENT_TYPE_COLORS["event"];
+
+              return `
                     <div class="modal-event-item" style="border-left: 4px solid ${eventColor.color}; padding-left: 10px; margin-bottom: 15px;">
                         <p><strong style="color: ${eventColor.color};">${ev.type}:</strong> ${ev.title}</p>
                         <p><strong>Time:</strong> ${ev.time}</p>
                         <p><strong>Description:</strong> ${ev.description}</p>
                     </div>
                 `;
-            }).join("");
+            })
+            .join("");
         }
 
         document.getElementById("calendar-modal").style.display = "flex";
-    }
+      }
 
-    // Event listeners
-    document.getElementById("prev-month").addEventListener("click", (e) => {
+      // Event listeners
+      document.getElementById("prev-month").addEventListener("click", (e) => {
         e.preventDefault();
         currentDate.setMonth(currentDate.getMonth() - 1);
         renderCalendar(currentDate);
-    });
+      });
 
-    document.getElementById("next-month").addEventListener("click", (e) => {
+      document.getElementById("next-month").addEventListener("click", (e) => {
         e.preventDefault();
         currentDate.setMonth(currentDate.getMonth() + 1);
         renderCalendar(currentDate);
-    });
+      });
 
-    const calendarModal = document.getElementById("calendar-modal");
-    const closeModalButton = document.getElementById("close-modal-button");
+      const calendarModal = document.getElementById("calendar-modal");
+      const closeModalButton = document.getElementById("close-modal-button");
 
-    if (closeModalButton) {
-        closeModalButton.addEventListener('click', closePopup);
-    }
+      if (closeModalButton) {
+        closeModalButton.addEventListener("click", closePopup);
+      }
 
-    calendarModal.addEventListener('click', function(e) {
+      calendarModal.addEventListener("click", function (e) {
         if (e.target === calendarModal) {
-            closePopup();
+          closePopup();
         }
-    });
+      });
 
-    function closePopup() {
+      function closePopup() {
         calendarModal.style.display = "none";
-    }
+      }
 
-    // FIXED: Corrected onAuthStateChanged (removed extra 'o')
-    onAuthStateChanged(auth, async (user) => {
+      // FIXED: Corrected onAuthStateChanged (removed extra 'o')
+      onAuthStateChanged(auth, async (user) => {
         if (!user) return;
 
         showLoading();
 
         try {
-            const teacherRef = doc(db, "users", user.uid);
-            const teacherSnap = await getDoc(teacherRef);
+          const teacherRef = doc(db, "users", user.uid);
+          const teacherSnap = await getDoc(teacherRef);
 
-            if (!teacherSnap.exists() || teacherSnap.data().role !== "teacher") {
-                alert("Please log in as a teacher.");
-                window.location.href = "../../main/html/login.html";
-                return;
-            }
+          if (!teacherSnap.exists() || teacherSnap.data().role !== "teacher") {
+            alert("Please log in as a teacher.");
+            window.location.href = "../../main/html/login.html";
+            return;
+          }
 
-            // Load classroom data and calendar
-            await loadClassData();
-            await loadCalendarEvents();
-            renderCalendar(currentDate);
-            
-            // Update notification badge
-            await updateNotificationBadge();
+          // Load classroom data and calendar
+          await loadClassData();
+          await loadCalendarEvents();
+          renderCalendar(currentDate);
 
+          // Update notification badge
+          await updateNotificationBadge();
         } catch (err) {
-            console.error(err);
+          console.error(err);
         } finally {
-            hideLoading();
+          hideLoading();
         }
-    });
+      });
 
-    // Rest of your loadClassData function remains the same...
-    async function loadClassData() {
-        classId = localStorage.getItem('selectedClassId');
-        className = localStorage.getItem('selectedClassName');
-        
+      // Rest of your loadClassData function remains the same...
+      async function loadClassData() {
+        classId = localStorage.getItem("selectedClassId");
+        className = localStorage.getItem("selectedClassName");
+
         console.log("Selected classId:", classId);
         console.log("Selected className:", className);
-        
+
         const classroomTitle = document.getElementById("classroom-title");
         const studentCountEl = document.getElementById("student-count");
         const parentCountEl = document.getElementById("parent-count");
-        const topEngagedList = document.querySelector(".top-engaged .student-list");
-        const lowEngagedList = document.querySelector(".low-engagement .student-list");
+        const topEngagedList = document.querySelector(
+          ".top-engaged .student-list",
+        );
+        const lowEngagedList = document.querySelector(
+          ".low-engagement .student-list",
+        );
 
         if (!classId || !className) {
-            console.log("No class selected in localStorage.");
-            classroomTitle.textContent = "No class selected.";
-            studentCountEl.textContent = 0;
-            parentCountEl.textContent = 0;
-            topEngagedList.innerHTML = "<p>No data</p>";
-            lowEngagedList.innerHTML = "<p>No data</p>";
-            return;
+          console.log("No class selected in localStorage.");
+          classroomTitle.textContent = "No class selected.";
+          studentCountEl.textContent = 0;
+          parentCountEl.textContent = 0;
+          topEngagedList.innerHTML = "<p>No data</p>";
+          lowEngagedList.innerHTML = "<p>No data</p>";
+          return;
         }
 
         classroomTitle.textContent = className;
 
         try {
-            const studentsRef = collection(db, "students");
-            const studentsQuery = query(studentsRef, where("classroomId", "==", classId));
-            const studentsSnapshot = await getDocs(studentsQuery);
+          const studentsRef = collection(db, "students");
+          const studentsQuery = query(
+            studentsRef,
+            where("classroomId", "==", classId),
+          );
+          const studentsSnapshot = await getDocs(studentsQuery);
 
-            console.log("Students snapshot:", studentsSnapshot.docs.map(d => d.data()));
+          console.log(
+            "Students snapshot:",
+            studentsSnapshot.docs.map((d) => d.data()),
+          );
 
-            const students = studentsSnapshot.docs.map(doc => ({
-                id: doc.id,
-                fullName: `${doc.data().firstName} ${doc.data().lastName}`,
-                parentId: doc.data().parentId || null
-            }));
+          const students = studentsSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            fullName: `${doc.data().firstName} ${doc.data().lastName}`,
+            parentId: doc.data().parentId || null,
+          }));
 
-            console.log("Mapped students:", students);
+          console.log("Mapped students:", students);
 
-            const parentIds = new Set(students.map(s => s.parentId).filter(Boolean));
-            console.log("Parent IDs:", Array.from(parentIds));
+          const parentIds = new Set(
+            students.map((s) => s.parentId).filter(Boolean),
+          );
+          console.log("Parent IDs:", Array.from(parentIds));
 
-            const activitiesRef = collection(db, "activity");
-            const activitiesQuery = query(activitiesRef, where("classroomID", "==", classId));
-            
-            const activitiesSnapshot = await getDocs(activitiesQuery);
-            console.log("Activities count:", activitiesSnapshot.size);
-            activitiesSnapshot.forEach(doc => console.log(doc.id, doc.data()));
+          const activitiesRef = collection(db, "activity");
+          const activitiesQuery = query(
+            activitiesRef,
+            where("classroomID", "==", classId),
+          );
 
-            console.log("Activities snapshot:", activitiesSnapshot.docs.map(d => d.data()));
+          const activitiesSnapshot = await getDocs(activitiesQuery);
+          console.log("Activities count:", activitiesSnapshot.size);
+          activitiesSnapshot.forEach((doc) => console.log(doc.id, doc.data()));
 
-            const filteredActivities = activitiesSnapshot.docs.map(doc => doc.data());
+          console.log(
+            "Activities snapshot:",
+            activitiesSnapshot.docs.map((d) => d.data()),
+          );
 
-            function calculateScores(activities) {
-                return students.map(student => {
-                    const studentActs = activities.filter(act => act.studentID === student.id);
+          const filteredActivities = activitiesSnapshot.docs.map((doc) =>
+            doc.data(),
+          );
 
-                    let totalScore = 0;
-                    studentActs.forEach(act => {
-                        const points = act.activityScore === "full" ? 100
-                                    : act.activityScore === "partial" ? 50
-                                    : 0;
-                        totalScore += points;
-                    });
+          function calculateScores(activities) {
+            return students.map((student) => {
+              const studentActs = activities.filter(
+                (act) => act.studentID === student.id,
+              );
 
-                    const avgScore = studentActs.length > 0 ? totalScore / studentActs.length : 0;
-                    return { ...student, score: avgScore };
-                });
-            }
+              let totalScore = 0;
+              studentActs.forEach((act) => {
+                const points =
+                  act.activityScore === "full"
+                    ? 100
+                    : act.activityScore === "partial"
+                      ? 50
+                      : 0;
+                totalScore += points;
+              });
 
-            const scoredStudents = calculateScores(filteredActivities);
-            console.log("Scored students:", scoredStudents);
+              const avgScore =
+                studentActs.length > 0 ? totalScore / studentActs.length : 0;
+              return { ...student, score: avgScore };
+            });
+          }
 
-            studentCountEl.textContent = students.length;
-            parentCountEl.textContent = parentIds.size;
+          const scoredStudents = calculateScores(filteredActivities);
+          console.log("Scored students:", scoredStudents);
 
-            const sortedStudents = scoredStudents.sort((a, b) => b.score - a.score);
-            console.log("Sorted students:", sortedStudents);
+          studentCountEl.textContent = students.length;
+          parentCountEl.textContent = parentIds.size;
 
-            topEngagedList.innerHTML = "";
-            sortedStudents.slice(0, 3).forEach(student => {
-                topEngagedList.innerHTML += `
+          const sortedStudents = scoredStudents.sort(
+            (a, b) => b.score - a.score,
+          );
+          console.log("Sorted students:", sortedStudents);
+
+          topEngagedList.innerHTML = "";
+          sortedStudents.slice(0, 3).forEach((student) => {
+            topEngagedList.innerHTML += `
                     <div class="student-item">
                         <span class="student-name">${student.fullName}</span>
                         <div class="progress-bar">
@@ -666,11 +765,11 @@
                         <span class="progress-value">${Math.round(student.score)}</span>
                     </div>
                 `;
-            });
+          });
 
-            lowEngagedList.innerHTML = "";
-            sortedStudents.slice(-3).forEach(student => {
-                lowEngagedList.innerHTML += `
+          lowEngagedList.innerHTML = "";
+          sortedStudents.slice(-3).forEach((student) => {
+            lowEngagedList.innerHTML += `
                     <div class="student-item">
                         <span class="student-name">${student.fullName}</span>
                         <div class="progress-bar">
@@ -679,18 +778,15 @@
                         <span class="progress-value">${Math.round(student.score)}</span>
                     </div>
                 `;
-            });
-
+          });
         } catch (err) {
-            console.error("Error loading students:", err);
-            studentCountEl.textContent = 0;
-            parentCountEl.textContent = 0;
-            topEngagedList.innerHTML = "<p>Error loading data</p>";
-            lowEngagedList.innerHTML = "<p>Error loading data</p>";
+          console.error("Error loading students:", err);
+          studentCountEl.textContent = 0;
+          parentCountEl.textContent = 0;
+          topEngagedList.innerHTML = "<p>Error loading data</p>";
+          lowEngagedList.innerHTML = "<p>Error loading data</p>";
         }
-    }
-</script>
-
-</body>
+      }
+    </script>
+  </body>
 </html>
-
