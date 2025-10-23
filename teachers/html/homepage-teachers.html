@@ -254,7 +254,7 @@ async function createClassCard(classObj) {
         <div class="card-icons">
             <a href="#" class="card-icon archive-icon"><i class="fas fa-archive"></i></a>
             <a href="#" class="card-icon edit-icon"><i class="fas fa-pencil-alt"></i></a>
-            <a href="#" class="card-icon trash-icon"><i class="fas fa-trash-alt"></i></a>
+           
         </div>
         <div class="class-name">${classObj.name}</div>
         <div class="student-count">${studentCount} students</div>
@@ -458,12 +458,7 @@ classGrid.addEventListener('click', e => {
             showModal(confirmModal);
             confirmYesBtn.onclick = () => archiveClass(classId);
             confirmNoBtn.onclick = () => window.hideModal('confirm-modal');
-        } else if (cardIcon.classList.contains('trash-icon')) {
-            confirmModalText.textContent = `Are you sure you want to permanently delete "${classObj.name}"? This action cannot be undone.`;
-            showModal(confirmModal);
-            confirmYesBtn.onclick = () => deleteClass(classId);
-            confirmNoBtn.onclick = () => window.hideModal('confirm-modal');
-        }
+        } 
 
     } else {
         // Clicked the card itself, not an icon → select class
@@ -521,19 +516,6 @@ async function archiveClass(classId) {
     }
 }
 
-// 6. Permanently delete class
-async function deleteClass(classId) {
-    if (!classId) return;
-    
-    try {
-        await db.collection('classrooms').doc(classId).delete();
-        console.log(`Class ${classId} permanently deleted.`);
-        window.hideModal('confirm-modal');
-    } catch (error) {
-        console.error("Error deleting class:", error);
-        alert("Failed to delete class. Check console for details.");
-    }
-}
 
     </script>
 
