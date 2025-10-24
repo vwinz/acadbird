@@ -204,7 +204,7 @@
         modal.style.display = "none";
       }
 
-      // 🟢 Load students by parentId (only ACTIVE students)
+      // 🟢 Load students by parentId (only ACTIVE students) with classroom validation
       async function loadStudents(parentId) {
         console.log("[loadStudents] called with parentId:", parentId);
 
@@ -236,28 +236,33 @@
             });
           });
 
-          studentsData = snapshot.docs
-            .map((docSnap) => {
-              const data = docSnap.data();
-              return { id: docSnap.id, ...data };
-            })
-            .filter((student) => {
-              const isActive = student.status === "active";
-              if (!isActive) {
-                console.log(
-                  `[loadStudents] filtering out student ${student.id} (status='${student.status}')`,
-                );
-              }
-              return isActive;
-            });
+          // Check classroom existence for each student
+          studentsData = [];
+          for (const docSnap of snapshot.docs) {
+            const data = docSnap.data();
+            const student = { id: docSnap.id, ...data };
+
+            // Check if classroom exists for this student
+            const isActive = await validateStudentClassroom(student);
+
+            if (isActive) {
+              studentsData.push(student);
+            } else {
+              console.log(
+                `[loadStudents] student ${student.id} has invalid classroom, filtering out`,
+              );
+            }
+          }
 
           console.log(
-            "[loadStudents] studentsData AFTER filter:",
+            "[loadStudents] studentsData AFTER classroom validation:",
             studentsData,
           );
 
           if (studentsData.length === 0) {
-            console.log("[loadStudents] No active students after filtering");
+            console.log(
+              "[loadStudents] No active students with valid classrooms after filtering",
+            );
             studentListContainer.innerHTML = `<p style="padding:20px; color:#555; font-weight:600;">No active students available.</p>`;
             classListContainer.innerHTML = "";
             return;
@@ -276,7 +281,83 @@
         }
       }
 
-      // UI render helpers
+      // 🟢 Validate if student's classroom exists and update status if needed
+      async function validateStudentClassroom(student) {
+        try {
+          // If student has no classroomId, mark as inactive
+          if (!student.classroomId) {
+            console.log(
+              `[validateStudentClassroom] Student ${student.id} has no classroomId`,
+            );
+            if (student.status === "active") {
+              await updateStudentStatus(student.id, "inactive");
+            }
+            return false;
+          }
+
+          // Check if classroom exists
+          const classRef = doc(db, "classrooms", student.classroomId);
+          const classSnap = await getDoc(classRef);
+
+          if (!classSnap.exists()) {
+            console.log(
+              `[validateStudentClassroom] Classroom ${student.classroomId} not found for student ${student.id}`,
+            );
+            // Classroom doesn't exist, update student status to inactive
+            if (student.status === "active") {
+              await updateStudentStatus(student.id, "inactive");
+            }
+            return false;
+          }
+
+          // Classroom exists and is active
+          const classData = classSnap.data();
+          if (classData.status !== "active") {
+            console.log(
+              `[validateStudentClassroom] Classroom ${student.classroomId} is not active`,
+            );
+            if (student.status === "active") {
+              await updateStudentStatus(student.id, "inactive");
+            }
+            return false;
+          }
+
+          // Student is properly active with valid classroom
+          console.log(
+            `[validateStudentClassroom] Student ${student.id} has valid classroom`,
+          );
+          return student.status === "active";
+        } catch (error) {
+          console.error(
+            `❌ Error validating classroom for student ${student.id}:`,
+            error,
+          );
+          // In case of error, assume classroom is invalid
+          if (student.status === "active") {
+            await updateStudentStatus(student.id, "inactive");
+          }
+          return false;
+        }
+      }
+
+      // 🟢 Update student status in Firestore
+      async function updateStudentStatus(studentId, newStatus) {
+        try {
+          const studentRef = doc(db, "students", studentId);
+          await updateDoc(studentRef, {
+            status: newStatus,
+            lastUpdated: new Date(),
+          });
+          console.log(
+            `[updateStudentStatus] Student ${studentId} status updated to ${newStatus}`,
+          );
+        } catch (error) {
+          console.error(
+            `❌ Error updating student ${studentId} status:`,
+            error,
+          );
+        }
+      }
       async function createClassCard(student) {
         console.log("[createClassCard] student:", student);
         const card = document.createElement("div");
@@ -285,6 +366,7 @@
 
         let classroomText = "Classroom: Unassigned";
         let teacherText = "Unknown Teacher";
+        let cardStyle = "";
 
         if (student.classroomId) {
           try {
@@ -309,9 +391,17 @@
                   console.error("❌ Error fetching teacher data:", err);
                 }
               }
+            } else {
+              // Classroom not found
+              classroomText = "Classroom: Not Available";
+              teacherText = "This classroom is no longer available";
+              cardStyle = "style='opacity: 0.6; background-color: #f8f9fa;'";
             }
           } catch (err) {
             console.error("❌ Error fetching classroom:", err);
+            classroomText = "Classroom: Error Loading";
+            teacherText = "Unable to load classroom information";
+            cardStyle = "style='opacity: 0.6; background-color: #f8f9fa;'";
           }
         }
 
@@ -321,15 +411,25 @@
     <p style="margin:0; font-size:0.95rem;">${teacherText}</p>
   `;
 
-        // ✅ Redirect on click
+        if (cardStyle) {
+          card.setAttribute(
+            "style",
+            cardStyle.replace("style='", "").replace("'", ""),
+          );
+        }
+
+        // ✅ Redirect on click only if classroom is valid
         card.onclick = () => {
-          localStorage.setItem("selectedStudentId", student.id); // Optional: store the active student
-          window.location.href = "dashboard_parents.html";
+          if (student.classroomId) {
+            localStorage.setItem("selectedStudentId", student.id);
+            window.location.href = "dashboard_parents.html";
+          } else {
+            alert("This student is not currently enrolled in any classroom.");
+          }
         };
 
         return card;
       }
-
       function createStudentCard(student) {
         console.log("[createStudentCard] student:", student);
         const card = document.createElement("div");

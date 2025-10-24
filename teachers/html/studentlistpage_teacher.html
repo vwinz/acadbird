@@ -64,6 +64,22 @@
           </a>
         </div>
       </nav>
+      <!-- Add this after the delete-modal -->
+      <div id="limit-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2>Classroom Full</h2>
+          <p>
+            You cannot add more students. This classroom has reached its maximum
+            capacity.
+          </p>
+          <div class="form-actions">
+            <button type="button" class="btn btn-primary" id="limit-ok-btn">
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div class="secondary-header">
         <div class="nav-menu">
@@ -294,75 +310,91 @@
 
             if (classSnap.exists()) {
               const data = classSnap.data();
+
               return {
-                maxStudents: data.maxStudents || 30, // Default to 30 if not set
-                currentStudents: data.currentStudents || 0,
+                maxStudents: data.noOfStudents || data.maxStudents || 30,
+                // Remove currentStudents tracking since we don't want to use it
               };
             }
-            return { maxStudents: 30, currentStudents: 0 }; // Default values
+            return { maxStudents: 30 }; // Default values
           } catch (error) {
             console.error("Error getting classroom capacity:", error);
-            return { maxStudents: 30, currentStudents: 0 };
+            return { maxStudents: 30 };
           }
         }
 
-        // ----------------------
-        // Check if Classroom has Capacity
-        // ----------------------
         async function canAddStudent(classroomId) {
-          const capacity = await getClassroomCapacity(classroomId);
-          return capacity.currentStudents < capacity.maxStudents;
+          try {
+            // Count actual students in the classroom from the students collection
+            const q = query(
+              collection(db, "students"),
+              where("classroomId", "==", classroomId),
+            );
+            const snapshot = await getDocs(q);
+            const currentStudentCount = snapshot.size;
+
+            const capacity = await getClassroomCapacity(classroomId);
+            const maxStudents = capacity.maxStudents || 30;
+
+            console.log(
+              `Current students: ${currentStudentCount}, Max: ${maxStudents}`,
+            );
+            return currentStudentCount < maxStudents;
+          } catch (error) {
+            console.error("Error checking classroom capacity:", error);
+            return true; // Allow adding if there's an error
+          }
         }
 
-        // ----------------------
-        // Update Classroom Student Count
-        // ----------------------
-        async function updateClassroomStudentCount(
+        async function loadClassroom(
           classroomId,
-          increment = true,
+          classroomNameEl,
+          classroomGradeEl,
         ) {
+          const storedClassName = localStorage.getItem("selectedClassName");
+          classroomNameEl.textContent = storedClassName || "Classroom";
+
+          if (!classroomId) return;
+
           try {
             const classRef = doc(db, "classrooms", classroomId);
             const classSnap = await getDoc(classRef);
 
             if (classSnap.exists()) {
               const data = classSnap.data();
-              const currentCount = data.currentStudents || 0;
-              const newCount = increment
-                ? currentCount + 1
-                : Math.max(0, currentCount - 1);
+              classroomNameEl.textContent =
+                data.classroomName || storedClassName || "Classroom";
+              classroomGradeEl.textContent = data.grade || "";
 
-              await updateDoc(classRef, {
-                currentStudents: newCount,
-              });
+              // Count actual students for display
+              try {
+                const q = query(
+                  collection(db, "students"),
+                  where("classroomId", "==", classroomId),
+                );
+                const snapshot = await getDocs(q);
+                const currentStudentCount = snapshot.size;
 
-              console.log(`✅ Classroom student count updated to: ${newCount}`);
-              return true;
+                const capacity = await getClassroomCapacity(classroomId);
+                const maxStudents = capacity.maxStudents || 30;
+
+                const studentCountEl = document.getElementById("student-count");
+                if (studentCountEl) {
+                  studentCountEl.textContent = `${currentStudentCount}/${maxStudents} Students`;
+                }
+              } catch (error) {
+                console.error("Error counting students:", error);
+                const studentCountEl = document.getElementById("student-count");
+                if (studentCountEl) {
+                  studentCountEl.textContent = "Students";
+                }
+              }
             }
-            return false;
-          } catch (error) {
-            console.error("Error updating classroom student count:", error);
-            return false;
+          } catch (err) {
+            console.error("Failed to load classroom:", err);
+            classroomNameEl.textContent =
+              storedClassName || "Classroom (offline)";
           }
-        }
-
-        async function handleAddStudentClick(classroomId) {
-          const canAdd = await canAddStudent(classroomId);
-
-          if (!canAdd) {
-            const capacity = await getClassroomCapacity(classroomId);
-            alert(
-              `Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`,
-            );
-            return false;
-          }
-
-          // Show the add student modal
-          modalTitle.textContent = "Add Student";
-          formSubmitBtn.textContent = "Add Student";
-          studentForm.reset();
-          addEditModal.style.display = "flex";
-          return true;
         }
 
         async function getReadNotifications(teacherId) {
@@ -588,43 +620,6 @@
         }
 
         // ----------------------
-        // Load Classroom
-        // ----------------------
-        async function loadClassroom(
-          classroomId,
-          classroomNameEl,
-          classroomGradeEl,
-        ) {
-          const storedClassName = localStorage.getItem("selectedClassName");
-          classroomNameEl.textContent = storedClassName || "Classroom";
-
-          if (!classroomId) return;
-
-          try {
-            const classRef = doc(db, "classrooms", classroomId);
-            const classSnap = await getDoc(classRef);
-
-            if (classSnap.exists()) {
-              const data = classSnap.data();
-              classroomNameEl.textContent =
-                data.classroomName || storedClassName || "Classroom";
-              classroomGradeEl.textContent = data.grade || "";
-
-              // Update student count display with capacity info
-              const capacity = await getClassroomCapacity(classroomId);
-              const studentCountEl = document.getElementById("student-count");
-              if (studentCountEl) {
-                studentCountEl.textContent = `${capacity.currentStudents}/${capacity.maxStudents} Students`;
-              }
-            }
-          } catch (err) {
-            console.error("Failed to load classroom:", err);
-            classroomNameEl.textContent =
-              storedClassName || "Classroom (offline)";
-          }
-        }
-
-        // ----------------------
         // Load Students (from Firestore)
         // ----------------------
         async function loadStudents(
@@ -843,9 +838,6 @@
             classroomId = localStorage.getItem("selectedClassId");
           }
 
-          // ----------------------
-          // Move handleAddStudentClick inside DOMContentLoaded
-          // ----------------------
           async function handleAddStudentClick(classroomId) {
             const canAdd = await canAddStudent(classroomId);
 
@@ -864,7 +856,6 @@
             addEditModal.style.display = "flex";
             return true;
           }
-
           // MOVE THE EVENT LISTENER HERE, INSIDE THE DOMContentLoaded
           addStudentCard.addEventListener("click", async () => {
             await handleAddStudentClick(classroomId);
@@ -904,6 +895,75 @@
             });
 
           // Submit student form
+          // Update the handleAddStudentClick function
+          async function handleAddStudentClick(classroomId) {
+            const canAdd = await canAddStudent(classroomId);
+
+            if (!canAdd) {
+              try {
+                // Count actual students for the modal message
+                const q = query(
+                  collection(db, "students"),
+                  where("classroomId", "==", classroomId),
+                );
+                const snapshot = await getDocs(q);
+                const currentStudentCount = snapshot.size;
+
+                const capacity = await getClassroomCapacity(classroomId);
+                const maxStudents = capacity.maxStudents || 30;
+
+                // Show the limit modal instead of alert
+                showLimitModal(currentStudentCount, maxStudents);
+              } catch (error) {
+                showLimitModal(); // Show generic message if error
+              }
+              return false;
+            }
+
+            // Show the add student modal
+            modalTitle.textContent = "Add Student";
+            formSubmitBtn.textContent = "Add Student";
+            studentForm.reset();
+            addEditModal.style.display = "flex";
+            return true;
+          }
+
+          // Add this new function to show the limit modal
+          function showLimitModal(currentCount, maxCount) {
+            const limitModal = document.getElementById("limit-modal");
+            const limitOkBtn = document.getElementById("limit-ok-btn");
+            const limitCloseBtn = limitModal.querySelector(".close-button");
+
+            // Update modal message with actual counts if available
+            if (currentCount !== undefined && maxCount !== undefined) {
+              document.querySelector("#limit-modal p").textContent =
+                `You cannot add more students. This classroom has reached its maximum capacity (${currentCount}/${maxCount} students).`;
+            } else {
+              document.querySelector("#limit-modal p").textContent =
+                "You cannot add more students. This classroom has reached its maximum capacity.";
+            }
+
+            // Show the modal
+            limitModal.style.display = "flex";
+
+            // Set up event listeners for the modal
+            limitOkBtn.onclick = () => {
+              limitModal.style.display = "none";
+            };
+
+            limitCloseBtn.onclick = () => {
+              limitModal.style.display = "none";
+            };
+
+            // Close modal when clicking outside
+            window.onclick = (event) => {
+              if (event.target === limitModal) {
+                limitModal.style.display = "none";
+              }
+            };
+          }
+
+          // Also update the form submit handler to use the modal
           studentForm.addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -923,10 +983,22 @@
             // Check capacity again before proceeding
             const canAdd = await canAddStudent(classroomId);
             if (!canAdd) {
-              const capacity = await getClassroomCapacity(classroomId);
-              alert(
-                `Cannot add student. Classroom has reached maximum capacity (${capacity.currentStudents}/${capacity.maxStudents} students).`,
-              );
+              try {
+                // Count actual students for the modal message
+                const q = query(
+                  collection(db, "students"),
+                  where("classroomId", "==", classroomId),
+                );
+                const snapshot = await getDocs(q);
+                const currentStudentCount = snapshot.size;
+
+                const capacity = await getClassroomCapacity(classroomId);
+                const maxStudents = capacity.maxStudents || 30;
+
+                showLimitModal(currentStudentCount, maxStudents);
+              } catch (error) {
+                showLimitModal();
+              }
               addEditModal.style.display = "none";
               return;
             }
@@ -975,7 +1047,6 @@
               );
 
               // Update classroom student count
-              await updateClassroomStudentCount(classroomId, true);
 
               // Send verification email to parent
               if (parentEmail) {

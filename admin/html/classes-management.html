@@ -476,7 +476,7 @@
           </div>
 
           <div class="form-group">
-            <label for="new-max-students">Max Students:</label>
+            <label for="new-max-students">Maximum Students:</label>
             <input
               type="number"
               id="new-max-students"
@@ -731,7 +731,7 @@
         tableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4">Loading...</td></tr>`;
 
         try {
-          showLoading(); // ADD THIS LINE
+          showLoading();
 
           const classSnap = await getDocs(collection(db, "classrooms"));
           tableBody.innerHTML = "";
@@ -752,7 +752,10 @@
               ),
             );
             const studentCount = studentSnap.size;
-            const maxStudents = classroom.maxStudents || 25;
+
+            // 🔹 Use noOfStudents from classroom data, fallback to maxStudents or 25
+            const maxStudents =
+              classroom.noOfStudents || classroom.maxStudents || 25;
 
             // 🔹 Row styling
             const statusClass =
@@ -830,9 +833,9 @@
             tableBody.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-gray-500">No classes found.</td></tr>`;
           }
 
-          hideLoading(); // ADD THIS LINE
+          hideLoading();
         } catch (err) {
-          hideLoading(); // ADD THIS LINE even on error
+          hideLoading();
           console.error("Error loading classes:", err);
           tableBody.innerHTML = `<tr><td colspan="5" class="text-center text-red-600">Error loading classes</td></tr>`;
         }
@@ -1050,7 +1053,7 @@
         const className = document
           .getElementById("new-class-name")
           .value.trim();
-        const maxStudents = parseInt(
+        const noOfStudents = parseInt(
           document.getElementById("new-max-students").value,
           10,
         );
@@ -1059,7 +1062,7 @@
         try {
           await addDoc(collection(db, "classrooms"), {
             classroomName: className,
-            maxStudents: maxStudents,
+            noOfStudents: noOfStudents, // ✅ Use noOfStudents instead of maxStudents
             teacherId: teacherId === "unassigned" ? null : teacherId,
             status: teacherId === "unassigned" ? "pending" : "active",
             created_at: serverTimestamp(),
