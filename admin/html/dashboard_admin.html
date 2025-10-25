@@ -1032,10 +1032,54 @@
         }
       }
 
+      // Fetch admin name from Firestore
+      async function fetchAdminName() {
+        try {
+          showLoading();
+          console.log("🔍 Fetching admin name...");
+
+          // Query for admin users
+          const adminQuery = query(
+            collection(db, "users"),
+            where("role", "==", "admin"),
+          );
+          const adminSnap = await getDocs(adminQuery);
+
+          if (adminSnap.empty) {
+            console.log("❌ No admin user found");
+            // Set default values
+            document.querySelector(".admin-card h2").textContent = "Admin";
+            return;
+          }
+
+          // Get the first admin user (assuming there's only one admin)
+          const adminDoc = adminSnap.docs[0];
+          const adminData = adminDoc.data();
+
+          console.log("✅ Admin data found:", adminData);
+
+          // Update admin name in the card
+          const adminName =
+            `${adminData.firstName || ""} ${adminData.lastName || ""}`.trim();
+          document.querySelector(".admin-card h2").textContent =
+            adminName || "Admin";
+
+          hideLoading();
+        } catch (error) {
+          console.error("❌ Error fetching admin name:", error);
+          // Set default value on error
+          document.querySelector(".admin-card h2").textContent = "Admin";
+          hideLoading();
+        }
+      }
+
       // Add this to your initializeDashboard function
       async function initializeDashboard() {
         try {
-          showLoading(); // ADD THIS LINE
+          showLoading();
+
+          // Fetch admin name first
+          await fetchAdminName();
 
           // Run all data fetching functions
           getClassesCount();
@@ -1063,12 +1107,13 @@
             });
           }
 
-          hideLoading(); // ADD THIS LINE
+          hideLoading();
         } catch (error) {
-          hideLoading(); // ADD THIS LINE even on error
+          hideLoading();
           console.error("Error initializing dashboard:", error);
         }
       }
+      // Add this to your initializeDashboard function
       // Run when DOM is loaded
       document.addEventListener("DOMContentLoaded", initializeDashboard);
 

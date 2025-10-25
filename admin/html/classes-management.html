@@ -1428,10 +1428,64 @@
         }
       }
 
-      // Add this to your initialization function
+      // Fetch admin name from Firestore
+      async function fetchAdminName() {
+        try {
+          showLoading();
+          console.log("🔍 Fetching admin name...");
+
+          // Query for admin users
+          const adminQuery = query(
+            collection(db, "users"),
+            where("role", "==", "admin"),
+          );
+          const adminSnap = await getDocs(adminQuery);
+
+          if (adminSnap.empty) {
+            console.log("❌ No admin user found");
+            // Set default values - use more specific selector
+            const adminNameElement = document.querySelector(".bg-acad-navy h2");
+            if (adminNameElement) {
+              adminNameElement.textContent = "Admin";
+            }
+            return;
+          }
+
+          // Get the first admin user (assuming there's only one admin)
+          const adminDoc = adminSnap.docs[0];
+          const adminData = adminDoc.data();
+
+          console.log("✅ Admin data found:", adminData);
+
+          // Update admin name in the card - use more specific selector
+          const adminName =
+            `${adminData.firstName || ""} ${adminData.lastName || ""}`.trim();
+          const adminNameElement = document.querySelector(".bg-acad-navy h2");
+
+          if (adminNameElement) {
+            adminNameElement.textContent = adminName || "Admin";
+          } else {
+            console.warn("❌ Admin name element not found");
+          }
+
+          hideLoading();
+        } catch (error) {
+          console.error("❌ Error fetching admin name:", error);
+          // Set default value on error
+          const adminNameElement = document.querySelector(".bg-acad-navy h2");
+          if (adminNameElement) {
+            adminNameElement.textContent = "Admin";
+          }
+          hideLoading();
+        }
+      }
+      // Update the initialization function
       async function initializePage() {
         try {
-          showLoading(); // ADD THIS LINE
+          showLoading();
+
+          // Fetch admin name first
+          await fetchAdminName();
 
           // Your existing initialization code
           loadMetrics();
@@ -1443,12 +1497,13 @@
           // Add notification badge
           getUnreadNotificationsCount();
 
-          hideLoading(); // ADD THIS LINE
+          hideLoading();
         } catch (error) {
-          hideLoading(); // ADD THIS LINE even on error
+          hideLoading();
           console.error("Error initializing page:", error);
         }
       }
+      // Add this to your initialization function
       initializePage();
     </script>
   </body>

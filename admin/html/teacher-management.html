@@ -1446,48 +1446,113 @@
       }
 
       // Add this to your initialization function
+      // Fetch admin name from Firestore
+      async function fetchAdminName() {
+        try {
+          showLoading();
+          console.log("🔍 Fetching admin name...");
+
+          // Query for admin users
+          const adminQuery = query(
+            collection(db, "users"),
+            where("role", "==", "admin"),
+          );
+          const adminSnap = await getDocs(adminQuery);
+
+          if (adminSnap.empty) {
+            console.log("❌ No admin user found");
+            // Set default values
+            const adminNameElement = document.querySelector(".admin-card h2");
+            if (adminNameElement) {
+              adminNameElement.textContent = "Admin";
+            }
+            return;
+          }
+
+          // Get the first admin user (assuming there's only one admin)
+          const adminDoc = adminSnap.docs[0];
+          const adminData = adminDoc.data();
+
+          console.log("✅ Admin data found:", adminData);
+
+          // Update admin name in the card
+          const adminName =
+            `${adminData.firstName || ""} ${adminData.lastName || ""}`.trim();
+          const adminNameElement = document.querySelector(".admin-card h2");
+
+          if (adminNameElement) {
+            adminNameElement.textContent = adminName || "Admin";
+          } else {
+            console.warn("❌ Admin name element not found");
+          }
+
+          hideLoading();
+        } catch (error) {
+          console.error("❌ Error fetching admin name:", error);
+          // Set default value on error
+          const adminNameElement = document.querySelector(".admin-card h2");
+          if (adminNameElement) {
+            adminNameElement.textContent = "Admin";
+          }
+          hideLoading();
+        }
+      }
+
+      // Update the initialization function
       async function init() {
-        // Your existing initialization code
-        teacherForm.addEventListener("submit", handleTeacherFormSubmission);
+        try {
+          showLoading();
 
-        // Add Teacher button listeners
-        document
-          .getElementById("add-teacher-btn")
-          .addEventListener("click", () => openTeacherModal());
-        document
-          .getElementById("quick-add-teacher")
-          .addEventListener("click", () => openTeacherModal());
+          // Fetch admin name first
+          await fetchAdminName();
 
-        // Modal close buttons
-        document
-          .getElementById("close-teacher-modal")
-          .addEventListener("click", closeTeacherModal);
-        document
-          .getElementById("close-archive-modal")
-          .addEventListener("click", closeArchiveConfirmationModal);
-        document
-          .getElementById("close-delete-modal")
-          .addEventListener("click", closeDeleteConfirmationModal);
-        document
-          .getElementById("cancel-teacher")
-          .addEventListener("click", closeTeacherModal);
-        document
-          .getElementById("cancel-archive")
-          .addEventListener("click", closeArchiveConfirmationModal);
-        document
-          .getElementById("cancel-delete")
-          .addEventListener("click", closeDeleteConfirmationModal);
+          // Your existing initialization code
+          teacherForm.addEventListener("submit", handleTeacherFormSubmission);
 
-        // Search and Filter listeners
-        searchInput.addEventListener("input", applyFiltersAndSearch);
-        filterStatus.addEventListener("change", applyFiltersAndSearch);
+          // Add Teacher button listeners
+          document
+            .getElementById("add-teacher-btn")
+            .addEventListener("click", () => openTeacherModal());
+          document
+            .getElementById("quick-add-teacher")
+            .addEventListener("click", () => openTeacherModal());
 
-        // Initial render with real data
-        renderTeacherTable();
+          // Modal close buttons
+          document
+            .getElementById("close-teacher-modal")
+            .addEventListener("click", closeTeacherModal);
+          document
+            .getElementById("close-archive-modal")
+            .addEventListener("click", closeArchiveConfirmationModal);
+          document
+            .getElementById("close-delete-modal")
+            .addEventListener("click", closeDeleteConfirmationModal);
+          document
+            .getElementById("cancel-teacher")
+            .addEventListener("click", closeTeacherModal);
+          document
+            .getElementById("cancel-archive")
+            .addEventListener("click", closeArchiveConfirmationModal);
+          document
+            .getElementById("cancel-delete")
+            .addEventListener("click", closeDeleteConfirmationModal);
 
-        // Add notification badge - ADD THIS LINE
-        getUnreadNotificationsCount();
-      } // Initialize the application
+          // Search and Filter listeners
+          searchInput.addEventListener("input", applyFiltersAndSearch);
+          filterStatus.addEventListener("change", applyFiltersAndSearch);
+
+          // Initial render with real data
+          renderTeacherTable();
+
+          // Add notification badge
+          getUnreadNotificationsCount();
+
+          hideLoading();
+        } catch (error) {
+          hideLoading();
+          console.error("Error initializing page:", error);
+        }
+      }
       document.addEventListener("DOMContentLoaded", init);
     </script>
   </body>
